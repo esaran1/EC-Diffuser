@@ -76,6 +76,15 @@ class ParameterlessZeroModel(nn.Module):
         return torch.zeros_like(x)
 
 
+class BufferedParameterlessZeroModel(nn.Module):
+    def __init__(self, device="cpu"):
+        super().__init__()
+        self.register_buffer("anchor", torch.zeros((), device=device))
+
+    def forward(self, x, cond, time):
+        return torch.zeros_like(x) + self.anchor * 0.0
+
+
 def make_flow(model=None, **kwargs):
     arguments = {
         "model": ToyVelocityModel() if model is None else model,
@@ -232,6 +241,16 @@ def test_sampling_is_seed_deterministic_and_different_seeds_differ():
     assert not torch.equal(first, third)
 
 
+def test_equal_zero_values_preserve_batch_order_when_sorting_is_requested():
+    flow = make_flow(model=ParameterlessZeroModel())
+    _, cond = make_inputs(batch_size=10)
+    torch.manual_seed(123)
+    sorted_request = flow(cond, sort_by_value=True, verbose=False).trajectories
+    torch.manual_seed(123)
+    unsorted_request = flow(cond, sort_by_value=False, verbose=False).trajectories
+    torch.testing.assert_close(sorted_request, unsorted_request, rtol=0, atol=0)
+
+
 def test_loss_does_not_mutate_trajectory_or_conditioning():
     flow = make_flow()
     x, cond = make_inputs()
@@ -279,6 +298,19 @@ def test_invalid_condition_timestep_shape_batch_dtype_and_device():
         flow.loss(x, {0: cond[0][:-1]})
     with pytest.raises(ValueError, match="dtype"):
         flow.loss(x, {0: cond[0].double()})
+
+
+def test_empty_sampling_batch_and_model_dtype_mismatches_raise_clearly():
+    flow = make_flow()
+    with pytest.raises(ValueError, match="batch dimension must be non-empty"):
+        flow({0: torch.empty(0, OBSERVATION_DIM)}, verbose=False)
+    with pytest.raises(ValueError, match="conditioning dtype.*model dtype"):
+        flow({0: torch.zeros(1, OBSERVATION_DIM, dtype=torch.float64)}, verbose=False)
+
+    trajectory = torch.zeros(1, HORIZON, TRANSITION_DIM, dtype=torch.float64)
+    conditions = {0: torch.zeros(1, OBSERVATION_DIM, dtype=torch.float64)}
+    with pytest.raises(ValueError, match="trajectory dtype.*model dtype"):
+        flow.loss(trajectory, conditions)
 
 
 def test_model_output_shape_mismatch_raises():
@@ -484,6 +516,12 @@ def test_parameterless_model_device_fallback_and_cpu_smoke():
     loss, _ = flow.loss(x, cond)
     sample = flow(cond, verbose=False)
     assert torch.isfinite(loss) and torch.isfinite(sample.trajectories).all()
+
+
+def test_parameterless_model_device_prefers_registered_model_buffer():
+    model = BufferedParameterlessZeroModel(device="meta")
+    flow = make_flow(model=model)
+    assert flow.device.type == "meta"
 
 
 def test_real_denoiser_accepts_continuous_float_time():

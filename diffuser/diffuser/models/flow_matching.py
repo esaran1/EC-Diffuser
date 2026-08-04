@@ -145,11 +145,23 @@ class ConditionalFlowMatching(nn.Module):
 
     @property
     def device(self):
-        """Return the model parameter device, falling back to the loss-weight buffer."""
+        """Return the model parameter/buffer device, then the wrapper buffer device."""
         parameter = next(self.model.parameters(), None)
         if parameter is not None:
             return parameter.device
+        model_buffer = next(self.model.buffers(), None)
+        if model_buffer is not None:
+            return model_buffer.device
         return self.loss_weight_matrix.device
+
+    def _model_floating_dtype(self):
+        for tensor in self.model.parameters():
+            if tensor.is_floating_point():
+                return tensor.dtype
+        for tensor in self.model.buffers():
+            if tensor.is_floating_point():
+                return tensor.dtype
+        return self.loss_weight_matrix.dtype
 
     def _validate_trajectory(self, x):
         if not torch.is_tensor(x):
@@ -168,6 +180,9 @@ class ConditionalFlowMatching(nn.Module):
             raise ValueError("trajectory contains non-finite values")
         if x.device != self.device:
             raise ValueError("trajectory device {} does not match model device {}".format(x.device, self.device))
+        model_dtype = self._model_floating_dtype()
+        if x.dtype != model_dtype:
+            raise ValueError("trajectory dtype {} does not match model dtype {}".format(x.dtype, model_dtype))
 
     def _validate_conditioning(self, cond, batch_size, horizon, device, dtype, require_nonempty=True):
         if not isinstance(cond, Mapping):
@@ -328,10 +343,15 @@ class ConditionalFlowMatching(nn.Module):
         if not torch.is_tensor(first_value) or first_value.ndim != 2:
             raise ValueError("condition values must have shape [batch, observation_dim]")
         batch_size = first_value.shape[0]
+        if batch_size < 1:
+            raise ValueError("conditioning batch dimension must be non-empty")
         device = first_value.device
         dtype = first_value.dtype
         if device != self.device:
             raise ValueError("conditioning device {} does not match model device {}".format(device, self.device))
+        model_dtype = self._model_floating_dtype()
+        if dtype != model_dtype:
+            raise ValueError("conditioning dtype {} does not match model dtype {}".format(dtype, model_dtype))
         self._validate_conditioning(cond, batch_size, active_horizon, device, dtype, True)
         steps = self._resolve_solver_steps(n_steps)
 
@@ -354,7 +374,9 @@ class ConditionalFlowMatching(nn.Module):
                 chain.append(x.clone())
 
         values = x.new_zeros(batch_size)
-        if sort_by_value:
+        # Flow matching has no value head, so equal zero values must preserve the
+        # caller's batch order. Keep sorting support if values become nonuniform.
+        if sort_by_value and torch.any(values != values[0]):
             indices = torch.argsort(values, descending=True)
             x = x[indices]
             values = values[indices]
