@@ -4,7 +4,7 @@ import torch
 from torch import nn
 import pdb
 
-import diffuser.utils as utils
+from .progress import Progress, Silent
 from .helpers import (
     cosine_beta_schedule,
     extract,
@@ -203,7 +203,7 @@ class GaussianDiffusion(nn.Module):
         if return_attention:
             sample_fn = sample_fn_return_attn
 
-        progress = utils.Progress(self.n_timesteps) if verbose else utils.Silent()
+        progress = Progress(self.n_timesteps) if verbose else Silent()
         for i in reversed(range(0, self.n_timesteps)):
             t = make_timesteps(batch_size, i, device)
             if return_attention:
@@ -295,4 +295,3 @@ class ValueDiffusion(GaussianDiffusion):
 
     def forward(self, x, cond, t):
         return self.model(x, cond, t)
-
