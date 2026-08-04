@@ -265,10 +265,12 @@ class ConditionalFlowMatching(nn.Module):
         conditioning_mask = self._make_conditioning_mask(x1_local, cond)
         weights = self.loss_weight_matrix.to(device=x1.device, dtype=x1.dtype).unsqueeze(0)
         active_weights = weights * conditioning_mask.to(x1.dtype)
-        denominator = active_weights.sum()
-        if denominator.item() <= 0:
+        denominator = conditioning_mask.sum()
+        if denominator.item() == 0 or not torch.any(active_weights > 0):
             raise ValueError("conditioning and loss settings leave no active elements")
-        loss = (error * active_weights).sum() / denominator
+        # GaussianDiffusion applies weights once and reduces by element count.
+        # Restrict that count to unconditioned elements when masking is present.
+        loss = (error * active_weights).sum() / denominator.to(x1.dtype)
 
         action_mask = conditioning_mask[:, :, :self.action_dim]
         observation_mask = conditioning_mask[:, :, self.action_dim:]

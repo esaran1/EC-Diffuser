@@ -9,7 +9,9 @@ python --version
 PYTHONPATH="${repo_root}/diffuser" python -c 'import torch; print("PyTorch version: {}".format(torch.__version__))'
 
 PYTHONPATH="${repo_root}/diffuser" python -m pytest -q tests/test_flow_matching.py
+PYTHONPATH="${repo_root}/diffuser" python -m pytest -q tests/test_gaussian_diffusion_regression.py
 PYTHONPATH="${repo_root}/diffuser" python diffuser/scripts/smoke_flow_matching.py
+PYTHONPATH="${repo_root}/diffuser" python diffuser/scripts/audit_real_denoiser_overfit.py
 PYTHONPATH="${repo_root}/diffuser" python diffuser/scripts/overfit_flow_matching.py
 PYTHONPATH="${repo_root}/diffuser" python diffuser/scripts/validate_flow_config.py
 

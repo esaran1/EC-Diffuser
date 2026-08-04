@@ -108,6 +108,7 @@ base = {
         # The existing training interface calls this n_diffusion_steps; the flow
         # wrapper interprets the forwarded n_timesteps value as Euler steps.
         "n_diffusion_steps": 4,
+        "time_scale": 1000.0,
         "action_weight": 10,
         "max_particles": None,
         "positional_bias": False,

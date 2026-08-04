@@ -3,6 +3,7 @@ warnings.filterwarnings('ignore')
 import os
 from diffuser.eval_utils import setup_isaac_env, evaluate_policy, wandb_log_eval_stats
 from diffuser.utils.arrays import set_global_device
+from diffuser.configuration import flow_sampling_kwargs
 import diffuser.utils as utils
 import wandb
 from diffuser.utils.args import ArgsParser
@@ -45,6 +46,7 @@ if __name__ == '__main__':
         preprocess_fns=args.preprocess_fns,
         verbose=False,
         horizon=args.horizon,
+        **flow_sampling_kwargs(diffusion, args.n_diffusion_steps)
     )
 
     logger = logger_config()

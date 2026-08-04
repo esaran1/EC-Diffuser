@@ -3,6 +3,7 @@ warnings.filterwarnings('ignore')
 import os
 from diffuser.eval_utils import setup_isaac_env, evaluate_policy, wandb_log_eval_stats
 from diffuser.utils.arrays import set_global_device
+from diffuser.configuration import diffusion_wrapper_kwargs, flow_sampling_kwargs
 import diffuser.utils as utils
 import wandb
 from diffuser.utils.args import ArgsParser
@@ -73,19 +74,8 @@ model_config = utils.Config(
 diffusion_config = utils.Config(
     args.diffusion,
     savepath=(args.savepath, 'diffusion_config.pkl'),
-    horizon=args.horizon,
-    observation_dim=observation_dim,
-    action_dim=action_dim,
-    n_timesteps=args.n_diffusion_steps,
-    loss_type=args.loss_type,
-    clip_denoised=args.clip_denoised,
-    predict_epsilon=args.predict_epsilon,
-    action_weight=args.action_weight,
-    loss_weights=args.loss_weights,
-    loss_discount=args.loss_discount,
     device=args.device,
-    obs_only=args.obs_only,
-    action_only=args.action_only,
+    **diffusion_wrapper_kwargs(args, observation_dim, action_dim)
 )
 
 trainer_config = utils.Config(
@@ -132,6 +122,7 @@ policy_config = utils.Config(
     preprocess_fns=plan_args.preprocess_fns,
     verbose=False,
     horizon=plan_args.horizon,
+    **flow_sampling_kwargs(diffusion, plan_args.n_diffusion_steps)
 )
 
 logger = logger_config()

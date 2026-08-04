@@ -354,6 +354,111 @@ def test_custom_observation_loss_weights_change_contribution():
     assert weighted_loss > normal_loss
 
 
+@pytest.mark.parametrize(
+    "kwargs",
+    [
+        {"action_weight": 4.0},
+        {"loss_discount": 0.7},
+        {"loss_weights": {0: 3.0, 4: 0.25}},
+        {"action_only": True},
+    ],
+)
+def test_loss_weight_matrix_matches_gaussian_diffusion(kwargs):
+    model = ToyVelocityModel()
+    flow = make_flow(model=model, **kwargs)
+    gaussian = GaussianDiffusion(
+        model=ToyVelocityModel(),
+        horizon=HORIZON,
+        observation_dim=OBSERVATION_DIM,
+        action_dim=ACTION_DIM,
+        n_timesteps=4,
+        loss_type="l2",
+        clip_denoised=True,
+        predict_epsilon=True,
+        action_weight=kwargs.get("action_weight", 1.0),
+        loss_discount=kwargs.get("loss_discount", 1.0),
+        loss_weights=kwargs.get("loss_weights"),
+        action_only=kwargs.get("action_only", False),
+    )
+    torch.testing.assert_close(flow.loss_weight_matrix, gaussian.loss_fn.weights, rtol=0, atol=0)
+
+
+def test_masked_weighted_reduction_applies_weights_once_and_counts_active_elements():
+    conditions = {0: torch.zeros(2, OBSERVATION_DIM)}
+    flow = make_flow(
+        model=ChannelErrorModel(action_value=2.0, observation_value=3.0),
+        action_weight=5.0,
+        loss_discount=0.8,
+        loss_weights={0: 4.0},
+    )
+    loss, _, details = deterministic_loss(flow, cond=conditions)
+    squared_error = torch.empty(2, HORIZON, TRANSITION_DIM)
+    squared_error[:, :, :ACTION_DIM] = 4.0
+    squared_error[:, :, ACTION_DIM:] = 9.0
+    weights = flow.loss_weight_matrix.unsqueeze(0)
+    mask = details["conditioning_mask"]
+    expected = (squared_error * weights * mask).sum() / mask.sum()
+    torch.testing.assert_close(loss, expected)
+
+
+@pytest.mark.parametrize("action_only", [False, True])
+def test_unmasked_weighted_reduction_matches_gaussian_mean(action_only):
+    model = ChannelErrorModel(action_value=2.0, observation_value=3.0)
+    flow = make_flow(
+        model=model,
+        action_weight=5.0,
+        loss_discount=0.8,
+        loss_weights={0: 4.0},
+        action_only=action_only,
+    )
+    gaussian = GaussianDiffusion(
+        model=ChannelErrorModel(action_value=2.0, observation_value=3.0),
+        horizon=HORIZON,
+        observation_dim=OBSERVATION_DIM,
+        action_dim=ACTION_DIM,
+        n_timesteps=4,
+        loss_type="l2",
+        clip_denoised=True,
+        action_weight=5.0,
+        loss_discount=0.8,
+        loss_weights={0: 4.0},
+        action_only=action_only,
+    )
+    trajectory = torch.zeros(2, HORIZON, TRANSITION_DIM)
+    time = torch.tensor([0.25, 0.75])
+    flow_loss = flow._compute_flow_loss(
+        trajectory, {}, x0=torch.zeros_like(trajectory), t=time
+    )[0]
+    prediction = model(trajectory, {}, time)
+    gaussian_loss = gaussian.loss_fn(prediction, torch.zeros_like(prediction))[0]
+    torch.testing.assert_close(flow_loss, gaussian_loss)
+
+
+def test_obs_only_weights_only_observations_and_fully_masked_loss_raises():
+    obs_only = make_flow(obs_only=True)
+    assert torch.count_nonzero(obs_only.loss_weight_matrix[:, :ACTION_DIM]) == 0
+    assert torch.all(obs_only.loss_weight_matrix[:, ACTION_DIM:] > 0)
+
+    horizon = 2
+    flow = ConditionalFlowMatching(
+        model=ParameterlessZeroModel(),
+        horizon=horizon,
+        observation_dim=3,
+        action_dim=0,
+        n_timesteps=2,
+        loss_type="l2",
+    )
+    trajectory = torch.zeros(1, horizon, 3)
+    conditions = {0: torch.zeros(1, 3), 1: torch.zeros(1, 3)}
+    with pytest.raises(ValueError, match="no active elements"):
+        flow._compute_flow_loss(
+            trajectory,
+            conditions,
+            x0=torch.zeros_like(trajectory),
+            t=torch.tensor([0.5]),
+        )
+
+
 def test_training_and_sampling_times_are_floating_and_scaled_consistently():
     model = ToyVelocityModel()
     flow = make_flow(model=model, time_scale=250.0)
