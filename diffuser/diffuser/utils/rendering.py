@@ -7,14 +7,12 @@ from matplotlib.colors import ListedColormap
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 import gym
-import mujoco_py as mjc
 import warnings
 import cv2 as cv
 
 from .arrays import to_np
 from .video import save_video, save_videos
 
-from diffuser.datasets.d4rl import load_environment
 from dlp_utils import get_recon_from_dlps
 
 #-----------------------------------------------------------------------------#
@@ -256,6 +254,10 @@ class MuJoCoRenderer:
     '''
 
     def __init__(self, env):
+        try:
+            import mujoco_py as mjc
+        except Exception as exc:
+            raise ImportError("MuJoCoRenderer requires a working mujoco_py installation") from exc
         if type(env) is str:
             env = env_map(env)
             self.env = gym.make(env)

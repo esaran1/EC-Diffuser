@@ -20,10 +20,6 @@ def suppress_output():
         with redirect_stderr(fnull) as err, redirect_stdout(fnull) as out:
             yield (err, out)
 
-with suppress_output():
-    ## d4rl prints out a variety of warnings
-    import d4rl
-
 #-----------------------------------------------------------------------------#
 #-------------------------------- general api --------------------------------#
 #-----------------------------------------------------------------------------#
@@ -32,6 +28,9 @@ def load_environment(name):
     if type(name) != str:
         ## name is already an environment
         return name
+    with suppress_output():
+        ## Import lazily so non-D4RL datasets do not require this optional package.
+        import d4rl
     with suppress_output():
         wrapped_env = gym.make(name)
     env = wrapped_env.unwrapped
