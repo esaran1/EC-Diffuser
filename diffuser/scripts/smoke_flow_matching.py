@@ -90,7 +90,10 @@ def main():
     hook.remove()
     assert forward_calls[0] == 4, "four Euler steps must make exactly four denoiser calls"
     assert sample.trajectories.shape == (batch_size, horizon, transition_dim)
-    assert sample.trajectories.device == device
+    expected_device = device
+    if device.type == "cuda" and device.index is None:
+        expected_device = torch.device("cuda", torch.cuda.current_device())
+    assert sample.trajectories.device == expected_device
     assert sample.trajectories.dtype == trajectory.dtype
     assert torch.isfinite(sample.trajectories).all(), "sample contains non-finite values"
     assert sample.chains.shape == (batch_size, 5, horizon, transition_dim)
