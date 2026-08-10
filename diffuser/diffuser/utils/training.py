@@ -110,8 +110,18 @@ class Trainer(object):
 
                 loss, infos = self.model.loss(*batch)
                 loss = loss / self.gradient_accumulate_every
+                if not torch.isfinite(loss):
+                    raise FloatingPointError(f'non-finite training loss at step {self.step}: {loss}')
                 loss.backward()
 
+            nonfinite_gradients = [
+                name for name, parameter in self.model.named_parameters()
+                if parameter.grad is not None and not torch.isfinite(parameter.grad).all()
+            ]
+            if nonfinite_gradients:
+                raise FloatingPointError(
+                    f'non-finite gradients at step {self.step}: {nonfinite_gradients[:5]}'
+                )
             self.optimizer.step()
             self.optimizer.zero_grad()
 

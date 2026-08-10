@@ -87,5 +87,6 @@ if __name__ == '__main__':
         if args.input_type == 'dlp':
             renderer.env = env
         stat_save_path = os.path.join(args.savepath, 'eval_stats.pkl')
-        eval_stat_dict = evaluate_policy(policy, env, args, logger, num_eval_episodes=100, exe_steps=args.exe_steps, stat_save_path=stat_save_path)
+        num_eval_episodes = getattr(args, 'num_eval_episodes', 100)
+        eval_stat_dict = evaluate_policy(policy, env, args, logger, num_eval_episodes=num_eval_episodes, exe_steps=args.exe_steps, stat_save_path=stat_save_path)
         wandb_log_eval_stats(env, eval_stat_dict, args)

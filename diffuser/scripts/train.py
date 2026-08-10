@@ -166,7 +166,7 @@ for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')
     trainer.train(n_train_steps=args.n_steps_per_epoch)
 
-    if i % args.eval_freq == 0:
+    if args.eval_freq and i % args.eval_freq == 0:
         plan_args.savepath = logger.savepath = os.path.join(args.savepath, f'epoch_{i}')
         os.makedirs(plan_args.savepath, exist_ok=True)
         stat_save_path = os.path.join(plan_args.savepath, 'eval_stats.pkl')
