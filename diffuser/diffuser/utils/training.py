@@ -104,21 +104,37 @@ class Trainer(object):
     def train(self, n_train_steps, front_bg=None, side_bg=None, latent_rep_model=None):
         timer = Timer()
         for step in range(n_train_steps):
+            step_loss = None
+            step_infos = {}
             for i in range(self.gradient_accumulate_every):
                 batch = next(self.dataloader)
                 batch = batch_to_device(batch)
 
                 loss, infos = self.model.loss(*batch)
-                loss = loss / self.gradient_accumulate_every
                 if not torch.isfinite(loss):
                     raise FloatingPointError(f'non-finite training loss at step {self.step}: {loss}')
-                loss.backward()
+                scaled_loss = loss / self.gradient_accumulate_every
+                scaled_loss.backward()
+                detached_loss = loss.detach() / self.gradient_accumulate_every
+                step_loss = detached_loss if step_loss is None else step_loss + detached_loss
+                for key, value in infos.items():
+                    detached_value = value.detach() if torch.is_tensor(value) else value
+                    contribution = detached_value / self.gradient_accumulate_every
+                    step_infos[key] = step_infos.get(key, 0) + contribution
 
-            nonfinite_gradients = [
-                name for name, parameter in self.model.named_parameters()
-                if parameter.grad is not None and not torch.isfinite(parameter.grad).all()
+            gradient_checks = [
+                (name, torch.isfinite(parameter.grad).all())
+                for name, parameter in self.model.named_parameters()
+                if parameter.grad is not None
             ]
-            if nonfinite_gradients:
+            gradients_are_finite = (
+                not gradient_checks
+                or torch.stack([check for _, check in gradient_checks]).all().item()
+            )
+            if not gradients_are_finite:
+                nonfinite_gradients = [
+                    name for name, check in gradient_checks if not check.item()
+                ]
                 raise FloatingPointError(
                     f'non-finite gradients at step {self.step}: {nonfinite_gradients[:5]}'
                 )
@@ -133,9 +149,9 @@ class Trainer(object):
                 self.save(label)
 
             if self.step % self.log_freq == 0:
-                infos_str = ' | '.join([f'{key}: {val:8.4f}' for key, val in infos.items()])
-                print(f'{self.step}: {loss:8.4f} | {infos_str} | t: {timer():8.4f}', flush=True)
-                wandb.log({'step':self.step, 'loss': loss, **infos})
+                infos_str = ' | '.join([f'{key}: {val:8.4f}' for key, val in step_infos.items()])
+                print(f'{self.step}: {step_loss:8.4f} | {infos_str} | t: {timer():8.4f}', flush=True)
+                wandb.log({'step': self.step, 'loss': step_loss, **step_infos})
 
             if self.step == 0 and self.sample_freq:
                 self.render_reference(self.n_reference, front_bg=front_bg, side_bg=side_bg)

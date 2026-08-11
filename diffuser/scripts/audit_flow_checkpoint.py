@@ -1,10 +1,11 @@
 """Repository-native reload, conditioned sampling, and solver-NFE audit."""
 
 import os
+
 import torch
 
 import diffuser.utils as utils
-from diffuser.models import ConditionalFlowMatching, AdaLNPINTDenoiser
+from diffuser.models import AdaLNPINTDenoiser, ConditionalFlowMatching
 from diffuser.sampling import GoalConditionedPolicy
 from diffuser.utils.arrays import set_global_device
 
@@ -34,10 +35,14 @@ def main():
     batch = utils.batchify(experiment.dataset[0])
     conditions = batch.conditions
     sample = experiment.ema(conditions, n_steps=4, verbose=False)
-    assert sample.trajectories.shape == (1, 5, 483)
+    expected_shape = (
+        1, experiment.ema.horizon,
+        experiment.ema.action_dim + experiment.ema.observation_dim,
+    )
+    assert sample.trajectories.shape == expected_shape
     assert torch.isfinite(sample.trajectories).all()
     for timestep, condition in conditions.items():
-        assert torch.equal(sample.trajectories[:, timestep, 3:], condition)
+        assert torch.equal(sample.trajectories[:, timestep, experiment.ema.action_dim:], condition)
 
     unnormalized_conditions = {
         timestep: experiment.dataset.normalizer.unnormalize(value.detach().cpu().numpy(), "observations")
@@ -46,15 +51,21 @@ def main():
     observed = {}
     for requested in (1, 2, 4, 8):
         calls = [0]
+
         def count_call(_module, _inputs, _output):
             calls[0] += 1
+
         handle = experiment.ema.model.register_forward_hook(count_call)
-        policy = GoalConditionedPolicy(
-            diffusion_model=experiment.ema, normalizer=experiment.dataset.normalizer,
-            preprocess_fns=[], horizon=5, n_steps=requested,
-        )
-        _action, trajectories = policy(unnormalized_conditions, batch_size=1, verbose=False)
-        handle.remove()
+        try:
+            policy = GoalConditionedPolicy(
+                diffusion_model=experiment.ema, normalizer=experiment.dataset.normalizer,
+                preprocess_fns=[], horizon=experiment.ema.horizon, n_steps=requested,
+            )
+            _action, trajectories = policy(
+                unnormalized_conditions, batch_size=1, verbose=False
+            )
+        finally:
+            handle.remove()
         assert calls[0] == requested
         assert torch.isfinite(torch.as_tensor(trajectories.actions)).all()
         observed[requested] = calls[0]
