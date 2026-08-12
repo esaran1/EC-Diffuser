@@ -1,5 +1,6 @@
 import warnings
 warnings.filterwarnings('ignore')
+import json
 import os
 from diffuser.eval_utils import setup_isaac_env, evaluate_policy, wandb_log_eval_stats
 from diffuser.utils.arrays import set_global_device
@@ -46,6 +47,9 @@ if __name__ == '__main__':
         preprocess_fns=args.preprocess_fns,
         verbose=False,
         horizon=args.horizon,
+        measure_planning_latency=getattr(args, 'measure_planning_latency', False),
+        planning_warmup_calls=getattr(args, 'planning_warmup_calls', 10),
+        count_denoiser_calls=getattr(args, 'count_denoiser_calls', False),
         **flow_sampling_kwargs(diffusion, args.n_diffusion_steps)
     )
 
@@ -89,4 +93,10 @@ if __name__ == '__main__':
         stat_save_path = os.path.join(args.savepath, 'eval_stats.pkl')
         num_eval_episodes = getattr(args, 'num_eval_episodes', 100)
         eval_stat_dict = evaluate_policy(policy, env, args, logger, num_eval_episodes=num_eval_episodes, exe_steps=args.exe_steps, stat_save_path=stat_save_path)
+        planning_stats = policy.planning_stats()
+        planning_stats_path = os.path.join(args.savepath, 'planning_stats.json')
+        with open(planning_stats_path, 'w') as file:
+            json.dump(planning_stats, file, indent=2, sort_keys=True)
+        print('Planning statistics: {}'.format(json.dumps(planning_stats, sort_keys=True)))
+        print('Saved planning statistics to {}'.format(planning_stats_path))
         wandb_log_eval_stats(env, eval_stat_dict, args)
