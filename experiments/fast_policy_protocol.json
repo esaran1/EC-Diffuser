@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status": "predeclared_before_full_multiseed_runs",
+  "task": {
+    "name": "PushCube-3-random-color-DLP",
+    "entities": 3,
+    "horizon": 5,
+    "success_definition": "all three objects within the repository task threshold at episode end",
+    "episode_metrics": ["success", "goal_success_fraction", "average_object_goal_distance", "maximum_object_goal_distance", "average_reward"]
+  },
+  "training": {
+    "seeds": [42, 43, 44],
+    "optional_final_seeds": [45, 46],
+    "checkpoint_selection": "final 500000-step EMA checkpoint; no test-episode checkpoint selection",
+    "algorithms": {
+      "gaussian_diffusion": {"nfe": [100], "checkpoint": "pretrained control is single-seed only; retrain three seeds for training-seed inference"},
+      "conditional_flow_matching": {"nfe": [1, 2, 4, 8, 16, 32], "checkpoint": "final EMA"},
+      "improved_meanflow": {"nfe": [1, 2, 4, 8], "checkpoint": "final EMA"},
+      "shortcut_model": {"nfe": [1, 2, 4, 8], "checkpoint": "final EMA"}
+    }
+  },
+  "evaluation": {
+    "seeds": [101, 202, 303, 404, 505],
+    "episodes_per_seed": 96,
+    "paired_seed_sets_across_algorithms": true,
+    "uncertainty_unit": "independent training seed",
+    "reporting": ["per-training-seed metrics", "mean", "sample standard deviation", "standard error", "training-seed bootstrap 95% confidence interval"],
+    "pilot_only": {"seeds": [42, 43, 44], "episodes_per_seed": 16, "interpretation": "evaluation-seed variability only"}
+  },
+  "hardware": "single NVIDIA GeForce RTX 4080",
+  "large_artifacts_committed": false
+}
