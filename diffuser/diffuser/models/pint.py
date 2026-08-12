@@ -22,6 +22,8 @@ Usage Example:
     out = model(x, cond=None, time=t)
 """
 
+import copy
+
 import torch
 from torch import nn
 from diffuser.models.transformer_modules import (
@@ -134,7 +136,12 @@ class AdaLNPINTDenoiser(nn.Module):
         # Learnable action encoding.
         self.action_encoding = nn.Parameter(0.02 * torch.randn(1, 1, projection_dim))
 
-    def forward(self, x, cond, time, return_attention=False):
+    def _time_embedding(self, time, interval=None):
+        if interval is not None:
+            raise ValueError("AdaLNPINTDenoiser does not support interval conditioning")
+        return self.time_mlp(time)
+
+    def forward(self, x, cond, time, return_attention=False, *, interval=None):
         """
         Forward pass for the denoiser.
 
@@ -180,7 +187,7 @@ class AdaLNPINTDenoiser(nn.Module):
         x_cat = torch.cat([action_particle.unsqueeze(2), new_state_particles], dim=2)
 
         # Time embedding: project time indices and add to all tokens.
-        t_embed = self.time_mlp(time)  # [bs, projection_dim]
+        t_embed = self._time_embedding(time, interval)  # [bs, projection_dim]
         x_proj = x_cat + t_embed[:, None, None, :]  # Broadcast addition.
 
         # Permute to match transformer input shape: [bs, n_tokens, T, projection_dim]
@@ -208,6 +215,26 @@ class AdaLNPINTDenoiser(nn.Module):
             return x_out, attention_dict
         else:
             return x_out
+
+
+class IntervalAdaLNPINTDenoiser(AdaLNPINTDenoiser):
+    """PINT denoiser with independent current-time and interval embeddings."""
+
+    def __init__(self, *args, interval_time_scale=1000.0, **kwargs):
+        super().__init__(*args, **kwargs)
+        if interval_time_scale <= 0:
+            raise ValueError("interval_time_scale must be positive")
+        self.interval_time_scale = float(interval_time_scale)
+        self.interval_mlp = copy.deepcopy(self.time_mlp)
+
+    def _time_embedding(self, time, interval=None):
+        if interval is None:
+            raise ValueError("interval conditioning is required")
+        if interval.shape != time.shape:
+            raise ValueError("interval and time must have identical shapes")
+        scaled_time = time / self.interval_time_scale
+        scaled_interval = interval / self.interval_time_scale
+        return self.time_mlp(scaled_time) + self.interval_mlp(scaled_interval)
 
 # ------------------------------------------------------------------------------
 # Test block
