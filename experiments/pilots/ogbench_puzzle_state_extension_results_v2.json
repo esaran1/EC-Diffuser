@@ -1,0 +1,248 @@
+{
+  "compute_gate": "No 500,000-step or multi-seed training is authorized. Each projected run exceeds 2 GPU-hours.",
+  "dataset": {
+    "action_dim": 5,
+    "horizon": 5,
+    "observation_dim": 83,
+    "task": "ogbench-puzzle-4x4-play-v0-state",
+    "train_windows": 997000,
+    "validation_windows": 99700
+  },
+  "git_commit_at_training": "d4deb831e33ae98c3d693d404c2f4abe15f936b3",
+  "hardware": {
+    "count": 1,
+    "cuda_runtime": "12.1",
+    "gpu": "NVIDIA GeForce RTX 4080",
+    "torch": "2.1.2+cu121"
+  },
+  "interpretation": {
+    "conditional_flow_matching": "stable; live fixed validation loss decreased monotonically",
+    "gaussian_diffusion": "stable; live fixed validation loss decreased monotonically",
+    "improved_meanflow": "EMA checkpoint is strong on fixed validation, but live weights oscillate and deteriorate; investigate EMA dependence before any long run",
+    "performance_claim": "none; native rollouts are bounded integration checks, not benchmark evaluations",
+    "shortcut_model": "stable; live fixed validation loss decreased monotonically"
+  },
+  "methods": {
+    "conditional_flow_matching": {
+      "checkpoint": "data/phase7_runs/ogbench_puzzle_state/conditional_flow_matching_seed42_5000/state_5000.pt",
+      "checkpoint_bytes": 506437584,
+      "checkpoint_sha256": "4793106289f628f0f9156ff5376b4df7a928c829747b978e115b32d8af61d158",
+      "examples_seen": 320000,
+      "final_ema_validation": {
+        "action_loss": 0.542120561003685,
+        "loss": 0.6456096023321152,
+        "observation_loss": 0.6560000628232956
+      },
+      "final_live_validation": {
+        "action_loss": 0.4046309292316437,
+        "flow_loss": 0.5774490684270859,
+        "loss": 0.5774490684270859,
+        "observation_loss": 0.5948002934455872,
+        "step": 5000,
+        "unweighted_flow_loss": 0.5774490684270859
+      },
+      "initial_live_validation": {
+        "action_loss": 0.9461297988891602,
+        "flow_loss": 1.0852024257183075,
+        "loss": 1.0852024257183075,
+        "observation_loss": 1.0991655588150024,
+        "step": 0,
+        "unweighted_flow_loss": 1.0852024257183075
+      },
+      "optimizer_steps": 5000,
+      "peak_vram_mib_torch": 1483.36572265625,
+      "projected_500k_gpu_hours": 4.167464818271886,
+      "runtime_seconds": 150.0287334577879,
+      "seconds_per_step": 0.03000574669155758,
+      "status": "PASS"
+    },
+    "gaussian_diffusion": {
+      "checkpoint": "data/phase7_runs/ogbench_puzzle_state/gaussian_diffusion_seed42_5000/state_5000.pt",
+      "checkpoint_bytes": 506453928,
+      "checkpoint_sha256": "6213455c7e616486a07b08729dc61aba7d56b7101a3aeef1b5c6fe7290535f1e",
+      "examples_seen": 320000,
+      "final_ema_validation": {
+        "a0_loss": 0.22710812836885452,
+        "loss": 0.7031589895486832
+      },
+      "final_live_validation": {
+        "a0_loss": 0.23883964866399765,
+        "loss": 0.6668189018964767,
+        "step": 5000
+      },
+      "initial_live_validation": {
+        "a0_loss": 0.8432939052581787,
+        "loss": 0.9388374537229538,
+        "step": 0
+      },
+      "optimizer_steps": 5000,
+      "peak_vram_mib_torch": 1483.37451171875,
+      "projected_500k_gpu_hours": 4.009484744165093,
+      "runtime_seconds": 144.34145078994334,
+      "seconds_per_step": 0.02886829015798867,
+      "status": "PASS"
+    },
+    "improved_meanflow": {
+      "checkpoint": "data/phase7_runs/ogbench_puzzle_state/improved_meanflow_seed42_5000/state_5000.pt",
+      "checkpoint_bytes": 506437584,
+      "checkpoint_sha256": "f9882ed0f3f313d439bda06189065da02168ec2fb40e54c90efa302e511814d5",
+      "examples_seen": 320000,
+      "final_ema_validation": {
+        "loss": 0.9999624490737915,
+        "unweighted_meanflow_loss": 4.471044182777405
+      },
+      "final_live_validation": {
+        "boundary_fraction": 0.53125,
+        "loss": 0.9999584406614304,
+        "meanflow_loss": 0.9999584406614304,
+        "step": 5000,
+        "unweighted_meanflow_loss": 37.03446674346924
+      },
+      "initial_live_validation": {
+        "boundary_fraction": 0.53125,
+        "loss": 0.9999878853559494,
+        "meanflow_loss": 0.9999878853559494,
+        "step": 0,
+        "unweighted_meanflow_loss": 16.493711471557617
+      },
+      "optimizer_steps": 5000,
+      "peak_vram_mib_torch": 1483.3642578125,
+      "projected_500k_gpu_hours": 11.725566723160833,
+      "runtime_seconds": 422.12040203379,
+      "seconds_per_step": 0.084424080406758,
+      "status": "PASS_WITH_LIVE_WEIGHT_INSTABILITY"
+    },
+    "shortcut_model": {
+      "checkpoint": "data/phase7_runs/ogbench_puzzle_state/shortcut_model_seed42_5000/state_5000.pt",
+      "checkpoint_bytes": 506437584,
+      "checkpoint_sha256": "41089223776ac092d50426163621def60577a14809d004be4317702de5d1e439",
+      "examples_seen": 320000,
+      "final_ema_validation": {
+        "loss": 0.5987171679735184
+      },
+      "final_live_validation": {
+        "flow_fraction": 0.8125,
+        "loss": 0.5266652181744576,
+        "shortcut_loss": 0.5266652181744576,
+        "step": 5000,
+        "unweighted_shortcut_loss": 0.5266652181744576
+      },
+      "initial_live_validation": {
+        "flow_fraction": 0.8125,
+        "loss": 0.8912826776504517,
+        "shortcut_loss": 0.8912826776504517,
+        "step": 0,
+        "unweighted_shortcut_loss": 0.8912826776504517
+      },
+      "optimizer_steps": 5000,
+      "peak_vram_mib_torch": 1480.8642578125,
+      "projected_500k_gpu_hours": 5.932966575301382,
+      "runtime_seconds": 213.58679671084974,
+      "seconds_per_step": 0.04271735934216995,
+      "status": "PASS"
+    }
+  },
+  "native_integration_checks": [
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 3.2452730229124427,
+      "method": "conditional_flow_matching",
+      "observed_calls_per_plan": 1,
+      "path": "data/phase7_evaluations/ogbench_flow_seed42_5000_task4_1step_nfe1.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 1,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 6.003415095619857,
+      "method": "conditional_flow_matching",
+      "observed_calls_per_plan": 2,
+      "path": "data/phase7_evaluations/ogbench_flow_seed42_5000_task4_1step_nfe2.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 2,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 0.6,
+      "actions_executed": 5,
+      "latency_n": 5,
+      "mean_latency_ms": 11.373338592238724,
+      "method": "conditional_flow_matching",
+      "observed_calls_per_plan": 4,
+      "path": "data/phase7_evaluations/ogbench_flow_seed42_5000_task4_5step.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 4,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 22.57680695038289,
+      "method": "conditional_flow_matching",
+      "observed_calls_per_plan": 8,
+      "path": "data/phase7_evaluations/ogbench_flow_seed42_5000_task4_1step_nfe8.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 8,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 3.253891016356647,
+      "method": "improved_meanflow",
+      "observed_calls_per_plan": 1,
+      "path": "data/phase7_evaluations/ogbench_improved_meanflow_seed42_5000_task4_1step_nfe1.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 1,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 11.48074900265783,
+      "method": "improved_meanflow",
+      "observed_calls_per_plan": 4,
+      "path": "data/phase7_evaluations/ogbench_improved_meanflow_seed42_5000_task4_1step_nfe4.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 4,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 11.746827978640795,
+      "method": "shortcut_model",
+      "observed_calls_per_plan": 4,
+      "path": "data/phase7_evaluations/ogbench_shortcut_seed42_5000_task4_1step.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 4,
+      "status": "PASS"
+    },
+    {
+      "action_clip_step_fraction": 1.0,
+      "actions_executed": 1,
+      "latency_n": 1,
+      "mean_latency_ms": 276.68868808541447,
+      "method": "gaussian_diffusion",
+      "observed_calls_per_plan": 100,
+      "path": "data/phase7_evaluations/ogbench_gaussian_seed42_5000_task4_1step.json",
+      "protocol_label": "BOUNDED_INTEGRATION_ONLY",
+      "requested_nfe": 100,
+      "status": "PASS"
+    }
+  ],
+  "normalizer_sha256": "2f5ec416b1f407928f1e55b615a7b5a1229580247b4812b18cff0ff1b33a265e",
+  "protocol": "experiments/pilots/ogbench_puzzle_state_extension_v1.json",
+  "protocol_sha256": "5d2a7b3fb79149d7f0af91f4940d0228bb307ad7790fd1586f59e447a9271821",
+  "schema_version": "ogbench-puzzle-bounded-pilot-results-v2",
+  "status": "BOUNDED_PILOTS_COMPLETE_LONG_RUNS_NOT_AUTHORIZED"
+}

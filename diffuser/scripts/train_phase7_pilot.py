@@ -83,7 +83,8 @@ def fixed_validation(model, batches, seed, device):
     try:
         for index, cpu_batch in enumerate(batches):
             batch = batch_to_device(cpu_batch)
-            with torch.random.fork_rng(devices=[device.index]):
+            fork_devices = [device.index] if device.type == "cuda" else []
+            with torch.random.fork_rng(devices=fork_devices):
                 torch.manual_seed(seed + index)
                 with torch.enable_grad():
                     loss, info = model.loss(*batch)
@@ -227,6 +228,15 @@ def main():
             trainer.model, validation_batches, training["seed"] + 100000, device
         ),
     }]
+    ema_validation_history = [{
+        "step": 0,
+        **fixed_validation(
+            trainer.ema_model,
+            validation_batches,
+            training["seed"] + 100000,
+            device,
+        ),
+    }]
     torch.cuda.reset_peak_memory_stats(device)
     runtime_seconds = 0.0
     trained = 0
@@ -253,6 +263,15 @@ def main():
                     device,
                 ),
             })
+            ema_validation_history.append({
+                "step": trainer.step,
+                **fixed_validation(
+                    trainer.ema_model,
+                    validation_batches,
+                    training["seed"] + 100000,
+                    device,
+                ),
+            })
     peak_vram_bytes = torch.cuda.max_memory_allocated(device)
 
     checkpoint_path = args.output_dir / "state_{}.pt".format(trainer.step)
@@ -263,7 +282,7 @@ def main():
         raise FloatingPointError("logged losses are missing or non-finite")
 
     summary = {
-        "schema_version": "phase7-training-pilot-result-v2",
+        "schema_version": "phase7-training-pilot-result-v3",
         "status": "PASS",
         "method": args.method,
         "wrapper": type(method).__name__,
@@ -282,6 +301,8 @@ def main():
         "fixed_validation_frequency": args.validation_frequency,
         "fixed_validation_seed": training["seed"] + 100000,
         "fixed_validation_history": validation_history,
+        "fixed_validation_history_weights": "live",
+        "fixed_validation_history_ema": ema_validation_history,
         "optimizer_steps": trainer.step,
         "microbatch_size": training["microbatch_size"],
         "gradient_accumulation": training["gradient_accumulation"],
