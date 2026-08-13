@@ -44,3 +44,25 @@ python diffuser/scripts/audit_pushcube_dataset.py \
 Bounded task-level state subsets were downloaded under the Git-ignored `data/`
 tree and audited. MimicGen RGB is contained in its selected HDF5; DexJoCo camera
 videos were deliberately not downloaded. No source array was duplicated.
+
+## Frozen state adapters and normalization
+
+The approved bounded-pilot adapters are implemented in
+`diffuser/diffuser/datasets/benchmark_sequence.py`. They use the native
+EC-Diffuser `Batch` contract and never write source data.
+
+- OGBench: horizon-5 future-goal windows; 83-D state and 5-D action.
+- MimicGen: official low-dimensional keys
+  (`robot0_eef_pos`, `robot0_eef_quat`, `robot0_gripper_qpos`, `object`);
+  horizon 10; 51-D state and 7-D action.
+- DexJoCo: official 23-D non-privileged state and 22-D action; horizon 30.
+
+Normalization is Gaussian for observations and safe train-range scaling for
+actions. Statistics are fitted only on training episodes and frozen in
+`benchmark_normalizers_v1.json`. Reproduce them with:
+
+```bash
+PYTHONPATH=diffuser python diffuser/scripts/freeze_benchmark_normalizers.py
+```
+
+Evaluation adapters must load the frozen state rather than refitting statistics.

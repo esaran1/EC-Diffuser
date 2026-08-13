@@ -18,6 +18,14 @@ TASKS = {
         "tier": "A",
         "training_seeds": [42, 43, 44],
         "dataset": "EC-Diffuser PushCube-3 random-color DLP",
+        "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
+        "evaluation_protocol": {
+            "episodes": 96,
+            "task_count": 1,
+            "episodes_per_task": 96,
+            "episode_horizon": 100,
+            "source": "matched EC-Diffuser Gaussian control protocol",
+        },
         "training_hours": {
             "gaussian_diffusion": [35.0, 45.0],
             "conditional_flow_matching": [39.04, 39.04],
@@ -30,6 +38,14 @@ TASKS = {
         "tier": "A",
         "training_seeds": [42, 43, 44],
         "dataset": "OGBench puzzle-4x4-play-v0 state",
+        "policy_representation": "flat state/action sequence; task-general backbone required",
+        "evaluation_protocol": {
+            "episodes": 250,
+            "task_count": 5,
+            "episodes_per_task": 50,
+            "episode_horizon": 1000,
+            "source": "official OGBench hyperparameters and task-wise evaluation loop",
+        },
         "training_hours": {method: [30.0, 90.0] for method in METHODS},
         "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
     },
@@ -37,6 +53,14 @@ TASKS = {
         "tier": "B",
         "training_seeds": [42],
         "dataset": "MimicGen large_interpolation/three_piece_assembly_d1",
+        "policy_representation": "low-dimensional state/action sequence for the bounded pilot; visual policy is a separate ablation",
+        "evaluation_protocol": {
+            "episodes": 50,
+            "task_count": 1,
+            "episodes_per_task": 50,
+            "episode_horizon": 700,
+            "source": "official MimicGen large-interpolation task horizon; 50-rollout robomimic convention",
+        },
         "training_hours": {method: [30.0, 90.0] for method in METHODS},
         "estimate_basis": "Single-seed screening only; a 1000-step task-native benchmark is mandatory.",
     },
@@ -44,6 +68,16 @@ TASKS = {
         "tier": "B",
         "training_seeds": [42],
         "dataset": "DexJoCo hammer_nail rand_full LeRobot",
+        "policy_representation": "23-D non-privileged state and 22-D action sequence; task-general backbone required",
+        "evaluation_protocol": {
+            "episodes": 50,
+            "task_count": 1,
+            "episodes_per_task": 50,
+            "episode_horizon": 1000,
+            "action_chunk_horizon": 30,
+            "replan_ratio": 0.8,
+            "source": "official DexJoCo OpenPI evaluator and hammer-nail environment",
+        },
         "training_hours": {method: [30.0, 90.0] for method in METHODS},
         "estimate_basis": "Single-seed screening only; a 1000-step task-native benchmark is mandatory.",
     },
@@ -63,6 +97,7 @@ def build():
                         "tier": task_spec["tier"],
                         "task": task,
                         "dataset": task_spec["dataset"],
+                        "policy_representation": task_spec["policy_representation"],
                         "method": method,
                         "training_seed": training_seed,
                         "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
@@ -82,7 +117,7 @@ def build():
                                 "checkpoint": "final_ema",
                                 "nfe": nfe,
                                 "evaluation_seed": evaluation_seed,
-                                "episodes": 96,
+                                "episodes": task_spec["evaluation_protocol"]["episodes"],
                             }
                         )
 
@@ -90,19 +125,21 @@ def build():
     training_high = sum(row["estimated_training_hours_range"][1] for row in training_runs)
     checkpoint_bytes = 502228922
     return {
-        "schema_version": "phase7-experiment-matrix-v1",
-        "status": "PROPOSED_NOT_FROZEN_NOT_APPROVED",
+        "schema_version": "phase7-experiment-matrix-v2",
+        "status": "APPROVED_FOR_BOUNDED_PILOTS_NOT_FROZEN_FOR_FULL_RUNS",
         "compute_gate": {
             "one_gpu": "NVIDIA GeForce RTX 4080 16 GB",
             "parallel_gpu_jobs": 1,
             "full_runs_started": 0,
-            "required_next_step": "Approve selected datasets, then run only dataset adapters and <=1000-step task-native timing pilots. Re-estimate before any run over two GPU-hours.",
+            "required_next_step": "Implement and validate dataset/evaluation adapters, then run sequential <=1000-step task-native timing pilots. Re-estimate before any run over two GPU-hours.",
         },
         "protocol": {
             "methods": list(METHODS),
             "nfe": METHODS,
             "evaluation_seeds": EVALUATION_SEEDS,
-            "episodes_per_evaluation_seed": 96,
+            "task_native_evaluation_protocols": {
+                task: spec["evaluation_protocol"] for task, spec in TASKS.items()
+            },
             "paired_evaluation_seeds": True,
             "shared": [
                 "task dataset and episode split",
@@ -143,7 +180,6 @@ def build():
             "evaluation_gpu_hours": "Unknown cross-benchmark; measure one 16-episode run per task/method. PushCube reference is about 20.2 ms/NFE for the current backbone and 1.989 s/plan at 100-NFE Gaussian.",
         },
         "execution_order": [
-            "Approve the proposed task suite; download only task-level subsets.",
             "Validate and transform each dataset; freeze hashes, splits, normalization, and goals.",
             "Run <=1000-step timing/stability pilots sequentially for each new task and method.",
             "Report measured GPU-hours and storage; obtain approval before full single-seed runs.",

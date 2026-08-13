@@ -1,6 +1,6 @@
 {
   "schema_version": "phase6-dataset-inventory-v1",
-  "status": "proposed_suite_awaiting_download_and_compute_approval",
+  "status": "approved_for_bounded_pilots_full_runs_compute_gated",
   "generated_date": "2026-08-13",
   "shared_data_policy": "All compared generative methods use identical episode splits, window extraction, normalization, and goal relabeling for a task.",
   "tasks": [
@@ -175,7 +175,7 @@
   ],
   "datasets_collected": [],
   "data_collection_pilots": [],
-  "compute_gate": "STOP before simulator/data-collection/model-training pilots until the proposed suite is approved.",
+  "compute_gate": "Dataset adapters and <=1000-step pilots approved; no run over two GPU-hours without measured pilot estimate and explicit report.",
   "audit_environment": {
     "python": "3.8.20",
     "numpy": "1.21.0",

@@ -1,8 +1,8 @@
 # Phase 6 dataset decision
 
 Status: bounded task-level data and integrity audit complete. No RL training or
-demonstration collection was started. The proposed suite still awaits approval
-before any simulator or model-training pilot.
+demonstration collection was started. The suite is approved for bounded pilots;
+full runs remain behind the measured-compute gate.
 
 ## Classification
 
@@ -65,3 +65,18 @@ because official demonstrations exist.
 Phase 7 is not approved or frozen. Its proposed full matrix is intentionally
 costed in `experiments/phase7_experiment_matrix.json` and must not be launched as
 written on one GPU without pilot screening.
+
+## Adapter pilots
+
+- OGBench: 997,000 horizon-5 windows; 83-D observations, 5-D actions;
+  normalizer SHA256 `2f5ec416b1f407928f1e55b615a7b5a1229580247b4812b18cff0ff1b33a265e`.
+- MimicGen: 447,389 horizon-10 windows; 51-D official low-dimensional
+  observations, 7-D actions; normalizer SHA256
+  `c9c3f08a23f17ce31f33c4babfe72690ff3adaaf6bb3b5932b58ed29c415f3e4`.
+- DexJoCo: 22,147 horizon-30 windows; 23-D non-privileged observations,
+  22-D actions; normalizer SHA256
+  `dc2c868abef76e88897f63fbe34129ef760a0c7ac600a2836bcf32aeb0bd09d7`.
+
+All adapters passed deterministic split, leakage, conditioning, finite-value,
+and repository-batch-contract tests. The modern state benchmarks use a shared
+flat sequence backbone; PINT remains specific to entity-structured PushCube.

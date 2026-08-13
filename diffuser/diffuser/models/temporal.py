@@ -1,3 +1,5 @@
+import copy
+
 import torch
 import torch.nn as nn
 import einops
@@ -109,7 +111,12 @@ class TemporalUnet(nn.Module):
             nn.Conv1d(dim, transition_dim, 1),
         )
 
-    def forward(self, x, cond, time):
+    def _time_embedding(self, time, interval=None):
+        if interval is not None:
+            raise ValueError("TemporalUnet does not support interval conditioning")
+        return self.time_mlp(time)
+
+    def forward(self, x, cond, time, *, interval=None):
         '''
             x : [ batch x horizon x transition ]
         '''
@@ -119,7 +126,7 @@ class TemporalUnet(nn.Module):
         padded_dim = 2 ** math.ceil(math.log(x_dim, 2))
         x = nn.functional.pad(x, (0, padded_dim - x_dim))
 
-        t = self.time_mlp(time)
+        t = self._time_embedding(time, interval)
         h = []
         for resnet, resnet2, attn, downsample in self.downs:
             x = resnet(x, t)
@@ -143,6 +150,23 @@ class TemporalUnet(nn.Module):
 
         x = einops.rearrange(x, 'b t h -> b h t')
         return x
+
+
+class IntervalTemporalUnet(TemporalUnet):
+    '''Temporal U-Net with an independent interval / step-size embedding.'''
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.interval_mlp = copy.deepcopy(self.time_mlp)
+
+    def _time_embedding(self, time, interval=None):
+        if interval is None:
+            interval = torch.zeros_like(time)
+        if interval.shape != time.shape:
+            raise ValueError("interval and time must have identical shapes")
+        if interval.device != time.device or interval.dtype != time.dtype:
+            raise ValueError("interval and time must share device and dtype")
+        return self.time_mlp(time) + self.interval_mlp(interval)
 
 
 class ValueFunction(nn.Module):

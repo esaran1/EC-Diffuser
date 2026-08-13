@@ -3,7 +3,7 @@
     "full_runs_started": 0,
     "one_gpu": "NVIDIA GeForce RTX 4080 16 GB",
     "parallel_gpu_jobs": 1,
-    "required_next_step": "Approve selected datasets, then run only dataset adapters and <=1000-step task-native timing pilots. Re-estimate before any run over two GPU-hours."
+    "required_next_step": "Implement and validate dataset/evaluation adapters, then run sequential <=1000-step task-native timing pilots. Re-estimate before any run over two GPU-hours."
   },
   "cost": {
     "checkpoint_bytes_each_observed_upper": 502228922,
@@ -22,7 +22,7 @@
   "counts": {
     "tier_a_training_runs": 24,
     "tier_b_training_runs": 8,
-    "total_evaluation_episodes": 53760,
+    "total_evaluation_episodes": 79660,
     "total_evaluations": 560,
     "total_training_runs": 32
   },
@@ -2339,7 +2339,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2350,7 +2350,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2361,7 +2361,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2372,7 +2372,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2383,7 +2383,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2394,7 +2394,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2405,7 +2405,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2416,7 +2416,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2427,7 +2427,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2438,7 +2438,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2449,7 +2449,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2460,7 +2460,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2471,7 +2471,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2482,7 +2482,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2493,7 +2493,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -2504,7 +2504,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2515,7 +2515,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2526,7 +2526,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2537,7 +2537,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2548,7 +2548,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2559,7 +2559,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2570,7 +2570,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2581,7 +2581,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2592,7 +2592,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2603,7 +2603,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2614,7 +2614,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2625,7 +2625,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2636,7 +2636,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2647,7 +2647,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2658,7 +2658,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2669,7 +2669,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2680,7 +2680,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2691,7 +2691,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2702,7 +2702,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2713,7 +2713,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2724,7 +2724,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -2735,7 +2735,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -2746,7 +2746,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -2757,7 +2757,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -2768,7 +2768,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -2779,7 +2779,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2790,7 +2790,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2801,7 +2801,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2812,7 +2812,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2823,7 +2823,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -2834,7 +2834,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2845,7 +2845,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2856,7 +2856,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2867,7 +2867,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2878,7 +2878,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -2889,7 +2889,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2900,7 +2900,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2911,7 +2911,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2922,7 +2922,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2933,7 +2933,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -2944,7 +2944,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2955,7 +2955,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2966,7 +2966,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2977,7 +2977,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2988,7 +2988,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -2999,7 +2999,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3010,7 +3010,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3021,7 +3021,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3032,7 +3032,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3043,7 +3043,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3054,7 +3054,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -3065,7 +3065,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -3076,7 +3076,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -3087,7 +3087,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -3098,7 +3098,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -3109,7 +3109,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -3120,7 +3120,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -3131,7 +3131,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -3142,7 +3142,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -3153,7 +3153,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -3164,7 +3164,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -3175,7 +3175,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -3186,7 +3186,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -3197,7 +3197,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -3208,7 +3208,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -3219,7 +3219,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -3230,7 +3230,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -3241,7 +3241,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -3252,7 +3252,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -3263,7 +3263,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -3274,19 +3274,8 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
-      "method": "conditional_flow_matching",
-      "nfe": 16,
-      "task": "ogbench_puzzle_4x4_play_state",
-      "tier": "A",
-      "training_run_id": "ogbench_puzzle_4x4_play_state__conditional_flow_matching__train44",
-      "training_seed": 44
-    },
-    {
-      "checkpoint": "final_ema",
-      "episodes": 96,
-      "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 16,
       "task": "ogbench_puzzle_4x4_play_state",
@@ -3296,7 +3285,18 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
+      "evaluation_seed": 202,
+      "method": "conditional_flow_matching",
+      "nfe": 16,
+      "task": "ogbench_puzzle_4x4_play_state",
+      "tier": "A",
+      "training_run_id": "ogbench_puzzle_4x4_play_state__conditional_flow_matching__train44",
+      "training_seed": 44
+    },
+    {
+      "checkpoint": "final_ema",
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3307,7 +3307,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3318,7 +3318,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -3329,7 +3329,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3340,7 +3340,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3351,7 +3351,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3362,7 +3362,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3373,7 +3373,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3384,7 +3384,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3395,7 +3395,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3406,7 +3406,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3417,7 +3417,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3428,7 +3428,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3439,7 +3439,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3450,7 +3450,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3461,7 +3461,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3472,7 +3472,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3483,7 +3483,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3494,7 +3494,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3505,7 +3505,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3516,7 +3516,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3527,7 +3527,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3538,7 +3538,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3549,7 +3549,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3560,7 +3560,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3571,7 +3571,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3582,7 +3582,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3593,7 +3593,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3604,7 +3604,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3615,7 +3615,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3626,7 +3626,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3637,7 +3637,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3648,7 +3648,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3659,7 +3659,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3670,7 +3670,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3681,7 +3681,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3692,7 +3692,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3703,7 +3703,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3714,7 +3714,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3725,7 +3725,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3736,7 +3736,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3747,7 +3747,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3758,7 +3758,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3769,7 +3769,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3780,7 +3780,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3791,7 +3791,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3802,7 +3802,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3813,7 +3813,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -3824,7 +3824,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3835,7 +3835,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3846,7 +3846,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3857,7 +3857,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3868,7 +3868,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -3879,7 +3879,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3890,7 +3890,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3901,7 +3901,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3912,7 +3912,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3923,7 +3923,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -3934,7 +3934,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3945,7 +3945,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3956,7 +3956,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3967,7 +3967,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3978,7 +3978,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -3989,7 +3989,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4000,7 +4000,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4011,7 +4011,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4022,7 +4022,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4033,7 +4033,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4044,7 +4044,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4055,7 +4055,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4066,7 +4066,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4077,7 +4077,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4088,7 +4088,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4099,7 +4099,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4110,7 +4110,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4121,7 +4121,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4132,7 +4132,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4143,7 +4143,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4154,7 +4154,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4165,7 +4165,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4176,7 +4176,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4187,7 +4187,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4198,7 +4198,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4209,7 +4209,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4220,7 +4220,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4231,7 +4231,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4242,7 +4242,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4253,7 +4253,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4264,7 +4264,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4275,7 +4275,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4286,7 +4286,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4297,7 +4297,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4308,7 +4308,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4319,7 +4319,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4330,7 +4330,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4341,7 +4341,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4352,7 +4352,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4363,7 +4363,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4374,7 +4374,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4385,7 +4385,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4396,7 +4396,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4407,7 +4407,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4418,7 +4418,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4429,7 +4429,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4440,7 +4440,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4451,7 +4451,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4462,7 +4462,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4473,7 +4473,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 1,
@@ -4484,7 +4484,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4495,7 +4495,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4506,7 +4506,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4517,7 +4517,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4528,7 +4528,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 2,
@@ -4539,7 +4539,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4550,7 +4550,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4561,7 +4561,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4572,7 +4572,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4583,7 +4583,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 4,
@@ -4594,7 +4594,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4605,7 +4605,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4616,7 +4616,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4627,7 +4627,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4638,7 +4638,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 250,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 8,
@@ -4649,7 +4649,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -4660,7 +4660,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -4671,7 +4671,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -4682,7 +4682,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -4693,7 +4693,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -4704,7 +4704,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -4715,7 +4715,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -4726,7 +4726,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -4737,7 +4737,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -4748,7 +4748,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -4759,7 +4759,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -4770,7 +4770,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -4781,7 +4781,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -4792,7 +4792,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -4803,7 +4803,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -4814,7 +4814,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -4825,7 +4825,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -4836,7 +4836,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -4847,7 +4847,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -4858,7 +4858,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -4869,7 +4869,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -4880,7 +4880,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -4891,7 +4891,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -4902,7 +4902,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -4913,7 +4913,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -4924,7 +4924,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -4935,7 +4935,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -4946,7 +4946,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -4957,7 +4957,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -4968,7 +4968,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -4979,7 +4979,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -4990,7 +4990,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5001,7 +5001,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5012,7 +5012,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5023,7 +5023,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5034,7 +5034,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5045,7 +5045,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5056,7 +5056,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5067,7 +5067,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5078,7 +5078,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5089,7 +5089,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5100,7 +5100,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5111,7 +5111,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5122,7 +5122,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5133,7 +5133,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5144,7 +5144,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5155,7 +5155,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5166,7 +5166,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5177,7 +5177,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5188,7 +5188,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5199,7 +5199,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5210,7 +5210,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5221,7 +5221,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5232,7 +5232,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5243,7 +5243,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5254,7 +5254,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 2,
@@ -5265,7 +5265,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 2,
@@ -5276,7 +5276,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 2,
@@ -5287,7 +5287,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 2,
@@ -5298,7 +5298,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 2,
@@ -5309,7 +5309,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 4,
@@ -5320,7 +5320,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 4,
@@ -5331,7 +5331,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 4,
@@ -5342,7 +5342,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 4,
@@ -5353,7 +5353,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 4,
@@ -5364,7 +5364,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 8,
@@ -5375,7 +5375,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 8,
@@ -5386,7 +5386,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 8,
@@ -5397,7 +5397,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 8,
@@ -5408,7 +5408,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 8,
@@ -5419,7 +5419,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -5430,7 +5430,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -5441,7 +5441,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -5452,7 +5452,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -5463,7 +5463,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "gaussian_diffusion",
       "nfe": 100,
@@ -5474,7 +5474,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -5485,7 +5485,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -5496,7 +5496,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -5507,7 +5507,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -5518,7 +5518,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 1,
@@ -5529,7 +5529,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -5540,7 +5540,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -5551,7 +5551,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -5562,7 +5562,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -5573,7 +5573,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 2,
@@ -5584,7 +5584,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -5595,7 +5595,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -5606,7 +5606,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -5617,7 +5617,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -5628,7 +5628,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 4,
@@ -5639,7 +5639,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -5650,7 +5650,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -5661,7 +5661,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -5672,7 +5672,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -5683,7 +5683,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 8,
@@ -5694,7 +5694,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -5705,7 +5705,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -5716,7 +5716,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -5727,7 +5727,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -5738,7 +5738,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "conditional_flow_matching",
       "nfe": 16,
@@ -5749,7 +5749,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5760,7 +5760,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5771,7 +5771,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5782,7 +5782,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5793,7 +5793,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 1,
@@ -5804,7 +5804,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5815,7 +5815,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5826,7 +5826,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5837,7 +5837,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5848,7 +5848,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 2,
@@ -5859,7 +5859,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5870,7 +5870,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5881,7 +5881,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5892,7 +5892,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5903,7 +5903,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 4,
@@ -5914,7 +5914,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5925,7 +5925,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5936,7 +5936,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5947,7 +5947,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5958,7 +5958,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "improved_meanflow",
       "nfe": 8,
@@ -5969,7 +5969,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5980,7 +5980,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 1,
@@ -5991,7 +5991,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 1,
@@ -6002,7 +6002,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 1,
@@ -6013,7 +6013,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 1,
@@ -6024,7 +6024,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 2,
@@ -6035,7 +6035,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 2,
@@ -6046,7 +6046,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 2,
@@ -6057,7 +6057,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 2,
@@ -6068,7 +6068,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 2,
@@ -6079,7 +6079,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 4,
@@ -6090,7 +6090,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 4,
@@ -6101,7 +6101,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 4,
@@ -6112,7 +6112,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 4,
@@ -6123,7 +6123,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 4,
@@ -6134,7 +6134,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 101,
       "method": "shortcut_model",
       "nfe": 8,
@@ -6145,7 +6145,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 202,
       "method": "shortcut_model",
       "nfe": 8,
@@ -6156,7 +6156,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 303,
       "method": "shortcut_model",
       "nfe": 8,
@@ -6167,7 +6167,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 404,
       "method": "shortcut_model",
       "nfe": 8,
@@ -6178,7 +6178,7 @@
     },
     {
       "checkpoint": "final_ema",
-      "episodes": 96,
+      "episodes": 50,
       "evaluation_seed": 505,
       "method": "shortcut_model",
       "nfe": 8,
@@ -6189,7 +6189,6 @@
     }
   ],
   "execution_order": [
-    "Approve the proposed task suite; download only task-level subsets.",
     "Validate and transform each dataset; freeze hashes, splits, normalization, and goals.",
     "Run <=1000-step timing/stability pilots sequentially for each new task and method.",
     "Report measured GPU-hours and storage; obtain approval before full single-seed runs.",
@@ -6199,7 +6198,6 @@
     "Run Tier B single-seed experiments only after Tier A evidence is secure."
   ],
   "protocol": {
-    "episodes_per_evaluation_seed": 96,
     "evaluation_seeds": [
       101,
       202,
@@ -6259,10 +6257,42 @@
       "optimizer family, batch size, and evaluation environments",
       "planner-only CUDA timing instrumentation"
     ],
-    "statistics": "Independent training seeds are the inferential unit. Use mean, sample SD, SE, and 95% CI; use paired evaluation-seed differences where justified."
+    "statistics": "Independent training seeds are the inferential unit. Use mean, sample SD, SE, and 95% CI; use paired evaluation-seed differences where justified.",
+    "task_native_evaluation_protocols": {
+      "dexjoco_hammer_nail_rand_full": {
+        "action_chunk_horizon": 30,
+        "episode_horizon": 1000,
+        "episodes": 50,
+        "episodes_per_task": 50,
+        "replan_ratio": 0.8,
+        "source": "official DexJoCo OpenPI evaluator and hammer-nail environment",
+        "task_count": 1
+      },
+      "mimicgen_three_piece_assembly_d1_large_interpolation": {
+        "episode_horizon": 700,
+        "episodes": 50,
+        "episodes_per_task": 50,
+        "source": "official MimicGen large-interpolation task horizon; 50-rollout robomimic convention",
+        "task_count": 1
+      },
+      "ogbench_puzzle_4x4_play_state": {
+        "episode_horizon": 1000,
+        "episodes": 250,
+        "episodes_per_task": 50,
+        "source": "official OGBench hyperparameters and task-wise evaluation loop",
+        "task_count": 5
+      },
+      "pushcube_3c_randcolor_legacy": {
+        "episode_horizon": 100,
+        "episodes": 96,
+        "episodes_per_task": 96,
+        "source": "matched EC-Diffuser Gaussian control protocol",
+        "task_count": 1
+      }
+    }
   },
-  "schema_version": "phase7-experiment-matrix-v1",
-  "status": "PROPOSED_NOT_FROZEN_NOT_APPROVED",
+  "schema_version": "phase7-experiment-matrix-v2",
+  "status": "APPROVED_FOR_BOUNDED_PILOTS_NOT_FROZEN_FOR_FULL_RUNS",
   "training_runs": [
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
@@ -6273,6 +6303,7 @@
         45.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__gaussian_diffusion__train42",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6287,6 +6318,7 @@
         45.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__gaussian_diffusion__train43",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6301,6 +6333,7 @@
         45.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__gaussian_diffusion__train44",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6315,6 +6348,7 @@
         39.04
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__conditional_flow_matching__train42",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6329,6 +6363,7 @@
         39.04
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__conditional_flow_matching__train43",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6343,6 +6378,7 @@
         39.04
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__conditional_flow_matching__train44",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6357,6 +6393,7 @@
         82.86
       ],
       "method": "improved_meanflow",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__improved_meanflow__train42",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6371,6 +6408,7 @@
         82.86
       ],
       "method": "improved_meanflow",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__improved_meanflow__train43",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6385,6 +6423,7 @@
         82.86
       ],
       "method": "improved_meanflow",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__improved_meanflow__train44",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6399,6 +6438,7 @@
         39.12
       ],
       "method": "shortcut_model",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__shortcut_model__train42",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6413,6 +6453,7 @@
         39.12
       ],
       "method": "shortcut_model",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__shortcut_model__train43",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6427,6 +6468,7 @@
         39.12
       ],
       "method": "shortcut_model",
+      "policy_representation": "entity-structured DLP trajectory; AdaLNPINTDenoiser",
       "run_id": "pushcube_3c_randcolor_legacy__shortcut_model__train44",
       "task": "pushcube_3c_randcolor_legacy",
       "tier": "A",
@@ -6441,6 +6483,7 @@
         90.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__gaussian_diffusion__train42",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6455,6 +6498,7 @@
         90.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__gaussian_diffusion__train43",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6469,6 +6513,7 @@
         90.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__gaussian_diffusion__train44",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6483,6 +6528,7 @@
         90.0
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__conditional_flow_matching__train42",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6497,6 +6543,7 @@
         90.0
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__conditional_flow_matching__train43",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6511,6 +6558,7 @@
         90.0
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__conditional_flow_matching__train44",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6525,6 +6573,7 @@
         90.0
       ],
       "method": "improved_meanflow",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__improved_meanflow__train42",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6539,6 +6588,7 @@
         90.0
       ],
       "method": "improved_meanflow",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__improved_meanflow__train43",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6553,6 +6603,7 @@
         90.0
       ],
       "method": "improved_meanflow",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__improved_meanflow__train44",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6567,6 +6618,7 @@
         90.0
       ],
       "method": "shortcut_model",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__shortcut_model__train42",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6581,6 +6633,7 @@
         90.0
       ],
       "method": "shortcut_model",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__shortcut_model__train43",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6595,6 +6648,7 @@
         90.0
       ],
       "method": "shortcut_model",
+      "policy_representation": "flat state/action sequence; task-general backbone required",
       "run_id": "ogbench_puzzle_4x4_play_state__shortcut_model__train44",
       "task": "ogbench_puzzle_4x4_play_state",
       "tier": "A",
@@ -6609,6 +6663,7 @@
         90.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "low-dimensional state/action sequence for the bounded pilot; visual policy is a separate ablation",
       "run_id": "mimicgen_three_piece_assembly_d1_large_interpolation__gaussian_diffusion__train42",
       "task": "mimicgen_three_piece_assembly_d1_large_interpolation",
       "tier": "B",
@@ -6623,6 +6678,7 @@
         90.0
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "low-dimensional state/action sequence for the bounded pilot; visual policy is a separate ablation",
       "run_id": "mimicgen_three_piece_assembly_d1_large_interpolation__conditional_flow_matching__train42",
       "task": "mimicgen_three_piece_assembly_d1_large_interpolation",
       "tier": "B",
@@ -6637,6 +6693,7 @@
         90.0
       ],
       "method": "improved_meanflow",
+      "policy_representation": "low-dimensional state/action sequence for the bounded pilot; visual policy is a separate ablation",
       "run_id": "mimicgen_three_piece_assembly_d1_large_interpolation__improved_meanflow__train42",
       "task": "mimicgen_three_piece_assembly_d1_large_interpolation",
       "tier": "B",
@@ -6651,6 +6708,7 @@
         90.0
       ],
       "method": "shortcut_model",
+      "policy_representation": "low-dimensional state/action sequence for the bounded pilot; visual policy is a separate ablation",
       "run_id": "mimicgen_three_piece_assembly_d1_large_interpolation__shortcut_model__train42",
       "task": "mimicgen_three_piece_assembly_d1_large_interpolation",
       "tier": "B",
@@ -6665,6 +6723,7 @@
         90.0
       ],
       "method": "gaussian_diffusion",
+      "policy_representation": "23-D non-privileged state and 22-D action sequence; task-general backbone required",
       "run_id": "dexjoco_hammer_nail_rand_full__gaussian_diffusion__train42",
       "task": "dexjoco_hammer_nail_rand_full",
       "tier": "B",
@@ -6679,6 +6738,7 @@
         90.0
       ],
       "method": "conditional_flow_matching",
+      "policy_representation": "23-D non-privileged state and 22-D action sequence; task-general backbone required",
       "run_id": "dexjoco_hammer_nail_rand_full__conditional_flow_matching__train42",
       "task": "dexjoco_hammer_nail_rand_full",
       "tier": "B",
@@ -6693,6 +6753,7 @@
         90.0
       ],
       "method": "improved_meanflow",
+      "policy_representation": "23-D non-privileged state and 22-D action sequence; task-general backbone required",
       "run_id": "dexjoco_hammer_nail_rand_full__improved_meanflow__train42",
       "task": "dexjoco_hammer_nail_rand_full",
       "tier": "B",
@@ -6707,6 +6768,7 @@
         90.0
       ],
       "method": "shortcut_model",
+      "policy_representation": "23-D non-privileged state and 22-D action sequence; task-general backbone required",
       "run_id": "dexjoco_hammer_nail_rand_full__shortcut_model__train42",
       "task": "dexjoco_hammer_nail_rand_full",
       "tier": "B",
