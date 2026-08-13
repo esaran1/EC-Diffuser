@@ -78,3 +78,18 @@ def test_train_rejects_nonfinite_gradients_before_optimizer_step(monkeypatch):
         trainer.train(1)
 
     torch.testing.assert_close(trainer.model.anchor.detach(), original)
+
+
+def test_train_returns_machine_readable_history_and_allows_disabled_saves(monkeypatch):
+    trainer = make_trainer(SequencedLossModel([2.0, 4.0]))
+    trainer.save_freq = 0
+    monkeypatch.setattr(training_module, "batch_to_device", lambda batch: batch)
+    monkeypatch.setattr(training_module.wandb, "log", lambda record: None)
+
+    history = trainer.train(1)
+
+    assert history == trainer.train_history
+    assert history[0]["step"] == 1
+    assert history[0]["loss"] == pytest.approx(3.0)
+    assert history[0]["metric"] == pytest.approx(30.0)
+    assert history[0]["interval_seconds"] >= 0.0

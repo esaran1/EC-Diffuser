@@ -84,6 +84,7 @@ class Trainer(object):
         self.logdir = results_folder
         self.bucket = bucket
         self.n_reference = n_reference
+        self.train_history = []
 
         self.reset_parameters()
         self.step = 0
@@ -103,6 +104,8 @@ class Trainer(object):
 
     def train(self, n_train_steps, front_bg=None, side_bg=None, latent_rep_model=None):
         timer = Timer()
+        if not hasattr(self, "train_history"):
+            self.train_history = []
         for step in range(n_train_steps):
             step_loss = None
             step_infos = {}
@@ -144,13 +147,24 @@ class Trainer(object):
             if self.step % self.update_ema_every == 0:
                 self.step_ema()
 
-            if self.step % self.save_freq == 0:
+            if self.save_freq and self.step % self.save_freq == 0:
                 label = self.step // self.label_freq * self.label_freq
                 self.save(label)
 
-            if self.step % self.log_freq == 0:
+            if self.log_freq and self.step % self.log_freq == 0:
                 infos_str = ' | '.join([f'{key}: {val:8.4f}' for key, val in step_infos.items()])
-                print(f'{self.step}: {step_loss:8.4f} | {infos_str} | t: {timer():8.4f}', flush=True)
+                interval_seconds = timer()
+                print(f'{self.step}: {step_loss:8.4f} | {infos_str} | t: {interval_seconds:8.4f}', flush=True)
+                record = {
+                    "step": int(self.step),
+                    "loss": float(step_loss.item()),
+                    "interval_seconds": float(interval_seconds),
+                }
+                record.update({
+                    key: float(value.item()) if torch.is_tensor(value) else float(value)
+                    for key, value in step_infos.items()
+                })
+                self.train_history.append(record)
                 wandb.log({'step': self.step, 'loss': step_loss, **step_infos})
 
             if self.step == 0 and self.sample_freq:
@@ -160,6 +174,7 @@ class Trainer(object):
                 self.render_samples(front_bg=front_bg, side_bg=side_bg)
 
             self.step += 1
+        return list(self.train_history)
 
     def evaluate(self, n_eval_steps):
         '''
