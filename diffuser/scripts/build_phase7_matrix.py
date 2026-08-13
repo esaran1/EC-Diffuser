@@ -46,8 +46,13 @@ TASKS = {
             "episode_horizon": 1000,
             "source": "official OGBench hyperparameters and task-wise evaluation loop",
         },
-        "training_hours": {method: [30.0, 90.0] for method in METHODS},
-        "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+        "training_hours": {
+            "gaussian_diffusion": [4.10, 4.10],
+            "conditional_flow_matching": [4.19, 4.19],
+            "improved_meanflow": [11.74, 11.74],
+            "shortcut_model": [6.07, 6.07],
+        },
+        "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
     },
     "mimicgen_three_piece_assembly_d1_large_interpolation": {
         "tier": "B",
@@ -123,15 +128,15 @@ def build():
 
     training_low = sum(row["estimated_training_hours_range"][0] for row in training_runs)
     training_high = sum(row["estimated_training_hours_range"][1] for row in training_runs)
-    checkpoint_bytes = 502228922
+    checkpoint_bytes = 506453928
     return {
         "schema_version": "phase7-experiment-matrix-v2",
-        "status": "APPROVED_FOR_BOUNDED_PILOTS_NOT_FROZEN_FOR_FULL_RUNS",
+        "status": "BOUNDED_PILOTS_COMPLETE_FULL_RUNS_AWAIT_REVIEW",
         "compute_gate": {
             "one_gpu": "NVIDIA GeForce RTX 4080 16 GB",
             "parallel_gpu_jobs": 1,
             "full_runs_started": 0,
-            "required_next_step": "Implement and validate dataset/evaluation adapters, then run sequential <=1000-step task-native timing pilots. Re-estimate before any run over two GPU-hours.",
+            "required_next_step": "Review measured OGBench costs and diagnose the Improved MeanFlow loss trend before any 500k run. Install/evaluate native benchmark environments only in isolated, task-specific environments.",
         },
         "protocol": {
             "methods": list(METHODS),

@@ -3,21 +3,21 @@
     "full_runs_started": 0,
     "one_gpu": "NVIDIA GeForce RTX 4080 16 GB",
     "parallel_gpu_jobs": 1,
-    "required_next_step": "Implement and validate dataset/evaluation adapters, then run sequential <=1000-step task-native timing pilots. Re-estimate before any run over two GPU-hours."
+    "required_next_step": "Review measured OGBench costs and diagnose the Improved MeanFlow loss trend before any 500k run. Install/evaluate native benchmark environments only in isolated, task-specific environments."
   },
   "cost": {
-    "checkpoint_bytes_each_observed_upper": 502228922,
+    "checkpoint_bytes_each_observed_upper": 506453928,
     "estimated_one_gpu_training_days_range": [
-      49.5,
-      100.75
+      37.77,
+      59.02
     ],
     "estimated_training_gpu_hours_range": [
-      1188.06,
-      2418.06
+      906.36,
+      1416.36
     ],
     "evaluation_gpu_hours": "Unknown cross-benchmark; measure one 16-episode run per task/method. PushCube reference is about 20.2 ms/NFE for the current backbone and 1.989 s/plan at 100-NFE Gaussian.",
-    "one_final_checkpoint_total_bytes": 16071325504,
-    "rolling_resume_plus_final_total_bytes": 32142651008
+    "one_final_checkpoint_total_bytes": 16206525696,
+    "rolling_resume_plus_final_total_bytes": 32413051392
   },
   "counts": {
     "tier_a_training_runs": 24,
@@ -6292,7 +6292,7 @@
     }
   },
   "schema_version": "phase7-experiment-matrix-v2",
-  "status": "APPROVED_FOR_BOUNDED_PILOTS_NOT_FROZEN_FOR_FULL_RUNS",
+  "status": "BOUNDED_PILOTS_COMPLETE_FULL_RUNS_AWAIT_REVIEW",
   "training_runs": [
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
@@ -6477,10 +6477,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        4.1,
+        4.1
       ],
       "method": "gaussian_diffusion",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6492,10 +6492,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        4.1,
+        4.1
       ],
       "method": "gaussian_diffusion",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6507,10 +6507,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        4.1,
+        4.1
       ],
       "method": "gaussian_diffusion",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6522,10 +6522,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        4.19,
+        4.19
       ],
       "method": "conditional_flow_matching",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6537,10 +6537,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        4.19,
+        4.19
       ],
       "method": "conditional_flow_matching",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6552,10 +6552,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        4.19,
+        4.19
       ],
       "method": "conditional_flow_matching",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6567,10 +6567,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        11.74,
+        11.74
       ],
       "method": "improved_meanflow",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6582,10 +6582,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        11.74,
+        11.74
       ],
       "method": "improved_meanflow",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6597,10 +6597,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        11.74,
+        11.74
       ],
       "method": "improved_meanflow",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6612,10 +6612,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        6.07,
+        6.07
       ],
       "method": "shortcut_model",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6627,10 +6627,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        6.07,
+        6.07
       ],
       "method": "shortcut_model",
       "policy_representation": "flat state/action sequence; task-general backbone required",
@@ -6642,10 +6642,10 @@
     {
       "checkpoint_selection": "final fixed-budget EMA checkpoint; no test-set selection",
       "dataset": "OGBench puzzle-4x4-play-v0 state",
-      "estimate_basis": "Planning range only; a 1000-step task-native benchmark is mandatory before any full run.",
+      "estimate_basis": "Measured 1000-step RTX 4080 pilots extrapolated linearly to 500k steps. Improved MeanFlow is blocked by an adverse pilot loss trend.",
       "estimated_training_hours_range": [
-        30.0,
-        90.0
+        6.07,
+        6.07
       ],
       "method": "shortcut_model",
       "policy_representation": "flat state/action sequence; task-general backbone required",
