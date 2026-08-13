@@ -1,7 +1,10 @@
 import os
 import collections
 import numpy as np
-import gym
+try:
+    import gym
+except ImportError:
+    import gymnasium as gym
 import pdb
 
 from contextlib import (

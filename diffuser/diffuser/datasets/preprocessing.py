@@ -1,4 +1,7 @@
-import gym
+try:
+    import gym
+except ImportError:
+    import gymnasium as gym
 import numpy as np
 import einops
 from scipy.spatial.transform import Rotation as R

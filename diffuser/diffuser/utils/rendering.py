@@ -6,7 +6,10 @@ import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
-import gym
+try:
+    import gym
+except ImportError:
+    import gymnasium as gym
 import warnings
 import cv2 as cv
 
