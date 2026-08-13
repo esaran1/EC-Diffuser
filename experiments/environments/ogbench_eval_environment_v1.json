@@ -1,0 +1,50 @@
+{
+  "schema_version": "ogbench-eval-environment-v1",
+  "status": "API_DRY_RUN_PASS",
+  "created": "2026-08-13",
+  "official_repository": "https://github.com/seohongpark/ogbench",
+  "official_repository_commit_audited": "1d4140997f60c52c6fb0702ec100dc988b18c548",
+  "package": "ogbench==1.2.1",
+  "python": "3.8.20 (inherited from ecdiffuser-linux)",
+  "installation": {
+    "type": "repository-local venv overlay with --system-site-packages",
+    "path": "data/envs/ogbench-eval",
+    "git_policy": "ignored by existing data/ rule",
+    "measured_size_mib": 242,
+    "lock_file": "experiments/environments/ogbench_eval_requirements_v1.txt"
+  },
+  "environment": "puzzle-4x4-play-v0",
+  "construction": "ogbench.make_env_and_datasets('puzzle-4x4-play-v0', env_only=True)",
+  "dry_run": {
+    "task_ids_reset": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "observation_shape": [
+      83
+    ],
+    "observation_dtype": "float64",
+    "goal_shape": [
+      83
+    ],
+    "action_shape": [
+      5
+    ],
+    "action_dtype": "float32",
+    "action_bounds": [
+      -1.0,
+      1.0
+    ],
+    "zero_action_step": "PASS",
+    "rendering_used": false,
+    "dataset_downloaded": false
+  },
+  "warnings": [
+    "GLFW reported DISPLAY missing during headless construction; reset and non-rendered stepping succeeded.",
+    "Gymnasium reports precision casting for infinite float64 observation bounds; state values remained finite."
+  ],
+  "evaluator": "diffuser/scripts/eval_ogbench_policy.py"
+}
