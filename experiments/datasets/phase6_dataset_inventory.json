@@ -1,0 +1,186 @@
+{
+  "schema_version": "phase6-dataset-inventory-v1",
+  "status": "proposed_suite_awaiting_download_and_compute_approval",
+  "generated_date": "2026-08-13",
+  "shared_data_policy": "All compared generative methods use identical episode splits, window extraction, normalization, and goal relabeling for a task.",
+  "tasks": [
+    {
+      "benchmark": "EC-Diffuser",
+      "task": "PushCube-3-random-color-DLP (legacy Isaac Gym)",
+      "tier": "A",
+      "category": "B",
+      "category_evidence": "The existing data are strong but require an episode-level split and exclusion or explicit retention policy for two clipped simulator-state episodes.",
+      "dataset_version": "carlq/ecdiffuser-data main; local SHA256 identifies the exact file",
+      "source": "https://huggingface.co/datasets/carlq/ecdiffuser-data",
+      "license": "MIT",
+      "local_path": "ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl",
+      "compressed_size_bytes": 811232768,
+      "extracted_size_bytes": 811232768,
+      "episodes": 2000,
+      "transitions": 200000,
+      "successful_episodes": 1950,
+      "unsuccessful_episodes": 50,
+      "trajectory_length": 100,
+      "observations": "DLP particles (48 x 10) plus state_observations (4 entities x 6); no RGB stored",
+      "proprioception": "Panda planar end-effector state is entity 0 in state_observations",
+      "actions": "3-D bounded planar pushing action in [-1, 1]",
+      "goals": "Time-constant DLP and state goals for the three colored cubes",
+      "splits": "No source split; deterministic episode-level train/validation split is required before final training",
+      "normalization": "Repository ParticleGaussianNormalizer for DLP observations/goals and LimitsNormalizer for actions; fit on training data only in the final protocol",
+      "integrity_report": "experiments/datasets/pushcube_3c_randcolor_health.json",
+      "transformation": "Retain source pickle; use an index/split manifest rather than duplicate 811 MB. Predeclare handling of episodes 54 and 1327, whose object states reach +/-1.1.",
+      "method_suitability": {
+        "diffusion": true,
+        "flow_matching": true,
+        "improved_meanflow": true,
+        "shortcut_models": true,
+        "goal_conditioned_trajectory_generation": true
+      }
+    },
+    {
+      "benchmark": "OGBench 1.x",
+      "task": "puzzle-4x4-play-v0 (state)",
+      "tier": "A",
+      "category": "B",
+      "category_evidence": "Official play data exist with a separate validation file, but transition streams require episodization and a frozen future-goal relabeling/window policy.",
+      "dataset_version": "official repository commit 1d4140997f60c52c6fb0702ec100dc988b18c548",
+      "source": "https://rail.eecs.berkeley.edu/datasets/ogbench/puzzle-4x4-play-v0.npz",
+      "validation_source": "https://rail.eecs.berkeley.edu/datasets/ogbench/puzzle-4x4-play-v0-val.npz",
+      "license": "MIT",
+      "compressed_size_bytes": 262414247,
+      "validation_compressed_size_bytes": 26216338,
+      "extracted_in_memory_bytes": 1057058100,
+      "episodes": 1000,
+      "validation_episodes": 100,
+      "transitions": 1001000,
+      "validation_transitions": 100100,
+      "successful_vs_unsuccessful": "Not an expert-success dataset: play trajectories press arbitrary buttons and are not collected for the five evaluation goals",
+      "trajectory_length": "up to 1001 steps",
+      "observations": "Benchmark state observation; visual counterpart is separate and not selected",
+      "proprioception": "Included in benchmark state observation; qpos/qvel are also stored for replay",
+      "actions": "5-D continuous manipulation action, clipped to [-1, 1] by the official generator",
+      "goals": "Future-state goals relabeled from trajectories for offline GCRL; five benchmark evaluation goals",
+      "splits": "Official 1000-episode train and 100-episode validation files",
+      "normalization": "To be fit on official training split only",
+      "transformation": "Episodize on terminals, map future states to goal, preserve qpos/qvel and button_states, and emit fixed trajectory windows without modifying NPZ sources",
+      "method_suitability": {
+        "diffusion": true,
+        "flow_matching": true,
+        "improved_meanflow": true,
+        "shortcut_models": true,
+        "goal_conditioned_trajectory_generation": true
+      }
+    },
+    {
+      "benchmark": "MimicGen CoRL 2023",
+      "task": "large_interpolation/three_piece_assembly_d1",
+      "tier": "B",
+      "category": "B",
+      "category_evidence": "The official file is presented as 1,000 successful generated demonstrations, but 16 episodes have zero stored reward throughout; quarantine them until replay verification. The remaining data require an episode split and zero-copy HDF5 adapter.",
+      "dataset_version": "official Hugging Face commit 33016f8a62c02334f929f2913af8fdd2a8a129e1",
+      "source": "https://huggingface.co/datasets/amandlek/mimicgen_datasets/blob/main/large_interpolation/three_piece_assembly_d1.hdf5",
+      "license": "CC-BY-4.0 dataset",
+      "compressed_size_bytes": 4597953838,
+      "extracted_size_bytes": 4597953838,
+      "episodes": 1000,
+      "transitions": 514005,
+      "successful_episodes_by_stored_reward": 984,
+      "quarantined_zero_reward_episodes": 16,
+      "trajectory_length": "488-555 transitions; mean 514.005; official evaluation horizon 700",
+      "observations": "Two 84x84 RGB views, 42-D object observation, robot joint/eef/gripper proprioception, relative object pose features, and 58-D simulator state",
+      "proprioception": "Robot proprioception in robomimic observation groups",
+      "actions": "Benchmark robosuite end-effector controller action; exact dimension and bounds must be read from env_args in HDF5",
+      "goals": "Fixed task goal and task ID; no varying explicit goal vector in the released demonstrations",
+      "splits": "No official train/validation/test split in the single HDF5 file; create deterministic episode-level split",
+      "normalization": "Fit on training episodes only",
+      "transformation": "Preserve HDF5 and env_args; map demo groups to episodes, retain simulator states and object observations, and encode the fixed goal/task ID",
+      "method_suitability": {
+        "diffusion": true,
+        "flow_matching": true,
+        "improved_meanflow": true,
+        "shortcut_models": true,
+        "goal_conditioned_trajectory_generation": "limited: task-conditioned rather than variable-goal"
+      }
+    },
+    {
+      "benchmark": "DexJoCo",
+      "task": "hammer_nail rand_full",
+      "tier": "B",
+      "category": "B",
+      "category_evidence": "Official successful human demonstrations exist in task-level LeRobot form, but privileged state exclusion, an episode split, and task-goal encoding must be frozen.",
+      "dataset_version": "official LeRobot repository, metadata inspected 2026-08-13",
+      "source": "https://huggingface.co/datasets/DexJoCo/DexJoCo-Datasets-LeRobot/tree/main/dexjoco_lerobot_datasets_rand_full/hammer_nail",
+      "license": "MIT dataset; third-party assets retain their licenses",
+      "compressed_size_bytes": 635864128,
+      "extracted_size_bytes": 635864128,
+      "episodes": 100,
+      "transitions": 27571,
+      "successful_episodes": 100,
+      "unsuccessful_episodes": 0,
+      "trajectory_length": "variable, mean 275.71 frames",
+      "observations": "Two 640x640 RGB video streams plus 23-D policy state",
+      "visual_observations": "random_camera and wrist, AV1 at 30 FPS",
+      "proprioception": "23-D single-arm policy state; official slice removes privileged task state",
+      "actions": "22-D float32 rotation-vector policy action",
+      "goals": "Fixed language/task goal: hammer the nail; no per-episode continuous goal vector",
+      "splits": "Official file declares train episodes 0:100 only; create deterministic episode-level validation split",
+      "normalization": "Official stats.json is available, but final comparison must recompute training-split-only statistics",
+      "transformation": "Use the official converter semantics (action_rotvec, state[:23]); preserve videos, episode indices, timestamps, and task metadata",
+      "method_suitability": {
+        "diffusion": true,
+        "flow_matching": true,
+        "improved_meanflow": true,
+        "shortcut_models": true,
+        "goal_conditioned_trajectory_generation": "limited: task/language-conditioned rather than variable-goal"
+      }
+    }
+  ],
+  "deferred": [
+    {
+      "benchmark": "Isaac Lab migration of PushCube",
+      "category": "C",
+      "reason": "Legacy checkpoint transfer was 0/16 because the visual/DLP domain shifted. New demonstrations are required if the migrated simulator becomes a paper benchmark; no expert or collection run is authorized yet."
+    },
+    {
+      "benchmark": "RLBench",
+      "reason": "Not selected for the compact first suite: it adds CoppeliaSim/PyRep compatibility cost and overlaps the long-horizon imitation role covered by MimicGen."
+    }
+  ],
+  "expert_rl": {
+    "category_d_tasks": [],
+    "selected_algorithms": [],
+    "pilot_result": "not applicable",
+    "acceptance_thresholds": {},
+    "reason": "Every proposed native-simulator task has official demonstrations. Training an RL expert would add cost and a data-quality confound without necessity."
+  },
+  "downloads_performed": [
+    {
+      "task": "OGBench puzzle-4x4-play-v0",
+      "scope": "state train and validation NPZ",
+      "bytes": 288630585,
+      "path": "data/benchmarks/source/ogbench/puzzle-4x4-play-v0"
+    },
+    {
+      "task": "MimicGen large_interpolation/three_piece_assembly_d1",
+      "scope": "single official HDF5 including low-dimensional data and two RGB views",
+      "bytes": 4597953838,
+      "path": "data/benchmarks/source/mimicgen/large_interpolation/three_piece_assembly_d1.hdf5"
+    },
+    {
+      "task": "DexJoCo hammer_nail rand_full",
+      "scope": "state/action Parquet and metadata only; camera MP4 files excluded",
+      "bytes": 6917047,
+      "path": "data/benchmarks/source/dexjoco/hammer_nail"
+    }
+  ],
+  "datasets_collected": [],
+  "data_collection_pilots": [],
+  "compute_gate": "STOP before simulator/data-collection/model-training pilots until the proposed suite is approved.",
+  "audit_environment": {
+    "python": "3.8.20",
+    "numpy": "1.21.0",
+    "h5py": "3.11.0",
+    "pyarrow": "17.0.0",
+    "pandas": "2.0.3"
+  }
+}

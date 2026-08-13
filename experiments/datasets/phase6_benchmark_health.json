@@ -1,0 +1,628 @@
+{
+  "dexjoco_hammer_nail_rand_full": {
+    "action_component_max": [
+      -0.014403634704649448,
+      0.12163911759853363,
+      1.7100508213043213,
+      3.1415927410125732,
+      1.8130940198898315,
+      1.7629327774047852,
+      0.4687962830066681,
+      1.5274039506912231,
+      1.6571447849273682,
+      1.5111349821090698,
+      0.43727585673332214,
+      1.465045690536499,
+      1.358588695526123,
+      1.4535565376281738,
+      0.36989158391952515,
+      1.4807343482971191,
+      1.6242005825042725,
+      1.5048500299453735,
+      1.32219398021698,
+      0.8258378505706787,
+      1.226080298423767,
+      1.327934741973877
+    ],
+    "action_component_min": [
+      -1.102280855178833,
+      -0.611457347869873,
+      0.6133270859718323,
+      -3.1414847373962402,
+      -1.821773648262024,
+      -1.722137212753296,
+      -0.45952537655830383,
+      0.0,
+      0.0,
+      -0.048370398581027985,
+      -0.4218204617500305,
+      0.0,
+      0.0,
+      -0.208860844373703,
+      -0.3682377338409424,
+      0.0,
+      0.0,
+      -0.11147591471672058,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "action_dimension": 22,
+    "action_norm": {
+      "max": 5.236588001251221,
+      "mean": 4.631467107296042,
+      "median": 4.6181745529174805,
+      "min": 3.5166940689086914,
+      "p01": 4.157414436340332,
+      "p99": 5.110471534729004,
+      "std": 0.2218949181329025
+    },
+    "all_numeric_values_finite": true,
+    "contiguous_frame_index_episodes": 100,
+    "download_scope": "state/action parquet and metadata only; official camera videos were not downloaded",
+    "episode_length": {
+      "max": 582.0,
+      "mean": 275.71,
+      "median": 262.5,
+      "min": 209.0,
+      "p01": 214.94,
+      "p99": 453.30000000000064,
+      "std": 55.80560814111786
+    },
+    "episodes": 100,
+    "exact_duplicate_episode_pairs": [],
+    "metadata": {
+      "chunks_size": 1000,
+      "codebase_version": "v3.0",
+      "data_files_size_in_mb": 100,
+      "data_path": "data/chunk-{chunk_index:03d}/file-{file_index:03d}.parquet",
+      "features": {
+        "action": {
+          "dtype": "float32",
+          "shape": [
+            22
+          ]
+        },
+        "episode_index": {
+          "dtype": "int64",
+          "names": null,
+          "shape": [
+            1
+          ]
+        },
+        "frame_index": {
+          "dtype": "int64",
+          "names": null,
+          "shape": [
+            1
+          ]
+        },
+        "index": {
+          "dtype": "int64",
+          "names": null,
+          "shape": [
+            1
+          ]
+        },
+        "observation.images.random_camera": {
+          "dtype": "video",
+          "info": {
+            "has_audio": false,
+            "video.channels": 3,
+            "video.codec": "av1",
+            "video.fps": 30,
+            "video.height": 640,
+            "video.is_depth_map": false,
+            "video.pix_fmt": "yuv420p",
+            "video.width": 640
+          },
+          "names": [
+            "height",
+            "width",
+            "channel"
+          ],
+          "shape": [
+            640,
+            640,
+            3
+          ]
+        },
+        "observation.images.wrist": {
+          "dtype": "video",
+          "info": {
+            "has_audio": false,
+            "video.channels": 3,
+            "video.codec": "av1",
+            "video.fps": 30,
+            "video.height": 640,
+            "video.is_depth_map": false,
+            "video.pix_fmt": "yuv420p",
+            "video.width": 640
+          },
+          "names": [
+            "height",
+            "width",
+            "channel"
+          ],
+          "shape": [
+            640,
+            640,
+            3
+          ]
+        },
+        "observation.state": {
+          "dtype": "float32",
+          "shape": [
+            23
+          ]
+        },
+        "task_index": {
+          "dtype": "int64",
+          "names": null,
+          "shape": [
+            1
+          ]
+        },
+        "timestamp": {
+          "dtype": "float32",
+          "names": null,
+          "shape": [
+            1
+          ]
+        }
+      },
+      "fps": 30,
+      "robot_type": null,
+      "splits": {
+        "train": "0:100"
+      },
+      "total_episodes": 100,
+      "total_frames": 27571,
+      "total_tasks": 1,
+      "video_files_size_in_mb": 200,
+      "video_path": "videos/{video_key}/chunk-{chunk_index:03d}/file-{file_index:03d}.mp4"
+    },
+    "monotonic_timestamp_episodes": 100,
+    "null_counts": {
+      "action": 0,
+      "episode_index": 0,
+      "frame_index": 0,
+      "index": 0,
+      "observation.state": 0,
+      "task_index": 0,
+      "timestamp": 0
+    },
+    "path": "data/benchmarks/source/dexjoco/hammer_nail/data/chunk-000/file-000.parquet",
+    "sha256": "485b3d70bb08a8adb24493385f886336133785e2568dcfe7f6dbcb70128e134e",
+    "size_bytes": 6889390,
+    "state_dimension": 23,
+    "transitions": 27571
+  },
+  "limitations": [
+    "MimicGen and DexJoCo release only successful demonstrations in these selected files.",
+    "DexJoCo camera videos were metadata-audited but not downloaded or decoded.",
+    "No simulator evaluation reset manifest is available for overlap checks.",
+    "Goal leakage requires task-specific relabeling tests after adapters are implemented."
+  ],
+  "mimicgen_three_piece_assembly_d1_large_interpolation": {
+    "action_component_max": [
+      1.0,
+      1.0,
+      1.0,
+      0.6660740195677194,
+      1.0,
+      0.5544953942298889,
+      1.0
+    ],
+    "action_component_min": [
+      -1.0,
+      -1.0,
+      -1.0,
+      -0.49400694219929603,
+      -0.6342397491719152,
+      -0.49946343898773193,
+      -1.0
+    ],
+    "action_dimension": 7,
+    "action_limit_violations": 0,
+    "action_norm": {
+      "max": 2.2475701707408895,
+      "mean": 1.1624625158063202,
+      "median": 1.0829492117949449,
+      "min": 1.000000008526977,
+      "p01": 1.00002854154384,
+      "p99": 1.7268833610235563,
+      "std": 0.179923945861676
+    },
+    "all_numeric_values_finite": true,
+    "environment": {
+      "env_kwargs": {
+        "camera_depths": false,
+        "camera_heights": 84,
+        "camera_names": [
+          "agentview",
+          "robot0_eye_in_hand"
+        ],
+        "camera_widths": 84,
+        "control_freq": 20,
+        "controller_configs": {
+          "control_delta": true,
+          "damping": 1,
+          "damping_limits": [
+            0,
+            10
+          ],
+          "impedance_mode": "fixed",
+          "input_max": 1,
+          "input_min": -1,
+          "interpolation": null,
+          "kp": 150,
+          "kp_limits": [
+            0,
+            300
+          ],
+          "orientation_limits": null,
+          "output_max": [
+            0.05,
+            0.05,
+            0.05,
+            0.5,
+            0.5,
+            0.5
+          ],
+          "output_min": [
+            -0.05,
+            -0.05,
+            -0.05,
+            -0.5,
+            -0.5,
+            -0.5
+          ],
+          "position_limits": null,
+          "ramp_ratio": 0.2,
+          "type": "OSC_POSE",
+          "uncouple_pos_ori": true
+        },
+        "has_offscreen_renderer": true,
+        "has_renderer": false,
+        "ignore_done": true,
+        "render_gpu_device_id": 0,
+        "reward_shaping": false,
+        "robots": [
+          "Panda"
+        ],
+        "use_camera_obs": true,
+        "use_object_obs": true
+      },
+      "env_name": "ThreePieceAssembly_D1",
+      "env_version": "1.4.1",
+      "type": 1
+    },
+    "episode_length": {
+      "max": 555.0,
+      "mean": 514.005,
+      "median": 501.0,
+      "min": 488.0,
+      "p01": 488.0,
+      "p99": 555.0,
+      "std": 22.22766238271582
+    },
+    "episodes": 1000,
+    "exact_duplicate_episode_pairs": [],
+    "final_done_count": 1000,
+    "image_shapes": [
+      [
+        84,
+        84,
+        3
+      ]
+    ],
+    "observation_fields": {
+      "agentview_image": [
+        [
+          84,
+          84,
+          3
+        ],
+        "uint8"
+      ],
+      "object": [
+        [
+          42
+        ],
+        "float64"
+      ],
+      "robot0_eef_pos": [
+        [
+          3
+        ],
+        "float64"
+      ],
+      "robot0_eef_pos_rel_base": [
+        [
+          3
+        ],
+        "float64"
+      ],
+      "robot0_eef_pos_rel_piece_1": [
+        [
+          3
+        ],
+        "float64"
+      ],
+      "robot0_eef_pos_rel_piece_2": [
+        [
+          3
+        ],
+        "float64"
+      ],
+      "robot0_eef_quat": [
+        [
+          4
+        ],
+        "float64"
+      ],
+      "robot0_eef_quat_rel_base": [
+        [
+          4
+        ],
+        "float32"
+      ],
+      "robot0_eef_quat_rel_piece_1": [
+        [
+          4
+        ],
+        "float32"
+      ],
+      "robot0_eef_quat_rel_piece_2": [
+        [
+          4
+        ],
+        "float32"
+      ],
+      "robot0_eef_vel_ang": [
+        [
+          3
+        ],
+        "float64"
+      ],
+      "robot0_eef_vel_lin": [
+        [
+          3
+        ],
+        "float64"
+      ],
+      "robot0_eye_in_hand_image": [
+        [
+          84,
+          84,
+          3
+        ],
+        "uint8"
+      ],
+      "robot0_gripper_qpos": [
+        [
+          2
+        ],
+        "float64"
+      ],
+      "robot0_gripper_qvel": [
+        [
+          2
+        ],
+        "float64"
+      ],
+      "robot0_joint_pos": [
+        [
+          7
+        ],
+        "float64"
+      ],
+      "robot0_joint_pos_cos": [
+        [
+          7
+        ],
+        "float64"
+      ],
+      "robot0_joint_pos_sin": [
+        [
+          7
+        ],
+        "float64"
+      ],
+      "robot0_joint_vel": [
+        [
+          7
+        ],
+        "float64"
+      ]
+    },
+    "path": "data/benchmarks/source/mimicgen/large_interpolation/three_piece_assembly_d1.hdf5",
+    "positive_reward_episode_count": 984,
+    "sha256": "c9309d443fba6ccb867b67d07c0bee6e559a62bed0585689a61343d0c08d6db3",
+    "size_bytes": 4597953838,
+    "total_attribute": 514005,
+    "transitions": 514005
+  },
+  "ogbench_puzzle_4x4_play": {
+    "train": {
+      "action_component_max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "action_component_min": [
+        -1.0,
+        -1.0,
+        -1.0,
+        -1.0,
+        -0.36000582575798035
+      ],
+      "action_limit_violations": 0,
+      "action_norm": {
+        "max": 1.8561134338378906,
+        "mean": 0.8753250004077715,
+        "median": 0.8520552515983582,
+        "min": 0.018005410209298134,
+        "p01": 0.14921819135546685,
+        "p99": 1.6750140488147738,
+        "std": 0.36580304075918174
+      },
+      "all_numeric_values_finite": true,
+      "button_configuration_space_fraction": 0.3570556640625,
+      "episode_length": {
+        "max": 1001.0,
+        "mean": 1001.0,
+        "median": 1001.0,
+        "min": 1001.0,
+        "p01": 1001.0,
+        "p99": 1001.0,
+        "std": 0.0
+      },
+      "episodes": 1000,
+      "exact_duplicate_episode_pairs": [],
+      "fields": {
+        "actions": {
+          "dtype": "float32",
+          "shape": [
+            1001000,
+            5
+          ]
+        },
+        "button_states": {
+          "dtype": "int64",
+          "shape": [
+            1001000,
+            16
+          ]
+        },
+        "observations": {
+          "dtype": "float32",
+          "shape": [
+            1001000,
+            83
+          ]
+        },
+        "qpos": {
+          "dtype": "float32",
+          "shape": [
+            1001000,
+            30
+          ]
+        },
+        "qvel": {
+          "dtype": "float32",
+          "shape": [
+            1001000,
+            30
+          ]
+        },
+        "terminals": {
+          "dtype": "bool",
+          "shape": [
+            1001000
+          ]
+        }
+      },
+      "path": "data/benchmarks/source/ogbench/puzzle-4x4-play-v0/train.npz",
+      "sha256": "396a029c4c347498eed3e21cd85f99c72c56f786e84c29787715808f27cdfe8a",
+      "size_bytes": 262414247,
+      "terminal_count": 1000,
+      "transitions": 1001000,
+      "unique_button_configurations": 23400
+    },
+    "train_validation_exact_episode_overlap": 0,
+    "validation": {
+      "action_component_max": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "action_component_min": [
+        -1.0,
+        -1.0,
+        -0.9088417291641235,
+        -1.0,
+        -0.30326858162879944
+      ],
+      "action_limit_violations": 0,
+      "action_norm": {
+        "max": 1.8553524017333984,
+        "mean": 0.8752412743371847,
+        "median": 0.8525328934192657,
+        "min": 0.037859316915273666,
+        "p01": 0.1495192390680313,
+        "p99": 1.6806592190265632,
+        "std": 0.36580629448934093
+      },
+      "all_numeric_values_finite": true,
+      "button_configuration_space_fraction": 0.042938232421875,
+      "episode_length": {
+        "max": 1001.0,
+        "mean": 1001.0,
+        "median": 1001.0,
+        "min": 1001.0,
+        "p01": 1001.0,
+        "p99": 1001.0,
+        "std": 0.0
+      },
+      "episodes": 100,
+      "exact_duplicate_episode_pairs": [],
+      "fields": {
+        "actions": {
+          "dtype": "float32",
+          "shape": [
+            100100,
+            5
+          ]
+        },
+        "button_states": {
+          "dtype": "int64",
+          "shape": [
+            100100,
+            16
+          ]
+        },
+        "observations": {
+          "dtype": "float32",
+          "shape": [
+            100100,
+            83
+          ]
+        },
+        "qpos": {
+          "dtype": "float32",
+          "shape": [
+            100100,
+            30
+          ]
+        },
+        "qvel": {
+          "dtype": "float32",
+          "shape": [
+            100100,
+            30
+          ]
+        },
+        "terminals": {
+          "dtype": "bool",
+          "shape": [
+            100100
+          ]
+        }
+      },
+      "path": "data/benchmarks/source/ogbench/puzzle-4x4-play-v0/validation.npz",
+      "sha256": "472324d739ed9d029600fd112738d2602b15a7a3039d03ce91265b65c5943d4d",
+      "size_bytes": 26216338,
+      "terminal_count": 100,
+      "transitions": 100100,
+      "unique_button_configurations": 2814
+    }
+  },
+  "schema_version": "phase6-benchmark-health-v1"
+}
