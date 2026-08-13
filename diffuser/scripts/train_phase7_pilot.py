@@ -23,8 +23,6 @@ from diffuser.models import (
     IntervalTemporalUnet,
     ShortcutModel,
 )
-from diffuser.utils.arrays import set_global_device
-from diffuser.utils.training import Trainer
 
 
 METHODS = {
@@ -56,7 +54,7 @@ def build_method(name, model, task, method_config):
         "horizon": task["horizon"],
         "observation_dim": task["observation_dim"],
         "action_dim": task["action_dim"],
-        "loss_type": "l1",
+        "loss_type": method_config.get("loss_type", "l1"),
     }
     if name == "gaussian_diffusion":
         return GaussianDiffusion(
@@ -67,12 +65,48 @@ def build_method(name, model, task, method_config):
         n_solver_steps=method_config["default_solver_steps"],
         time_scale=method_config["time_scale"],
     )
+    if name == "improved_meanflow":
+        for key in ("adaptive_weighting", "adaptive_power", "adaptive_epsilon"):
+            if key in method_config:
+                common[key] = method_config[key]
     if name == "shortcut_model":
         common["max_base_steps"] = method_config["max_base_steps"]
     return METHODS[name](**common)
 
 
+def fixed_validation(model, batches, seed, device):
+    """Evaluate fixed batches with fixed stochastic draws without changing RNG state."""
+    from diffuser.utils.arrays import batch_to_device
+    was_training = model.training
+    model.eval()
+    records = []
+    try:
+        for index, cpu_batch in enumerate(batches):
+            batch = batch_to_device(cpu_batch)
+            with torch.random.fork_rng(devices=[device.index]):
+                torch.manual_seed(seed + index)
+                with torch.enable_grad():
+                    loss, info = model.loss(*batch)
+            record = {"loss": float(loss.detach().cpu())}
+            record.update({
+                key: float(value.detach().cpu()) if torch.is_tensor(value) else float(value)
+                for key, value in info.items()
+            })
+            if not np.isfinite(list(record.values())).all():
+                raise FloatingPointError("non-finite fixed validation metric")
+            records.append(record)
+    finally:
+        model.train(was_training)
+    return {
+        key: float(np.mean([record[key] for record in records]))
+        for key in records[0]
+    }
+
+
 def main():
+    from diffuser.utils.arrays import set_global_device
+    from diffuser.utils.training import Trainer
+
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--method", choices=sorted(METHODS), required=True)
     parser.add_argument(
@@ -82,6 +116,8 @@ def main():
     )
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--steps", type=int)
+    parser.add_argument("--validation-frequency", type=int)
+    parser.add_argument("--validation-batches", type=int)
     args = parser.parse_args()
 
     protocol_bytes = args.protocol.read_bytes()
@@ -89,8 +125,14 @@ def main():
     training = protocol["training"]
     task = protocol["task"]
     steps = training["optimizer_steps"] if args.steps is None else args.steps
+    if args.validation_frequency is None:
+        args.validation_frequency = training.get("fixed_validation_frequency", 0)
+    if args.validation_batches is None:
+        args.validation_batches = training.get("fixed_validation_batches", 4)
     if steps < 1 or steps > training["optimizer_steps"]:
         raise ValueError("steps must be in [1, {}]".format(training["optimizer_steps"]))
+    if args.validation_frequency < 0 or args.validation_batches < 1:
+        raise ValueError("validation settings must be non-negative/positive")
     if args.output_dir.exists():
         raise FileExistsError("refusing to overwrite {}".format(args.output_dir))
     args.output_dir.mkdir(parents=True)
@@ -114,6 +156,28 @@ def main():
         goal_seed=training["seed"],
         normalizer_state=normalizer_entry["normalizer"],
     )
+    validation_dataset = OGBenchPuzzleWindowDataset(
+        task["dataset_manifest"],
+        split="validation",
+        horizon=task["horizon"],
+        goal_seed=training["seed"],
+        normalizer_state=normalizer_entry["normalizer"],
+    )
+    validation_loader = torch.utils.data.DataLoader(
+        validation_dataset,
+        batch_size=training["microbatch_size"],
+        num_workers=0,
+        shuffle=False,
+        pin_memory=True,
+    )
+    validation_batches = []
+    for batch_index, batch in enumerate(validation_loader):
+        validation_batches.append(batch)
+        if batch_index + 1 == args.validation_batches:
+            break
+    if len(validation_batches) != args.validation_batches:
+        raise RuntimeError("validation split has too few complete batches")
+
     if (dataset.observation_dim, dataset.action_dim) != (
         task["observation_dim"], task["action_dim"]
     ):
@@ -157,12 +221,38 @@ def main():
         n_reference=0,
     )
 
+    validation_history = [{
+        "step": 0,
+        **fixed_validation(
+            trainer.model, validation_batches, training["seed"] + 100000, device
+        ),
+    }]
     torch.cuda.reset_peak_memory_stats(device)
-    torch.cuda.synchronize(device)
-    start = time.perf_counter()
-    history = trainer.train(steps)
-    torch.cuda.synchronize(device)
-    runtime_seconds = time.perf_counter() - start
+    runtime_seconds = 0.0
+    trained = 0
+    history = []
+    while trained < steps:
+        chunk = steps - trained
+        if args.validation_frequency:
+            chunk = min(chunk, args.validation_frequency)
+        torch.cuda.synchronize(device)
+        start = time.perf_counter()
+        history = trainer.train(chunk)
+        torch.cuda.synchronize(device)
+        runtime_seconds += time.perf_counter() - start
+        trained += chunk
+        if args.validation_frequency and (
+            trained % args.validation_frequency == 0 or trained == steps
+        ):
+            validation_history.append({
+                "step": trainer.step,
+                **fixed_validation(
+                    trainer.model,
+                    validation_batches,
+                    training["seed"] + 100000,
+                    device,
+                ),
+            })
     peak_vram_bytes = torch.cuda.max_memory_allocated(device)
 
     checkpoint_path = args.output_dir / "state_{}.pt".format(trainer.step)
@@ -173,7 +263,7 @@ def main():
         raise FloatingPointError("logged losses are missing or non-finite")
 
     summary = {
-        "schema_version": "phase7-training-pilot-result-v1",
+        "schema_version": "phase7-training-pilot-result-v2",
         "status": "PASS",
         "method": args.method,
         "wrapper": type(method).__name__,
@@ -187,6 +277,11 @@ def main():
         "dataset_manifest": task["dataset_manifest"],
         "normalizer_sha256": normalizer_entry["normalizer_sha256"],
         "dataset_windows": len(dataset),
+        "validation_windows": len(validation_dataset),
+        "fixed_validation_batches": args.validation_batches,
+        "fixed_validation_frequency": args.validation_frequency,
+        "fixed_validation_seed": training["seed"] + 100000,
+        "fixed_validation_history": validation_history,
         "optimizer_steps": trainer.step,
         "microbatch_size": training["microbatch_size"],
         "gradient_accumulation": training["gradient_accumulation"],

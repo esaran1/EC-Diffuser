@@ -1,5 +1,7 @@
 """Fast trajectory generators implemented from their published objectives."""
 
+import math
+import numbers
 from collections.abc import Mapping
 
 import torch
@@ -80,16 +82,53 @@ class ImprovedMeanFlow(_IntervalFlowBase):
 
     def __init__(
         self, *args, time_mean=-0.4, time_std=1.0,
-        boundary_probability=0.5, **kwargs
+        boundary_probability=0.5, adaptive_weighting=False,
+        adaptive_power=1.0, adaptive_epsilon=0.01, **kwargs
     ):
         super().__init__(*args, **kwargs)
         if not 0.0 <= boundary_probability <= 1.0:
             raise ValueError("boundary_probability must lie in [0, 1]")
         if time_std <= 0.0:
             raise ValueError("time_std must be positive")
+        if not isinstance(adaptive_weighting, bool):
+            raise TypeError("adaptive_weighting must be boolean")
+        if adaptive_weighting and self.loss_type != "l2":
+            raise ValueError("adaptive iMF weighting requires loss_type='l2'")
+        for name, value in (
+            ("adaptive_power", adaptive_power),
+            ("adaptive_epsilon", adaptive_epsilon),
+        ):
+            if isinstance(value, bool) or not isinstance(value, numbers.Real):
+                raise TypeError("{} must be a finite positive number".format(name))
+            if not math.isfinite(float(value)) or float(value) <= 0.0:
+                raise ValueError("{} must be a finite positive number".format(name))
         self.time_mean = float(time_mean)
         self.time_std = float(time_std)
         self.boundary_probability = float(boundary_probability)
+        self.adaptive_weighting = bool(adaptive_weighting)
+        self.adaptive_power = float(adaptive_power)
+        self.adaptive_epsilon = float(adaptive_epsilon)
+
+    def _meanflow_regression_loss(self, prediction, target, reference, cond):
+        if not self.adaptive_weighting:
+            return self._weighted_interval_loss(
+                prediction, target, reference, cond
+            )
+
+        squared_error = (prediction - target).square()
+        mask = self._make_conditioning_mask(reference, cond)
+        weights = self.loss_weight_matrix.to(
+            device=reference.device, dtype=reference.dtype
+        ).unsqueeze(0)
+        active_weights = weights * mask.to(reference.dtype)
+        if not torch.any(active_weights > 0):
+            raise ValueError("conditioning and loss settings leave no active elements")
+        per_sample = (squared_error * active_weights).sum(dim=(1, 2))
+        denominator = (
+            per_sample + self.adaptive_epsilon
+        ).pow(self.adaptive_power).detach()
+        loss = (per_sample / denominator).mean()
+        return loss, squared_error, mask
 
     def _sample_times(self, batch_size, device, dtype):
         pair = torch.randn(batch_size, 2, device=device, dtype=dtype)
@@ -156,7 +195,7 @@ class ImprovedMeanFlow(_IntervalFlowBase):
         )
         compound = average + (t - r)[:, None, None] * derivative.detach()
         target = noise - data_local
-        loss, error, mask = self._weighted_interval_loss(
+        loss, error, mask = self._meanflow_regression_loss(
             compound, target, data_local, cond
         )
         info = {

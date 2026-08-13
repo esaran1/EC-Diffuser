@@ -65,6 +65,39 @@ def test_import_finite_loss_backward_and_finite_gradients():
     assert gradients and all(torch.isfinite(g).all() for g in gradients)
 
 
+def test_adaptive_l2_matches_official_per_sample_weighting():
+    wrapper = make_wrapper(
+        adaptive_weighting=True, adaptive_power=1.0, adaptive_epsilon=0.01
+    )
+    prediction = torch.tensor(
+        [[[1.0] * D] * H, [[2.0] * D] * H], dtype=torch.float32
+    )
+    target = torch.zeros_like(prediction)
+    reference = torch.zeros_like(prediction)
+    loss, squared_error, mask = wrapper._meanflow_regression_loss(
+        prediction, target, reference, {}
+    )
+    per_sample = squared_error.sum(dim=(1, 2))
+    expected = (per_sample / (per_sample + 0.01).detach()).mean()
+    torch.testing.assert_close(loss, expected)
+    assert mask.all()
+
+
+def test_adaptive_weighting_requires_l2_and_valid_parameters():
+    with pytest.raises(ValueError, match="requires loss_type='l2'"):
+        make_wrapper(loss_type="l1", adaptive_weighting=True)
+    with pytest.raises(ValueError, match="adaptive_power"):
+        make_wrapper(adaptive_power=0.0)
+    with pytest.raises(ValueError, match="adaptive_epsilon"):
+        make_wrapper(adaptive_epsilon=0.0)
+    with pytest.raises(ValueError, match="adaptive_power"):
+        make_wrapper(adaptive_power=float("nan"))
+    with pytest.raises(TypeError, match="adaptive_weighting"):
+        make_wrapper(adaptive_weighting=1)
+    with pytest.raises(TypeError, match="adaptive_epsilon"):
+        make_wrapper(adaptive_epsilon="0.01")
+
+
 def test_known_compound_target_matches_equation_12():
     model = AnalyticAverage(a=0.2, b=0.03, c=-0.04)
     wrapper = make_wrapper(model)
