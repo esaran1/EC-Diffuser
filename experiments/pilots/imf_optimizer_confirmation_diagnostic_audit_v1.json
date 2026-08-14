@@ -1,0 +1,39 @@
+{
+  "schema_version": "imf-optimizer-confirmation-diagnostic-audit-v1",
+  "status": "PREDECLARED_POSTHOC_METRIC_RECOVERY",
+  "reason": "The committed training protocol omitted collect_diagnostics from the method block, so the training summary recorded aggregate raw L2 but not the predeclared boundary/interval split.",
+  "training_protocol": "experiments/pilots/imf_optimizer_confirmation_v1.json",
+  "training_protocol_sha256": "5e127e9897582f7f1f6764a992a8fa822743fc3dcb77a9fc340d3162f71b7a45",
+  "training_summary": "data/phase7_runs/ogbench_puzzle_state/imf_optimizer_confirmation_seed42_5000/summary.json",
+  "checkpoint": "data/phase7_runs/ogbench_puzzle_state/imf_optimizer_confirmation_seed42_5000/state_5000.pt",
+  "checkpoint_sha256": "81079c6e3462e10b4649dcc08edda787f04094041f89586116c473047cd0b85a",
+  "procedure": [
+    "reconstruct the architecture, dataset, normalizer, and first eight validation batches from the hashed training protocol",
+    "enable collect_diagnostics only in the wrapper reporting path",
+    "verify reconstructed initialization aggregate raw L2 matches the immutable training summary within 1e-6",
+    "load live and EMA weights with repository Trainer.load at step 5000",
+    "evaluate initial, live, and EMA weights using fixed seed 100042"
+  ],
+  "invariants": {
+    "changes_weights": false,
+    "changes_loss": false,
+    "changes_stochastic_draws": false,
+    "retrains_model": false,
+    "uses_simulator_test_set": false
+  },
+  "acceptance": {
+    "primary_metric": "final live fixed-validation interval_raw_l2",
+    "pass_rule": "live interval_raw_l2 at step 5000 is finite and lower than reconstructed initialization",
+    "secondary_metrics": [
+      "boundary_raw_l2",
+      "raw_l2_p99",
+      "jvp_rms_p99",
+      "EMA interval_raw_l2"
+    ]
+  },
+  "compute_gate": {
+    "expected_runtime_minutes": 1,
+    "expected_peak_vram_mib": 1800,
+    "additional_checkpoint_storage_bytes": 0
+  }
+}
