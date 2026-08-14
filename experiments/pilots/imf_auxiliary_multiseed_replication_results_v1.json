@@ -1,0 +1,185 @@
+{
+  "schema_version": "imf-auxiliary-multiseed-replication-results-v1",
+  "status": "PASS_PREDECLARED_AUXILIARY_REPLICATION",
+  "git_commit": "49af9be",
+  "protocol": "experiments/pilots/imf_auxiliary_multiseed_replication_v1.json",
+  "protocol_sha256": "261bd52e82b07d9d188dd8b883dff86016f05fd299786e3b8a16b94a4be225e0",
+  "task": "ogbench-puzzle-4x4-play-v0-state",
+  "training_seeds": [42, 43, 44],
+  "fixed_validation": {
+    "goal_seed": 42,
+    "stochastic_seed": 100042,
+    "batches": 8,
+    "weights_primary": "live",
+    "weights_secondary": "EMA",
+    "note": "seed 42 used the same validation goal and stochastic seeds through the prior single-seed confirmation protocol"
+  },
+  "per_seed": [
+    {
+      "seed": 42,
+      "source_protocol": "experiments/pilots/imf_auxiliary_paired_confirmation_v1.json",
+      "boundary": {
+        "initial_interval_raw_l2": 35.79238724708557,
+        "final_interval_raw_l2": 40.02855348587036,
+        "final_ema_interval_raw_l2": 14.13991630077362,
+        "feasible": false,
+        "checkpoint_sha256": "10be82d7ba56ec9678fbb3e7b46a8e2d0972feb4ca9436958592d05ed7e3d10d"
+      },
+      "auxiliary": {
+        "initial_interval_raw_l2": 35.77151882648468,
+        "final_interval_raw_l2": 17.8632093667984,
+        "final_ema_interval_raw_l2": 13.464799702167511,
+        "initial_aux_interval_raw_l2": 2.3514975905418396,
+        "final_aux_interval_raw_l2": 0.9062502235174179,
+        "feasible": true,
+        "auxiliary_head_learned": true,
+        "checkpoint_sha256": "da7679e1d1b382f7e62e1675a7d132d3f7ff737312ad20bd363abddab317c2f5"
+      },
+      "paired_live_reduction_percent": 55.37383239915498,
+      "paired_ema_reduction_percent": 4.774544518125423
+    },
+    {
+      "seed": 43,
+      "boundary": {
+        "initial_interval_raw_l2": 51.493085622787476,
+        "final_interval_raw_l2": 48.81048011779785,
+        "final_ema_interval_raw_l2": 15.142536163330078,
+        "feasible": true,
+        "runtime_seconds": 435.36830548988655,
+        "peak_vram_mib": 1724.03125,
+        "checkpoint": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_boundary_seed43_5000/state_5000.pt",
+        "checkpoint_bytes": 506437584,
+        "checkpoint_sha256": "37891f8a3ef8caf25d5a4a6e54dc3dc3572f5fa42dfea51e34fd623ad4858c9d"
+      },
+      "auxiliary": {
+        "initial_interval_raw_l2": 51.492979288101196,
+        "final_interval_raw_l2": 19.66684091091156,
+        "final_ema_interval_raw_l2": 13.425924122333527,
+        "initial_aux_interval_raw_l2": 2.434587746858597,
+        "final_aux_interval_raw_l2": 0.9018831253051758,
+        "feasible": true,
+        "auxiliary_head_learned": true,
+        "runtime_seconds": 585.8081671250984,
+        "peak_vram_mib": 2136.150390625,
+        "checkpoint": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_auxiliary_seed43_5000/state_5000.pt",
+        "checkpoint_bytes": 627561836,
+        "checkpoint_sha256": "41c5ce6f6deb96775a475f07c80559642500f5c23d788b71fc289760a5ff5d3d"
+      },
+      "paired_live_reduction_percent": 59.70774951721811,
+      "paired_ema_reduction_percent": 11.336357545928044
+    },
+    {
+      "seed": 44,
+      "boundary": {
+        "initial_interval_raw_l2": 33.47749054431915,
+        "final_interval_raw_l2": 34.20544767379761,
+        "final_ema_interval_raw_l2": 13.98294872045517,
+        "feasible": false,
+        "runtime_seconds": 445.1364237101516,
+        "peak_vram_mib": 1724.03125,
+        "checkpoint": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_boundary_seed44_5000/state_5000.pt",
+        "checkpoint_bytes": 506437584,
+        "checkpoint_sha256": "ce6bb54c3b96dc02b31b8e98e8a5303f8a921a218b7577ebd715987570f47b30"
+      },
+      "auxiliary": {
+        "initial_interval_raw_l2": 33.46881556510925,
+        "final_interval_raw_l2": 17.130356550216675,
+        "final_ema_interval_raw_l2": 11.821344077587128,
+        "initial_aux_interval_raw_l2": 2.3680141866207123,
+        "final_aux_interval_raw_l2": 0.9171944409608841,
+        "feasible": true,
+        "auxiliary_head_learned": true,
+        "runtime_seconds": 580.1094260090031,
+        "peak_vram_mib": 2136.150390625,
+        "checkpoint": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_auxiliary_seed44_5000/state_5000.pt",
+        "checkpoint_bytes": 627561836,
+        "checkpoint_sha256": "c003f18f97cd1c00a5454ddae965220221dee1413184d91a635d9c1cf393a409"
+      },
+      "paired_live_reduction_percent": 49.91921546070266,
+      "paired_ema_reduction_percent": 15.458861260829092
+    }
+  ],
+  "aggregate": {
+    "boundary_final_interval_raw_l2": {
+      "mean": 41.01482709248861,
+      "sample_standard_deviation": 7.352298612876708,
+      "range": [34.20544767379761, 48.81048011779785]
+    },
+    "auxiliary_final_interval_raw_l2": {
+      "mean": 18.22013560930888,
+      "sample_standard_deviation": 1.3053679500267048,
+      "range": [17.130356550216675, 19.66684091091156]
+    },
+    "paired_live_reduction_percent": {
+      "mean": 55.00026579235858,
+      "sample_standard_deviation": 4.904947884654407,
+      "range": [49.91921546070266, 59.70774951721811]
+    },
+    "boundary_final_ema_interval_raw_l2": {
+      "mean": 14.421800394852957,
+      "sample_standard_deviation": 0.6290904078822757
+    },
+    "auxiliary_final_ema_interval_raw_l2": {
+      "mean": 12.904022634029388,
+      "sample_standard_deviation": 0.9378285931404418
+    },
+    "paired_ema_reduction_percent": {
+      "mean": 10.52325444162752,
+      "sample_standard_deviation": 5.388367893738497,
+      "range": [4.774544518125423, 15.458861260829092]
+    },
+    "boundary_feasible_seeds": 1,
+    "auxiliary_feasible_seeds": 3,
+    "auxiliary_head_learning_seeds": 3
+  },
+  "acceptance": {
+    "common_integrity_requirements_passed": true,
+    "directional_consistency_passed": true,
+    "mean_superiority_passed": true,
+    "auxiliary_feasibility_passed": true,
+    "auxiliary_head_learning_passed": true,
+    "all_predeclared_criteria_passed": true
+  },
+  "checkpoint_integrity": {
+    "new_checkpoints_structurally_loaded": 4,
+    "steps_restored": 5000,
+    "live_state_present": true,
+    "ema_state_present": true,
+    "all_checkpoint_tensors_finite": true
+  },
+  "compute": {
+    "additional_runs": 4,
+    "actual_optimizer_runtime_seconds": 2046.4223223341396,
+    "actual_gpu_hours": 0.5684506450928165,
+    "new_checkpoint_bytes": 2267998840,
+    "peak_vram_mib": 2136.150390625,
+    "execution": "strictly sequential"
+  },
+  "issues": [
+    {
+      "issue": "the first seed-43 boundary invocation omitted the repository root from PYTHONPATH and failed before CUDA allocation with ModuleNotFoundError: dlp_utils",
+      "resolution": "preserved the failed preflight log, verified the explicit established Python paths from /tmp, and reran the unchanged frozen arm",
+      "scientific_impact": "none; zero optimizer steps and no checkpoint were produced"
+    }
+  ],
+  "phase_8_evidence": {
+    "supported": [
+      "the auxiliary marginal-velocity construction consistently improves the measured 5000-step live interval optimization diagnostic relative to boundary iMF",
+      "boundary iMF live interval optimization is unstable or weak under this fixed setup, failing its feasibility test in two of three seeds",
+      "the auxiliary head itself learns its target in all three seeds"
+    ],
+    "against": [
+      "the original seed-42 live-weight advantage being an isolated seed artifact",
+      "the effect being caused by different validation batches or paired training randomness"
+    ],
+    "unresolved": {
+      "data": "shared data controls the paired comparison but absolute data sufficiency is not tested",
+      "representation": "shared state representation controls the comparison but representation adequacy is not tested",
+      "temporal": "shared horizon controls the comparison but horizon and compounding error are not tested",
+      "control": "no environment rollout was performed",
+      "policy_performance": "no success, reward, or low-NFE planning claim is supported"
+    }
+  },
+  "interpretation": "The predeclared three-training-seed optimization replication passes. The auxiliary objective is a robust candidate for the next bounded task-level diagnostic, but this result alone is not a policy benchmark, cross-task result, novelty claim, or Phase 9 evidence.",
+  "next_gate": "Predeclare one representative task-level pilot comparing boundary and auxiliary iMF under the same training budget, evaluation seeds, and NFE settings. State measured runtime and stop for approval before any program above the applicable compute gate."
+}

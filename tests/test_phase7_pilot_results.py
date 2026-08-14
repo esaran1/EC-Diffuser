@@ -53,3 +53,23 @@ def test_revised_matrix_uses_measured_ogbench_costs():
     assert matrix["status"] == "BOUNDED_PILOTS_COMPLETE_FULL_RUNS_AWAIT_REVIEW"
     assert matrix["compute_gate"]["full_runs_started"] == 0
     assert matrix["cost"]["checkpoint_bytes_each_observed_upper"] == 506453928
+
+
+def test_auxiliary_imf_multiseed_replication_passes_predeclared_criteria():
+    results = json.load(open(
+        "experiments/pilots/imf_auxiliary_multiseed_replication_results_v1.json"
+    ))
+    effects = [row["paired_live_reduction_percent"] for row in results["per_seed"]]
+
+    assert results["status"] == "PASS_PREDECLARED_AUXILIARY_REPLICATION"
+    assert results["training_seeds"] == [42, 43, 44]
+    assert min(effects) > 0
+    assert results["aggregate"]["paired_live_reduction_percent"]["mean"] >= 5
+    assert results["aggregate"]["auxiliary_feasible_seeds"] == 3
+    assert results["aggregate"]["auxiliary_head_learning_seeds"] == 3
+    assert results["acceptance"]["all_predeclared_criteria_passed"] is True
+    assert results["checkpoint_integrity"]["all_checkpoint_tensors_finite"] is True
+    assert results["compute"]["actual_gpu_hours"] < 1
+    assert results["phase_8_evidence"]["unresolved"]["policy_performance"].startswith(
+        "no success"
+    )
