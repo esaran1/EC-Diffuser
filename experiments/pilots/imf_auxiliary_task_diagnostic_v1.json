@@ -1,0 +1,108 @@
+{
+  "schema_version": "imf-auxiliary-task-diagnostic-v1",
+  "status": "PREDECLARED_NO_RETRAINING_TASK_DIAGNOSTIC",
+  "parent_result": "experiments/pilots/imf_auxiliary_multiseed_replication_results_v1.json",
+  "representative_failure": {
+    "task": "OGBench puzzle-4x4-play-v0 task 4",
+    "evidence": "prior 5000-step boundary iMF checks produced clipped actions at every tested first step and no success evidence",
+    "why_informative": "tests whether the replicated auxiliary optimization gain changes real low-NFE action generation and closed-loop execution without retraining"
+  },
+  "hypothesis": "the auxiliary marginal-velocity objective produces a more usable 4-NFE policy than paired boundary iMF checkpoints after the same 5000-step training budget",
+  "exact_change": "checkpoint method only; environment, task, EMA selection, training steps, training seeds, evaluation seeds, normalizer, horizon, and NFE are paired",
+  "expected_if_true": "auxiliary checkpoints execute finite correctly conditioned plans and show a consistent improvement in success, return, or action clipping across training seeds",
+  "expected_if_false": "both methods execute correctly but remain equally unsuccessful or auxiliary behavior is not directionally better",
+  "training": {
+    "retraining": false,
+    "training_seeds": [42, 43, 44],
+    "optimizer_steps": 5000,
+    "checkpoint_weights": "EMA",
+    "checkpoint_selection": "fixed final checkpoint only"
+  },
+  "checkpoints": {
+    "42": {
+      "improved_meanflow": {
+        "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_confirm_boundary_seed42_5000/state_5000.pt",
+        "sha256": "10be82d7ba56ec9678fbb3e7b46a8e2d0972feb4ca9436958592d05ed7e3d10d"
+      },
+      "auxiliary_improved_meanflow": {
+        "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_confirm_auxiliary_seed42_5000/state_5000.pt",
+        "sha256": "da7679e1d1b382f7e62e1675a7d132d3f7ff737312ad20bd363abddab317c2f5"
+      }
+    },
+    "43": {
+      "improved_meanflow": {
+        "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_boundary_seed43_5000/state_5000.pt",
+        "sha256": "37891f8a3ef8caf25d5a4a6e54dc3dc3572f5fa42dfea51e34fd623ad4858c9d"
+      },
+      "auxiliary_improved_meanflow": {
+        "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_auxiliary_seed43_5000/state_5000.pt",
+        "sha256": "41c5ce6f6deb96775a475f07c80559642500f5c23d788b71fc289760a5ff5d3d"
+      }
+    },
+    "44": {
+      "improved_meanflow": {
+        "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_boundary_seed44_5000/state_5000.pt",
+        "sha256": "ce6bb54c3b96dc02b31b8e98e8a5303f8a921a218b7577ebd715987570f47b30"
+      },
+      "auxiliary_improved_meanflow": {
+        "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_multiseed_auxiliary_seed44_5000/state_5000.pt",
+        "sha256": "c003f18f97cd1c00a5454ddae965220221dee1413184d91a635d9c1cf393a409"
+      }
+    }
+  },
+  "evaluation": {
+    "protocol": "experiments/pilots/imf_auxiliary_multiseed_replication_v1.json",
+    "environment": "puzzle-4x4-play-v0",
+    "ogbench_version": "1.2.1",
+    "task_ids": [4],
+    "evaluation_seed": 42000,
+    "episode_seeds": [82000, 82001, 82002],
+    "native_horizon": 500,
+    "policy_horizon": 5,
+    "nfe": 4,
+    "episodes_per_checkpoint": 3,
+    "total_full_horizon_episodes": 18,
+    "checkpoint_step_required": 5000,
+    "checkpoint_hash_required": true,
+    "exact_conditioning_required": true,
+    "model_calls_per_plan_required": 4
+  },
+  "preflight": {
+    "nfe_values": [1, 2, 4, 8],
+    "episode_steps": 1,
+    "episodes_per_checkpoint_nfe": 1,
+    "process_invocations": 24,
+    "requirements": [
+      "strict EMA reload",
+      "finite trajectory",
+      "exact initial and goal conditioning",
+      "observed denoiser calls equal requested NFE",
+      "one real environment action executes"
+    ]
+  },
+  "analysis": {
+    "primary_metric": "full success count",
+    "secondary_metrics": [
+      "mean return",
+      "action clip step fraction",
+      "planning latency mean/P50/P95",
+      "environment steps",
+      "peak inference VRAM"
+    ],
+    "signal_rule": "report each checkpoint and paired training seed; label early positive signal only if auxiliary improves success or return, or lowers action clipping for at least two of three seeds",
+    "statistical_limit": "three training seeds times three episodes is an integration pilot, not a benchmark estimate or hypothesis test"
+  },
+  "compute_gate": {
+    "training_runs": 0,
+    "preflight_invocations": 24,
+    "full_rollout_invocations": 6,
+    "estimated_gpu_hours": 0.08,
+    "estimated_wall_clock_minutes": 12,
+    "estimated_peak_vram_mib": 2200,
+    "estimated_result_storage_mib": 5,
+    "execution": "strictly sequential",
+    "stop_if_preflight_fails": true,
+    "long_training_authorized": false,
+    "phase_9_authorized": false
+  }
+}

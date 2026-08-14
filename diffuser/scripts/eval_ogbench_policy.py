@@ -15,8 +15,8 @@ import numpy as np
 import torch
 
 from diffuser.datasets.benchmark_sequence import TrainSplitNormalizer
-from diffuser.models import IntervalTemporalUnet
-from train_phase7_pilot import METHODS, build_method
+from diffuser.models import AuxiliaryIntervalTemporalUnet, IntervalTemporalUnet
+from diffuser.scripts.train_phase7_pilot import METHODS, build_method
 
 
 def sha256_file(path, chunk_size=8 * 1024 * 1024):
@@ -47,11 +47,19 @@ def normalized_conditions(normalizer, observation, goal, device, horizon):
     }
 
 
+def backbone_class_for_method(method_name):
+    if method_name == "auxiliary_improved_meanflow":
+        return AuxiliaryIntervalTemporalUnet
+    return IntervalTemporalUnet
+
+
 def main():
     import ogbench
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--method", required=True, choices=sorted(METHODS))
     parser.add_argument("--checkpoint", type=Path, required=True)
+    parser.add_argument("--expected-checkpoint-sha256")
+    parser.add_argument("--expected-checkpoint-step", type=int)
     parser.add_argument(
         "--protocol", type=Path,
         default=Path("experiments/pilots/ogbench_puzzle_state_extension_v1.json"),
@@ -90,7 +98,7 @@ def main():
     device = torch.device("cuda:0")
     set_seed(args.evaluation_seed)
     backbone_config = protocol["backbone"]
-    backbone = IntervalTemporalUnet(
+    backbone = backbone_class_for_method(args.method)(
         horizon=task["horizon"],
         transition_dim=task["observation_dim"] + task["action_dim"],
         cond_dim=task["observation_dim"],
@@ -99,14 +107,28 @@ def main():
         attention=backbone_config["attention"],
     ).to(device)
     parameter_count = sum(parameter.numel() for parameter in backbone.parameters())
-    if parameter_count != backbone_config["parameter_count"]:
+    expected_parameter_count = method_config.get(
+        "parameter_count", backbone_config["parameter_count"]
+    )
+    if parameter_count != expected_parameter_count:
         raise RuntimeError("backbone parameter count does not match protocol")
     policy = build_method(args.method, backbone, task, method_config).to(device)
 
+    checkpoint_hash = sha256_file(args.checkpoint)
+    if (
+        args.expected_checkpoint_sha256 is not None
+        and checkpoint_hash != args.expected_checkpoint_sha256
+    ):
+        raise RuntimeError("checkpoint SHA256 does not match the frozen protocol")
     checkpoint = torch.load(args.checkpoint, map_location="cpu")
     if set(checkpoint) != {"step", "model", "ema"}:
         raise RuntimeError("checkpoint does not have the repository Trainer schema")
     checkpoint_step = int(checkpoint["step"])
+    if (
+        args.expected_checkpoint_step is not None
+        and checkpoint_step != args.expected_checkpoint_step
+    ):
+        raise RuntimeError("checkpoint step does not match the frozen protocol")
     policy.load_state_dict(checkpoint["ema"], strict=True)
     del checkpoint
     policy.eval()
@@ -236,7 +258,7 @@ def main():
         "parameter_count": parameter_count,
         "checkpoint": str(args.checkpoint),
         "checkpoint_step": checkpoint_step,
-        "checkpoint_sha256": sha256_file(args.checkpoint),
+        "checkpoint_sha256": checkpoint_hash,
         "checkpoint_weights": "ema",
         "protocol": str(args.protocol),
         "protocol_sha256": hashlib.sha256(protocol_bytes).hexdigest(),
@@ -247,6 +269,7 @@ def main():
         "task_ids": args.task_ids,
         "episodes_per_task": args.episodes_per_task,
         "episodes": len(episodes),
+        "environment_steps": sum(record["steps"] for record in episodes),
         "native_episode_horizon": native_horizon,
         "executed_episode_horizon": episode_horizon,
         "evaluation_seed": args.evaluation_seed,
