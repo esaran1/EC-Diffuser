@@ -17,6 +17,8 @@ import wandb
 
 from diffuser.datasets.benchmark_sequence import OGBenchPuzzleWindowDataset
 from diffuser.models import (
+    AuxiliaryImprovedMeanFlow,
+    AuxiliaryIntervalTemporalUnet,
     ConditionalFlowMatching,
     GaussianDiffusion,
     ImprovedMeanFlow,
@@ -26,6 +28,7 @@ from diffuser.models import (
 
 
 METHODS = {
+    "auxiliary_improved_meanflow": AuxiliaryImprovedMeanFlow,
     "gaussian_diffusion": GaussianDiffusion,
     "conditional_flow_matching": ConditionalFlowMatching,
     "improved_meanflow": ImprovedMeanFlow,
@@ -65,7 +68,7 @@ def build_method(name, model, task, method_config):
         n_solver_steps=method_config["default_solver_steps"],
         time_scale=method_config["time_scale"],
     )
-    if name == "improved_meanflow":
+    if name in ("improved_meanflow", "auxiliary_improved_meanflow"):
         for key in (
             "time_mean", "time_std", "boundary_probability",
             "adaptive_weighting", "adaptive_power", "adaptive_epsilon",
@@ -203,7 +206,12 @@ def main():
         raise RuntimeError("dataset dimensions do not match the protocol")
 
     backbone = protocol["backbone"]
-    model = IntervalTemporalUnet(
+    model_class = (
+        AuxiliaryIntervalTemporalUnet
+        if args.method == "auxiliary_improved_meanflow"
+        else IntervalTemporalUnet
+    )
+    model = model_class(
         horizon=task["horizon"],
         transition_dim=task["observation_dim"] + task["action_dim"],
         cond_dim=task["observation_dim"],
@@ -212,7 +220,10 @@ def main():
         attention=backbone["attention"],
     ).to(device)
     parameter_count = sum(parameter.numel() for parameter in model.parameters())
-    if parameter_count != backbone["parameter_count"]:
+    expected_parameter_count = method_config.get(
+        "parameter_count", backbone["parameter_count"]
+    )
+    if parameter_count != expected_parameter_count:
         raise RuntimeError("backbone parameter count does not match the protocol")
     method = build_method(
         args.method, model, task, method_config
@@ -244,7 +255,11 @@ def main():
         ),
         adam_betas=tuple(training.get("adam_betas", (0.9, 0.999))),
         lr_warmup_steps=training.get("lr_warmup_steps", 0),
+        dataloader_seed=training.get("dataloader_seed"),
     )
+
+    if "optimization_seed" in training:
+        set_seed(training["optimization_seed"])
 
     validation_history = [{
         "step": 0,
@@ -336,6 +351,8 @@ def main():
         "learning_rate": training["learning_rate"],
         "adam_betas": list(training.get("adam_betas", (0.9, 0.999))),
         "lr_warmup_steps": training.get("lr_warmup_steps", 0),
+        "dataloader_seed": training.get("dataloader_seed"),
+        "optimization_seed": training.get("optimization_seed"),
         "max_grad_norm": training.get("max_grad_norm"),
         "collect_step_diagnostics": training.get(
             "collect_step_diagnostics", False

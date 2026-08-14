@@ -297,6 +297,130 @@ class ImprovedMeanFlow(_IntervalFlowBase):
         return self._package_sample(x, chain, return_chain, sort_by_value)
 
 
+class AuxiliaryImprovedMeanFlow(ImprovedMeanFlow):
+    """iMF equation 12 with the paper auxiliary marginal-velocity head."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not callable(getattr(self.model, "forward_with_aux", None)):
+            raise TypeError(
+                "auxiliary iMF model must implement forward_with_aux"
+            )
+
+    def _call_aux_interval_model(self, x, cond, time, interval):
+        outputs = self.model.forward_with_aux(
+            x,
+            cond,
+            time * self.time_scale,
+            interval=interval * self.time_scale,
+        )
+        if not isinstance(outputs, tuple) or len(outputs) != 2:
+            raise ValueError("forward_with_aux must return (u, v)")
+        for prediction in outputs:
+            if not torch.is_tensor(prediction) or prediction.shape != x.shape:
+                raise ValueError("auxiliary model outputs must match trajectory shape")
+            if prediction.device != x.device or prediction.dtype != x.dtype:
+                raise ValueError("auxiliary model outputs must match device and dtype")
+            if not torch.isfinite(prediction).all():
+                raise ValueError("auxiliary model output contains non-finite values")
+        return outputs
+
+    def _auxiliary_diagnostics(self, error, mask, boundary):
+        active = mask.to(error.dtype)
+        counts = active.sum(dim=(1, 2)).clamp_min(1.0)
+        per_sample = (error * active).sum(dim=(1, 2)) / counts
+        return {
+            "aux_boundary_raw_l2": self._subset_mean(
+                per_sample, boundary
+            ).detach(),
+            "aux_interval_raw_l2": self._subset_mean(
+                per_sample, ~boundary
+            ).detach(),
+            "aux_raw_l2_p99": torch.quantile(per_sample, 0.99).detach(),
+        }
+
+    def _compute_meanflow_loss(
+        self, data, cond, noise=None, r=None, t=None, return_details=False
+    ):
+        noise = torch.randn_like(data) if noise is None else noise.clone()
+        if r is None or t is None:
+            r, t, boundary = self._sample_times(
+                data.shape[0], data.device, data.dtype
+            )
+        else:
+            boundary = r == t
+        self._validate_meanflow_inputs(data, cond, noise, r, t)
+
+        data_local = data.clone()
+        self._apply_conditioning(data_local, cond)
+        self._apply_conditioning(noise, cond)
+        zt = (1.0 - t[:, None, None]) * data_local + t[:, None, None] * noise
+        self._apply_conditioning(zt, cond)
+
+        _, marginal_velocity = self._call_aux_interval_model(
+            zt, cond, t, torch.zeros_like(t)
+        )
+
+        def average_with_aux(z_value, r_value, t_value):
+            return self._call_aux_interval_model(
+                z_value, cond, t_value, t_value - r_value
+            )
+
+        average, derivative, auxiliary_velocity = torch.func.jvp(
+            average_with_aux,
+            (zt, r, t),
+            (marginal_velocity, torch.zeros_like(r), torch.ones_like(t)),
+            has_aux=True,
+        )
+        compound = average + (t - r)[:, None, None] * derivative.detach()
+        target = noise - data_local
+        loss_u, error_u, mask = self._meanflow_regression_loss(
+            compound, target, data_local, cond
+        )
+        loss_v, error_v, aux_mask = self._meanflow_regression_loss(
+            auxiliary_velocity, target, data_local, cond
+        )
+        if not torch.equal(mask, aux_mask):
+            raise RuntimeError("u/v conditioning masks disagree")
+        loss = loss_u + loss_v
+        info = {
+            "meanflow_loss": loss.detach(),
+            "meanflow_u_loss": loss_u.detach(),
+            "meanflow_v_loss": loss_v.detach(),
+            "unweighted_meanflow_loss": self._masked_mean(
+                error_u, mask
+            ).detach(),
+            "unweighted_aux_velocity_loss": self._masked_mean(
+                error_v, mask
+            ).detach(),
+            "boundary_fraction": boundary.to(data.dtype).mean().detach(),
+        }
+        if self.collect_diagnostics:
+            info.update(self._meanflow_diagnostics(
+                error_u, mask, boundary, derivative
+            ))
+            info.update(self._auxiliary_diagnostics(
+                error_v, mask, boundary
+            ))
+        if return_details:
+            details = {
+                "data": data_local,
+                "noise": noise,
+                "zt": zt,
+                "r": r,
+                "t": t,
+                "marginal_velocity": marginal_velocity,
+                "average_velocity": average,
+                "auxiliary_velocity": auxiliary_velocity,
+                "jvp": derivative,
+                "compound_velocity": compound,
+                "target_velocity": target,
+                "conditioning_mask": mask,
+            }
+            return loss, info, details
+        return loss, info
+
+
 class ShortcutModel(_IntervalFlowBase):
     """Shortcut Model, arXiv:2410.12557, equations 3--5 and Algorithm 1."""
 

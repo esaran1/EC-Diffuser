@@ -173,3 +173,14 @@ def test_trainer_validates_optimizer_configuration():
     )
     assert trainer.optimizer.defaults["betas"] == (0.9, 0.95)
     assert trainer.lr_warmup_steps == 16
+
+    with pytest.raises(TypeError, match="dataloader_seed"):
+        Trainer(
+            nn.Linear(1, 1), dataset, renderer=None,
+            sample_freq=0, save_freq=0, dataloader_seed=True,
+        )
+    seeded = Trainer(
+        nn.Linear(1, 1), dataset, renderer=None,
+        sample_freq=0, save_freq=0, dataloader_seed=42,
+    )
+    assert seeded.dataloader_seed == 42

@@ -60,6 +60,7 @@ class Trainer(object):
         collect_step_diagnostics=False,
         adam_betas=(0.9, 0.999),
         lr_warmup_steps=0,
+        dataloader_seed=None,
     ):
         super().__init__()
         self.model = diffusion_model
@@ -78,8 +79,18 @@ class Trainer(object):
         self.gradient_accumulate_every = gradient_accumulate_every
 
         self.dataset = dataset
+        if dataloader_seed is not None and (
+            isinstance(dataloader_seed, bool) or not isinstance(dataloader_seed, int)
+        ):
+            raise TypeError("dataloader_seed must be an integer or None")
+        dataloader_generator = None
+        if dataloader_seed is not None:
+            dataloader_generator = torch.Generator()
+            dataloader_generator.manual_seed(dataloader_seed)
+        self.dataloader_seed = dataloader_seed
         self.dataloader = cycle(torch.utils.data.DataLoader(
-            self.dataset, batch_size=train_batch_size, num_workers=1, shuffle=True, pin_memory=True
+            self.dataset, batch_size=train_batch_size, num_workers=1,
+            shuffle=True, pin_memory=True, generator=dataloader_generator,
         ))
         self.dataloader_vis = cycle(torch.utils.data.DataLoader(
             self.dataset, batch_size=1, num_workers=0, shuffle=True, pin_memory=True

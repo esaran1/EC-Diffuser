@@ -1,0 +1,62 @@
+{
+  "schema_version": "imf-auxiliary-paired-screen-v1",
+  "status": "PREDECLARED_BOUNDED_PAIRED_SCREEN",
+  "sources": {
+    "paper": "https://arxiv.org/abs/2512.02012",
+    "official_repository": "https://github.com/Lyy-iiis/imeanflow",
+    "official_jax_commit": "bf60cd7cb653f6628e59d48034b333c5eba445e2"
+  },
+  "hardware": {"gpu": "NVIDIA GeForce RTX 4080", "count": 1, "device": "cuda:0"},
+  "task": {
+    "id": "ogbench-puzzle-4x4-play-v0-state",
+    "dataset_manifest": "experiments/datasets/converted/ogbench_puzzle_4x4_play_v0_manifest.json",
+    "normalizer_bundle": "experiments/datasets/benchmark_normalizers_v1.json",
+    "normalizer_sha256": "2f5ec416b1f407928f1e55b615a7b5a1229580247b4812b18cff0ff1b33a265e",
+    "horizon": 5, "observation_dim": 83, "action_dim": 5,
+    "goal_relabeling": "deterministic future state from the same episode only"
+  },
+  "backbone": {
+    "class": "diffuser.models.IntervalTemporalUnet",
+    "dim": 128, "dim_mults": [1, 2, 4, 8], "attention": false,
+    "parameter_count": 63282904
+  },
+  "training": {
+    "seed": 42, "dataloader_seed": 200042, "optimization_seed": 300042,
+    "optimizer": "Adam", "learning_rate": 0.00004,
+    "adam_betas": [0.9, 0.95], "lr_warmup_steps": 16,
+    "optimizer_steps": 1000, "microbatch_size": 32,
+    "gradient_accumulation": 2, "effective_batch_size": 64,
+    "examples_seen": 64000, "ema_decay": 0.995,
+    "ema_start_step": 2000, "ema_update_every": 10,
+    "log_frequency": 50, "fixed_validation_frequency": 250,
+    "fixed_validation_batches": 8, "periodic_checkpoints": false,
+    "collect_step_diagnostics": true, "max_grad_norm": null
+  },
+  "methods": {
+    "improved_meanflow": {
+      "default_solver_steps": 4, "time_scale": 1000.0,
+      "loss_type": "l2", "adaptive_weighting": true,
+      "adaptive_power": 1.0, "adaptive_epsilon": 0.01,
+      "boundary_probability": 0.5, "collect_diagnostics": true
+    },
+    "auxiliary_improved_meanflow": {
+      "default_solver_steps": 4, "time_scale": 1000.0,
+      "loss_type": "l2", "adaptive_weighting": true,
+      "adaptive_power": 1.0, "adaptive_epsilon": 0.01,
+      "boundary_probability": 0.5, "collect_diagnostics": true,
+      "parameter_count": 78415024
+    }
+  },
+  "comparison": {
+    "primary_metric": "final live fixed-validation interval_raw_l2",
+    "feasibility": "each method must finish with finite metrics and final interval_raw_l2 below its initialization",
+    "auxiliary_superiority": "auxiliary final interval_raw_l2 at most 95 percent of paired boundary final",
+    "secondary_metrics": ["boundary_raw_l2", "raw_l2_p99", "jvp_rms_p99", "aux_interval_raw_l2", "EMA metrics"],
+    "simulator_test_set_used": false
+  },
+  "compute_gate": {
+    "execution": "sequential only", "projected_runtime_minutes_total": 6,
+    "projected_peak_vram_mib": 3500, "projected_storage_mib_total": 1100,
+    "full_training_authorized": false
+  }
+}

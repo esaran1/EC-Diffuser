@@ -169,6 +169,78 @@ class IntervalTemporalUnet(TemporalUnet):
         return self.time_mlp(time) + self.interval_mlp(interval)
 
 
+class AuxiliaryIntervalTemporalUnet(IntervalTemporalUnet):
+    """Interval U-Net with a shared encoder and independent u/v decoders.
+
+    The v decoder is training-only. The forward method preserves the canonical
+    single-output interface so sampling never evaluates the auxiliary branch.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.aux_ups = copy.deepcopy(self.ups)
+        self.aux_final_conv = copy.deepcopy(self.final_conv)
+        self.aux_ups.apply(self._reset_auxiliary_parameters)
+        self.aux_final_conv.apply(self._reset_auxiliary_parameters)
+
+    @staticmethod
+    def _reset_auxiliary_parameters(module):
+        reset = getattr(module, "reset_parameters", None)
+        if callable(reset):
+            reset()
+
+    def _shared_features(self, x, time, interval):
+        x = einops.rearrange(x, "b h t -> b t h")
+        x_dim = x.shape[-1]
+        padded_dim = 2 ** math.ceil(math.log(x_dim, 2))
+        x = nn.functional.pad(x, (0, padded_dim - x_dim))
+        embedding = self._time_embedding(time, interval)
+        skips = []
+        for resnet, resnet2, attn, downsample in self.downs:
+            x = resnet(x, embedding)
+            x = resnet2(x, embedding)
+            x = attn(x)
+            skips.append(x)
+            x = downsample(x)
+        x = self.mid_block1(x, embedding)
+        x = self.mid_attn(x)
+        x = self.mid_block2(x, embedding)
+        return x, skips, embedding, x_dim
+
+    @staticmethod
+    def _decode(x, skips, embedding, ups, final_conv, x_dim):
+        skips = list(skips)
+        for resnet, resnet2, attn, upsample in ups:
+            x = torch.cat((x, skips.pop()), dim=1)
+            x = resnet(x, embedding)
+            x = resnet2(x, embedding)
+            x = attn(x)
+            x = upsample(x)
+        x = final_conv(x)[:, :, :x_dim]
+        return einops.rearrange(x, "b t h -> b h t")
+
+    def forward(self, x, cond, time, *, interval=None):
+        shared, skips, embedding, x_dim = self._shared_features(
+            x, time, interval
+        )
+        return self._decode(
+            shared, skips, embedding, self.ups, self.final_conv, x_dim
+        )
+
+    def forward_with_aux(self, x, cond, time, *, interval=None):
+        shared, skips, embedding, x_dim = self._shared_features(
+            x, time, interval
+        )
+        average = self._decode(
+            shared, skips, embedding, self.ups, self.final_conv, x_dim
+        )
+        velocity = self._decode(
+            shared, skips, embedding, self.aux_ups,
+            self.aux_final_conv, x_dim,
+        )
+        return average, velocity
+
+
 class ValueFunction(nn.Module):
 
     def __init__(
