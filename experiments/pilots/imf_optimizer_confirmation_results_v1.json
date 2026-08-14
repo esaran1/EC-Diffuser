@@ -1,0 +1,69 @@
+{
+  "schema_version": "imf-optimizer-confirmation-results-v1",
+  "status": "FAIL_LIVE_INTERVAL_STABILITY",
+  "git_commit": "6a04009526a6028984c8e561178d5abfb12bc822",
+  "protocol": "experiments/pilots/imf_optimizer_confirmation_v1.json",
+  "protocol_sha256": "5e127e9897582f7f1f6764a992a8fa822743fc3dcb77a9fc340d3162f71b7a45",
+  "task": "ogbench-puzzle-4x4-play-v0-state",
+  "method": "improved_meanflow",
+  "seed": 42,
+  "optimizer": {
+    "type": "Adam",
+    "learning_rate": 0.00004,
+    "betas": [0.9, 0.95],
+    "warmup_steps": 78
+  },
+  "optimizer_steps": 5000,
+  "examples_seen": 320000,
+  "exit_code": 0,
+  "all_recorded_values_finite": true,
+  "cuda_oom": false,
+  "runtime_seconds": 441.04685895808507,
+  "seconds_per_optimizer_step": 0.08820937179161702,
+  "peak_vram_mib_torch": 1724.01953125,
+  "checkpoint": "data/phase7_runs/ogbench_puzzle_state/imf_optimizer_confirmation_seed42_5000/state_5000.pt",
+  "checkpoint_bytes": 506437584,
+  "checkpoint_sha256": "81079c6e3462e10b4649dcc08edda787f04094041f89586116c473047cd0b85a",
+  "checkpoint_step": 5000,
+  "live_and_ema_present": true,
+  "diagnostic_recovery": {
+    "reason": "The training protocol omitted collect_diagnostics from the method block; aggregate fixed validation was recorded during training, and the boundary/interval split was recovered without retraining from the immutable checkpoint.",
+    "predeclared_protocol": "experiments/pilots/imf_optimizer_confirmation_diagnostic_audit_v1.json",
+    "audit_commit": "3d3e025",
+    "audit_output": "data/phase7_runs/ogbench_puzzle_state/imf_optimizer_confirmation_seed42_5000/diagnostic_audit.json",
+    "audit_output_sha256": "2df010aa181c665cec1562cb233d314d824c416b33fab39fc88ae60973383078",
+    "initial_aggregate_matches_training_summary": true,
+    "weights_or_training_changed": false
+  },
+  "fixed_validation": {
+    "weights": "live",
+    "batches": 8,
+    "seed": 100042,
+    "initial_unweighted_meanflow_loss": 18.812977731227875,
+    "final_unweighted_meanflow_loss": 21.79025685787201,
+    "initial_interval_raw_l2": 35.79238724708557,
+    "final_interval_raw_l2": 42.87323999404907,
+    "final_boundary_raw_l2": 0.7072748988866806,
+    "final_raw_l2_p99": 150.88737297058105,
+    "final_jvp_rms_p99": 39.15880250930786,
+    "final_interval_below_initial": false
+  },
+  "ema_fixed_validation": {
+    "final_unweighted_meanflow_loss": 7.836256623268127,
+    "final_interval_raw_l2": 14.846351504325867,
+    "final_boundary_raw_l2": 0.8261618092656136,
+    "final_raw_l2_p99": 56.607510566711426,
+    "final_jvp_rms_p99": 20.486281871795654
+  },
+  "diagnostic_extrema": {
+    "gradient_l2_preclip": 3.352211712527433,
+    "gradient_max_abs_preclip": 0.06921233236789703,
+    "update_to_parameter_ratio": 0.00028395755832492155
+  },
+  "acceptance": {
+    "passed": false,
+    "failed_criterion": "final live fixed-validation interval_raw_l2 must be lower than initialization",
+    "interpretation": "Source-matched Adam beta2 and proportional warmup improve the bounded 1000-step screen but do not prevent live-weight interval/JVP drift at 5000 steps. EMA remains substantially better, but it was not the primary stability criterion."
+  },
+  "next_gate": "Do not launch long iMF training. Compare the released auxiliary-velocity-head formulation against the boundary-only formulation in a new bounded, predeclared implementation study."
+}
