@@ -84,3 +84,20 @@ def test_imf_optimizer_confirmation_is_bounded_and_frozen():
         "final live fixed-validation interval_raw_l2"
     )
     assert protocol["compute_gate"]["full_training_authorized"] is False
+
+
+def test_auxiliary_imf_confirmation_is_paired_and_bounded():
+    protocol = json.loads(Path(
+        "experiments/pilots/imf_auxiliary_paired_confirmation_v1.json"
+    ).read_text())
+    training = protocol["training"]
+    assert protocol["status"] == "PREDECLARED_BOUNDED_PAIRED_CONFIRMATION"
+    assert training["optimizer_steps"] == 5000
+    assert training["dataloader_seed"] == 200042
+    assert training["optimization_seed"] == 300042
+    assert training["lr_warmup_steps"] == 78
+    assert set(protocol["methods"]) == {
+        "improved_meanflow", "auxiliary_improved_meanflow"
+    }
+    assert protocol["acceptance"]["simulator_test_set_used"] is False
+    assert protocol["compute_gate"]["full_training_authorized"] is False
