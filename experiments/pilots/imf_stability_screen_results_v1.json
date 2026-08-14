@@ -1,0 +1,52 @@
+{
+  "schema_version": "imf-stability-screen-results-v1",
+  "status": "COMPLETE",
+  "git_commit": "e01d11f",
+  "protocol": "experiments/pilots/imf_stability_screen_v1.json",
+  "protocol_sha256": "5d7b95a84a48771b670a8d6e9ed8249e93f41a89e383612d6f0f2a4ed0f4cea5",
+  "task": "ogbench-puzzle-4x4-play-v0-state",
+  "seed": 42,
+  "optimizer_steps_per_variant": 1000,
+  "selection_metric": "final live fixed-validation unweighted_meanflow_loss",
+  "results": {
+    "canonical": {
+      "learning_rate": 0.00008,
+      "max_grad_norm": null,
+      "exit_code": 0,
+      "runtime_seconds": 86.51337010692805,
+      "peak_vram_mib_torch": 1718.78125,
+      "initial_validation": 18.371763229370117,
+      "final_validation": 19.449057817459106,
+      "maximum_validation": 19.449057817459106,
+      "eligible": false,
+      "checkpoint_sha256": "0dea12366028c71ae184d272aef965f6dc776813d5543a264dc6e7ca63b3a8a8"
+    },
+    "clip_1": {
+      "learning_rate": 0.00008,
+      "max_grad_norm": 1.0,
+      "exit_code": 0,
+      "runtime_seconds": 90.7188107810216,
+      "peak_vram_mib_torch": 1718.78125,
+      "initial_validation": 18.371763229370117,
+      "final_validation": 19.82309651374817,
+      "maximum_validation": 19.82309651374817,
+      "eligible": false,
+      "checkpoint_sha256": "bac63bbb23d8fed676cdf855e161dbc0c1767025b7e02ff0b0a5629005c9d848"
+    },
+    "half_lr": {
+      "learning_rate": 0.00004,
+      "max_grad_norm": null,
+      "exit_code": 0,
+      "runtime_seconds": 86.44180550903548,
+      "peak_vram_mib_torch": 1718.78125,
+      "initial_validation": 18.371763229370117,
+      "final_validation": 14.724858522415161,
+      "maximum_validation": 18.371763229370117,
+      "eligible": true,
+      "checkpoint_sha256": "27fd15dc0fce12edcb3c3ad62cd71fbd7794313110e6dd245592275b6377f330"
+    }
+  },
+  "selected_variant": "half_lr",
+  "selection_reason": "Only half_lr satisfied the predeclared requirement that final live fixed-validation raw L2 improve over initialization; it also had the lowest final and maximum validation values.",
+  "simulator_test_set_used_for_selection": false
+}
