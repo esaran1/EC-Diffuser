@@ -31,3 +31,11 @@ The five-step Flow integration check reported 11.37 ms mean planner-only latency
 ## Decision
 
 Do not launch any 500k run. Gaussian, vanilla Flow, and Shortcut pass the bounded optimization screen. iMF passes checkpoint/native integration but requires a focused EMA/optimizer-dynamics study before longer training. Full native evaluation is also premature at this training budget.
+
+## iMF stability follow-up
+
+A predeclared 1,000-step screen compared canonical LR (`8e-5`), global gradient clipping at `1.0`, and half LR (`4e-5`). Only half LR improved the live fixed-validation raw L2 at step 1,000 (`18.37176` to `14.72486`); canonical and clipping ended at `19.44906` and `19.82310`. Clipping was rarely active and did not address the interval/JVP tail.
+
+The selected half-LR variant then received one predeclared 5,000-step confirmation. It completed normally in `430.23 s` with `1,724 MiB` peak allocated VRAM, finite values, and a valid live+EMA checkpoint. It nevertheless failed the frozen live-stability criterion: raw L2 improved to `12.65727` at step 500 but ended at `20.60525`, above the `18.37176` initialization value. The boundary term improved (`2.07470` to `0.76492`) while the interval term and JVP tail grew. EMA validation improved to `6.39918`, and a bounded native OGBench check strictly loaded EMA weights and executed one action with exactly four model calls; that action was clipped and is not a performance result.
+
+Conclusion: lower LR delays but does not eliminate iMF live-weight drift. Do not scale iMF training until a primary-source-grounded, bounded objective/optimization follow-up passes a predeclared stability rule.
