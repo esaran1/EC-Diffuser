@@ -1,0 +1,25 @@
+{
+  "schema_version": "imf-auxiliary-action-weight-ablation-artifact-v1",
+  "status": "FROZEN_POST_TRAINING_ARTIFACT",
+  "parent_protocol": "experiments/pilots/imf_auxiliary_action_weight_ablation_v1.json",
+  "checkpoints": {
+    "42": {
+      "auxiliary_improved_meanflow": {
+        "path": "data/phase8_runs/imf_aux_action_weight10_seed42_5000/state_5000.pt",
+        "sha256": "a5e0d8959262b1018720ace72853d3560d53ac29aa8edf80b264590e33d2ae45"
+      }
+    }
+  },
+  "evaluation": {
+    "protocol": "experiments/pilots/imf_auxiliary_action_weight_ablation_v1.json"
+  },
+  "training_completion": {
+    "exit_code": 0,
+    "optimizer_steps": 5000,
+    "checkpoint_weights_for_evaluation": "EMA",
+    "checkpoint_bytes": 627561836,
+    "all_logged_losses_finite": true,
+    "runtime_seconds": 607.4588354229927,
+    "peak_vram_mib_torch": 2136.150390625
+  }
+}

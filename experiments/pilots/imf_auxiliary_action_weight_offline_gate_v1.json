@@ -1,0 +1,43 @@
+{
+  "schema_version": "imf-auxiliary-action-weight-offline-gate-v1",
+  "status": "FROZEN_ARTIFACT_EVALUATION_USING_PREDECLARED_GATE",
+  "parent_task_protocol": "experiments/pilots/imf_auxiliary_action_weight_ablation_artifact_v1.json",
+  "parent_acceptance_protocol": "experiments/pilots/imf_auxiliary_action_weight_ablation_v1.json",
+  "exact_change_from_baseline_audit": "checkpoint only: action_weight-10 auxiliary iMF seed-42 final EMA replaces the paired action_weight-1 seed-42 auxiliary EMA",
+  "data": {
+    "split": "validation",
+    "goal_seed": 42,
+    "ordered_batches": 4,
+    "batch_size": 32,
+    "windows": 128,
+    "sample_seed": 500042,
+    "paired_conditions_and_noise": true
+  },
+  "methods": ["auxiliary_improved_meanflow"],
+  "training_seeds": [42],
+  "checkpoint_weights": "EMA",
+  "checkpoint_step": 5000,
+  "nfe": 4,
+  "acceptance_copied_from_parent": {
+    "action_signal": "clip fraction at most 0.696875 or raw action MAE at most 0.6727321922779083",
+    "state_guardrail": "interior observation normalized MAE at most 0.773850429058075",
+    "task_rollout_gate": "run three paired full-horizon task-4 episodes only if action signal and state guardrail both pass"
+  },
+  "integrity": [
+    "checkpoint SHA256 and step match frozen artifact",
+    "strict EMA load",
+    "finite samples",
+    "exact endpoint conditioning",
+    "exactly four denoiser calls per batch"
+  ],
+  "compute_gate": {
+    "training_runs": 0,
+    "checkpoint_audits": 1,
+    "estimated_gpu_minutes": 1,
+    "estimated_peak_vram_mib": 2200,
+    "execution": "strictly sequential",
+    "task_rollout_is_conditional": true,
+    "long_training_authorized": false,
+    "phase_9_authorized": false
+  }
+}

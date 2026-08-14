@@ -90,3 +90,19 @@ def test_auxiliary_task_diagnostic_records_negative_result_without_overclaiming(
     assert offline["target_first_action_step_clip_fraction"] == 0
     assert offline["auxiliary"]["mean_generated_first_action_step_clip_fraction"] > 0.8
     assert "auxiliary iMF improves task success" in results["claims_not_supported"]
+
+
+def test_imf_auxiliary_action_weight_ablation_records_bounded_result():
+    results = json.load(open(
+        "experiments/pilots/imf_auxiliary_action_weight_ablation_results_v1.json"
+    ))
+
+    assert results["status"] == "ACTION_CALIBRATION_PASS_NO_TASK_SUCCESS"
+    assert results["training"]["optimizer_steps"] == 5000
+    assert results["offline_gate"]["action_signal_pass"] is True
+    assert results["offline_gate"]["state_guardrail_pass"] is True
+    assert results["native_task_rollout"]["episodes"] == 3
+    assert results["native_task_rollout"]["environment_steps"] == 1500
+    assert results["native_task_rollout"]["verified_calls_per_plan"] == 4
+    assert results["native_task_rollout"]["full_successes"] == 0
+    assert results["decision"]["task_result"] == "NO_SUCCESS_SIGNAL"
