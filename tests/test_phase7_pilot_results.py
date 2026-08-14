@@ -73,3 +73,20 @@ def test_auxiliary_imf_multiseed_replication_passes_predeclared_criteria():
     assert results["phase_8_evidence"]["unresolved"]["policy_performance"].startswith(
         "no success"
     )
+
+
+def test_auxiliary_task_diagnostic_records_negative_result_without_overclaiming():
+    results = json.load(open(
+        "experiments/pilots/imf_auxiliary_task_diagnostic_results_v1.json"
+    ))
+
+    assert results["status"] == "NO_TASK_SIGNAL_ACTION_CALIBRATION_FAILURE"
+    assert results["preflight"]["passed"] == 24
+    task = results["full_horizon_task_pilot"]
+    assert task["boundary"]["full_successes"] == 0
+    assert task["auxiliary"]["full_successes"] == 0
+    assert task["early_positive_signal"] is False
+    offline = results["offline_heldout_diagnostic"]
+    assert offline["target_first_action_step_clip_fraction"] == 0
+    assert offline["auxiliary"]["mean_generated_first_action_step_clip_fraction"] > 0.8
+    assert "auxiliary iMF improves task success" in results["claims_not_supported"]

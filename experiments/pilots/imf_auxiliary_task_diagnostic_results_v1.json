@@ -1,0 +1,117 @@
+{
+  "schema_version": "imf-auxiliary-task-diagnostic-results-v1",
+  "status": "NO_TASK_SIGNAL_ACTION_CALIBRATION_FAILURE",
+  "task_protocol": "experiments/pilots/imf_auxiliary_task_diagnostic_v1.json",
+  "task_protocol_commit": "95d4fc0",
+  "offline_protocol": "experiments/pilots/imf_auxiliary_offline_failure_diagnostic_v1.json",
+  "offline_protocol_commit": "988f4a1",
+  "task": "OGBench puzzle-4x4-play-v0 task 4",
+  "preflight": {
+    "checkpoints": 6,
+    "nfe_values": [1, 2, 4, 8],
+    "invocations": 24,
+    "passed": 24,
+    "strict_ema_reload": true,
+    "checkpoint_hash_and_step_verified": true,
+    "finite_and_exact_conditioning": true,
+    "requested_calls_equal_observed": true,
+    "real_actions_executed": true
+  },
+  "full_horizon_task_pilot": {
+    "nfe": 4,
+    "training_seeds": [42, 43, 44],
+    "evaluation_episode_seeds": [82000, 82001, 82002],
+    "episodes_per_checkpoint": 3,
+    "episodes_per_method": 9,
+    "environment_steps_per_checkpoint": 1500,
+    "boundary": {
+      "full_successes": 0,
+      "episodes": 9,
+      "success_rate": 0.0,
+      "mean_return": 0.0,
+      "mean_action_clip_step_fraction": 0.8097777777777778,
+      "mean_planning_latency_ms": 11.452051389807213,
+      "peak_vram_mib": 380.19091796875,
+      "evaluation_runtime_seconds": 60.65599728410598
+    },
+    "auxiliary": {
+      "full_successes": 0,
+      "episodes": 9,
+      "success_rate": 0.0,
+      "mean_return": 0.0,
+      "mean_action_clip_step_fraction": 0.8215555555555556,
+      "mean_planning_latency_ms": 11.42174970299109,
+      "peak_vram_mib": 439.29833984375,
+      "evaluation_runtime_seconds": 60.49307839211542
+    },
+    "paired_action_clip_delta_auxiliary_minus_boundary": {
+      "seed_42": 0.008666666666666711,
+      "seed_43": 0.008000000000000007,
+      "seed_44": 0.01866666666666672,
+      "mean": 0.011777777777777803
+    },
+    "early_positive_signal": false,
+    "interpretation": "The auxiliary optimization gain does not translate to success, return, or better action clipping at this training budget. Both methods are unusable closed-loop policies after 5000 steps."
+  },
+  "offline_heldout_diagnostic": {
+    "validation_windows_per_checkpoint": 128,
+    "paired_sampling_seed": 500042,
+    "nfe": 4,
+    "target_first_action_step_clip_fraction": 0.0,
+    "boundary": {
+      "mean_generated_first_action_step_clip_fraction": 0.8098958333333334,
+      "mean_first_action_raw_mae": 0.7384471297264099,
+      "mean_interior_observation_normalized_mae": 0.7085424661636353
+    },
+    "auxiliary": {
+      "mean_generated_first_action_step_clip_fraction": 0.8177083333333334,
+      "mean_first_action_raw_mae": 0.7479403217633566,
+      "mean_interior_observation_normalized_mae": 0.7028021415074667
+    },
+    "paired_direction": {
+      "action_clipping": "auxiliary equal or worse in all three seeds",
+      "action_mae": "auxiliary worse in two of three seeds",
+      "interior_observation_mae": "auxiliary better in all three seeds"
+    },
+    "peak_vram_mib": 440.44287109375,
+    "interpretation": "The failure exists before closed-loop compounding: generated actions are far less calibrated than held-out expert actions. Auxiliary iMF slightly improves interior state prediction but not the action component used by the controller."
+  },
+  "failure_taxonomy": {
+    "algorithmic": {
+      "evidence_for": "auxiliary iMF improves interval optimization and interior state error but not action error, showing objective-component mismatch",
+      "evidence_against": "the auxiliary mechanism itself is stable across three training seeds",
+      "status": "SUPPORTED_ACTION_OBJECTIVE_MISMATCH"
+    },
+    "data": {
+      "evidence_for": "task-wide coverage remains unaudited for this specific failure",
+      "evidence_against": "held-out expert first actions have zero clipping and reasonable scale",
+      "status": "NOT_PRIMARY_EXPLANATION_BUT_UNRESOLVED"
+    },
+    "representation": {
+      "evidence_for": "five action dimensions share an elementwise objective with 83 observation dimensions and receive action_weight 1",
+      "evidence_against": "the same state/action representation is executable and finite",
+      "status": "OBJECTIVE_DIMENSION_IMBALANCE_PLAUSIBLE"
+    },
+    "temporal": {
+      "evidence_for": "closed-loop compounding may add failure",
+      "evidence_against": "severe action error is already present on independent held-out windows",
+      "status": "SECONDARY_OR_UNRESOLVED"
+    },
+    "control": {
+      "evidence_for": "more than 79 percent of actions require environment clipping",
+      "evidence_against": "offline action miscalibration exists before controller interaction",
+      "status": "SECONDARY_OR_UNRESOLVED"
+    }
+  },
+  "next_hypothesis": {
+    "statement": "the default action_weight of 1 undertrains the executed action relative to the 83-dimensional state trajectory",
+    "evidence": "original EC-Diffuser PushCube configs use action_weight 10; the OGBench iMF protocol omitted it and inherited 1",
+    "required_ablation": "one seed, auxiliary iMF only, action_weight 10 versus the frozen action_weight 1 checkpoint; all other settings unchanged"
+  },
+  "claims_not_supported": [
+    "auxiliary iMF improves task success",
+    "auxiliary iMF is ready for full training",
+    "the failure is caused solely by action weighting",
+    "Phase 9 paper-grade validation is ready"
+  ]
+}
