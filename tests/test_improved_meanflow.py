@@ -96,6 +96,28 @@ def test_adaptive_weighting_requires_l2_and_valid_parameters():
         make_wrapper(adaptive_weighting=1)
     with pytest.raises(TypeError, match="adaptive_epsilon"):
         make_wrapper(adaptive_epsilon="0.01")
+    with pytest.raises(TypeError, match="collect_diagnostics"):
+        make_wrapper(collect_diagnostics=1)
+
+
+def test_diagnostics_separate_boundary_interval_and_are_finite():
+    wrapper = make_wrapper(collect_diagnostics=True)
+    data, cond = inputs(batch=4)
+    noise = torch.randn_like(data)
+    r = torch.tensor([0.2, 0.4, 0.1, 0.7])
+    t = torch.tensor([0.2, 0.8, 0.6, 0.7])
+    _, info = wrapper._compute_meanflow_loss(
+        data, cond, noise=noise, r=r, t=t
+    )
+    expected = {
+        "boundary_raw_l2", "interval_raw_l2",
+        "raw_l2_p50", "raw_l2_p90", "raw_l2_p99",
+        "jvp_rms_p50", "jvp_rms_p90", "jvp_rms_p99",
+    }
+    assert expected <= set(info)
+    assert all(torch.isfinite(info[key]) for key in expected)
+    assert info["raw_l2_p50"] <= info["raw_l2_p90"] <= info["raw_l2_p99"]
+    assert info["jvp_rms_p50"] <= info["jvp_rms_p90"] <= info["jvp_rms_p99"]
 
 
 def test_known_compound_target_matches_equation_12():

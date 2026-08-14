@@ -1,5 +1,7 @@
 import os
 import copy
+import math
+import numbers
 import numpy as np
 import torch
 import einops
@@ -54,6 +56,8 @@ class Trainer(object):
         results_folder='./results',
         n_reference=8,
         bucket=None,
+        max_grad_norm=None,
+        collect_step_diagnostics=False,
     ):
         super().__init__()
         self.model = diffusion_model
@@ -84,6 +88,15 @@ class Trainer(object):
         self.logdir = results_folder
         self.bucket = bucket
         self.n_reference = n_reference
+        if max_grad_norm is not None:
+            if isinstance(max_grad_norm, bool) or not isinstance(max_grad_norm, numbers.Real):
+                raise TypeError("max_grad_norm must be a finite positive number")
+            if not math.isfinite(float(max_grad_norm)) or float(max_grad_norm) <= 0.0:
+                raise ValueError("max_grad_norm must be a finite positive number")
+        if not isinstance(collect_step_diagnostics, bool):
+            raise TypeError("collect_step_diagnostics must be boolean")
+        self.max_grad_norm = None if max_grad_norm is None else float(max_grad_norm)
+        self.collect_step_diagnostics = collect_step_diagnostics
         self.train_history = []
 
         self.reset_parameters()
@@ -141,7 +154,69 @@ class Trainer(object):
                 raise FloatingPointError(
                     f'non-finite gradients at step {self.step}: {nonfinite_gradients[:5]}'
                 )
+
+            should_diagnose = bool(
+                getattr(self, "collect_step_diagnostics", False)
+                and self.log_freq
+                and self.step % self.log_freq == 0
+            )
+            parameters_with_grad = [
+                parameter for parameter in self.model.parameters()
+                if parameter.grad is not None
+            ]
+            if should_diagnose:
+                gradient_l2_preclip = math.sqrt(sum(
+                    float(parameter.grad.detach().double().square().sum())
+                    for parameter in parameters_with_grad
+                ))
+                gradient_max_abs_preclip = max(
+                    float(parameter.grad.detach().abs().max())
+                    for parameter in parameters_with_grad
+                ) if parameters_with_grad else 0.0
+                parameter_l2 = math.sqrt(sum(
+                    float(parameter.detach().double().square().sum())
+                    for parameter in self.model.parameters()
+                ))
+                parameter_snapshots = [
+                    parameter.detach().clone()
+                    for parameter in self.model.parameters()
+                ]
+
+            max_grad_norm = getattr(self, "max_grad_norm", None)
+            if max_grad_norm is not None:
+                torch.nn.utils.clip_grad_norm_(
+                    parameters_with_grad, max_grad_norm, error_if_nonfinite=True
+                )
+            if should_diagnose:
+                gradient_l2_postclip = math.sqrt(sum(
+                    float(parameter.grad.detach().double().square().sum())
+                    for parameter in parameters_with_grad
+                ))
+                gradient_max_abs_postclip = max(
+                    float(parameter.grad.detach().abs().max())
+                    for parameter in parameters_with_grad
+                ) if parameters_with_grad else 0.0
+
             self.optimizer.step()
+            if should_diagnose:
+                update_l2 = math.sqrt(sum(
+                    float((parameter.detach() - before).double().square().sum())
+                    for parameter, before in zip(
+                        self.model.parameters(), parameter_snapshots
+                    )
+                ))
+                del parameter_snapshots
+                step_infos.update({
+                    "gradient_l2_preclip": gradient_l2_preclip,
+                    "gradient_max_abs_preclip": gradient_max_abs_preclip,
+                    "gradient_l2_postclip": gradient_l2_postclip,
+                    "gradient_max_abs_postclip": gradient_max_abs_postclip,
+                    "parameter_l2": parameter_l2,
+                    "update_l2": update_l2,
+                    "update_to_parameter_ratio": (
+                        update_l2 / parameter_l2 if parameter_l2 else 0.0
+                    ),
+                })
             self.optimizer.zero_grad()
 
             if self.step % self.update_ema_every == 0:

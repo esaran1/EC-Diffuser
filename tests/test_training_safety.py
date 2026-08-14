@@ -93,3 +93,30 @@ def test_train_returns_machine_readable_history_and_allows_disabled_saves(monkey
     assert history[0]["loss"] == pytest.approx(3.0)
     assert history[0]["metric"] == pytest.approx(30.0)
     assert history[0]["interval_seconds"] >= 0.0
+
+
+def test_gradient_clipping_and_update_diagnostics_are_exact(monkeypatch):
+    model = SequencedLossModel([])
+    model.anchor.data.fill_(1.0)
+
+    def loss(*_batch):
+        value = (model.anchor - 3.0).square()
+        return value, {"metric": value.detach()}
+
+    model.loss = loss
+    trainer = make_trainer(model, gradient_accumulate_every=1)
+    trainer.max_grad_norm = 0.5
+    trainer.collect_step_diagnostics = True
+    monkeypatch.setattr(training_module, "batch_to_device", lambda batch: batch)
+    monkeypatch.setattr(training_module.wandb, "log", lambda record: None)
+
+    history = trainer.train(1)
+    record = history[-1]
+    assert record["gradient_l2_preclip"] == pytest.approx(4.0)
+    assert record["gradient_max_abs_preclip"] == pytest.approx(4.0)
+    assert record["gradient_l2_postclip"] == pytest.approx(0.5)
+    assert record["gradient_max_abs_postclip"] == pytest.approx(0.5)
+    assert record["parameter_l2"] == pytest.approx(1.0)
+    assert record["update_l2"] == pytest.approx(0.05)
+    assert record["update_to_parameter_ratio"] == pytest.approx(0.05)
+    assert model.anchor.item() == pytest.approx(1.05)

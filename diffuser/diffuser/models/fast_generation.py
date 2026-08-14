@@ -83,7 +83,8 @@ class ImprovedMeanFlow(_IntervalFlowBase):
     def __init__(
         self, *args, time_mean=-0.4, time_std=1.0,
         boundary_probability=0.5, adaptive_weighting=False,
-        adaptive_power=1.0, adaptive_epsilon=0.01, **kwargs
+        adaptive_power=1.0, adaptive_epsilon=0.01,
+        collect_diagnostics=False, **kwargs
     ):
         super().__init__(*args, **kwargs)
         if not 0.0 <= boundary_probability <= 1.0:
@@ -92,6 +93,8 @@ class ImprovedMeanFlow(_IntervalFlowBase):
             raise ValueError("time_std must be positive")
         if not isinstance(adaptive_weighting, bool):
             raise TypeError("adaptive_weighting must be boolean")
+        if not isinstance(collect_diagnostics, bool):
+            raise TypeError("collect_diagnostics must be boolean")
         if adaptive_weighting and self.loss_type != "l2":
             raise ValueError("adaptive iMF weighting requires loss_type='l2'")
         for name, value in (
@@ -108,6 +111,36 @@ class ImprovedMeanFlow(_IntervalFlowBase):
         self.adaptive_weighting = bool(adaptive_weighting)
         self.adaptive_power = float(adaptive_power)
         self.adaptive_epsilon = float(adaptive_epsilon)
+        self.collect_diagnostics = collect_diagnostics
+
+    @staticmethod
+    def _subset_mean(values, selection):
+        if selection.any():
+            return values[selection].mean()
+        return values.new_zeros(())
+
+    def _meanflow_diagnostics(self, error, mask, boundary, derivative):
+        active = mask.to(error.dtype)
+        counts = active.sum(dim=(1, 2)).clamp_min(1.0)
+        per_sample_raw_l2 = (error * active).sum(dim=(1, 2)) / counts
+        per_sample_jvp_rms = torch.sqrt(
+            (derivative.square() * active).sum(dim=(1, 2)) / counts
+        )
+        interval = ~boundary
+        return {
+            "boundary_raw_l2": self._subset_mean(
+                per_sample_raw_l2, boundary
+            ).detach(),
+            "interval_raw_l2": self._subset_mean(
+                per_sample_raw_l2, interval
+            ).detach(),
+            "raw_l2_p50": torch.quantile(per_sample_raw_l2, 0.50).detach(),
+            "raw_l2_p90": torch.quantile(per_sample_raw_l2, 0.90).detach(),
+            "raw_l2_p99": torch.quantile(per_sample_raw_l2, 0.99).detach(),
+            "jvp_rms_p50": torch.quantile(per_sample_jvp_rms, 0.50).detach(),
+            "jvp_rms_p90": torch.quantile(per_sample_jvp_rms, 0.90).detach(),
+            "jvp_rms_p99": torch.quantile(per_sample_jvp_rms, 0.99).detach(),
+        }
 
     def _meanflow_regression_loss(self, prediction, target, reference, cond):
         if not self.adaptive_weighting:
@@ -203,6 +236,10 @@ class ImprovedMeanFlow(_IntervalFlowBase):
             "unweighted_meanflow_loss": self._masked_mean(error, mask).detach(),
             "boundary_fraction": boundary.to(data.dtype).mean().detach(),
         }
+        if self.collect_diagnostics:
+            info.update(self._meanflow_diagnostics(
+                error, mask, boundary, derivative
+            ))
         if return_details:
             details = {
                 "data": data_local,

@@ -66,7 +66,7 @@ def build_method(name, model, task, method_config):
         time_scale=method_config["time_scale"],
     )
     if name == "improved_meanflow":
-        for key in ("adaptive_weighting", "adaptive_power", "adaptive_epsilon"):
+        for key in ("adaptive_weighting", "adaptive_power", "adaptive_epsilon", "collect_diagnostics"):
             if key in method_config:
                 common[key] = method_config[key]
     if name == "shortcut_model":
@@ -119,12 +119,26 @@ def main():
     parser.add_argument("--steps", type=int)
     parser.add_argument("--validation-frequency", type=int)
     parser.add_argument("--validation-batches", type=int)
+    parser.add_argument("--variant")
     args = parser.parse_args()
 
     protocol_bytes = args.protocol.read_bytes()
     protocol = json.loads(protocol_bytes)
-    training = protocol["training"]
+    training = dict(protocol["training"])
     task = protocol["task"]
+    method_config = dict(protocol["methods"][args.method])
+    variant = None
+    if args.variant is not None:
+        if args.method != "improved_meanflow":
+            raise ValueError("stability variants are restricted to improved_meanflow")
+        variants = protocol.get("variants", {})
+        if args.variant not in variants:
+            raise ValueError("unknown protocol variant {!r}".format(args.variant))
+        variant = variants[args.variant]
+        training.update(variant.get("training_overrides", {}))
+        method_config.update(variant.get("method_overrides", {}))
+    elif protocol.get("variants"):
+        raise ValueError("this protocol requires an explicit --variant")
     steps = training["optimizer_steps"] if args.steps is None else args.steps
     if args.validation_frequency is None:
         args.validation_frequency = training.get("fixed_validation_frequency", 0)
@@ -197,7 +211,7 @@ def main():
     if parameter_count != backbone["parameter_count"]:
         raise RuntimeError("backbone parameter count does not match the protocol")
     method = build_method(
-        args.method, model, task, protocol["methods"][args.method]
+        args.method, model, task, method_config
     ).to(device)
 
     wandb.init(
@@ -220,6 +234,10 @@ def main():
         save_freq=0,
         results_folder=str(args.output_dir),
         n_reference=0,
+        max_grad_norm=training.get("max_grad_norm"),
+        collect_step_diagnostics=training.get(
+            "collect_step_diagnostics", False
+        ),
     )
 
     validation_history = [{
@@ -285,6 +303,8 @@ def main():
         "schema_version": "phase7-training-pilot-result-v3",
         "status": "PASS",
         "method": args.method,
+        "variant": args.variant,
+        "variant_description": None if variant is None else variant["description"],
         "wrapper": type(method).__name__,
         "backbone": type(model).__name__,
         "parameter_count": parameter_count,
@@ -307,6 +327,11 @@ def main():
         "microbatch_size": training["microbatch_size"],
         "gradient_accumulation": training["gradient_accumulation"],
         "effective_batch_size": training["effective_batch_size"],
+        "learning_rate": training["learning_rate"],
+        "max_grad_norm": training.get("max_grad_norm"),
+        "collect_step_diagnostics": training.get(
+            "collect_step_diagnostics", False
+        ),
         "runtime_seconds": runtime_seconds,
         "seconds_per_optimizer_step": runtime_seconds / trainer.step,
         "peak_vram_bytes_torch": peak_vram_bytes,
