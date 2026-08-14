@@ -5,6 +5,7 @@ import pytest
 from diffuser.models import AuxiliaryIntervalTemporalUnet, IntervalTemporalUnet
 from diffuser.scripts.eval_ogbench_policy import (
     backbone_class_for_method,
+    seeded_reset,
     summarize_puzzle_progress,
 )
 
@@ -69,3 +70,23 @@ def test_puzzle_progress_summary_handles_no_contact():
     assert progress["first_transition_step"] is None
     assert progress["best_progress"] == 0
     assert progress["unique_button_configurations"] == 1
+
+
+def test_seeded_reset_seeds_action_space_before_environment_reset():
+    events = []
+
+    class ActionSpace:
+        def seed(self, seed):
+            events.append(("action_space", seed))
+
+    class Env:
+        action_space = ActionSpace()
+
+        def reset(self, seed, options):
+            events.append(("environment", seed, options))
+            return "observation", {"goal": "goal"}
+
+    result = seeded_reset(Env(), 17, {"task_id": 4})
+
+    assert events == [("action_space", 17), ("environment", 17, {"task_id": 4})]
+    assert result == ("observation", {"goal": "goal"})

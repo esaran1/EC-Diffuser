@@ -82,6 +82,11 @@ def summarize_puzzle_progress(button_states, target_button_states):
     }
 
 
+def seeded_reset(env, seed, options):
+    env.action_space.seed(seed)
+    return env.reset(seed=seed, options=options)
+
+
 def main():
     import ogbench
     parser = argparse.ArgumentParser(description=__doc__)
@@ -224,8 +229,8 @@ def main():
         clipped = bool(np.any(action != unclipped))
         return action, latency, observed_calls, clipped
 
-    first_observation, first_info = env.reset(
-        seed=args.evaluation_seed, options={"task_id": args.task_ids[0]}
+    first_observation, first_info = seeded_reset(
+        env, args.evaluation_seed, {"task_id": args.task_ids[0]}
     )
     for warmup_index in range(args.warmup_plans):
         set_seed(args.evaluation_seed - 1000 + warmup_index)
@@ -240,7 +245,7 @@ def main():
         for episode_index in range(args.episodes_per_task):
             seed = args.evaluation_seed + task_id * 10000 + episode_index
             set_seed(seed)
-            observation, info = env.reset(seed=seed, options={"task_id": task_id})
+            observation, info = seeded_reset(env, seed, {"task_id": task_id})
             goal = np.asarray(info["goal"])
             puzzle_button_states = [np.asarray(info["button_states"]).copy()]
             puzzle_target_button_states = np.asarray(
@@ -311,6 +316,7 @@ def main():
         "native_episode_horizon": native_horizon,
         "executed_episode_horizon": episode_horizon,
         "evaluation_seed": args.evaluation_seed,
+        "environment_action_space_seeded": True,
         "requested_nfe": args.nfe,
         "verified_calls_per_plan": expected_calls,
         "full_successes": int(successes),
