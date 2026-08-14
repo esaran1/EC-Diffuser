@@ -1,0 +1,59 @@
+{
+  "schema_version": "imf-auxiliary-puzzle-progress-diagnostic-v1",
+  "status": "PREDECLARED_NO_RETRAINING_PAIRED_DIAGNOSTIC",
+  "parent_result": "experiments/pilots/imf_auxiliary_action_weight_ablation_results_v1.json",
+  "representative_failure": "OGBench puzzle-4x4-play-v0 task 4 at 4 NFE",
+  "hypothesis": "after correcting action scale, residual failure is caused by sequential closed-loop planning if the policy changes buttons and transiently reduces button-state Hamming distance; failure before any button transition instead implicates contact/control",
+  "exact_change": "evaluate frozen action_weight-1 and action_weight-10 seed-42 auxiliary iMF EMA checkpoints with method-neutral puzzle-progress recording; do not change policy, sampler, seeds, task, horizon, or NFE",
+  "expected_if_true": "action_weight-10 produces button transitions and positive best progress but later regresses or fails to complete the sequence",
+  "expected_if_false": "action_weight-10 produces no button transition or no improvement in button-state Hamming distance",
+  "checkpoints": {
+    "action_weight_1": {
+      "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_confirm_auxiliary_seed42_5000/state_5000.pt",
+      "sha256": "da7679e1d1b382f7e62e1675a7d132d3f7ff737312ad20bd363abddab317c2f5",
+      "training_protocol": "experiments/pilots/imf_auxiliary_multiseed_replication_v1.json"
+    },
+    "action_weight_10": {
+      "path": "data/phase8_runs/imf_aux_action_weight10_seed42_5000/state_5000.pt",
+      "sha256": "a5e0d8959262b1018720ace72853d3560d53ac29aa8edf80b264590e33d2ae45",
+      "training_protocol": "experiments/pilots/imf_auxiliary_action_weight_ablation_v1.json"
+    }
+  },
+  "evaluation": {
+    "checkpoint_step": 5000,
+    "checkpoint_weights": "EMA",
+    "environment": "puzzle-4x4-play-v0",
+    "task_id": 4,
+    "evaluation_seed": 42000,
+    "episode_seeds": [82000, 82001, 82002],
+    "episodes_per_checkpoint": 3,
+    "native_horizon": 500,
+    "nfe": 4,
+    "required_calls_per_plan": 4
+  },
+  "metrics": [
+    "initial/final/minimum button-state Hamming distance to goal",
+    "best normalized goal fraction",
+    "episodes with any button transition",
+    "total button-state flips",
+    "first transition step",
+    "unique button configurations",
+    "regression after best progress"
+  ],
+  "interpretation": {
+    "sequential_signal": "at least two of three action_weight-10 episodes have button transitions and positive best progress",
+    "regression_signal": "positive best progress followed by a worse final Hamming distance",
+    "contact_failure_signal": "no button transitions in at least two of three action_weight-10 episodes",
+    "scope": "mechanism diagnostic only; three paired episodes are not a benchmark estimate"
+  },
+  "compute_gate": {
+    "training_runs": 0,
+    "evaluation_invocations": 2,
+    "total_episodes": 6,
+    "estimated_gpu_minutes": 1,
+    "estimated_peak_vram_mib": 500,
+    "execution": "strictly sequential on one RTX 4080",
+    "long_training_authorized": false,
+    "phase_9_authorized": false
+  }
+}

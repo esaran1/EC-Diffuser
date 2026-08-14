@@ -53,6 +53,35 @@ def backbone_class_for_method(method_name):
     return IntervalTemporalUnet
 
 
+def summarize_puzzle_progress(button_states, target_button_states):
+    states = np.asarray(button_states, dtype=np.int64)
+    target = np.asarray(target_button_states, dtype=np.int64)
+    if states.ndim != 2 or target.ndim != 1 or states.shape[1] != target.shape[0]:
+        raise ValueError("puzzle button-state trace has incompatible shapes")
+    mismatches = np.count_nonzero(states != target[None, :], axis=1)
+    transition_flips = np.count_nonzero(states[1:] != states[:-1], axis=1)
+    transition_steps = np.flatnonzero(transition_flips) + 1
+    minimum_mismatches = int(mismatches.min())
+    best_step = int(np.flatnonzero(mismatches == minimum_mismatches)[0])
+    return {
+        "button_count": int(target.shape[0]),
+        "initial_mismatches": int(mismatches[0]),
+        "final_mismatches": int(mismatches[-1]),
+        "minimum_mismatches": minimum_mismatches,
+        "best_progress": int(mismatches[0] - minimum_mismatches),
+        "best_goal_fraction": float(1.0 - minimum_mismatches / target.shape[0]),
+        "final_goal_fraction": float(1.0 - mismatches[-1] / target.shape[0]),
+        "best_step": best_step,
+        "regression_after_best": int(mismatches[-1] - minimum_mismatches),
+        "transition_steps": int(np.count_nonzero(transition_flips)),
+        "total_button_state_flips": int(transition_flips.sum()),
+        "first_transition_step": (
+            int(transition_steps[0]) if transition_steps.size else None
+        ),
+        "unique_button_configurations": int(np.unique(states, axis=0).shape[0]),
+    }
+
+
 def main():
     import ogbench
     parser = argparse.ArgumentParser(description=__doc__)
@@ -213,6 +242,10 @@ def main():
             set_seed(seed)
             observation, info = env.reset(seed=seed, options={"task_id": task_id})
             goal = np.asarray(info["goal"])
+            puzzle_button_states = [np.asarray(info["button_states"]).copy()]
+            puzzle_target_button_states = np.asarray(
+                env.unwrapped._target_button_states
+            ).copy()
             episode_return = 0.0
             clipped_actions = 0
             success = False
@@ -226,6 +259,7 @@ def main():
                 calls += observed_calls
                 clipped_actions += int(clipped)
                 observation, reward, terminated, truncated, info = env.step(action)
+                puzzle_button_states.append(np.asarray(info["button_states"]).copy())
                 episode_return += float(reward)
                 success = bool(info.get("success", terminated))
                 if terminated or truncated:
@@ -241,6 +275,9 @@ def main():
                 "truncated": bool(truncated),
                 "model_calls": calls,
                 "clipped_action_steps": clipped_actions,
+                "puzzle_progress": summarize_puzzle_progress(
+                    puzzle_button_states, puzzle_target_button_states
+                ),
             })
     torch.cuda.synchronize(device)
     runtime = time.perf_counter() - evaluation_start
@@ -248,6 +285,7 @@ def main():
     env.close()
 
     successes = sum(record["success"] for record in episodes)
+    progress = [record["puzzle_progress"] for record in episodes]
     result = {
         "schema_version": "ogbench-native-generative-policy-eval-v1",
         "status": "PASS",
@@ -281,6 +319,35 @@ def main():
         "action_clip_step_fraction": sum(
             record["clipped_action_steps"] for record in episodes
         ) / sum(record["steps"] for record in episodes),
+        "puzzle_progress": {
+            "episodes_with_button_transition": sum(
+                row["transition_steps"] > 0 for row in progress
+            ),
+            "episodes_with_positive_best_progress": sum(
+                row["best_progress"] > 0 for row in progress
+            ),
+            "episodes_with_regression_after_best": sum(
+                row["regression_after_best"] > 0 for row in progress
+            ),
+            "mean_initial_mismatches": float(statistics.fmean(
+                row["initial_mismatches"] for row in progress
+            )),
+            "mean_final_mismatches": float(statistics.fmean(
+                row["final_mismatches"] for row in progress
+            )),
+            "mean_minimum_mismatches": float(statistics.fmean(
+                row["minimum_mismatches"] for row in progress
+            )),
+            "mean_best_goal_fraction": float(statistics.fmean(
+                row["best_goal_fraction"] for row in progress
+            )),
+            "mean_final_goal_fraction": float(statistics.fmean(
+                row["final_goal_fraction"] for row in progress
+            )),
+            "total_button_state_flips": sum(
+                row["total_button_state_flips"] for row in progress
+            ),
+        },
         "planning_latency": {
             "n": len(all_latencies),
             "mean_seconds": float(statistics.fmean(all_latencies)),
