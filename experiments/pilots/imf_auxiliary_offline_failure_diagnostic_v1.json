@@ -1,0 +1,56 @@
+{
+  "schema_version": "imf-auxiliary-offline-failure-diagnostic-v1",
+  "status": "PREDECLARED_NO_RETRAINING_OFFLINE_DIAGNOSTIC",
+  "parent_task_protocol": "experiments/pilots/imf_auxiliary_task_diagnostic_v1.json",
+  "observed_failure": "boundary and auxiliary iMF each achieved 0/9 successes and zero return at 4 NFE after 5000 training steps; more than 79 percent of executed actions required clipping",
+  "hypothesis": "the task failure is already visible offline as poorly calibrated first actions rather than arising only from closed-loop compounding",
+  "exact_change": "none; compare frozen paired EMA checkpoints on identical held-out conditions and identical sampling noise",
+  "expected_if_true": "both methods have high generated-action clipping or action error and auxiliary does not consistently improve those metrics",
+  "expected_if_false": "auxiliary has clearly better offline action and interior-state errors despite equal real-task failure, shifting evidence toward temporal or control limitations",
+  "data": {
+    "split": "validation",
+    "goal_seed": 42,
+    "ordered_batches": 4,
+    "batch_size": 32,
+    "windows": 128,
+    "sample_seed": 500042,
+    "paired_conditions_and_noise": true
+  },
+  "methods": ["improved_meanflow", "auxiliary_improved_meanflow"],
+  "training_seeds": [42, 43, 44],
+  "checkpoint_weights": "EMA",
+  "checkpoint_step": 5000,
+  "nfe": 4,
+  "metrics": [
+    "generated first-action step clipping fraction",
+    "generated first-action element clipping fraction",
+    "target first-action clipping fractions",
+    "first-action raw MAE and RMSE to held-out action",
+    "interior normalized observation MAE and RMSE",
+    "generated and target action distribution by dimension",
+    "planning latency",
+    "peak VRAM"
+  ],
+  "integrity": [
+    "checkpoint SHA256 and step match frozen protocol",
+    "strict EMA load",
+    "finite samples",
+    "exact endpoint conditioning",
+    "exactly four denoiser calls per batch"
+  ],
+  "interpretation_limits": [
+    "pointwise error is only a diagnostic under multimodal behavior",
+    "128 validation windows do not replace native policy evaluation",
+    "no causal data, representation, temporal, or control claim is permitted without a targeted ablation"
+  ],
+  "compute_gate": {
+    "training_runs": 0,
+    "checkpoint_audits": 6,
+    "estimated_gpu_minutes": 2,
+    "estimated_peak_vram_mib": 2200,
+    "estimated_storage_mib": 1,
+    "execution": "strictly sequential",
+    "long_training_authorized": false,
+    "phase_9_authorized": false
+  }
+}
