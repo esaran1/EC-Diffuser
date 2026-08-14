@@ -1,0 +1,57 @@
+{
+  "schema_version": "imf-auxiliary-paired-screen-results-v1",
+  "status": "PASS_AUXILIARY_SUPERIORITY",
+  "git_commit": "14b9888",
+  "protocol": "experiments/pilots/imf_auxiliary_paired_screen_v1.json",
+  "protocol_sha256": "b3fc0f19cf49bd68350b9aa1e4cb430d72b40cd7c77a683b8c943c0de7e78e7c",
+  "task": "ogbench-puzzle-4x4-play-v0-state",
+  "optimizer_steps": 1000,
+  "paired_randomness": {
+    "model_seed": 42,
+    "dataloader_seed": 200042,
+    "optimization_seed": 300042
+  },
+  "boundary": {
+    "method": "improved_meanflow",
+    "parameter_count": 63282904,
+    "runtime_seconds": 86.07515245804098,
+    "peak_vram_mib": 1718.78125,
+    "initial_interval_raw_l2": 35.79238724708557,
+    "final_interval_raw_l2": 26.15207552909851,
+    "final_boundary_raw_l2": 1.2240569591522217,
+    "final_raw_l2_p99": 92.44177389144897,
+    "final_jvp_rms_p99": 24.702674388885498,
+    "final_ema_interval_raw_l2": 26.715298652648926,
+    "checkpoint_sha256": "388dbfe48ac799e3570a8fa11292ad129b0f8427426e5729d14a6cac5ce1a448",
+    "checkpoint_bytes": 506437584,
+    "feasible": true
+  },
+  "auxiliary": {
+    "method": "auxiliary_improved_meanflow",
+    "parameter_count": 78415024,
+    "runtime_seconds": 116.83828756108414,
+    "peak_vram_mib": 2131.400390625,
+    "initial_interval_raw_l2": 35.77151882648468,
+    "final_interval_raw_l2": 23.326768457889557,
+    "final_boundary_raw_l2": 1.2045447379350662,
+    "final_raw_l2_p99": 81.52101445198059,
+    "final_jvp_rms_p99": 24.868884086608887,
+    "initial_aux_interval_raw_l2": 2.3514975905418396,
+    "final_aux_interval_raw_l2": 1.608491912484169,
+    "final_ema_interval_raw_l2": 24.54571145772934,
+    "checkpoint_sha256": "822922677fb689ffd118f604477e6de318e627ba870d6791d458c6d2fae95f74",
+    "checkpoint_bytes": 627561836,
+    "feasible": true
+  },
+  "comparison": {
+    "auxiliary_interval_reduction_vs_boundary_percent": 10.8033760764622,
+    "predeclared_required_reduction_percent": 5.0,
+    "superiority_passed": true,
+    "training_runtime_increase_percent": 35.73985549202398,
+    "peak_vram_increase_percent": 24.006495336448427,
+    "inference_auxiliary_head_used": false,
+    "simulator_test_set_used": false
+  },
+  "interpretation": "The auxiliary marginal-velocity head improves the paired 1000-step held-out interval diagnostic beyond the predeclared margin while remaining hardware-safe. This is an optimization result, not evidence of simulator success.",
+  "next_gate": "Predeclare one 5000-step auxiliary confirmation using the same paired RNG controls; do not launch long training or simulator selection."
+}
