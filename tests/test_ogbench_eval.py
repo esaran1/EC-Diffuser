@@ -76,17 +76,35 @@ def test_seeded_reset_seeds_action_space_before_environment_reset():
     events = []
 
     class ActionSpace:
+        value = None
+
         def seed(self, seed):
             events.append(("action_space", seed))
+            self.value = seed
+
+        def sample(self):
+            events.append(("sample", self.value))
+            return self.value
 
     class Env:
-        action_space = ActionSpace()
+        @property
+        def action_space(self):
+            return ActionSpace()
+
+        @property
+        def unwrapped(self):
+            return self
 
         def reset(self, seed, options):
             events.append(("environment", seed, options))
-            return "observation", {"goal": "goal"}
+            return self.action_space.sample(), {"goal": "goal"}
 
     result = seeded_reset(Env(), 17, {"task_id": 4})
 
-    assert events == [("action_space", 17), ("environment", 17, {"task_id": 4})]
-    assert result == ("observation", {"goal": "goal"})
+    assert events == [
+        ("action_space", 17),
+        ("environment", 17, {"task_id": 4}),
+        ("sample", 17),
+    ]
+    assert result == (17, {"goal": "goal"})
+    assert isinstance(Env.action_space, property)

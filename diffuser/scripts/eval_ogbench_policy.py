@@ -83,8 +83,20 @@ def summarize_puzzle_progress(button_states, target_button_states):
 
 
 def seeded_reset(env, seed, options):
-    env.action_space.seed(seed)
-    return env.reset(seed=seed, options=options)
+    unwrapped = env.unwrapped
+    env_type = type(unwrapped)
+    had_local_property = "action_space" in env_type.__dict__
+    original_property = env_type.__dict__.get("action_space")
+    action_space = unwrapped.action_space
+    action_space.seed(seed)
+    setattr(env_type, "action_space", property(lambda _self: action_space))
+    try:
+        return env.reset(seed=seed, options=options)
+    finally:
+        if had_local_property:
+            setattr(env_type, "action_space", original_property)
+        else:
+            delattr(env_type, "action_space")
 
 
 def main():
@@ -317,6 +329,7 @@ def main():
         "executed_episode_horizon": episode_horizon,
         "evaluation_seed": args.evaluation_seed,
         "environment_action_space_seeded": True,
+        "environment_action_space_cached_during_reset": True,
         "requested_nfe": args.nfe,
         "verified_calls_per_plan": expected_calls,
         "full_successes": int(successes),

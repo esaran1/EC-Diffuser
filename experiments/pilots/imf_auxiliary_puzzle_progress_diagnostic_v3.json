@@ -1,0 +1,52 @@
+{
+  "schema_version": "imf-auxiliary-puzzle-progress-diagnostic-v3",
+  "status": "PREDECLARED_SCOPED_RESET_CACHE_REPLAY_DIAGNOSTIC",
+  "supersedes": "experiments/pilots/imf_auxiliary_puzzle_progress_diagnostic_v2.json",
+  "v2_invalidation": "ManipSpaceEnv.action_space constructs a fresh Box on every property access, so seeding a previously returned Box did not control the Box sampled internally during goal-observation construction",
+  "hypothesis": "after the action-space object used inside reset is both cached and seeded, exact replay will be deterministic and reveal whether residual failure is sequential closed-loop planning or failure to make contact",
+  "exact_change": "during reset only, expose one seeded action-space instance through the unwrapped environment class property and restore the original property in a finally block; preserve checkpoints, policy RNG, environment RNG, task, episode seeds, horizon, and NFE",
+  "expected_if_true": "two action_weight-10 invocations have exactly identical episode records and at least two episodes show button transitions plus positive best progress",
+  "expected_if_false": "episode records still differ, or at least two action_weight-10 episodes have no transition or no positive best progress",
+  "checkpoints": {
+    "action_weight_1": {
+      "path": "data/phase7_runs/ogbench_puzzle_state/imf_aux_confirm_auxiliary_seed42_5000/state_5000.pt",
+      "sha256": "da7679e1d1b382f7e62e1675a7d132d3f7ff737312ad20bd363abddab317c2f5",
+      "training_protocol": "experiments/pilots/imf_auxiliary_multiseed_replication_v1.json"
+    },
+    "action_weight_10": {
+      "path": "data/phase8_runs/imf_aux_action_weight10_seed42_5000/state_5000.pt",
+      "sha256": "a5e0d8959262b1018720ace72853d3560d53ac29aa8edf80b264590e33d2ae45",
+      "training_protocol": "experiments/pilots/imf_auxiliary_action_weight_ablation_v1.json"
+    }
+  },
+  "evaluation": {
+    "checkpoint_step": 5000,
+    "checkpoint_weights": "EMA",
+    "environment": "puzzle-4x4-play-v0",
+    "task_id": 4,
+    "evaluation_seed": 42000,
+    "episode_seeds": [82000, 82001, 82002],
+    "episodes_per_invocation": 3,
+    "native_horizon": 500,
+    "nfe": 4,
+    "required_calls_per_plan": 4,
+    "action_weight_10_replay_invocations": 2,
+    "replay_equality": "episode_records must be exactly equal"
+  },
+  "interpretation": {
+    "sequential_signal": "at least two of three action_weight-10 episodes have button transitions and positive best progress",
+    "regression_signal": "positive best progress followed by worse final Hamming distance",
+    "contact_failure_signal": "no button transitions in at least two of three action_weight-10 episodes",
+    "scope": "mechanism diagnostic only; three paired episodes are not a benchmark estimate"
+  },
+  "compute_gate": {
+    "training_runs": 0,
+    "evaluation_invocations": 3,
+    "total_episodes": 9,
+    "estimated_gpu_minutes": 2,
+    "estimated_peak_vram_mib": 500,
+    "execution": "strictly sequential on one RTX 4080",
+    "long_training_authorized": false,
+    "phase_9_authorized": false
+  }
+}
