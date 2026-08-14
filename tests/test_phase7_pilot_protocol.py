@@ -66,3 +66,21 @@ def test_imf_optimizer_screen_is_bounded_and_predeclared():
     ] == 16
     assert "interval_raw_l2" in protocol["selection_rule"]["primary_metric"]
     assert protocol["compute_gate"]["full_training_authorized"] is False
+
+
+def test_imf_optimizer_confirmation_is_bounded_and_frozen():
+    protocol = json.loads(Path(
+        "experiments/pilots/imf_optimizer_confirmation_v1.json"
+    ).read_text())
+    training = protocol["training"]
+
+    assert protocol["status"] == "PREDECLARED_BOUNDED_CONFIRMATION"
+    assert training["optimizer_steps"] == 5000
+    assert training["learning_rate"] == 4e-5
+    assert training["adam_betas"] == [0.9, 0.95]
+    assert training["lr_warmup_steps"] == 78
+    assert training["effective_batch_size"] == 64
+    assert protocol["acceptance"]["primary_metric"] == (
+        "final live fixed-validation interval_raw_l2"
+    )
+    assert protocol["compute_gate"]["full_training_authorized"] is False
