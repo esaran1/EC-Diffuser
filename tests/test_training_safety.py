@@ -69,6 +69,26 @@ def test_train_logs_mean_unscaled_microbatch_loss(monkeypatch):
     assert not logged[0]["metric"].requires_grad
 
 
+def test_linear_warmup_uses_optimizer_step_index(monkeypatch):
+    trainer = make_trainer(SequencedLossModel([1.0] * 8))
+    trainer.train_lr = 0.1
+    trainer.lr_warmup_steps = 3
+    trainer.collect_step_diagnostics = True
+    trainer.max_grad_norm = None
+    trainer.step = 0
+    trainer.save_freq = 0
+    trainer.step_ema = lambda: None
+    trainer.dataloader = iter([()] * 8)
+    monkeypatch.setattr(training_module, "batch_to_device", lambda batch: batch)
+    monkeypatch.setattr(training_module.wandb, "log", lambda record: None)
+
+    history = trainer.train(4)
+
+    assert [record["learning_rate"] for record in history] == pytest.approx(
+        [0.0, 0.1 / 3.0, 0.2 / 3.0, 0.1]
+    )
+
+
 def test_train_rejects_nonfinite_gradients_before_optimizer_step(monkeypatch):
     trainer = make_trainer(NonfiniteGradientModel(), gradient_accumulate_every=1)
     monkeypatch.setattr(training_module, "batch_to_device", lambda batch: batch)
@@ -120,3 +140,36 @@ def test_gradient_clipping_and_update_diagnostics_are_exact(monkeypatch):
     assert record["update_l2"] == pytest.approx(0.05)
     assert record["update_to_parameter_ratio"] == pytest.approx(0.05)
     assert model.anchor.item() == pytest.approx(1.05)
+
+
+def test_trainer_validates_optimizer_configuration():
+    dataset = [torch.zeros(1)]
+
+    with pytest.raises(ValueError, match="adam_betas"):
+        Trainer(
+            nn.Linear(1, 1), dataset, renderer=None,
+            sample_freq=0, save_freq=0, adam_betas=(0.9, 1.0),
+        )
+    with pytest.raises(ValueError, match="adam_betas"):
+        Trainer(
+            nn.Linear(1, 1), dataset, renderer=None,
+            sample_freq=0, save_freq=0, adam_betas=(0.9,),
+        )
+    with pytest.raises(TypeError, match="lr_warmup_steps"):
+        Trainer(
+            nn.Linear(1, 1), dataset, renderer=None,
+            sample_freq=0, save_freq=0, lr_warmup_steps=True,
+        )
+    with pytest.raises(ValueError, match="lr_warmup_steps"):
+        Trainer(
+            nn.Linear(1, 1), dataset, renderer=None,
+            sample_freq=0, save_freq=0, lr_warmup_steps=-1,
+        )
+
+    trainer = Trainer(
+        nn.Linear(1, 1), dataset, renderer=None,
+        sample_freq=0, save_freq=0, adam_betas=(0.9, 0.95),
+        lr_warmup_steps=16,
+    )
+    assert trainer.optimizer.defaults["betas"] == (0.9, 0.95)
+    assert trainer.lr_warmup_steps == 16

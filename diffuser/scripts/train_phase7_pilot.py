@@ -66,7 +66,11 @@ def build_method(name, model, task, method_config):
         time_scale=method_config["time_scale"],
     )
     if name == "improved_meanflow":
-        for key in ("adaptive_weighting", "adaptive_power", "adaptive_epsilon", "collect_diagnostics"):
+        for key in (
+            "time_mean", "time_std", "boundary_probability",
+            "adaptive_weighting", "adaptive_power", "adaptive_epsilon",
+            "collect_diagnostics",
+        ):
             if key in method_config:
                 common[key] = method_config[key]
     if name == "shortcut_model":
@@ -238,6 +242,8 @@ def main():
         collect_step_diagnostics=training.get(
             "collect_step_diagnostics", False
         ),
+        adam_betas=tuple(training.get("adam_betas", (0.9, 0.999))),
+        lr_warmup_steps=training.get("lr_warmup_steps", 0),
     )
 
     validation_history = [{
@@ -328,6 +334,8 @@ def main():
         "gradient_accumulation": training["gradient_accumulation"],
         "effective_batch_size": training["effective_batch_size"],
         "learning_rate": training["learning_rate"],
+        "adam_betas": list(training.get("adam_betas", (0.9, 0.999))),
+        "lr_warmup_steps": training.get("lr_warmup_steps", 0),
         "max_grad_norm": training.get("max_grad_norm"),
         "collect_step_diagnostics": training.get(
             "collect_step_diagnostics", False

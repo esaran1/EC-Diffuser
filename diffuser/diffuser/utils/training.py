@@ -58,6 +58,8 @@ class Trainer(object):
         bucket=None,
         max_grad_norm=None,
         collect_step_diagnostics=False,
+        adam_betas=(0.9, 0.999),
+        lr_warmup_steps=0,
     ):
         super().__init__()
         self.model = diffusion_model
@@ -83,7 +85,28 @@ class Trainer(object):
             self.dataset, batch_size=1, num_workers=0, shuffle=True, pin_memory=True
         ))
         self.renderer = renderer
-        self.optimizer = torch.optim.Adam(diffusion_model.parameters(), lr=train_lr)
+        if (
+            not isinstance(adam_betas, (tuple, list))
+            or len(adam_betas) != 2
+            or any(
+                isinstance(value, bool)
+                or not isinstance(value, numbers.Real)
+                or not math.isfinite(float(value))
+                or not 0.0 <= float(value) < 1.0
+                for value in adam_betas
+            )
+        ):
+            raise ValueError("adam_betas must contain two finite values in [0, 1)")
+        if isinstance(lr_warmup_steps, bool) or not isinstance(lr_warmup_steps, int):
+            raise TypeError("lr_warmup_steps must be a non-negative integer")
+        if lr_warmup_steps < 0:
+            raise ValueError("lr_warmup_steps must be a non-negative integer")
+        self.train_lr = float(train_lr)
+        self.adam_betas = tuple(float(value) for value in adam_betas)
+        self.lr_warmup_steps = lr_warmup_steps
+        self.optimizer = torch.optim.Adam(
+            diffusion_model.parameters(), lr=train_lr, betas=self.adam_betas
+        )
 
         self.logdir = results_folder
         self.bucket = bucket
@@ -197,8 +220,16 @@ class Trainer(object):
                     for parameter in parameters_with_grad
                 ) if parameters_with_grad else 0.0
 
+            lr_warmup_steps = getattr(self, "lr_warmup_steps", 0)
+            if lr_warmup_steps:
+                learning_rate = self.train_lr * min(
+                    float(self.step) / lr_warmup_steps, 1.0
+                )
+                for parameter_group in self.optimizer.param_groups:
+                    parameter_group["lr"] = learning_rate
             self.optimizer.step()
             if should_diagnose:
+                step_infos["learning_rate"] = self.optimizer.param_groups[0]["lr"]
                 update_l2 = math.sqrt(sum(
                     float((parameter.detach() - before).double().square().sum())
                     for parameter, before in zip(

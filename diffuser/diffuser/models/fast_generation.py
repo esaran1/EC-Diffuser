@@ -168,7 +168,11 @@ class ImprovedMeanFlow(_IntervalFlowBase):
         pair = torch.sigmoid(pair * self.time_std + self.time_mean)
         t = pair.max(dim=1).values
         r = pair.min(dim=1).values
-        boundary = torch.rand(batch_size, device=device) < self.boundary_probability
+        # Match the official iMF implementation: use an exact per-batch
+        # proportion rather than independent Bernoulli draws. This avoids
+        # unnecessary boundary/interval mixture noise for small policy batches.
+        boundary_count = int(batch_size * self.boundary_probability)
+        boundary = torch.arange(batch_size, device=device) < boundary_count
         r = torch.where(boundary, t, r)
         return r, t, boundary
 

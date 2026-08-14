@@ -100,6 +100,23 @@ def test_adaptive_weighting_requires_l2_and_valid_parameters():
         make_wrapper(collect_diagnostics=1)
 
 
+@pytest.mark.parametrize(
+    "batch_size, probability, expected",
+    [(1, 0.5, 0), (2, 0.5, 1), (3, 0.5, 1), (32, 0.5, 16),
+     (7, 0.0, 0), (7, 1.0, 7)],
+)
+def test_time_sampler_uses_exact_official_batch_proportion(
+    batch_size, probability, expected
+):
+    wrapper = make_wrapper(boundary_probability=probability)
+    r, t, boundary = wrapper._sample_times(
+        batch_size, torch.device("cpu"), torch.float32
+    )
+    assert int(boundary.sum()) == expected
+    torch.testing.assert_close(r[boundary], t[boundary])
+    assert torch.all(r[~boundary] < t[~boundary])
+
+
 def test_diagnostics_separate_boundary_interval_and_are_finite():
     wrapper = make_wrapper(collect_diagnostics=True)
     data, cond = inputs(batch=4)
