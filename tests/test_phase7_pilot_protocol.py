@@ -101,3 +101,21 @@ def test_auxiliary_imf_confirmation_is_paired_and_bounded():
     }
     assert protocol["acceptance"]["simulator_test_set_used"] is False
     assert protocol["compute_gate"]["full_training_authorized"] is False
+
+
+def test_auxiliary_imf_multiseed_replication_is_bounded_and_paired():
+    protocol = json.loads(Path(
+        "experiments/pilots/imf_auxiliary_multiseed_replication_v1.json"
+    ).read_text())
+    training = protocol["training"]
+
+    assert protocol["status"] == "PREDECLARED_BOUNDED_MULTI_SEED_REPLICATION"
+    assert protocol["analysis"]["training_seeds"] == [42, 43, 44]
+    assert set(protocol["replications"]) == {"43", "44"}
+    assert training["fixed_validation_goal_seed"] == 42
+    assert training["fixed_validation_seed"] == 100042
+    assert training["optimizer_steps"] == 5000
+    assert len(protocol["run_matrix"]) == 4
+    assert protocol["compute_gate"]["estimated_gpu_hours"] < 1
+    assert protocol["compute_gate"]["full_training_authorized"] is False
+    assert protocol["compute_gate"]["phase_9_authorized"] is False

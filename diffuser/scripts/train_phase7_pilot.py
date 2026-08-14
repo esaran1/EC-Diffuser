@@ -51,6 +51,26 @@ def set_seed(seed):
     torch.cuda.manual_seed_all(seed)
 
 
+def resolve_training(protocol, replication_seed=None):
+    """Resolve only replication overrides explicitly frozen in the protocol."""
+    training = dict(protocol["training"])
+    replications = protocol.get("replications")
+    if replications is None:
+        if replication_seed is not None:
+            raise ValueError("protocol does not declare replication seeds")
+        return training
+    if replication_seed is None:
+        raise ValueError("this protocol requires --replication-seed")
+    key = str(replication_seed)
+    if key not in replications:
+        raise ValueError("replication seed {} is not predeclared".format(key))
+    overrides = replications[key]["training_overrides"]
+    training.update(overrides)
+    if training["seed"] != replication_seed:
+        raise ValueError("replication override must set the selected training seed")
+    return training
+
+
 def build_method(name, model, task, method_config):
     common = {
         "model": model,
@@ -127,11 +147,12 @@ def main():
     parser.add_argument("--validation-frequency", type=int)
     parser.add_argument("--validation-batches", type=int)
     parser.add_argument("--variant")
+    parser.add_argument("--replication-seed", type=int)
     args = parser.parse_args()
 
     protocol_bytes = args.protocol.read_bytes()
     protocol = json.loads(protocol_bytes)
-    training = dict(protocol["training"])
+    training = resolve_training(protocol, args.replication_seed)
     task = protocol["task"]
     method_config = dict(protocol["methods"][args.method])
     variant = None
@@ -178,11 +199,17 @@ def main():
         goal_seed=training["seed"],
         normalizer_state=normalizer_entry["normalizer"],
     )
+    validation_goal_seed = training.get(
+        "fixed_validation_goal_seed", training["seed"]
+    )
+    validation_seed = training.get(
+        "fixed_validation_seed", training["seed"] + 100000
+    )
     validation_dataset = OGBenchPuzzleWindowDataset(
         task["dataset_manifest"],
         split="validation",
         horizon=task["horizon"],
-        goal_seed=training["seed"],
+        goal_seed=validation_goal_seed,
         normalizer_state=normalizer_entry["normalizer"],
     )
     validation_loader = torch.utils.data.DataLoader(
@@ -264,7 +291,7 @@ def main():
     validation_history = [{
         "step": 0,
         **fixed_validation(
-            trainer.model, validation_batches, training["seed"] + 100000, device
+            trainer.model, validation_batches, validation_seed, device
         ),
     }]
     ema_validation_history = [{
@@ -272,7 +299,7 @@ def main():
         **fixed_validation(
             trainer.ema_model,
             validation_batches,
-            training["seed"] + 100000,
+            validation_seed,
             device,
         ),
     }]
@@ -298,7 +325,7 @@ def main():
                 **fixed_validation(
                     trainer.model,
                     validation_batches,
-                    training["seed"] + 100000,
+                    validation_seed,
                     device,
                 ),
             })
@@ -307,7 +334,7 @@ def main():
                 **fixed_validation(
                     trainer.ema_model,
                     validation_batches,
-                    training["seed"] + 100000,
+                    validation_seed,
                     device,
                 ),
             })
@@ -340,7 +367,8 @@ def main():
         "validation_windows": len(validation_dataset),
         "fixed_validation_batches": args.validation_batches,
         "fixed_validation_frequency": args.validation_frequency,
-        "fixed_validation_seed": training["seed"] + 100000,
+        "fixed_validation_seed": validation_seed,
+        "fixed_validation_goal_seed": validation_goal_seed,
         "fixed_validation_history": validation_history,
         "fixed_validation_history_weights": "live",
         "fixed_validation_history_ema": ema_validation_history,
