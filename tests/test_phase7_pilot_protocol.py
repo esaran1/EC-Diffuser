@@ -119,3 +119,19 @@ def test_auxiliary_imf_multiseed_replication_is_bounded_and_paired():
     assert protocol["compute_gate"]["estimated_gpu_hours"] < 1
     assert protocol["compute_gate"]["full_training_authorized"] is False
     assert protocol["compute_gate"]["phase_9_authorized"] is False
+
+
+def test_auxiliary_action_weight_ablation_changes_one_scientific_factor():
+    protocol = json.loads(Path(
+        "experiments/pilots/imf_auxiliary_action_weight_ablation_v1.json"
+    ).read_text())
+    method = protocol["methods"]["auxiliary_improved_meanflow"]
+
+    assert protocol["status"] == "PREDECLARED_BOUNDED_SINGLE_FACTOR_ABLATION"
+    assert protocol["exact_change"].startswith("set action_weight from 1 to 10")
+    assert method["action_weight"] == 10.0
+    assert protocol["training"]["optimizer_steps"] == 5000
+    assert protocol["training"]["seed"] == 42
+    assert protocol["compute_gate"]["training_runs"] == 1
+    assert protocol["compute_gate"]["estimated_total_gpu_hours"] < 0.2
+    assert protocol["compute_gate"]["long_training_authorized"] is False

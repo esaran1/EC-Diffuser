@@ -6,7 +6,11 @@ import pytest
 import torch
 from torch import nn
 
-from diffuser.scripts.train_phase7_pilot import fixed_validation, resolve_training
+from diffuser.scripts.train_phase7_pilot import (
+    build_method,
+    fixed_validation,
+    resolve_training,
+)
 from diffuser.utils.arrays import set_global_device
 
 
@@ -76,3 +80,33 @@ def test_replication_seed_is_rejected_for_single_run_protocol():
     assert resolve_training(protocol) == {"seed": 42}
     with pytest.raises(ValueError, match="does not declare"):
         resolve_training(protocol, replication_seed=43)
+
+
+class AuxiliaryStub(nn.Module):
+    def forward(self, x, cond, time, interval=None):
+        return torch.zeros_like(x)
+
+    def forward_with_aux(self, x, cond, time, interval=None):
+        output = torch.zeros_like(x)
+        return output, output
+
+
+def test_build_method_propagates_predeclared_action_weight():
+    method = build_method(
+        "auxiliary_improved_meanflow",
+        AuxiliaryStub(),
+        {"horizon": 5, "observation_dim": 83, "action_dim": 5},
+        {
+            "loss_type": "l2",
+            "default_solver_steps": 4,
+            "time_scale": 1000.0,
+            "action_weight": 10.0,
+        },
+    )
+
+    torch.testing.assert_close(
+        method.loss_weight_matrix[0, :5], torch.full((5,), 10.0)
+    )
+    torch.testing.assert_close(
+        method.loss_weight_matrix[1:, :], torch.ones((4, 88))
+    )

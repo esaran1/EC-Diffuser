@@ -79,6 +79,9 @@ def build_method(name, model, task, method_config):
         "action_dim": task["action_dim"],
         "loss_type": method_config.get("loss_type", "l1"),
     }
+    for key in ("action_weight", "loss_discount", "loss_weights"):
+        if key in method_config:
+            common[key] = method_config[key]
     if name == "gaussian_diffusion":
         return GaussianDiffusion(
             **common,
