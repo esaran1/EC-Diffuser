@@ -115,6 +115,69 @@ and better targeted:
 Gap A′ and Gap B are the same gap approached from two directions, which is a
 stronger position than either alone.
 
+## 3b. Second-pass audit (2026-08-17): MVP and the Q-guided family
+
+A second search pass was run specifically for work missed in the first pass.
+It found the strongest directly-competing method and materially changes the
+cube-double plan.
+
+| Work | ID / venue | Paradigm | OGBench coverage | Relevance |
+|---|---|---|---|---|
+| **MVP** | arXiv:2602.13810, **ICLR 2026** | MeanFlow + instantaneous velocity constraint (IVC); offline→online with Q-guided generate-and-select | **cube-double t2/3/4, cube-triple t2/3/4** | **Closest competitor** |
+| FMQ / QGBS | arXiv:2605.12416 | flow-map policy + Q-guided beam search | OGBench + RoboMimic, 12 tasks | Beats MVP by 21.3% relative IQM |
+| Q-Flow | arXiv:2605.13435 | flow policy + Bellman critic | incl. cube-double, puzzle-4x4 | Reports the failures we care about |
+| QGF | github zhouzypaul/qgf | BC flow + TD critic, test-time guidance | OGBench | Reference implementation |
+| One-Step Flow Policy (OFP) | arXiv:2603.12480 | self-distillation, self-consistency | visuomotor | Few-step baseline |
+| ElasticFlow | arXiv:2605.08799 | one-step, elastic horizons | language-guided | Horizon-adaptive precedent |
+
+### MVP reported results (state-based OGBench, vs QC baseline)
+
+| Task | QC | MVP |
+|---|---:|---:|
+| cube-double-task2 / task3 | 1.00 | 1.00 |
+| cube-double-task4 | 0.93 | 0.95 |
+| cube-triple-task2 | 0.82 | 0.88 |
+| cube-triple-task3 | 0.69 | 0.71 |
+| **cube-triple-task4** | 0.46 | **0.52** |
+
+### Three consequences, one of which overturns the plan
+
+**(i) cube-double is saturated, not hard.** MVP reports 1.00 / 1.00 / 0.95.
+The "3 ±2 vs FQL 29 ±2" figure from arXiv:2511.13035 is one particular
+method's weakness, **not a property of the task**. Selecting cube-double as
+the flagship hard task on the strength of that single number would have been
+a mistake. **cube-triple-task4 (0.52) is the task with real headroom.**
+
+**(ii) The BC-vs-Q-learning confound is now confirmed as decisive and
+universal.** MVP, FMQ, Q-Flow and QGF are all critic-based; MVP's gains come
+from Q-guided generate-and-select at inference. No audited method reaches
+these numbers from pure behavior cloning. Any comparison of our BC pipeline
+against these published numbers measures *the critic*, not the generative
+objective. This confirms the caution in the current instructions and is now
+a hard constraint on protocol design.
+
+**(iii) MeanFlow-family + OGBench cubes is occupied.** MVP is MeanFlow-family,
+ICLR 2026, on exactly the cube tasks. This further closes the iMF direction
+and independently supports cancelling the 50k iMF run.
+
+### What still survives
+
+MVP explicitly does **not** use entity/object-centric representations — it
+conditions on raw state. EC-Diffuser (ICLR 2025) established that entity-centric
+representations give compositional generalization for *diffusion* policies,
+including zero-shot generalization to more objects than seen in training.
+
+> **Surviving gap:** no audited work combines an entity-centric/object-factored
+> representation with a low-NFE generative objective, or tests whether
+> entity structure is what lets few-step policies retain compositional
+> generalization as object count grows.
+
+That is a representation claim, testable under pure BC without a critic, and
+it is precisely the axis on which our PINT backbone is unusual. It also
+predicts a specific measurable outcome: entity-structured low-NFE policies
+should degrade more slowly than flat ones as objects are added
+(3-cube → cube-triple), independent of absolute success.
+
 ## 4. Method-selection implications
 
 - **Baselines to keep:** Gaussian diffusion (canonical), vanilla Flow
@@ -137,6 +200,12 @@ stronger position than either alone.
 - Shortcut Models: https://arxiv.org/abs/2410.12557
 - OGBench: https://arxiv.org/html/2410.20092v1
 - Improved Mean Flows: https://arxiv.org/abs/2512.02012
+- MVP (ICLR 2026): https://arxiv.org/abs/2602.13810
+- FMQ / QGBS: https://arxiv.org/html/2605.12416
+- Q-Flow: https://arxiv.org/html/2605.13435v2
+- One-Step Flow Policy: https://arxiv.org/pdf/2603.12480
+- ElasticFlow: https://arxiv.org/pdf/2605.08799
+- EC-Diffuser (ICLR 2025): https://arxiv.org/abs/2412.18907
 - DexJoCo: https://arxiv.org/html/2605.16257v1
 - Isaac Gym deprecation: https://developer.nvidia.com/isaac-gym
 - Isaac Lab: https://developer.nvidia.com/isaac/lab
