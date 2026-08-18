@@ -1,0 +1,29 @@
+{
+  "behavior_cloning": {
+    "all_logged_losses_finite": true,
+    "checkpoint": "data/phase9_runs/cube_triple_behavior_cloning_seed42_50000/state_50000.pt",
+    "checkpoint_audit": {
+      "conditioning_exact": true,
+      "ema_load": "strict OK",
+      "model_calls_per_plan": 1,
+      "sample_finite": true
+    },
+    "checkpoint_sha256": "40fdb23c0eb67b7ec40de6968e0baf67e223c4e13f1edfe925d5c0a2a64bf132",
+    "fixed_validation_ema_final": 0.06270332867279649,
+    "fixed_validation_live_final": 0.0706256628036499,
+    "fixed_validation_live_first": 0.7223496958613396,
+    "gpu_hours": 0.40012702226024377,
+    "optimizer_steps": 50000,
+    "parameter_count": 63249715,
+    "peak_vram_mib_torch": 1482.57373046875,
+    "runtime_seconds": 1440.4572801368777,
+    "seconds_per_optimizer_step": 0.028809145602737552,
+    "status": "PASS",
+    "validation_monotone_no_divergence": true,
+    "wrapper": "DeterministicBehaviorCloning"
+  },
+  "note": "Training-only result. No task performance is claimed until the paired native evaluation runs.",
+  "protocol": "experiments/pilots/cube_triple_bc_screen_v1.json",
+  "schema_version": "phase9-cube-triple-stage1-training-v1",
+  "status": "BEHAVIOR_CLONING_TRAINING_COMPLETE_FLOW_IN_PROGRESS"
+}
