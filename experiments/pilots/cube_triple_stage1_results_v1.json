@@ -79,6 +79,30 @@
       "requested_nfe": 4,
       "success_rate": 0.0,
       "verified_calls_per_plan": 4
+    },
+    "conditional_flow_matching_nfe8": {
+      "action_clip_step_fraction": 0.068,
+      "checkpoint_sha256": "3752bff8950c46412a588cffbc80b8ce21329a4b550a37158797274c5d7bf5a6",
+      "cube_progress": {
+        "episodes_with_any_cube_closer": 48,
+        "episodes_with_any_cube_placed": 0,
+        "mean_distance_reduction": 0.0029775406799466874,
+        "mean_final_distance": 0.2676872990424394,
+        "mean_initial_distance": 0.27066483972238603,
+        "mean_min_final_distance": 0.2067221039136082,
+        "total_cubes_within_threshold": 0
+      },
+      "episodes": 60,
+      "full_successes": 0,
+      "mean_return": 0.0,
+      "method": "conditional_flow_matching",
+      "peak_vram_mib": 380.05810546875,
+      "planner_latency_ms_mean": 20.96287059140547,
+      "planner_latency_ms_p95": 21.299588936381042,
+      "raw": "data/phase9_evaluations/cube_triple_conditional_flow_matching_nfe8.json",
+      "requested_nfe": 8,
+      "success_rate": 0.0,
+      "verified_calls_per_plan": 8
     }
   },
   "decision": {
@@ -87,6 +111,7 @@
     "stage_3_shortcut": "NOT JUSTIFIED: the NFE axis is flat at zero, so a second low-NFE objective cannot discriminate anything."
   },
   "evaluation": {
+    "arms_completed": 5,
     "checkpoint_weights": "EMA",
     "environment": "cube-triple-play-v0",
     "episodes_per_arm": 60,
@@ -98,13 +123,14 @@
       2,
       3,
       4
-    ]
+    ],
+    "total_episodes": 300
   },
   "interpretation": {
     "consistent_with_literature": "Every published cube-triple result uses a critic: FMQ 0.88 with online fine-tuning and NFE 20-32 at test time, MVP with Q-guided generate-and-select, QC Q-learning throughout. Our result is the pure-BC point that was previously unmeasured, and it is near zero.",
     "cubes_barely_move": "Mean per-cube distance to target goes 0.271 -> 0.266 m at 4 NFE against a 0.04 m success threshold; no cube is ever placed.",
     "headline": "Under pure behavior cloning at 50k steps, no arm places any cube on cube-triple: 0/60 for BC@1 and for Flow at every NFE tested.",
-    "nfe_is_not_the_variable": "Success is identically zero from 1 to 8 NFE, so the NFE axis does not discriminate here. The low-NFE question cannot be answered on this task in this setting.",
+    "nfe_is_not_the_variable": "Success is identically 0/60 at 1, 2, 4 and 8 NFE, and identically 0/60 for the non-generative BC floor. The NFE axis is completely flat, so it cannot discriminate anything on this task in this setting. Planner latency scales as expected (2.85 / 5.49 / 10.99 / 20.96 ms), confirming the NFE budget was really spent -- the flatness is not an instrumentation artifact.",
     "not_a_fitting_failure": "Offline action MAE is 0.116 (BC) and 0.145 (Flow) against an action scale of |mean| 0.297 / std 0.418.",
     "not_action_saturation": "Action clipping is 2.4-5.4% of steps, far below the 82.9% seen in the earlier puzzle diagnostic."
   },
@@ -125,6 +151,6 @@
   "preregistered_outcome_matched": "bc_is_the_bottleneck",
   "protocol": "experiments/pilots/cube_triple_bc_screen_v1.json",
   "schema_version": "phase9-cube-triple-stage1-results-v1",
-  "status": "STAGE1_COMPLETE_ALL_ARMS_ZERO_SUCCESS",
+  "status": "STAGE1_COMPLETE_ALL_FIVE_ARMS_ZERO_SUCCESS",
   "training_results": "experiments/pilots/cube_triple_stage1_training_results_v1.json"
 }
