@@ -3,26 +3,36 @@
 Status: **predeclared, awaiting GPU availability and review.** No new method
 is proposed here — this protocol only separates causes.
 
-## 1. Starting point: a verified mechanism
+## 1. Starting point: a verified statistic, an UNTESTED hypothesis
 
 `experiments/goal_horizon_verification.md` established, and
 `experiments/scripts/verify_goal_horizon.py` reproduces:
 
-- The 99.2% figure is **correct** (reproduced to every digit) but is the
-  **arithmetic consequence** of uniform within-episode goal sampling over
-  1001-step episodes with H=5 (analytic 0.99250 vs empirical 0.99233). It is
-  not a corrupted adapter.
-- The consequence that matters is measured: the conditioning slot demands a
-  displacement **2.6×** larger than what the 5-step window can traverse
-  (‖o[t]−goal‖ = 4.64 vs ‖o[t]−o[t+4]‖ = 1.82). Median goal distance is
-  **187–190 steps**.
-- 3-cube PushCube has ratio **1.1×** (fixed task goal, 100-step episodes), so
-  the two tasks are structurally different at the same H=5.
+**Verified:**
+- The 99.2% figure is numerically correct, reproduced to every digit.
+- It is the **arithmetic consequence** of uniform within-episode goal sampling
+  over 1001-step episodes with H=5 (analytic 0.99250 vs empirical 0.99233) --
+  not a corrupted adapter, not a leak.
+- **87.97%** of training windows contain **zero button-state changes**; goals
+  differ from the current state by **6.64 of 16 buttons** on average.
 
-So on OGBench puzzle, the model is trained to hit a target it **cannot reach
-within the horizon**, and that same unreachable state is imposed as a hard
-conditioning constraint at sampling time. Any claim about the generative
-objective on this task is confounded by that fact.
+**Withdrawn:** the earlier "OGBench 2.6x vs 3-cube 1.1x" displacement contrast.
+Those metrics were not comparable (OGBench mixes 32 binary dims with
+continuous state across a ~100x std range; the 3-cube figure used unnormalized
+DLP latents). On comparable metrics the ordering reverses: OGBench is 1.68x
+standardized, 3-cube is 3.66x in metres.
+
+**Not established:** that any of this is a bottleneck. A goal beyond the H=5
+window is **normal and expected** in goal-conditioned control -- hindsight
+relabeling trains on distant goals by design, and the policy replans every
+step. Distance-beyond-horizon is not itself evidence of a flaw.
+
+The open question this protocol tests is therefore narrow:
+
+> Does prediction/control quality actually **degrade with goal offset** (D1),
+> and does changing the relabeling rule (D3) or the horizon (D4) actually
+> **improve performance**? Only affirmative answers justify the word
+> "bottleneck".
 
 ## 2. Competing hypotheses
 
@@ -57,8 +67,8 @@ one-step prediction error on held-out windows bucketed by goal offset
 - *If false:* error is flat across offset buckets ⇒ the horizon mismatch is
   not the operative cause, and H-ALG/H-REP move up.
 
-This single experiment separates the *verified mechanism* from the objective
-and requires no retraining.
+This single experiment separates the goal-offset hypothesis from the
+generative objective and requires no retraining.
 
 ### D2 — NFE sweep on the existing checkpoint (NO TRAINING, ~0.5 h)
 
@@ -133,8 +143,10 @@ No root cause will be asserted without the corresponding ablation.
 | D5 representation contrast | yes, 50k × 1 seed | ~2 |
 | **Total** | | **~6.3–8.3** |
 
-D1+D2 together cost **~1 GPU-h and require no training**, and may resolve the
-question outright. They are the correct first spend.
+D1+D2 together cost **~1 GPU-h and require no training**. However, see §7:
+they diagnose **puzzle-4x4 specifically** and are no longer recommended as the
+first GPU spend. If cube-triple is adopted, run **D1-cube** instead, on
+cube-triple checkpoints.
 
 ## 6. Explicitly excluded
 

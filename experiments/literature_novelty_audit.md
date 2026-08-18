@@ -160,23 +160,58 @@ a hard constraint on protocol design.
 ICLR 2026, on exactly the cube tasks. This further closes the iMF direction
 and independently supports cancelling the 50k iMF run.
 
-### What still survives
+### What still survives — narrowed statement of the gap
 
-MVP explicitly does **not** use entity/object-centric representations — it
-conditions on raw state. EC-Diffuser (ICLR 2025) established that entity-centric
-representations give compositional generalization for *diffusion* policies,
-including zero-shot generalization to more objects than seen in training.
+A third search pass specifically targeted structured few-step policies. The
+closest work:
 
-> **Surviving gap:** no audited work combines an entity-centric/object-factored
-> representation with a low-NFE generative objective, or tests whether
-> entity structure is what lets few-step policies retain compositional
-> generalization as object count grows.
+| Work | Structure | NFE | Multi-object relational? |
+|---|---|---|---|
+| **EfficientFlow** (AAAI, arXiv:2512.02020) | **global SO(2)** scene equivariance | 1/3/5 | No — global symmetry, no per-object decomposition |
+| **ActionFlow** (arXiv:2409.04576) | SE(3)-invariant transformer over **poses** | few-step FM | Relational over poses, but not entity-factored multi-object composition |
+| DM1 (arXiv:2510.07865) | dispersive regularization | 1 | No structure |
+| MP1 / OMP / DMPO / MVP | none (flat/visual) | 1 | No |
+| EC-Diffuser (ICLR 2025) | **entity-centric DLP + PINT** | ~100 (diffusion) | **Yes — but multi-step** |
+| Hier. Entity-centric RL (arXiv:2602.02722) | entity-factored subgoals | multi-step diffusion; inference cost not a goal | Yes, but not low-NFE |
 
-That is a representation claim, testable under pure BC without a critic, and
-it is precisely the axis on which our PINT backbone is unusual. It also
-predicts a specific measurable outcome: entity-structured low-NFE policies
-should degrade more slowly than flat ones as objects are added
-(3-cube → cube-triple), independent of absolute success.
+The pattern is consistent: work with **entity-level relational structure**
+uses **multi-step** generation, and work at **1–4 NFE** uses **flat or
+globally-equivariant** architectures. Note that "structured low-NFE policy"
+as a gap statement does **not** survive EfficientFlow — it is equivariant and
+runs at 1 NFE.
+
+The gap must therefore be stated narrowly:
+
+> **Entity-level *relational* structure — per-object tokens with inter-object
+> attention — for low-NFE (1–4) multi-object action generation, and whether
+> that structure preserves compositional generalization as object count grows
+> when the sampler is reduced to one or a few steps.**
+
+Three qualifiers do the work, and each is needed:
+
+1. **Entity-level relational**, not global equivariance. EfficientFlow's
+   SO(2) symmetry is a property of the whole scene; it does not decompose the
+   scene into objects or model inter-object relations. ActionFlow reasons over
+   relative SE(3) poses but is not an entity-factored multi-object policy.
+2. **Low-NFE (1–4)**, not multi-step. EC-Diffuser has exactly the structure we
+   mean but runs full diffusion; its compositional-generalization result is
+   unmeasured under a one/few-step sampler.
+3. **Compositional generalization vs object count**, not just success. This is
+   the specific property EC-Diffuser claims (zero-shot to more objects than
+   trained on) and the one most likely to be *fragile* under aggressive NFE
+   reduction — which is a testable, falsifiable prediction rather than a
+   general aspiration.
+
+**Falsifiable prediction:** entity-structured low-NFE policies degrade more
+slowly than flat low-NFE policies as object count grows (3-cube → cube-triple,
+and cube-double → cube-triple), even at matched parameters and training
+budget. If flat and entity-structured degrade identically, the gap is empty
+and we report that.
+
+**Honest caveat:** this is a *representation* contribution, not a new
+generative objective. Its value depends entirely on the empirical result. It
+is also only testable under pure BC — every critic-based competitor confounds
+representation with policy improvement.
 
 ## 4. Method-selection implications
 
