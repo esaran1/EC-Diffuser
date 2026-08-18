@@ -9,6 +9,8 @@ from pathlib import Path
 from diffuser.datasets.benchmark_sequence import (
     DexJoCoHammerWindowDataset,
     MimicGenThreePieceWindowDataset,
+    OGBenchCubeDoubleWindowDataset,
+    OGBenchCubeTripleWindowDataset,
     OGBenchPuzzleWindowDataset,
 )
 
@@ -17,6 +19,16 @@ TASKS = {
     "ogbench_puzzle_4x4_play_state": (
         OGBenchPuzzleWindowDataset,
         Path("experiments/datasets/converted/ogbench_puzzle_4x4_play_v0_manifest.json"),
+        5,
+    ),
+    "ogbench_cube_triple_play_state": (
+        OGBenchCubeTripleWindowDataset,
+        Path("experiments/datasets/converted/ogbench_cube_triple_play_v0_manifest.json"),
+        5,
+    ),
+    "ogbench_cube_double_play_state": (
+        OGBenchCubeDoubleWindowDataset,
+        Path("experiments/datasets/converted/ogbench_cube_double_play_v0_manifest.json"),
         5,
     ),
     "mimicgen_three_piece_assembly_d1_large_interpolation": (

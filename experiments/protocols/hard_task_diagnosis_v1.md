@@ -191,9 +191,35 @@ positions change continuously in essentially every window, so the
 **D2** (NFE sweep) transfers as a method but not as evidence: it would be run
 on a puzzle checkpoint, and NFE sensitivity is task- and checkpoint-specific.
 
+### Measured on the real cube data (2026-08-18, CPU only)
+
+The cube datasets are now downloaded and their manifests/normalizers frozen,
+so the transfer question was answered empirically rather than by assumption:
+
+| Task | obs dim | standardized in-window | to-goal | ratio | median offset | beyond endpoint |
+|---|--:|--:|--:|--:|--:|--:|
+| puzzle-4x4 | 83 | 6.910 | 11.641 | 1.68x | 190 | 0.9923 |
+| **cube-triple** | 46 | 2.489 | 6.661 | **2.68x** | 192 | 0.9925 |
+| cube-double | 37 | 2.529 | 6.372 | 2.52x | 187 | 0.9930 |
+
+Two consequences:
+
+1. The goal-offset structure **does transfer**: cube episodes are also 1001
+   steps, so the ~99.2% figure and the offset distribution are nearly
+   identical. D1's question is well-posed on cube-triple.
+2. The reachability gap is **larger** on cube-triple (2.68x) than on puzzle
+   (1.68x) on the same standardized metric. If the goal-offset hypothesis has
+   force anywhere, cube-triple is the stronger place to test it -- the opposite
+   of what the puzzle-first ordering assumed.
+
+What still does not transfer is the *discrete-subgoal* mechanism (the 88%
+zero-button-change statistic); cube poses move continuously. So D1 should be
+run on cube-triple with a continuous progress metric, not by porting the
+button-Hamming analysis.
+
 ### Verdict
 
-D1/D2 diagnose **puzzle-4x4 specifically**. They would tell us why our puzzle
+D1/D2 **as originally written** diagnose **puzzle-4x4 specifically**. They would tell us why our puzzle
 pilots underperformed — a task we have now largely set aside in favour of
 cube-triple, and one where a published one-step method already reaches 40.
 
