@@ -3,34 +3,61 @@
 Status: **predeclared, awaiting GPU availability, a data download decision,
 and review.**
 
-## 1. Target correction: cube-triple, not cube-double
+## 1. Target framing: cube-triple is hard *for our setting*, not unsolved
 
-The instruction was to keep cube-double as the main hard-task target. The
-second-pass literature audit (see `experiments/literature_novelty_audit.md`
-§3b) found evidence that changes this, and it is reported here rather than
-silently followed or silently ignored.
+Earlier drafts of this protocol described cube-triple-task4 as having broad
+SOTA headroom on the strength of MVP's 0.52. **That framing is withdrawn.**
 
-**MVP (arXiv:2602.13810, ICLR 2026) reports cube-double at 1.00 / 1.00 / 0.95**
-across tasks 2/3/4. cube-double is **saturated**, which fails the project's
-own "prefer tasks with meaningful headroom" rule.
+Newer work reports much higher numbers on the same task:
 
-The `3 ±2 vs FQL 29 ±2` figure that motivated cube-double comes from
-arXiv:2511.13035 and is **one method's weakness on one task**, not a property
-of the task. Two independent methods (MVP 0.95+; QAM-E 65±5 in Q-Flow's
-table) do well on cube-double.
+| Method | cube-triple-task4 | Paradigm | Test-time cost |
+|---|---:|---|---|
+| QC | 0.37 ±0.26 | offline RL + critic | multi-step |
+| MVP (ICLR 2026) | 0.32 ±0.07 (FMQ's table) / 0.52 (own table) | offline→online, Q-guided generate-and-select | 1 NFE + critic selection |
+| **FMQ + QGBS** | **0.88 ±0.07** | offline RL + **online** critic fine-tuning | **NFE=20–32, critic required at test time** |
 
-Meanwhile **cube-triple-task4 sits at 0.52 (MVP) / 0.46 (QC)** — genuine
-headroom, and it is explicitly the *cyclic permutation of three cubes*, i.e.
-the compositional multi-object structure this project cares about, at the
-same object count as our 3-cube PushCube task.
+So cube-triple-task4 is **not unsolved**: FMQ reaches 0.88. It must not be
+described as a task where the field is stuck.
 
-**Recommendation: make cube-triple (tasks 2/3/4) the target and retain
-cube-double-task4 (0.95) only as an easier control.** This preserves the
-intent of the instruction — multi-object composition as the hard target —
-while pointing it at a task that is not already solved.
+### Why it is still the right target for this project
 
-If you prefer to keep cube-double as primary regardless, the protocol below
-runs unchanged with the task id swapped; only the headroom argument weakens.
+The three results above share a property our setting does not have:
+
+- **FMQ** needs a learned critic *at inference*, using Q-guided beam search
+  over 4 particles × 4 branches (NFE=20–32). That is neither one-step nor
+  BC — it is closer to a search procedure than a fast policy.
+- **MVP** needs Q-guided generate-and-select, i.e. a critic to pick among
+  sampled actions.
+- **QC** is Q-learning throughout.
+
+**No published number on cube-triple comes from a pure-BC, low-NFE policy.**
+The open question is therefore not "can this task be solved" (yes, at 0.88,
+with a critic and 20–32 NFE) but:
+
+> Under pure behavior cloning at 1–4 NFE, with no critic at training or test
+> time, how far can a policy get on cube-triple — and does entity-level
+> relational structure change that?
+
+That is the regime this project studies, and it is empirically uncharted.
+
+### Mandatory reporting rule
+
+Every results table must carry a **paradigm column** with at least:
+`BC` / `offline-RL` / `offline→online` and a **test-time NFE incl. critic
+calls** column. Published critic-based numbers may appear only as clearly
+labeled context rows, never averaged or ranked against our BC arms. A
+comparison that omits these columns is invalid.
+
+### Consequence for task selection
+
+cube-triple remains the target because (a) it is genuinely multi-object
+compositional, (b) it matches our 3-cube object count, and (c) the pure-BC
+low-NFE regime on it is unmeasured. But the **headroom claim is now
+conditional**: it must be established by our own arm 1/2 results, not
+assumed. If plain BC and Diffusion@100 both do well at 1–4 NFE, the task is
+not a discriminator for us either, and we report that and move on.
+
+cube-double (MVP 1.00/1.00/0.95) is retained only as an easier control.
 
 ## 2. The question
 

@@ -51,17 +51,56 @@ concatenated per-episode initial object positions and goal positions. Arms
 sharing a seed must produce identical hashes. If hashes differ, the pairing
 has failed and the results are void — this check gates the whole analysis.
 
-## 4. Evaluation seeds and episode count
+## 4. Evaluation seeds and episode count — one common core set
 
-- Evaluation seeds: **`101, 202, 303, 404, 505`** (5 seeds, from the
-  predeclared `experiments/fast_policy_protocol.json`).
-- Episodes per seed: **96** (protocol value; 3× the current 32).
-- Total per arm: **480 episodes**, vs ~32 today (15×).
-- Total evaluations: 6 arms × 5 seeds = **30 processes**.
+**Corrected from the previous draft.** The earlier version gave Flow 96
+episodes × 5 seeds and Diffusion 48 × 3, which meant the headline
+Flow-vs-Diffusion comparison was computed on *different episodes* — the exact
+defect this protocol exists to remove.
 
-96 episodes/seed gives a per-seed binomial standard error of ~2.2% at p≈0.9;
-across 5 paired seeds the mean has ~1% standard error — small enough to
-resolve the ~6-point 8-NFE effect and the ~16-point 16-NFE drop, if real.
+### Core set (defines every primary comparison)
+
+| Parameter | Value |
+|---|---|
+| Core evaluation seeds | **101, 202, 303** (3 seeds) |
+| Episodes per seed | **48** |
+| Core episodes per arm | **144** |
+| Arms | **all six**, identically |
+
+Every arm — Diffusion@100 and Flow@1/2/4/8/16 — is evaluated on **exactly
+this same set of (seed, episode-index) pairs**. All primary results, all
+hypothesis tests, and all reported aggregates come from this core set and
+nothing else.
+
+The pairing hash of §3 must match across all six arms for every core seed.
+Any mismatch voids the analysis.
+
+### Secondary Flow-only extension (excluded from the aggregate)
+
+Flow arms are cheap (20–319 ms/plan vs 1989 ms). After the core set completes,
+Flow@1/2/4/8/16 may additionally run seeds **404, 505** at 48 episodes.
+
+Rules, binding:
+
+- Secondary results are reported in a **separate table**, never merged.
+- They **must not** enter the paired aggregate, the hypothesis tests, or any
+  mean/std that includes Diffusion.
+- Their only role is a consistency check: if the Flow NFE ordering on seeds
+  404/505 contradicts the core set, that indicates 3 seeds are insufficient
+  and is reported as such.
+
+This keeps the primary comparison exactly paired while still using spare
+cheap capacity.
+
+### Power
+
+48 episodes/seed gives a per-seed binomial SE of ~4.3% at p≈0.9. Across 3
+paired seeds the mean has ~2.5% SE. Crucially, the tests in §7 are **paired**:
+the relevant quantity is the SE of the per-episode *difference*, which is much
+smaller than the SE of either arm because episode difficulty is shared.
+For a ~16-point effect (the observed 8→16 NFE drop), 144 paired episodes is
+ample; for the ~6-point 8-NFE advantage it is adequate but not generous, which
+is stated in advance as a limitation rather than discovered afterwards.
 
 ## 5. Fixed across all arms
 
@@ -82,8 +121,10 @@ Per episode: success; `goal_success_fraction`; `average_object_goal_distance`;
 Per (arm, seed): the above aggregated; `denoiser_calls`;
 `mean_ms` / `p50_ms` / `p95_ms`; peak allocated inference VRAM.
 
-Aggregate across the 5 seeds: mean, sample standard deviation, and standard
-error, computed over **seed-level means** (n=5), not pooled episodes.
+Aggregate across the **3 core seeds**: mean, sample standard deviation, and
+standard error, computed over **seed-level means** (n=3), not pooled episodes.
+Paired per-episode differences are additionally reported (see §7). Secondary
+Flow-only seeds are aggregated separately and never pooled with the core set.
 
 Raw per-episode records are written per run and retained; no aggregate is
 reported without its raw file.
@@ -93,8 +134,9 @@ reported without its raw file.
 Because arms are paired on identical episodes, use **paired** tests:
 
 - **H1 (8-NFE advantage).** Flow@8 vs Flow@4 and vs Diffusion@100, paired by
-  (seed, episode). Report paired mean difference with a 95% CI over the 5
-  seed-level differences. *Confirmed if* the CI excludes 0 in favour of @8.
+  (seed, episode) over the core set. Report the paired mean difference with a
+  95% CI computed over the 144 paired per-episode differences (bootstrap,
+  clustered by seed). *Confirmed if* the CI excludes 0 in favour of @8.
 - **H2 (16-NFE degradation).** Flow@16 vs Flow@8, paired. *Confirmed if* the
   paired CI excludes 0 with @16 worse. *Refuted if* the CI covers 0 — which
   would mean the observed drop was between-arm episode variance.
@@ -118,7 +160,7 @@ env CUDA_VISIBLE_DEVICES=0 WANDB_MODE=offline \
   --config config.plan_pandapush_flow_final_single_gpu \
   --num_entity 3 --planning_only \
   --seed ${SEED} \
-  --num_eval_episodes 96 \
+  --num_eval_episodes 48 \
   --n_diffusion_steps ${NFE} \
   --exp_note paired_nfe${NFE}_seed${SEED}
 ```
@@ -133,46 +175,43 @@ if the config overrides the flag, the config needs a one-line change to
 
 ## 9. Cost
 
-30 processes. Current 32-episode timings scale linearly in episodes and NFE.
-Dominated by arm A (Diffusion, 1989 ms/plan × 100 steps × 96 episodes ≈ 5.1 h
-of planner time alone across 5 seeds).
+Planner-time cost is `ms/plan x episodes x seeds x 100 steps`.
 
-Planner-time cost is `ms/plan × episodes × seeds × 100 steps`. At the naive
-96 episodes × 5 seeds for every arm:
+### Core set — all six arms, 48 episodes x 3 seeds (144 episodes each)
 
 | Arm | ms/plan | plans | planner GPU-h |
 |---|--:|--:|--:|
-| A Diffusion@100 | 1989 | 48,000 | 26.52 |
-| B Flow@1 | 20.2 | 48,000 | 0.27 |
-| C Flow@2 | 40.2 | 48,000 | 0.54 |
-| D Flow@4 | 80.2 | 48,000 | 1.07 |
-| E Flow@8 | 160.0 | 48,000 | 2.13 |
-| F Flow@16 | 319.2 | 48,000 | 4.26 |
-| **Total** | | | **34.79** |
+| A Diffusion@100 | 1989 | 14,400 | 7.96 |
+| B Flow@1 | 20.2 | 14,400 | 0.08 |
+| C Flow@2 | 40.2 | 14,400 | 0.16 |
+| D Flow@4 | 80.2 | 14,400 | 0.32 |
+| E Flow@8 | 160.0 | 14,400 | 0.64 |
+| F Flow@16 | 319.2 | 14,400 | 1.28 |
+| **Core total** | | | **10.44** |
 
-**34.8 GPU-h exceeds the 24 GPU-h cap.** Arm A alone is 76% of the cost while
-being the arm *least* under study — diffusion NFE is fixed at 100 and is a
-reference point, not a variable.
+### Optional secondary Flow-only extension (seeds 404, 505)
 
-### Selected configuration: 16.22 GPU-h
+| Arms | plans | planner GPU-h |
+|---|--:|--:|
+| Flow @1/2/4/8/16, 48 ep x 2 seeds | 9,600 each | 1.65 |
 
-Spend the budget on the arms that carry the hypotheses:
+**Core: 10.44 GPU-h. Core + secondary: 12.09 GPU-h.**
 
-| Arms | Episodes | Seeds | GPU-h |
-|---|--:|--:|--:|
-| Flow @1/2/4/8/16 | 96 | 5 (101,202,303,404,505) | 8.27 |
-| Diffusion @100 | 48 | 3 (101,202,303) | 7.96 |
-| **Total** | | | **16.22** |
+Arm A is 76% of the core cost. It cannot be reduced further without breaking
+the exact pairing that is the whole point of this protocol, so the episode
+count is held at 48 rather than trading pairing for episodes.
 
-Rationale: H1–H3 are all statements about the **Flow NFE curve**, so the five
-Flow arms keep full power (96 ep × 5 paired seeds, per-seed SE ~2.2%).
-Diffusion needs only a stable reference level; 48 ep × 3 seeds gives a
-per-seed SE of ~4.3% and a 3-seed mean SE of ~2.5%, adequate for a level
-comparison.
+### Deferral
 
-Consequence for H1: the Flow@8-vs-Flow@4 comparison is fully paired across 5
-seeds. The Flow@8-vs-Diffusion comparison is paired only on seeds 101/202/303
-and on the first 48 episodes of each, and must be reported as such.
+**This protocol is DEFERRED and must not be launched yet.** The 3-cube task
+currently looks like a weak discriminator: Flow@1 already reaches 82% goal
+achievement and Flow@8 reaches 97%, so there is little dynamic range in which
+an NFE effect could be scientifically decisive. Spending 10.4 GPU-h to
+replicate a result on a near-saturated task is not justified until we know it
+supports a central paper claim.
+
+Revisit if and only if 3-cube becomes load-bearing — for example if it is
+needed as the entity-structured control arm against cube-triple.
 
 Episode and seed counts are fixed here **before launch** and must not be
 adjusted after seeing results.

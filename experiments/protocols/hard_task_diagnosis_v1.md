@@ -140,3 +140,63 @@ question outright. They are the correct first spend.
 
 No new method. No hyperparameter tuning. No iMF arm (cancelled). No
 architecture search. No claim of a root cause without its ablation.
+
+## 7. Transfer analysis: do D1/D2 inform cube-triple? — PARTIALLY
+
+This section exists because D1/D2 were previously proposed as the first GPU
+experiments. That recommendation is **withdrawn**; the analysis follows.
+
+### What is shared
+
+`OGBenchPuzzleWindowDataset._goal_index` implements uniform within-episode
+relabeling over `[t+H-1, episode_end]`. A cube-triple adapter does not exist
+yet (`benchmark_sequence.py` has only Puzzle, MimicGen, DexJoCo classes), but
+if it is written by analogy — the natural and likely choice — it will reuse
+`_BaseBenchmarkDataset._batch` and the same `_goal_index` rule, over episodes
+of the same 1001-step length. In that case:
+
+- the **goal-relabeling mechanism** is shared;
+- the ~99% beyond-endpoint arithmetic is shared, because it depends only on
+  episode length and H;
+- **D1** (does quality degrade with goal offset?) therefore asks a question
+  that transfers, and its methodology transfers directly.
+
+### What does NOT transfer
+
+The specific hypothesis motivating D1 does **not** carry over:
+
+| | puzzle-4x4 | cube-triple |
+|---|---|---|
+| Goal structure | 16 discrete button toggles | continuous cube poses |
+| "88% of windows have no button change" | the core observation | **no analogue** |
+| Sparse discrete subgoal supervision | plausible bottleneck | not applicable |
+| Combinatorial state space | 2^16 button configs | continuous rearrangement |
+
+The 87.97%-zero-button-change finding is *specific to discrete toggles*. Cube
+positions change continuously in essentially every window, so the
+"supervision present in only 12% of windows" mechanism has no cube analogue.
+
+**D2** (NFE sweep) transfers as a method but not as evidence: it would be run
+on a puzzle checkpoint, and NFE sensitivity is task- and checkpoint-specific.
+
+### Verdict
+
+D1/D2 diagnose **puzzle-4x4 specifically**. They would tell us why our puzzle
+pilots underperformed — a task we have now largely set aside in favour of
+cube-triple, and one where a published one-step method already reaches 40.
+
+Running them first would spend GPU-hours characterizing a task that is not
+the intended next benchmark. **They are therefore demoted from first place.**
+
+They become worthwhile in two cases only:
+1. cube-triple is adopted *and* its adapter reuses the same `_goal_index`
+   rule — then D1 should be run **on cube-triple**, not on puzzle; or
+2. puzzle-4x4 is reinstated as a Tier-A task.
+
+### Replacement: D1-cube
+
+If cube-triple proceeds, the transferable experiment is **D1 restated on
+cube-triple**: bucket held-out windows by goal offset and measure offline
+prediction error and task progress per bucket. Same question, right task, and
+it can run immediately after the cube arms train — reusing those checkpoints
+at no extra training cost.
