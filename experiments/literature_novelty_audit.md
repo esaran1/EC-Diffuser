@@ -43,10 +43,11 @@ representation collapse, not compositional sequencing.
 
 Two gaps survive this audit:
 
-**Gap A — low-NFE policies on combinatorially hard, long-horizon,
-multi-object tasks.** OGBench puzzle-4x4-play requires combinatorial
-generalization over 2^16 button states plus continuous control. Published
-offline GCRL baselines (OGBench, arXiv:2410.20092, Table 2):
+**Gap A (as first drafted; see §3, now substantially narrowed) — low-NFE
+policies on combinatorially hard, long-horizon, multi-object tasks.**
+OGBench puzzle-4x4-play requires combinatorial generalization over 2^16
+button states plus continuous control. Published offline GCRL baselines
+(OGBench, arXiv:2410.20092, Table 2):
 
 | Method | puzzle-3x3 | puzzle-4x4 |
 |---|---:|---:|
@@ -67,16 +68,52 @@ EC-Diffuser's PINT entity-factored representation is unusual, and no audited
 work combines entity-structured conditioning with a low-NFE objective. This
 is the project's genuine structural asset.
 
-## 3. Caveat that must be checked before claiming Gap A
+## 3. Resolved: a one-step policy already reports strong puzzle-4x4
 
-arXiv:2511.13035 evaluates a MeanFlow reformulation across 73 OGBench tasks
-including puzzle-4x4. Its per-task numbers were not extractable from the PDF
-render during this audit. **Before committing to Gap A, its puzzle-4x4 row
-must be read from the paper's results table.** If that work already reports
-strong puzzle-4x4 performance from a one-step policy, Gap A narrows to the
-entity-structured variant (Gap B) only.
+**This verification item is now closed, and it narrows Gap A substantially.**
 
-This is recorded as an explicit open verification item, not resolved.
+arXiv:2511.13035 (one-step MeanFlow reformulation + Q-learning) was read
+directly from the PDF. Its `singletask` results (5 tasks per row, mean ± s.e.)
+include, against the strongest flow baseline FQL:
+
+| OGBench row | FQL | Theirs |
+|---|---:|---:|
+| puzzle-3x3-singletask | 30 ±1 | **66 ±8** |
+| puzzle-4x4-singletask | 17 ±2 | **40 ±6** |
+| cube-double-singletask | 29 ±2 | 3 ±2 |
+| humanoidmaze-large | 4 ±2 | 20 ±3 |
+
+So a **one-step generative policy already reaches 40 on puzzle-4x4**, well
+above the 26% GCIQL number from the OGBench paper. Two consequences:
+
+1. "Low-NFE policies cannot do combinatorial puzzle tasks" is **false** as a
+   general claim and must not be asserted. Our own puzzle-4x4 failure at
+   5,000 training steps is an undertraining/behavior-cloning artifact, not
+   evidence of a structural limit of few-step generation.
+2. Their gain comes from **Q-learning**, not from the generative objective —
+   they state naive MeanFlow degrades via out-of-range actions and bad critic
+   estimates. Our setup is pure conditional behavior cloning with no critic.
+   This is the single largest uncontrolled difference between our pipeline and
+   the published state of the art on this exact task.
+
+Note also `cube-double`: their one-step method collapses to 3 ±2 where FQL
+gets 29 ±2. Multi-object composition is where the published one-step method
+is *weakest*, and cube-double is the closest OGBench analogue to our
+entity-structured 3-cube task.
+
+### Revised gap statement
+
+Gap A as originally written (combinatorial long-horizon) is **largely closed**
+for state-based puzzle tasks by arXiv:2511.13035. What survives is narrower
+and better targeted:
+
+> **Gap A′ — multi-object compositional manipulation is where published
+> one-step policies visibly break** (cube-double: 3 ±2 vs FQL 29 ±2), and no
+> audited work applies an entity-structured/object-centric inductive bias to
+> a low-NFE objective there.
+
+Gap A′ and Gap B are the same gap approached from two directions, which is a
+stronger position than either alone.
 
 ## 4. Method-selection implications
 
