@@ -53,6 +53,29 @@ def backbone_class_for_method(method_name):
     return IntervalTemporalUnet
 
 
+OGBENCH_ENVIRONMENTS = {
+    "ogbench-puzzle-4x4-play-v0-state": (
+        "puzzle-4x4-play-v0", "ogbench_puzzle_4x4_play_state"
+    ),
+    "ogbench-cube-triple-play-v0-state": (
+        "cube-triple-play-v0", "ogbench_cube_triple_play_state"
+    ),
+    "ogbench-cube-double-play-v0-state": (
+        "cube-double-play-v0", "ogbench_cube_double_play_state"
+    ),
+}
+
+
+def resolve_environment(task):
+    """Map a protocol task id onto its OGBench env name and normalizer key."""
+    task_id = task.get("id") or task.get("task_id")
+    if task_id not in OGBENCH_ENVIRONMENTS:
+        raise ValueError(
+            "no OGBench environment registered for task id {}".format(task_id)
+        )
+    return OGBENCH_ENVIRONMENTS[task_id]
+
+
 def summarize_puzzle_progress(button_states, target_button_states):
     states = np.asarray(button_states, dtype=np.int64)
     target = np.asarray(target_button_states, dtype=np.int64)
@@ -79,6 +102,45 @@ def summarize_puzzle_progress(button_states, target_button_states):
             int(transition_steps[0]) if transition_steps.size else None
         ),
         "unique_button_configurations": int(np.unique(states, axis=0).shape[0]),
+    }
+
+
+def aggregate_puzzle_progress(progress):
+    """Aggregate per-episode puzzle progress, or None for non-puzzle tasks.
+
+    Only puzzle exposes discrete button states; cube tasks have no analogue, so
+    this returns None rather than fabricating a metric for them.
+    """
+    if not progress:
+        return None
+    return {
+        "episodes_with_button_transition": sum(
+            row["transition_steps"] > 0 for row in progress
+        ),
+        "episodes_with_positive_best_progress": sum(
+            row["best_progress"] > 0 for row in progress
+        ),
+        "episodes_with_regression_after_best": sum(
+            row["regression_after_best"] > 0 for row in progress
+        ),
+        "mean_initial_mismatches": float(statistics.fmean(
+            row["initial_mismatches"] for row in progress
+        )),
+        "mean_final_mismatches": float(statistics.fmean(
+            row["final_mismatches"] for row in progress
+        )),
+        "mean_minimum_mismatches": float(statistics.fmean(
+            row["minimum_mismatches"] for row in progress
+        )),
+        "mean_best_goal_fraction": float(statistics.fmean(
+            row["best_goal_fraction"] for row in progress
+        )),
+        "mean_final_goal_fraction": float(statistics.fmean(
+            row["final_goal_fraction"] for row in progress
+        )),
+        "total_button_state_flips": sum(
+            row["total_button_state_flips"] for row in progress
+        ),
     }
 
 
@@ -180,12 +242,13 @@ def main():
     policy.eval()
 
     normalizer_bundle = json.loads(Path(task["normalizer_bundle"]).read_text())
-    normalizer_entry = normalizer_bundle["tasks"]["ogbench_puzzle_4x4_play_state"]
+    environment_name, normalizer_key = resolve_environment(task)
+    normalizer_entry = normalizer_bundle["tasks"][normalizer_key]
     if normalizer_entry["normalizer_sha256"] != task["normalizer_sha256"]:
         raise RuntimeError("normalizer hash does not match protocol")
     normalizer = TrainSplitNormalizer.from_state_dict(normalizer_entry["normalizer"])
 
-    env = ogbench.make_env_and_datasets("puzzle-4x4-play-v0", env_only=True)
+    env = ogbench.make_env_and_datasets(environment_name, env_only=True)
     native_horizon = int(env.spec.max_episode_steps)
     episode_horizon = native_horizon
     protocol_label = "NATIVE_FULL_HORIZON"
@@ -259,10 +322,15 @@ def main():
             set_seed(seed)
             observation, info = seeded_reset(env, seed, {"task_id": task_id})
             goal = np.asarray(info["goal"])
-            puzzle_button_states = [np.asarray(info["button_states"]).copy()]
-            puzzle_target_button_states = np.asarray(
-                env.unwrapped._target_button_states
-            ).copy()
+            tracks_buttons = "button_states" in info
+            if tracks_buttons:
+                puzzle_button_states = [np.asarray(info["button_states"]).copy()]
+                puzzle_target_button_states = np.asarray(
+                    env.unwrapped._target_button_states
+                ).copy()
+            else:
+                puzzle_button_states = None
+                puzzle_target_button_states = None
             episode_return = 0.0
             clipped_actions = 0
             success = False
@@ -276,7 +344,10 @@ def main():
                 calls += observed_calls
                 clipped_actions += int(clipped)
                 observation, reward, terminated, truncated, info = env.step(action)
-                puzzle_button_states.append(np.asarray(info["button_states"]).copy())
+                if tracks_buttons:
+                    puzzle_button_states.append(
+                        np.asarray(info["button_states"]).copy()
+                    )
                 episode_return += float(reward)
                 success = bool(info.get("success", terminated))
                 if terminated or truncated:
@@ -292,8 +363,12 @@ def main():
                 "truncated": bool(truncated),
                 "model_calls": calls,
                 "clipped_action_steps": clipped_actions,
-                "puzzle_progress": summarize_puzzle_progress(
-                    puzzle_button_states, puzzle_target_button_states
+                "puzzle_progress": (
+                    summarize_puzzle_progress(
+                        puzzle_button_states, puzzle_target_button_states
+                    )
+                    if tracks_buttons
+                    else None
                 ),
             })
     torch.cuda.synchronize(device)
@@ -302,7 +377,11 @@ def main():
     env.close()
 
     successes = sum(record["success"] for record in episodes)
-    progress = [record["puzzle_progress"] for record in episodes]
+    progress = [
+        record["puzzle_progress"]
+        for record in episodes
+        if record["puzzle_progress"] is not None
+    ]
     result = {
         "schema_version": "ogbench-native-generative-policy-eval-v1",
         "status": "PASS",
@@ -320,7 +399,7 @@ def main():
         "normalizer_sha256": normalizer_entry["normalizer_sha256"],
         "dataset_manifest": task["dataset_manifest"],
         "ogbench_version": importlib.metadata.version("ogbench"),
-        "environment": "puzzle-4x4-play-v0",
+        "environment": environment_name,
         "task_ids": args.task_ids,
         "episodes_per_task": args.episodes_per_task,
         "episodes": len(episodes),
@@ -338,35 +417,7 @@ def main():
         "action_clip_step_fraction": sum(
             record["clipped_action_steps"] for record in episodes
         ) / sum(record["steps"] for record in episodes),
-        "puzzle_progress": {
-            "episodes_with_button_transition": sum(
-                row["transition_steps"] > 0 for row in progress
-            ),
-            "episodes_with_positive_best_progress": sum(
-                row["best_progress"] > 0 for row in progress
-            ),
-            "episodes_with_regression_after_best": sum(
-                row["regression_after_best"] > 0 for row in progress
-            ),
-            "mean_initial_mismatches": float(statistics.fmean(
-                row["initial_mismatches"] for row in progress
-            )),
-            "mean_final_mismatches": float(statistics.fmean(
-                row["final_mismatches"] for row in progress
-            )),
-            "mean_minimum_mismatches": float(statistics.fmean(
-                row["minimum_mismatches"] for row in progress
-            )),
-            "mean_best_goal_fraction": float(statistics.fmean(
-                row["best_goal_fraction"] for row in progress
-            )),
-            "mean_final_goal_fraction": float(statistics.fmean(
-                row["final_goal_fraction"] for row in progress
-            )),
-            "total_button_state_flips": sum(
-                row["total_button_state_flips"] for row in progress
-            ),
-        },
+        "puzzle_progress": aggregate_puzzle_progress(progress),
         "planning_latency": {
             "n": len(all_latencies),
             "mean_seconds": float(statistics.fmean(all_latencies)),
