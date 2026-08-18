@@ -105,9 +105,18 @@
       "verified_calls_per_plan": 8
     }
   },
+  "data_diagnostic": {
+    "action_abs_mean": 0.3163,
+    "action_std": 0.4394,
+    "fraction_actions_saturated": 0.0983,
+    "reading": "The play data contains real manipulation -- 9.8% of action components are at the limit and the state moves substantially -- so the demonstrations are not inert.",
+    "standardized_displacement_200_steps": 7.528,
+    "standardized_displacement_4_steps": 2.525
+  },
   "decision": {
+    "cheaper_prior_check": "Before or instead of stage 2: re-evaluate the EXISTING checkpoints on goal-distance-matched episodes (the D1-cube ablation). This needs no training, costs well under 0.5 GPU-h, and directly tests whether the zero is caused by goal-distribution shift rather than by the policy class.",
     "do_not_conclude": "Do NOT conclude that low-NFE generative modeling fails on compositional manipulation. The evidence supports only that BC without a critic fails on cube-triple at this budget, for every NFE including the non-generative floor.",
-    "stage_2_gaussian_diffusion": "JUSTIFIED as a falsification check: if Gaussian@100 also scores zero, the multi-step ceiling is confirmed absent and the task is settled as non-discriminative under BC. ~0.4 GPU-h train + ~0.6 eval.",
+    "stage_2_gaussian_diffusion": "STILL JUSTIFIED as a falsification check, but now with a second purpose: if Gaussian@100 also scores zero under the same goal shift, the shared cause is the setup rather than the sampler. ~0.4 GPU-h train + ~0.6 eval.",
     "stage_3_shortcut": "NOT JUSTIFIED: the NFE axis is flat at zero, so a second low-NFE objective cannot discriminate anything."
   },
   "evaluation": {
@@ -126,6 +135,31 @@
     ],
     "total_episodes": 300
   },
+  "goal_distribution_diagnostic": {
+    "description": "Standardized L2 between the conditioning current state and the conditioning goal, for training-relabeled goals versus the official evaluation task goals.",
+    "eval_goal_distance": {
+      "max": 11.292,
+      "mean": 9.197,
+      "min": 6.965,
+      "n": 60,
+      "p50": 9.229
+    },
+    "eval_goal_percentile_within_train": {
+      "max": 0.989,
+      "mean": 0.878,
+      "min": 0.561
+    },
+    "eval_goals_above_train_max": 0,
+    "eval_goals_above_train_p95": 17,
+    "reading": "Evaluation goals sit at the 88th percentile of the training goal distribution on average, and 17 of 60 exceed the training p95. They are in-support (none exceed the training maximum) but systematically harder than the goals the policy was trained to reach. This is a train/eval goal distribution shift that is NOT controlled in the current protocol, and it is an alternative explanation for zero success that does not implicate the policy class.",
+    "status": "OPEN CONFOUND - not resolved by stage 1",
+    "train_goal_distance": {
+      "mean": 6.661,
+      "p05": 3.352,
+      "p50": 6.68,
+      "p95": 9.843
+    }
+  },
   "interpretation": {
     "consistent_with_literature": "Every published cube-triple result uses a critic: FMQ 0.88 with online fine-tuning and NFE 20-32 at test time, MVP with Q-guided generate-and-select, QC Q-learning throughout. Our result is the pure-BC point that was previously unmeasured, and it is near zero.",
     "cubes_barely_move": "Mean per-cube distance to target goes 0.271 -> 0.266 m at 4 NFE against a 0.04 m success threshold; no cube is ever placed.",
@@ -138,7 +172,8 @@
     "one training seed (42); no training-seed uncertainty",
     "50,000 optimizer steps, not a converged budget",
     "60 episodes per arm across three tasks",
-    "no critic baseline was run, so BC-vs-critic is inferred from published work rather than measured here"
+    "no critic baseline was run, so BC-vs-critic is inferred from published work rather than measured here",
+    "evaluation goals are systematically harder than training goals (88th percentile); this confound is unresolved and weakens any claim that BC per se cannot do the task"
   ],
   "offline_diagnostic": {
     "behavior_cloning_nfe1": 0.11597400903701782,
