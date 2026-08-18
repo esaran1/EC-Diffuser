@@ -15,11 +15,16 @@ import numpy as np
 import torch
 import wandb
 
-from diffuser.datasets.benchmark_sequence import OGBenchPuzzleWindowDataset
+from diffuser.datasets.benchmark_sequence import (
+    OGBenchCubeDoubleWindowDataset,
+    OGBenchCubeTripleWindowDataset,
+    OGBenchPuzzleWindowDataset,
+)
 from diffuser.models import (
     AuxiliaryImprovedMeanFlow,
     AuxiliaryIntervalTemporalUnet,
     ConditionalFlowMatching,
+    DeterministicBehaviorCloning,
     GaussianDiffusion,
     ImprovedMeanFlow,
     IntervalTemporalUnet,
@@ -29,6 +34,7 @@ from diffuser.models import (
 
 METHODS = {
     "auxiliary_improved_meanflow": AuxiliaryImprovedMeanFlow,
+    "behavior_cloning": DeterministicBehaviorCloning,
     "gaussian_diffusion": GaussianDiffusion,
     "conditional_flow_matching": ConditionalFlowMatching,
     "improved_meanflow": ImprovedMeanFlow,
@@ -71,6 +77,30 @@ def resolve_training(protocol, replication_seed=None):
     return training
 
 
+DATASETS = {
+    "ogbench-puzzle-4x4-play-v0-state": (
+        OGBenchPuzzleWindowDataset, "ogbench_puzzle_4x4_play_state"
+    ),
+    "ogbench-cube-triple-play-v0-state": (
+        OGBenchCubeTripleWindowDataset, "ogbench_cube_triple_play_state"
+    ),
+    "ogbench-cube-double-play-v0-state": (
+        OGBenchCubeDoubleWindowDataset, "ogbench_cube_double_play_state"
+    ),
+}
+
+
+def resolve_dataset(task):
+    """Select the adapter and normalizer key declared by the protocol's task id."""
+    task_id = task["id"] if "id" in task else task.get("task_id")
+    if task_id is None:
+        raise ValueError("protocol task must declare an id")
+    for known, entry in DATASETS.items():
+        if task_id.startswith(known) or known.startswith(task_id):
+            return entry
+    raise ValueError("no dataset adapter registered for task id {}".format(task_id))
+
+
 def build_method(name, model, task, method_config):
     common = {
         "model": model,
@@ -87,6 +117,9 @@ def build_method(name, model, task, method_config):
             **common,
             n_timesteps=method_config["training_timesteps"],
         )
+    if name == "behavior_cloning":
+        # Deterministic regressor: no probability path, no solver schedule.
+        return DeterministicBehaviorCloning(**common)
     common.update(
         n_solver_steps=method_config["default_solver_steps"],
         time_scale=method_config["time_scale"],
@@ -191,11 +224,16 @@ def main():
     set_global_device(str(device))
     set_seed(training["seed"])
 
+    dataset_cls, normalizer_key = resolve_dataset(task)
     normalizer_bundle = json.loads(Path(task["normalizer_bundle"]).read_text())
-    normalizer_entry = normalizer_bundle["tasks"]["ogbench_puzzle_4x4_play_state"]
+    if normalizer_key not in normalizer_bundle["tasks"]:
+        raise RuntimeError(
+            "normalizer bundle has no entry for {}".format(normalizer_key)
+        )
+    normalizer_entry = normalizer_bundle["tasks"][normalizer_key]
     if normalizer_entry["normalizer_sha256"] != task["normalizer_sha256"]:
         raise RuntimeError("normalizer hash does not match the predeclared protocol")
-    dataset = OGBenchPuzzleWindowDataset(
+    dataset = dataset_cls(
         task["dataset_manifest"],
         split="train",
         horizon=task["horizon"],
@@ -208,7 +246,7 @@ def main():
     validation_seed = training.get(
         "fixed_validation_seed", training["seed"] + 100000
     )
-    validation_dataset = OGBenchPuzzleWindowDataset(
+    validation_dataset = dataset_cls(
         task["dataset_manifest"],
         split="validation",
         horizon=task["horizon"],

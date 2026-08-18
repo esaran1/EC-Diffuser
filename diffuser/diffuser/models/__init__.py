@@ -6,6 +6,7 @@ from .temporal import (
 )
 from .diffusion import GaussianDiffusion, ValueDiffusion, default_sample_fn, sample_fn_return_attn
 from .flow_matching import ConditionalFlowMatching
+from .behavior_cloning import DeterministicBehaviorCloning
 from .fast_generation import (
     ImprovedMeanFlow,
     AuxiliaryImprovedMeanFlow,
