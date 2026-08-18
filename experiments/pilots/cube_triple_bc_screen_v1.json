@@ -101,6 +101,22 @@
     "device": "cuda:0",
     "gpu": "NVIDIA GeForce RTX 4080"
   },
+  "methods": {
+    "behavior_cloning": {},
+    "conditional_flow_matching": {
+      "default_solver_steps": 4,
+      "time_scale": 1000.0
+    },
+    "gaussian_diffusion": {
+      "training_timesteps": 100
+    },
+    "shortcut_model": {
+      "default_solver_steps": 4,
+      "max_base_steps": 128,
+      "time_scale": 1000.0
+    }
+  },
+  "methods_note": "derived from arms[*].config; this is the key train_phase7_pilot.py reads. arms[*] additionally records role and inference NFE for evaluation.",
   "preregistered_outcomes": {
     "bc_floor_matches": "behavior_cloning matches the generative arms -> generative modeling is not earning its cost here; a publishable negative result",
     "bc_is_the_bottleneck": "every arm including Gaussian@100 performs near zero -> BC without a critic cannot do this task, and the task cannot discriminate generative objectives for us; report and stop",
