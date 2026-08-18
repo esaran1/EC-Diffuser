@@ -105,6 +105,79 @@ def summarize_puzzle_progress(button_states, target_button_states):
     }
 
 
+def cube_goal_distances(env):
+    """Per-cube distance to target, or None for non-cube environments.
+
+    Read directly from the MuJoCo state the environment itself uses in
+    `CubeEnv._compute_successes`: object positions from
+    `object_joint_{i}.qpos[:3]` and targets from
+    `mocap_pos[_cube_target_mocap_ids[i]]`, with the official 0.04 m
+    threshold. Verified to reproduce `_compute_successes()` exactly.
+
+    Reported because binary success is uninformative when every arm scores
+    zero: distance still separates "moved toward the goal" from "did nothing".
+    """
+    unwrapped = env.unwrapped
+    ids = getattr(unwrapped, "_cube_target_mocap_ids", None)
+    count = getattr(unwrapped, "_num_cubes", None)
+    if ids is None or count is None:
+        return None
+    objects = np.stack([
+        np.asarray(unwrapped._data.joint("object_joint_{}".format(i)).qpos[:3])
+        for i in range(count)
+    ])
+    targets = np.stack([
+        np.asarray(unwrapped._data.mocap_pos[ids[i]]) for i in range(count)
+    ])
+    return np.linalg.norm(objects - targets, axis=-1).copy()
+
+
+def summarize_cube_progress(initial, final):
+    """Start/end per-cube goal distance for one episode."""
+    if initial is None or final is None:
+        return None
+    return {
+        "cubes": int(final.shape[0]),
+        "mean_initial_distance": float(initial.mean()),
+        "mean_final_distance": float(final.mean()),
+        "min_final_distance": float(final.min()),
+        "max_final_distance": float(final.max()),
+        "mean_distance_reduction": float((initial - final).mean()),
+        "cubes_within_threshold": int(np.count_nonzero(final <= 0.04)),
+        "cubes_closer_than_start": int(np.count_nonzero(final < initial)),
+        "per_cube_final_distance": [float(v) for v in final],
+    }
+
+
+def aggregate_cube_progress(progress):
+    """Aggregate cube goal distance across episodes, or None if unavailable."""
+    if not progress:
+        return None
+    return {
+        "mean_initial_distance": float(statistics.fmean(
+            row["mean_initial_distance"] for row in progress
+        )),
+        "mean_final_distance": float(statistics.fmean(
+            row["mean_final_distance"] for row in progress
+        )),
+        "mean_distance_reduction": float(statistics.fmean(
+            row["mean_distance_reduction"] for row in progress
+        )),
+        "mean_min_final_distance": float(statistics.fmean(
+            row["min_final_distance"] for row in progress
+        )),
+        "total_cubes_within_threshold": sum(
+            row["cubes_within_threshold"] for row in progress
+        ),
+        "episodes_with_any_cube_placed": sum(
+            row["cubes_within_threshold"] > 0 for row in progress
+        ),
+        "episodes_with_any_cube_closer": sum(
+            row["cubes_closer_than_start"] > 0 for row in progress
+        ),
+    }
+
+
 def aggregate_puzzle_progress(progress):
     """Aggregate per-episode puzzle progress, or None for non-puzzle tasks.
 
@@ -331,6 +404,8 @@ def main():
             else:
                 puzzle_button_states = None
                 puzzle_target_button_states = None
+            initial_cube_distances = cube_goal_distances(env)
+            final_cube_distances = initial_cube_distances
             episode_return = 0.0
             clipped_actions = 0
             success = False
@@ -349,6 +424,9 @@ def main():
                         np.asarray(info["button_states"]).copy()
                     )
                 episode_return += float(reward)
+                observed_distances = cube_goal_distances(env)
+                if observed_distances is not None:
+                    final_cube_distances = observed_distances
                 success = bool(info.get("success", terminated))
                 if terminated or truncated:
                     break
@@ -363,6 +441,9 @@ def main():
                 "truncated": bool(truncated),
                 "model_calls": calls,
                 "clipped_action_steps": clipped_actions,
+                "cube_progress": summarize_cube_progress(
+                    initial_cube_distances, final_cube_distances
+                ),
                 "puzzle_progress": (
                     summarize_puzzle_progress(
                         puzzle_button_states, puzzle_target_button_states
@@ -418,6 +499,11 @@ def main():
             record["clipped_action_steps"] for record in episodes
         ) / sum(record["steps"] for record in episodes),
         "puzzle_progress": aggregate_puzzle_progress(progress),
+        "cube_progress": aggregate_cube_progress([
+            record["cube_progress"]
+            for record in episodes
+            if record["cube_progress"] is not None
+        ]),
         "planning_latency": {
             "n": len(all_latencies),
             "mean_seconds": float(statistics.fmean(all_latencies)),
