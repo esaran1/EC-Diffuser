@@ -1,110 +1,82 @@
 {
-  "schema_version": "phase9-cube-triple-bc-screen-v1",
-  "status": "PREDECLARED_AWAITING_GPU",
-  "protocol_document": "experiments/protocols/cube_controlled_v1.md",
-  "question": "Under pure behavior cloning at low NFE, with no critic at training or test time, how far can a policy get on OGBench cube-triple?",
-  "context_not_comparison": {
-    "note": "Published cube-triple-task4 numbers all use critics and must never be compared directly with these arms.",
-    "fmq_qgbs": {"success": 0.88, "paradigm": "offline->online RL", "test_time_nfe": "20-32 plus critic"},
-    "mvp": {"success_own_table": 0.52, "success_fmq_table": 0.32, "paradigm": "offline->online", "test_time_nfe": "1 plus critic selection"},
-    "qc": {"success": 0.37, "paradigm": "offline RL"}
-  },
-  "hardware": {"gpu": "NVIDIA GeForce RTX 4080", "count": 1, "device": "cuda:0"},
-  "task": {
-    "id": "ogbench-cube-triple-play-v0-state",
-    "dataset_manifest": "experiments/datasets/converted/ogbench_cube_triple_play_v0_manifest.json",
-    "train_source_sha256": "4e09a9f5ba7eaba59350dbef7e85887b9a2746490c69eaa83af34a3f9029202b",
-    "validation_source_sha256": "bd6cb3817fc464d7afc50bd90d766f353bc5b8d097579c70afe680a9aa0404a6",
-    "normalizer_bundle": "experiments/datasets/benchmark_normalizers_v1.json",
-    "normalizer_sha256": "7a547976df2642fced28f2d808facebde482000eff24d063b772e1715791dabf",
-    "horizon": 5,
-    "observation_dim": 46,
-    "action_dim": 5,
-    "goal_relabeling": "deterministic future state from the same episode only; identical rule to the puzzle adapter"
-  },
-  "backbone": {
-    "class": "diffuser.models.IntervalTemporalUnet",
-    "dim": 128,
-    "dim_mults": [1, 2, 4, 8],
-    "attention": false,
-    "shared_across_methods": true,
-    "note": "parameter count differs from the puzzle pilots only through the 46-D observation dimension; exact counts are recorded per arm at run time and must agree within 1% across generative arms"
-  },
-  "training": {
-    "seed": 42,
-    "optimizer": "Adam",
-    "learning_rate": 8e-05,
-    "loss": "l1",
-    "optimizer_steps": 50000,
-    "microbatch_size": 32,
-    "gradient_accumulation": 2,
-    "effective_batch_size": 64,
-    "examples_seen": 3200000,
-    "ema_decay": 0.995,
-    "ema_start_step": 2000,
-    "ema_update_every": 10,
-    "log_frequency": 100,
-    "fixed_validation_frequency": 500,
-    "fixed_validation_batches": 8,
-    "periodic_checkpoints": false,
-    "checkpoint_selection": "final fixed-step EMA checkpoint only; no selection on evaluation episodes"
-  },
   "arms": {
     "behavior_cloning": {
-      "role": "non-generative floor",
+      "config": {},
       "inference_nfe": 1,
-      "config": {}
+      "role": "non-generative floor"
     },
     "conditional_flow_matching": {
-      "role": "primary low-NFE generative arm",
-      "inference_nfe": [1, 2, 4, 8],
-      "config": {"default_solver_steps": 4, "time_scale": 1000.0}
+      "config": {
+        "default_solver_steps": 4,
+        "time_scale": 1000.0
+      },
+      "inference_nfe": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "role": "primary low-NFE generative arm"
     },
     "gaussian_diffusion": {
-      "role": "multi-step reference ceiling",
+      "config": {
+        "training_timesteps": 100
+      },
       "inference_nfe": 100,
-      "config": {"training_timesteps": 100}
+      "role": "multi-step reference ceiling"
     },
     "shortcut_model": {
-      "role": "second low-NFE objective, Tier B",
-      "inference_nfe": [1, 2, 4],
-      "config": {"default_solver_steps": 4, "time_scale": 1000.0, "max_base_steps": 128}
+      "config": {
+        "default_solver_steps": 4,
+        "max_base_steps": 128,
+        "time_scale": 1000.0
+      },
+      "inference_nfe": [
+        1,
+        2,
+        4
+      ],
+      "role": "second low-NFE objective, Tier B"
     }
   },
-  "excluded_arms": {
-    "improved_meanflow": "cancelled; MVP (ICLR 2026) occupies the MeanFlow/cube-task intersection",
-    "auxiliary_improved_meanflow": "cancelled with the rest of the iMF line"
+  "backbone": {
+    "attention": false,
+    "class": "diffuser.models.IntervalTemporalUnet",
+    "dim": 128,
+    "dim_mults": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "note": "verified identical (63,249,715) across behavior_cloning and conditional_flow_matching on CPU before launch; differs from the puzzle pilots' 63,282,904 only through the 46-D vs 83-D observation dimension. Exact counts are re-recorded per arm at run time and must agree within 1%.",
+    "parameter_count": 63249715,
+    "shared_across_methods": true
   },
-  "staging": {
-    "stage_1": {
-      "arms": ["behavior_cloning", "conditional_flow_matching"],
-      "purpose": "cheapest pair that can answer the question; BC floor plus the primary low-NFE arm",
-      "estimated_gpu_hours": 1.1
+  "compute_gate": "Run arms sequentially on one GPU. Stage 1 only is authorized by this manifest; stages 2 and 3 require the stage-1 result first. Do not launch while another process holds GPU memory.",
+  "context_not_comparison": {
+    "fmq_qgbs": {
+      "paradigm": "offline->online RL",
+      "success": 0.88,
+      "test_time_nfe": "20-32 plus critic"
     },
-    "stage_2": {
-      "arms": ["gaussian_diffusion"],
-      "purpose": "multi-step ceiling, only if stage 1 shows non-trivial performance",
-      "estimated_gpu_hours": 0.4
+    "mvp": {
+      "paradigm": "offline->online",
+      "success_fmq_table": 0.32,
+      "success_own_table": 0.52,
+      "test_time_nfe": "1 plus critic selection"
     },
-    "stage_3": {
-      "arms": ["shortcut_model"],
-      "purpose": "second low-NFE objective, only if the NFE axis proves discriminative",
-      "estimated_gpu_hours": 0.6
+    "note": "Published cube-triple-task4 numbers all use critics and must never be compared directly with these arms.",
+    "qc": {
+      "paradigm": "offline RL",
+      "success": 0.37
     }
-  },
-  "preregistered_outcomes": {
-    "low_nfe_sufficient": "Flow at 1-2 NFE approaches Flow at 8 and Gaussian at 100 -> NFE is not the bottleneck under BC on this task",
-    "nfe_matters": "Flow collapses at 1-2 NFE and recovers by 4-8 -> integration/objective is the operative variable",
-    "bc_is_the_bottleneck": "every arm including Gaussian@100 performs near zero -> BC without a critic cannot do this task, and the task cannot discriminate generative objectives for us; report and stop",
-    "bc_floor_matches": "behavior_cloning matches the generative arms -> generative modeling is not earning its cost here; a publishable negative result"
   },
   "evaluation": {
-    "environment": "cube-triple-play singletask via the pinned native OGBench harness",
-    "tasks": [2, 3, 4],
     "checkpoint_weights": "EMA",
-    "episodes_per_task": 20,
+    "environment": "cube-triple-play singletask via the pinned native OGBench harness",
     "episode_seeds_shared_across_arms": true,
-    "native_horizon": 1000,
+    "episodes_per_task": 20,
     "metrics": [
       "success",
       "per-cube goal distance",
@@ -112,8 +84,88 @@
       "verified model calls per plan",
       "peak inference VRAM"
     ],
-    "pairing_requirement": "all arms evaluated on identical episode seeds; a per-arm hash over initial and goal states must match"
+    "native_horizon": 1000,
+    "pairing_requirement": "all arms evaluated on identical episode seeds; a per-arm hash over initial and goal states must match",
+    "tasks": [
+      2,
+      3,
+      4
+    ]
   },
+  "excluded_arms": {
+    "auxiliary_improved_meanflow": "cancelled with the rest of the iMF line",
+    "improved_meanflow": "cancelled; MVP (ICLR 2026) occupies the MeanFlow/cube-task intersection"
+  },
+  "hardware": {
+    "count": 1,
+    "device": "cuda:0",
+    "gpu": "NVIDIA GeForce RTX 4080"
+  },
+  "preregistered_outcomes": {
+    "bc_floor_matches": "behavior_cloning matches the generative arms -> generative modeling is not earning its cost here; a publishable negative result",
+    "bc_is_the_bottleneck": "every arm including Gaussian@100 performs near zero -> BC without a critic cannot do this task, and the task cannot discriminate generative objectives for us; report and stop",
+    "low_nfe_sufficient": "Flow at 1-2 NFE approaches Flow at 8 and Gaussian at 100 -> NFE is not the bottleneck under BC on this task",
+    "nfe_matters": "Flow collapses at 1-2 NFE and recovers by 4-8 -> integration/objective is the operative variable"
+  },
+  "protocol_document": "experiments/protocols/cube_controlled_v1.md",
+  "question": "Under pure behavior cloning at low NFE, with no critic at training or test time, how far can a policy get on OGBench cube-triple?",
   "reporting_rule": "every published table must carry a paradigm column (BC / offline-RL / offline->online) and a test-time NFE column including critic calls",
-  "compute_gate": "Run arms sequentially on one GPU. Stage 1 only is authorized by this manifest; stages 2 and 3 require the stage-1 result first. Do not launch while another process holds GPU memory."
+  "schema_version": "phase9-cube-triple-bc-screen-v1",
+  "staging": {
+    "measured_reference": "puzzle pilots on this RTX 4080 at 63.3M params, effective batch 64: Flow 0.03001 s/step, Gaussian 0.02887 s/step. cube-triple has a smaller observation dimension so per-step cost should be no higher.",
+    "stage_1": {
+      "arms": [
+        "behavior_cloning",
+        "conditional_flow_matching"
+      ],
+      "estimated_gpu_hours": 1.1,
+      "purpose": "cheapest pair that can answer the question; BC floor plus the primary low-NFE arm"
+    },
+    "stage_2": {
+      "arms": [
+        "gaussian_diffusion"
+      ],
+      "estimated_gpu_hours": 0.4,
+      "purpose": "multi-step ceiling, only if stage 1 shows non-trivial performance"
+    },
+    "stage_3": {
+      "arms": [
+        "shortcut_model"
+      ],
+      "estimated_gpu_hours": 0.6,
+      "purpose": "second low-NFE objective, only if the NFE axis proves discriminative"
+    }
+  },
+  "status": "PREDECLARED_AWAITING_GPU",
+  "task": {
+    "action_dim": 5,
+    "dataset_manifest": "experiments/datasets/converted/ogbench_cube_triple_play_v0_manifest.json",
+    "goal_relabeling": "deterministic future state from the same episode only; identical rule to the puzzle adapter",
+    "horizon": 5,
+    "id": "ogbench-cube-triple-play-v0-state",
+    "normalizer_bundle": "experiments/datasets/benchmark_normalizers_v1.json",
+    "normalizer_sha256": "7a547976df2642fced28f2d808facebde482000eff24d063b772e1715791dabf",
+    "observation_dim": 46,
+    "train_source_sha256": "4e09a9f5ba7eaba59350dbef7e85887b9a2746490c69eaa83af34a3f9029202b",
+    "validation_source_sha256": "bd6cb3817fc464d7afc50bd90d766f353bc5b8d097579c70afe680a9aa0404a6"
+  },
+  "training": {
+    "checkpoint_selection": "final fixed-step EMA checkpoint only; no selection on evaluation episodes",
+    "effective_batch_size": 64,
+    "ema_decay": 0.995,
+    "ema_start_step": 2000,
+    "ema_update_every": 10,
+    "examples_seen": 3200000,
+    "fixed_validation_batches": 8,
+    "fixed_validation_frequency": 500,
+    "gradient_accumulation": 2,
+    "learning_rate": 8e-05,
+    "log_frequency": 100,
+    "loss": "l1",
+    "microbatch_size": 32,
+    "optimizer": "Adam",
+    "optimizer_steps": 50000,
+    "periodic_checkpoints": false,
+    "seed": 42
+  }
 }
