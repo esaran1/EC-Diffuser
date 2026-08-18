@@ -9,6 +9,8 @@ import torch
 from diffuser.datasets.benchmark_sequence import (
     DexJoCoHammerWindowDataset,
     MimicGenThreePieceWindowDataset,
+    OGBenchCubeDoubleWindowDataset,
+    OGBenchCubeTripleWindowDataset,
     OGBenchPuzzleWindowDataset,
 )
 
@@ -151,3 +153,91 @@ def test_invalid_horizon_is_rejected():
         assert "horizon" in str(error)
     else:
         raise AssertionError("horizon=1 should be rejected")
+
+
+def _write_ogbench_pair(tmp_path, task_id, dim=3, action_dim=5, length=6):
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    train = tmp_path / "train.npz"
+    validation = tmp_path / "validation.npz"
+    observations = np.arange(length * dim, dtype=np.float32).reshape(length, dim)
+    actions = np.linspace(-1, 1, length * action_dim, dtype=np.float32).reshape(length, action_dim)
+    terminals = [0] * (length - 1) + [1]
+    np.savez(train, observations=observations, actions=actions, terminals=terminals)
+    np.savez(
+        validation,
+        observations=observations + 1000,
+        actions=actions + 100,
+        terminals=terminals,
+    )
+    manifest = _write_manifest(
+        tmp_path / "manifest.json",
+        {
+            "schema_version": "fast-generative-policy-dataset-v1",
+            "task_id": task_id,
+            "source_paths": {"train": str(train), "validation": str(validation)},
+            "episode_offsets": {
+                "train": [{"episode_id": "train:0000", "start": 0, "end": length}],
+                "validation": [{"episode_id": "validation:0000", "start": 0, "end": length}],
+            },
+            "splits": {"train": ["train:0000"], "validation": ["validation:0000"]},
+        },
+    )
+    return manifest
+
+
+def test_cube_datasets_load_and_reject_foreign_manifests(tmp_path):
+    """Cube adapters honor their own task_id and reject mismatched manifests."""
+    for cls, task_id in (
+        (OGBenchCubeTripleWindowDataset, "ogbench-cube-triple-play-v0-state"),
+        (OGBenchCubeDoubleWindowDataset, "ogbench-cube-double-play-v0-state"),
+    ):
+        directory = tmp_path / task_id
+        manifest = _write_ogbench_pair(directory, task_id)
+        dataset = cls(manifest, split="train", horizon=3, goal_seed=9)
+        batch = dataset[0]
+        assert batch.trajectories.shape == (3, 8)
+        assert np.isfinite(batch.trajectories).all()
+        # goal occupies the final observation slot and the terminal condition
+        np.testing.assert_array_equal(batch.trajectories[-1, 5:], batch.conditions[2])
+        assert dataset.metadata(0)["task_id"] == task_id
+
+        wrong = _write_ogbench_pair(
+            tmp_path / (task_id + "-wrong"), "ogbench-puzzle-4x4-play-v0-state"
+        )
+        try:
+            cls(wrong, split="train", horizon=3)
+        except ValueError:
+            pass
+        else:
+            raise AssertionError("{} accepted a foreign manifest".format(cls.__name__))
+
+
+def test_ogbench_tasks_share_one_goal_relabeling_rule(tmp_path):
+    """Puzzle and cube adapters must relabel goals identically.
+
+    The cross-task goal-offset comparisons in experiments/protocols/ are only
+    valid if the goal rule is literally the same code path for every OGBench
+    state task. This pins that invariant.
+    """
+    specs = [
+        (OGBenchPuzzleWindowDataset, "ogbench-puzzle-4x4-play-v0-state"),
+        (OGBenchCubeTripleWindowDataset, "ogbench-cube-triple-play-v0-state"),
+        (OGBenchCubeDoubleWindowDataset, "ogbench-cube-double-play-v0-state"),
+    ]
+    goal_timesteps = []
+    for cls, task_id in specs:
+        directory = tmp_path / ("shared-" + task_id)
+        manifest = _write_ogbench_pair(directory, task_id, length=12)
+        dataset = cls(manifest, split="train", horizon=4, goal_seed=1234)
+        goal_timesteps.append(
+            [dataset.metadata(i)["goal_timestep"] for i in range(len(dataset))]
+        )
+        # goals stay inside the episode and never precede the window endpoint
+        for i in range(len(dataset)):
+            meta = dataset.metadata(i)
+            assert meta["timestep"] + 3 <= meta["goal_timestep"] < 12
+
+    assert goal_timesteps[0] == goal_timesteps[1] == goal_timesteps[2], (
+        "OGBench state tasks diverged in goal relabeling; cross-task goal-offset "
+        "comparisons would be invalid"
+    )

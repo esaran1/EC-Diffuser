@@ -31,11 +31,42 @@ def membership_hash(splits):
     return hashlib.sha256(payload).hexdigest()
 
 
-def ogbench_manifest(root):
+OGBENCH_STATE_TASKS = {
+    "puzzle-4x4-play-v0": {
+        "task_id": "ogbench-puzzle-4x4-play-v0-state",
+        "entity": "button_states (16 binary entities) plus qpos/qvel replay state",
+    },
+    "cube-triple-play-v0": {
+        "task_id": "ogbench-cube-triple-play-v0-state",
+        "entity": "three cube poses plus arm qpos/qvel replay state",
+    },
+    "cube-double-play-v0": {
+        "task_id": "ogbench-cube-double-play-v0-state",
+        "entity": "two cube poses plus arm qpos/qvel replay state",
+    },
+}
+
+
+def ogbench_manifest(root, dataset="puzzle-4x4-play-v0"):
+    """Build an OGBench state manifest.
+
+    Every OGBench state task uses the same episode-boundary derivation and the
+    same goal policy, so one builder serves all of them. `dataset` selects the
+    task; the resulting manifests differ only in paths, task_id, and the entity
+    description.
+    """
+    if dataset not in OGBENCH_STATE_TASKS:
+        raise ValueError("unknown OGBench state task: {}".format(dataset))
+    spec = OGBENCH_STATE_TASKS[dataset]
     paths = {
-        "train": root / "ogbench/puzzle-4x4-play-v0/train.npz",
-        "validation": root / "ogbench/puzzle-4x4-play-v0/validation.npz",
+        "train": root / "ogbench/{}/train.npz".format(dataset),
+        "validation": root / "ogbench/{}/validation.npz".format(dataset),
     }
+    for split, path in paths.items():
+        if not path.exists():
+            raise FileNotFoundError(
+                "missing OGBench {} {} split at {}".format(dataset, split, path)
+            )
     splits = {}
     offsets = {}
     for split, path in paths.items():
@@ -51,7 +82,7 @@ def ogbench_manifest(root):
     return {
         "schema_version": SCHEMA_VERSION,
         "transform_version": TRANSFORM_VERSION,
-        "task_id": "ogbench-puzzle-4x4-play-v0-state",
+        "task_id": spec["task_id"],
         "source_paths": {key: str(path) for key, path in paths.items()},
         "split_policy": "official episode-level train and validation files",
         "splits": splits,
@@ -65,7 +96,7 @@ def ogbench_manifest(root):
             "timestep": "row index minus episode start",
             "success": "not defined for play collection trajectories",
             "task_id": "constant task_id",
-            "entity": "button_states (16 binary entities) plus qpos/qvel replay state",
+            "entity": spec["entity"],
         },
         "goal_policy": "sample goal time uniformly from [current_time, episode_end]; never cross an episode or split",
         "normalization": "fit observations/actions on official train episodes only",
@@ -152,12 +183,36 @@ def main():
     parser.add_argument("--root", type=Path, default=Path("data/benchmarks/source"))
     parser.add_argument("--seed", type=int, default=2606)
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument(
+        "--only",
+        choices=sorted(OGBENCH_STATE_TASKS) + ["mimicgen", "dexjoco"],
+        nargs="*",
+        help="build only these sources; default builds every source whose data is present",
+    )
     args = parser.parse_args()
-    manifests = {
-        "ogbench_puzzle_4x4_play_v0": ogbench_manifest(args.root),
-        "mimicgen_three_piece_assembly_d1_large_interpolation": mimicgen_manifest(args.root, args.seed),
-        "dexjoco_hammer_nail_rand_full": dexjoco_manifest(args.root, args.seed),
-    }
+
+    requested = set(args.only) if args.only else None
+
+    def wanted(name):
+        return requested is None or name in requested
+
+    manifests = {}
+    for dataset in OGBENCH_STATE_TASKS:
+        if not wanted(dataset):
+            continue
+        try:
+            name = "ogbench_" + dataset.replace("-", "_")
+            manifests[name] = ogbench_manifest(args.root, dataset)
+        except FileNotFoundError as error:
+            if requested is not None:
+                raise
+            print("skipping {}: {}".format(dataset, error))
+    if wanted("mimicgen"):
+        manifests["mimicgen_three_piece_assembly_d1_large_interpolation"] = mimicgen_manifest(
+            args.root, args.seed
+        )
+    if wanted("dexjoco"):
+        manifests["dexjoco_hammer_nail_rand_full"] = dexjoco_manifest(args.root, args.seed)
     args.output_dir.mkdir(parents=True, exist_ok=True)
     for name, manifest in manifests.items():
         path = args.output_dir / (name + "_manifest.json")

@@ -182,10 +182,17 @@ class _BaseBenchmarkDataset(torch.utils.data.Dataset):
         return Batch(trajectories, conditions)
 
 
-class OGBenchPuzzleWindowDataset(_BaseBenchmarkDataset):
-    """Official Puzzle-4x4 state stream with within-episode future goals."""
+class _OGBenchStateWindowDataset(_BaseBenchmarkDataset):
+    """Official OGBench state stream with within-episode future goals.
 
-    task_id = "ogbench-puzzle-4x4-play-v0-state"
+    The windowing, goal-relabeling, normalization, and batch construction are
+    identical for every OGBench state task; subclasses only declare `task_id`.
+    Keeping one implementation guarantees that a cube task and the puzzle task
+    are trained under exactly the same goal-relabeling rule, which is required
+    for the cross-task comparisons in `experiments/protocols/`.
+    """
+
+    task_id = None
 
     def __init__(self, manifest_path, split="train", horizon=5, goal_seed=42, normalizer_state=None):
         super().__init__(horizon=horizon, goal_seed=goal_seed)
@@ -242,6 +249,28 @@ class OGBenchPuzzleWindowDataset(_BaseBenchmarkDataset):
             "success": None,
             "task_id": self.task_id,
         }
+
+
+class OGBenchPuzzleWindowDataset(_OGBenchStateWindowDataset):
+    """Official Puzzle-4x4 state stream with within-episode future goals."""
+
+    task_id = "ogbench-puzzle-4x4-play-v0-state"
+
+
+class OGBenchCubeTripleWindowDataset(_OGBenchStateWindowDataset):
+    """Official cube-triple-play state stream.
+
+    Three-cube continuous rearrangement. Shares the puzzle goal-relabeling
+    rule exactly, so goal-offset findings are comparable across the two tasks.
+    """
+
+    task_id = "ogbench-cube-triple-play-v0-state"
+
+
+class OGBenchCubeDoubleWindowDataset(_OGBenchStateWindowDataset):
+    """Official cube-double-play state stream, retained as an easier control."""
+
+    task_id = "ogbench-cube-double-play-v0-state"
 
 
 class MimicGenThreePieceWindowDataset(_BaseBenchmarkDataset):
