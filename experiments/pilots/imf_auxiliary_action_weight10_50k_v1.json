@@ -1,0 +1,84 @@
+{
+  "schema_version": "imf-auxiliary-action-weight10-50k-v1",
+  "status": "PREDECLARED_BOUNDED_TRAINING_BUDGET_DIAGNOSTIC",
+  "parent_result": "experiments/pilots/imf_auxiliary_puzzle_progress_diagnostic_results_v3.json",
+  "hypothesis": "the absence of task completion at 5000 steps is primarily severe undertraining rather than a structural inability to select and compose button presses",
+  "exact_change": "increase optimizer steps from 5000 to 50000; preserve action_weight 10 and every other data, architecture, objective, optimizer, schedule, seed, and validation setting",
+  "expected_if_true": "offline action calibration remains acceptable and deterministic task-4 evaluation improves mean best goal fraction by at least 0.0625 or achieves at least one full success",
+  "expected_if_false": "offline calibration degrades or best task progress remains below 0.625 with zero successes",
+  "task": {
+    "id": "ogbench-puzzle-4x4-play-v0-state",
+    "dataset_manifest": "experiments/datasets/converted/ogbench_puzzle_4x4_play_v0_manifest.json",
+    "normalizer_bundle": "experiments/datasets/benchmark_normalizers_v1.json",
+    "normalizer_sha256": "2f5ec416b1f407928f1e55b615a7b5a1229580247b4812b18cff0ff1b33a265e",
+    "horizon": 5,
+    "observation_dim": 83,
+    "action_dim": 5,
+    "goal_relabeling": "deterministic future state from the same episode only"
+  },
+  "backbone": {
+    "class": "diffuser.models.AuxiliaryIntervalTemporalUnet",
+    "dim": 128,
+    "dim_mults": [1, 2, 4, 8],
+    "attention": false,
+    "parameter_count": 63282904
+  },
+  "training": {
+    "seed": 42,
+    "dataloader_seed": 200042,
+    "optimization_seed": 300042,
+    "fixed_validation_goal_seed": 42,
+    "fixed_validation_seed": 100042,
+    "optimizer": "Adam",
+    "learning_rate": 0.00004,
+    "adam_betas": [0.9, 0.95],
+    "lr_warmup_steps": 78,
+    "optimizer_steps": 50000,
+    "microbatch_size": 32,
+    "gradient_accumulation": 2,
+    "effective_batch_size": 64,
+    "examples_seen": 3200000,
+    "ema_decay": 0.995,
+    "ema_start_step": 2000,
+    "ema_update_every": 10,
+    "log_frequency": 100,
+    "fixed_validation_frequency": 500,
+    "fixed_validation_batches": 8,
+    "periodic_checkpoints": false,
+    "collect_step_diagnostics": true,
+    "max_grad_norm": null
+  },
+  "methods": {
+    "auxiliary_improved_meanflow": {
+      "default_solver_steps": 4,
+      "time_scale": 1000.0,
+      "loss_type": "l2",
+      "action_weight": 10.0,
+      "loss_discount": 1.0,
+      "adaptive_weighting": true,
+      "adaptive_power": 1.0,
+      "adaptive_epsilon": 0.01,
+      "boundary_probability": 0.5,
+      "collect_diagnostics": true,
+      "parameter_count": 78415024
+    }
+  },
+  "acceptance": {
+    "training_integrity": "exit zero, exactly 50000 steps, finite logs and checkpoint tensors, no CUDA OOM, live and EMA weights saved",
+    "offline_calibration_guardrail": "first-action step clip fraction at most 0.20 and raw action MAE at most 0.30 on the frozen 128 windows",
+    "task_progress_signal": "mean best goal fraction at least 0.625 or at least one full success on seeds 82000-82002",
+    "checkpoint_selection": "final fixed-step EMA checkpoint only",
+    "full_500k_gate": "do not start 500k unless integrity and offline guardrail pass and task progress signal is met"
+  },
+  "compute_gate": {
+    "training_runs": 1,
+    "estimated_runtime_seconds": 6074.588354229927,
+    "estimated_gpu_hours": 1.6873856539527575,
+    "estimated_peak_vram_mib": 2140,
+    "estimated_checkpoint_mib": 599,
+    "execution": "sole GPU job on one RTX 4080",
+    "timeout": "3 hours",
+    "long_500k_training_authorized": false,
+    "phase_9_authorized": false
+  }
+}

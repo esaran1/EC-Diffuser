@@ -1,0 +1,81 @@
+{
+  "schema_version": "imf-auxiliary-puzzle-progress-diagnostic-results-v3",
+  "status": "REPRODUCIBLE_TRANSIENT_PROGRESS_WITH_SEQUENCE_FAILURE",
+  "protocol": "experiments/pilots/imf_auxiliary_puzzle_progress_diagnostic_v3.json",
+  "invalidated_protocols": {
+    "v1": "action-space RNG used during goal construction was uncontrolled",
+    "v2": "action_space property returned a new unseeded Box for the internal sample"
+  },
+  "deterministic_reset_validation": {
+    "separate_processes": 2,
+    "initial_observation_sha256": "5c64867c0d745c35974a6a50ffe5b2d90108b4722ba3c26a5924ce9c7d830057",
+    "goal_observation_sha256": "039cd62196cb8d58ad6d811ad4365b06aa21a7f9bb9d4ea02d2a3229264e458b",
+    "hashes_equal_across_processes": true
+  },
+  "action_weight_10_replay": {
+    "raw_a": "data/phase8_evaluations/imf_auxiliary_puzzle_progress_aw10_replay_a_v3.json",
+    "raw_b": "data/phase8_evaluations/imf_auxiliary_puzzle_progress_aw10_replay_b_v3.json",
+    "episode_records_exactly_equal": true,
+    "aggregate_progress_exactly_equal": true,
+    "action_clip_fraction_exactly_equal": true
+  },
+  "paired_results": {
+    "episode_seeds": [82000, 82001, 82002],
+    "episodes_per_checkpoint": 3,
+    "environment_steps_per_checkpoint": 1500,
+    "nfe": 4,
+    "action_weight_1": {
+      "raw": "data/phase8_evaluations/imf_auxiliary_puzzle_progress_aw1_v3.json",
+      "action_clip_step_fraction": 0.8293333333333334,
+      "episodes_with_button_transition": 3,
+      "episodes_with_positive_best_progress": 2,
+      "episodes_with_regression_after_best": 2,
+      "mean_best_goal_fraction": 0.5625,
+      "mean_final_goal_fraction": 0.5,
+      "mean_minimum_mismatches": 7.0,
+      "total_button_state_flips": 26,
+      "full_successes": 0
+    },
+    "action_weight_10": {
+      "raw": "data/phase8_evaluations/imf_auxiliary_puzzle_progress_aw10_replay_a_v3.json",
+      "action_clip_step_fraction": 0.18333333333333332,
+      "episodes_with_button_transition": 3,
+      "episodes_with_positive_best_progress": 2,
+      "episodes_with_regression_after_best": 2,
+      "mean_best_goal_fraction": 0.5625,
+      "mean_final_goal_fraction": 0.4791666666666667,
+      "mean_minimum_mismatches": 7.0,
+      "total_button_state_flips": 51,
+      "full_successes": 0
+    }
+  },
+  "training_goal_horizon_audit": {
+    "windows": 997000,
+    "policy_horizon": 5,
+    "endpoint_offset_steps": 4,
+    "goal_offset_steps": {
+      "minimum": 4,
+      "mean": 252.98824172517553,
+      "median": 190.0,
+      "p90": 590.0,
+      "p95": 703.0,
+      "p99": 862.0,
+      "maximum": 1000
+    },
+    "fraction_goal_beyond_endpoint": 0.9923279839518556,
+    "fraction_goal_more_than_100_steps_ahead": 0.6768525576730191,
+    "mean_current_goal_button_hamming_distance": 6.604871614844534
+  },
+  "failure_taxonomy": {
+    "control_contact": "NOT_PRIMARY: all corrected episodes caused button transitions",
+    "action_scale": "CORRECTED: clipping fell by 0.646 absolute",
+    "temporal_sequence": "SUPPORTED: temporary progress occurred but did not compound toward completion and often regressed",
+    "data_goal_stitching": "PLAUSIBLE: almost all conditioning goals are beyond the modeled trajectory endpoint",
+    "insufficient_training": "UNRESOLVED: current checkpoint has only 5000 optimizer steps"
+  },
+  "decision": {
+    "long_500k_run": "NOT_JUSTIFIED",
+    "next_experiment": "one action-weight-10 auxiliary iMF seed-42 run from scratch for 50000 optimizer steps",
+    "reason": "separates severe 5000-step undertraining from structural long-range sequence failure at one tenth of canonical compute"
+  }
+}
