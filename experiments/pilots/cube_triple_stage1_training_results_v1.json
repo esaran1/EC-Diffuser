@@ -22,8 +22,33 @@
     "validation_monotone_no_divergence": true,
     "wrapper": "DeterministicBehaviorCloning"
   },
+  "conditional_flow_matching": {
+    "all_logged_losses_finite": true,
+    "checkpoint": "data/phase9_runs/cube_triple_conditional_flow_matching_seed42_50000/state_50000.pt",
+    "checkpoint_sha256": "3752bff8950c46412a588cffbc80b8ce21329a4b550a37158797274c5d7bf5a6",
+    "fixed_validation_ema_final": 0.14452916011214256,
+    "fixed_validation_live_final": 0.173142958432436,
+    "fixed_validation_live_first": 1.0844403058290482,
+    "gpu_hours": 0.4011893354027739,
+    "optimizer_steps": 50000,
+    "parameter_count": 63249715,
+    "peak_vram_mib_torch": 1482.57373046875,
+    "runtime_seconds": 1444.281607449986,
+    "seconds_per_optimizer_step": 0.02888563214899972,
+    "status": "PASS",
+    "validation_monotone_no_divergence": true,
+    "wrapper": "ConditionalFlowMatching"
+  },
+  "fairness_check": {
+    "examples_seen_identical": true,
+    "note": "BC and Flow losses are NOT comparable in magnitude: BC regresses the trajectory directly while Flow regresses a velocity field. Only task performance under the paired native evaluation is comparable.",
+    "optimizer_steps_identical": true,
+    "parameter_counts_identical": true,
+    "peak_vram_identical": true
+  },
   "note": "Training-only result. No task performance is claimed until the paired native evaluation runs.",
   "protocol": "experiments/pilots/cube_triple_bc_screen_v1.json",
   "schema_version": "phase9-cube-triple-stage1-training-v1",
-  "status": "BEHAVIOR_CLONING_TRAINING_COMPLETE_FLOW_IN_PROGRESS"
+  "stage1_gpu_hours": 0.8013163576630177,
+  "status": "STAGE1_TRAINING_COMPLETE_EVALUATION_IN_PROGRESS"
 }
