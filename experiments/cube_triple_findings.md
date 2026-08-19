@@ -207,3 +207,17 @@ departure from the demonstration distribution, but the diffusion arm shows it
 is not sufficient on its own: diffusion nearly closes the saturation gap
 (20.1% versus 32.1%) and still fails. Any follow-up should treat it as one
 component of a closed-loop failure rather than the cause.
+
+## 9. Publication status of this result
+
+This is a validated null: our BC-class arms reproduce the published GCBC
+baseline (1 ±1) on a task where no published method exceeds 4%. That makes the
+measurement trustworthy, but **it does not by itself make the result
+publishable**.
+
+A BC-ceiling null is useful evidence. Its publication value depends on whether
+it leads somewhere — a new diagnosis of *why* the ceiling exists, or a method
+that moves it. On its own it reports that a known-hard task is hard.
+
+The cube-double experiment exists to determine which regime we are in, and no
+new method will be implemented until it answers that.

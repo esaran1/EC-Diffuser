@@ -118,7 +118,7 @@
   },
   "methods_note": "derived from arms[*].config; this is the key train_phase7_pilot.py reads. arms[*] additionally records role and inference NFE for evaluation.",
   "preregistered_outcomes": {
-    "bc_floor_matches": "behavior_cloning matches the generative arms -> generative modeling is not earning its cost here; a publishable negative result",
+    "bc_floor_matches": "behavior_cloning matches the generative arms -> generative modeling is not earning its cost here. This is useful evidence, but not automatically publishable: its value depends on whether it leads to a new diagnosis or method.",
     "bc_is_the_bottleneck": "every arm including Gaussian@100 performs near zero -> BC without a critic cannot do this task, and the task cannot discriminate generative objectives for us; report and stop",
     "low_nfe_sufficient": "Flow at 1-2 NFE approaches Flow at 8 and Gaussian at 100 -> NFE is not the bottleneck under BC on this task",
     "nfe_matters": "Flow collapses at 1-2 NFE and recovers by 4-8 -> integration/objective is the operative variable"
