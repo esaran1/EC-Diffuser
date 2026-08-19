@@ -152,7 +152,8 @@
     "eval_goals_above_train_max": 0,
     "eval_goals_above_train_p95": 17,
     "reading": "Evaluation goals sit at the 88th percentile of the training goal distribution on average, and 17 of 60 exceed the training p95. They are in-support (none exceed the training maximum) but systematically harder than the goals the policy was trained to reach. This is a train/eval goal distribution shift that is NOT controlled in the current protocol, and it is an alternative explanation for zero success that does not implicate the policy class.",
-    "status": "OPEN CONFOUND - not resolved by stage 1",
+    "resolution": "experiments/pilots/d1_cube_results_v1.json: EASY and HARD subsets both give 0/40 for every arm, and OGBench task 4 -- whose goals are ~40% physically closer than tasks 2/3 -- also yields zero with no distance reduction. Goal difficulty is not the operative cause.",
+    "status": "RESOLVED - refuted by D1-cube",
     "train_goal_distance": {
       "mean": 6.661,
       "p05": 3.352,
@@ -161,6 +162,7 @@
     }
   },
   "interpretation": {
+    "closed_loop_failure": "With fitting, action saturation, near-misses, and goal difficulty all excluded, the remaining explanation is closed-loop control: the policies emit in-distribution actions but do not compose them into cube movement over a 1000-step episode.",
     "consistent_with_literature": "Every published cube-triple result uses a critic: FMQ 0.88 with online fine-tuning and NFE 20-32 at test time, MVP with Q-guided generate-and-select, QC Q-learning throughout. Our result is the pure-BC point that was previously unmeasured, and it is near zero.",
     "cubes_barely_move": "Mean per-cube distance to target goes 0.271 -> 0.266 m at 4 NFE against a 0.04 m success threshold; no cube is ever placed.",
     "headline": "Under pure behavior cloning at 50k steps, no arm places any cube on cube-triple: 0/60 for BC@1 and for Flow at every NFE tested.",

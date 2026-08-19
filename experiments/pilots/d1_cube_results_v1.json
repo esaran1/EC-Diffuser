@@ -1,0 +1,128 @@
+{
+  "arms": {
+    "behavior_cloning@1_easy": {
+      "cubes_within_threshold": 0,
+      "episode_set_sha256": "d65b4a35591d1b14b730b23fbd6de13c7a070c79768842e1e09b575662225178",
+      "episodes": 40,
+      "episodes_with_any_cube_closer": 24,
+      "full_successes": 0,
+      "mean_distance_reduction": 0.0006032360392866815,
+      "mean_final_distance": 0.24272835366825146,
+      "mean_initial_distance": 0.2433315897075381,
+      "method": "behavior_cloning",
+      "nfe": 1,
+      "raw": "data/phase9_evaluations/d1_cube_behavior_cloning_nfe1_easy.json",
+      "subset": "easy"
+    },
+    "behavior_cloning@1_hard": {
+      "cubes_within_threshold": 0,
+      "episode_set_sha256": "7f15c5d2d1c5829fc86f4fd2166678b93116b1713499186f81190f70e77b0d55",
+      "episodes": 40,
+      "episodes_with_any_cube_closer": 27,
+      "full_successes": 0,
+      "mean_distance_reduction": 0.001985345655559325,
+      "mean_final_distance": 0.24159343722551813,
+      "mean_initial_distance": 0.24357878288107745,
+      "method": "behavior_cloning",
+      "nfe": 1,
+      "raw": "data/phase9_evaluations/d1_cube_behavior_cloning_nfe1_hard.json",
+      "subset": "hard"
+    },
+    "conditional_flow_matching@1_easy": {
+      "cubes_within_threshold": 0,
+      "episode_set_sha256": "d65b4a35591d1b14b730b23fbd6de13c7a070c79768842e1e09b575662225178",
+      "episodes": 40,
+      "episodes_with_any_cube_closer": 29,
+      "full_successes": 0,
+      "mean_distance_reduction": 0.00015462180501909449,
+      "mean_final_distance": 0.24317696790251903,
+      "mean_initial_distance": 0.2433315897075381,
+      "method": "conditional_flow_matching",
+      "nfe": 1,
+      "raw": "data/phase9_evaluations/d1_cube_conditional_flow_matching_nfe1_easy.json",
+      "subset": "easy"
+    },
+    "conditional_flow_matching@1_hard": {
+      "cubes_within_threshold": 0,
+      "episode_set_sha256": "7f15c5d2d1c5829fc86f4fd2166678b93116b1713499186f81190f70e77b0d55",
+      "episodes": 40,
+      "episodes_with_any_cube_closer": 21,
+      "full_successes": 0,
+      "mean_distance_reduction": -0.0025731897411109365,
+      "mean_final_distance": 0.2461519726221884,
+      "mean_initial_distance": 0.24357878288107745,
+      "method": "conditional_flow_matching",
+      "nfe": 1,
+      "raw": "data/phase9_evaluations/d1_cube_conditional_flow_matching_nfe1_hard.json",
+      "subset": "hard"
+    },
+    "conditional_flow_matching@4_easy": {
+      "cubes_within_threshold": 0,
+      "episode_set_sha256": "d65b4a35591d1b14b730b23fbd6de13c7a070c79768842e1e09b575662225178",
+      "episodes": 40,
+      "episodes_with_any_cube_closer": 33,
+      "full_successes": 0,
+      "mean_distance_reduction": 0.0025188569066402393,
+      "mean_final_distance": 0.2408127328008979,
+      "mean_initial_distance": 0.2433315897075381,
+      "method": "conditional_flow_matching",
+      "nfe": 4,
+      "raw": "data/phase9_evaluations/d1_cube_conditional_flow_matching_nfe4_easy.json",
+      "subset": "easy"
+    },
+    "conditional_flow_matching@4_hard": {
+      "cubes_within_threshold": 0,
+      "episode_set_sha256": "7f15c5d2d1c5829fc86f4fd2166678b93116b1713499186f81190f70e77b0d55",
+      "episodes": 40,
+      "episodes_with_any_cube_closer": 34,
+      "full_successes": 0,
+      "mean_distance_reduction": 0.005378322115338921,
+      "mean_final_distance": 0.23820046076573856,
+      "mean_initial_distance": 0.24357878288107745,
+      "method": "conditional_flow_matching",
+      "nfe": 4,
+      "raw": "data/phase9_evaluations/d1_cube_conditional_flow_matching_nfe4_hard.json",
+      "subset": "hard"
+    }
+  },
+  "benchmark_limitation": "Within each official task, physical goal distance is nearly constant (task 4 spans 0.1799-0.1950 m). The official cube-triple task goals do not offer a within-task difficulty gradient, so a fully matched easy/hard comparison cannot be constructed from them.",
+  "compute_gpu_hours": 0.35,
+  "conclusion": "The goal-distribution confound raised after stage 1 is NOT supported as the explanation for zero success. Combined with the earlier offline diagnostic (action MAE 0.116-0.145 against action scale 0.297), the failure is neither a fitting failure nor a goal-difficulty artifact. It is a closed-loop control failure: the policies predict in-distribution actions but do not compose them into cube movement over 1000 steps.",
+  "outcome": {
+    "matched": "expected_if_false",
+    "statement": "Both the EASY and HARD subsets give 0/40 for every arm, with no cube ever placed. Cube distance reduction is not larger on EASY -- at 4 NFE it is actually larger on HARD (+0.00538 vs +0.00252 m). Goal difficulty, as captured by this split, is not the cause of the stage-1 zero."
+  },
+  "parent": "experiments/pilots/cube_triple_stage1_results_v1.json",
+  "protocol": "experiments/pilots/d1_cube_goal_difficulty_v1.json",
+  "schema_version": "phase9-d1-cube-results-v1",
+  "split_validity_caveat": {
+    "consequence": "This weakens the EASY-vs-HARD contrast as a test of goal difficulty. It is reported rather than presented as a clean refutation.",
+    "diagnosis": "A per-dimension decomposition shows the separation is driven by obs dims 0-2 and 12-13, which are arm/proprioceptive state, not cube positions. The split therefore stratified initial ARM configuration, not task difficulty.",
+    "finding": "The predeclared split separated STANDARDIZED OBSERVATION distance (easy 7.365 vs hard 10.720) but NOT physical cube-to-goal distance (0.2433 vs 0.2436 m, indistinguishable)."
+  },
+  "status": "HYPOTHESIS_REFUTED_GOAL_DIFFICULTY_IS_NOT_THE_CAUSE",
+  "stronger_difficulty_control": {
+    "per_task": {
+      "task_2": {
+        "cubes_placed": 0,
+        "mean_final_distance": 0.30019064560426983,
+        "mean_initial_distance": 0.3086920300682897,
+        "n": 20
+      },
+      "task_3": {
+        "cubes_placed": 0,
+        "mean_final_distance": 0.31113153463756893,
+        "mean_initial_distance": 0.316710384753916,
+        "n": 20
+      },
+      "task_4": {
+        "cubes_placed": 0,
+        "mean_final_distance": 0.18704585119655517,
+        "mean_initial_distance": 0.18659210434495238,
+        "n": 20
+      }
+    },
+    "source": "per-task breakdown of the stage-1 60-episode runs at 4 NFE",
+    "statement": "OGBench task 4 has goals about 40% physically closer than tasks 2 and 3 (0.1866 m vs 0.3087 / 0.3167 m initial mean cube distance). This is a real, large physical difficulty gradient and it is intrinsic to the benchmark rather than constructed by us. Task 4 still yields zero cubes placed and no distance reduction (-0.00045 m at 4 NFE). This is the stronger evidence that goal difficulty is not the operative cause."
+  }
+}
