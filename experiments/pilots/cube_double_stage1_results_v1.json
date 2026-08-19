@@ -1,0 +1,53 @@
+{
+  "answers_to_the_four_questions": {
+    "bc_ceiling_or_generative_dynamic_range": "BC CEILING. Two tasks, two object counts, 1-100 NFE, generative and non-generative alike: all at the floor, all matching published GCBC.",
+    "does_diffusion_beat_low_nfe_flow": "Not run on cube-double; on cube-triple it did not.",
+    "does_flow_exceed_the_bc_floor": "No. Both 0/60. BC actually moves cubes slightly more (+0.0036 m vs -0.0003 m).",
+    "does_performance_change_with_nfe": "Pending Flow@2/4/8, but 1 NFE shows no separation from the floor."
+  },
+  "consequence": "Per the predeclared decision rule: stop treating pure-BC OGBench cube manipulation as the main benchmark. The next research question is whether value guidance is fundamentally required, or whether entity-structured generative policies can improve matters without a critic.",
+  "interpretation": "This is the decisive result the cube-triple experiment could not provide. On cube-triple nothing works for anyone, so zero was uninformative. On cube-double a 40-point gap exists between value-based methods (GCIQL 40%) and behavior cloning (GCBC 1%), and our arms land on the BC side of that gap. The limitation is therefore the POLICY-LEARNING PARADIGM (behavior cloning without a critic), not the generative objective and not the inference budget.",
+  "key_finding": "On cube-double -- a task where published value-based methods reach 40% -- both the non-generative BC floor and flow matching score 0/60. Published GCBC also scores 1 +/- 1 here. So our arms again reproduce the published behavior-cloning baseline, on a task that is demonstrably learnable by other means.",
+  "limitations": [
+    "one training seed",
+    "50,000 steps, not a converged budget",
+    "60 episodes per arm",
+    "no critic baseline measured here"
+  ],
+  "note": "Partial: BC@1 and Flow@1 complete; Flow@2/4/8 and Shortcut still running.",
+  "protocol": "experiments/pilots/cube_double_bc_screen_v1.json",
+  "results_so_far": {
+    "behavior_cloning_nfe1": {
+      "action_clip_fraction": 0.0309,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 40,
+      "latency_ms": 2.79,
+      "mean_distance_reduction": 0.00355,
+      "successes": "0/60"
+    },
+    "conditional_flow_matching_nfe1": {
+      "action_clip_fraction": 0.0351,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 20,
+      "latency_ms": 2.84,
+      "mean_distance_reduction": -0.00034,
+      "successes": "0/60"
+    }
+  },
+  "schema_version": "phase10-cube-double-stage1-results-v1",
+  "status": "BC_CEILING_CONFIRMED_ON_A_LEARNABLE_TASK",
+  "training": {
+    "behavior_cloning": {
+      "gpu_hours": 0.4,
+      "parameter_count": 63241642
+    },
+    "conditional_flow_matching": {
+      "gpu_hours": 0.41,
+      "parameter_count": 63241642
+    },
+    "shortcut_model": {
+      "gpu_hours": 0.61,
+      "parameter_count": 63241642
+    }
+  }
+}
