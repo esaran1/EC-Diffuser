@@ -1,0 +1,44 @@
+{
+  "compute_gpu_hours": 0.1,
+  "executed_action_magnitude": {
+    "behavior_cloning_nfe1": {
+      "abs_mean": 0.2695,
+      "frac_component_above_0.9": 0.0757,
+      "frac_steps_any_component_at_limit": 0.0944,
+      "p50": 0.1047,
+      "p90": 0.854
+    },
+    "conditional_flow_matching_nfe4": {
+      "abs_mean": 0.2859,
+      "frac_component_above_0.9": 0.0588,
+      "frac_steps_any_component_at_limit": 0.0583,
+      "p50": 0.1389,
+      "p90": 0.8107
+    },
+    "demonstration": {
+      "abs_mean": 0.3163,
+      "frac_component_above_0.9": 0.0983,
+      "frac_steps_any_component_at_limit": 0.3207,
+      "p50": 0.188,
+      "p90": 0.8912
+    },
+    "protocol": "9 episodes per arm across tasks 2/3/4, up to 200 steps, actions unnormalized to raw scale before measurement"
+  },
+  "finding": {
+    "consistent_with": "cubes barely moving (0.243 -> 0.241 m) while offline action error is low: the policy emits plausible average actions but not the sustained extreme actions required for contact.",
+    "no_mean_collapse": "Executed action magnitude is close to the demonstrations (0.270 and 0.286 versus 0.316 mean absolute). The policies are NOT regressing to a near-zero conditional mean, which is the usual BC-on-play failure.",
+    "saturation_deficit": "The policies reach the action limit on 9.4% and 5.8% of steps versus 32.1% in the demonstrations -- a 3.4x to 5.5x deficit. In this environment sustained limit-magnitude actions are what produce gripper contact and cube motion, so the deficit is concentrated exactly in the behavior that moves cubes."
+  },
+  "offline_fit": {
+    "behavior_cloning_action_mae": 0.116,
+    "conditional_flow_matching_action_mae": 0.1445,
+    "normalized_action_abs_mean": 0.2966,
+    "normalized_action_std": 0.4182,
+    "reading": "both models predict held-out actions well inside the action scale"
+  },
+  "parent": "experiments/pilots/cube_triple_stage1_results_v1.json",
+  "question": "Given that fitting, action saturation at the clip boundary, near-misses, and goal difficulty are all excluded, what distinguishes executed policy behavior from the demonstrations?",
+  "schema_version": "phase9-cube-triple-closed-loop-diagnostic-v1",
+  "status": "RECORDED",
+  "status_of_claim": "This is a measured association, not a demonstrated cause. It identifies WHERE executed behavior departs from the data; it does not prove that restoring saturation would produce success."
+}
