@@ -51,14 +51,34 @@ All arms evaluated on **identical episode seeds**, tasks 2/3/4.
 | conditional_flow_matching | BC | 2 | 2 | 0/60 | 4.87% | 0 | 5.49 ms |
 | conditional_flow_matching | BC | 4 | 4 | 0/60 | 4.87% | 0 | 10.99 ms |
 | conditional_flow_matching | BC | 8 | 8 | 0/60 | 4.87% | 0 | 20.96 ms |
+| gaussian_diffusion | BC | 100 | 100 | 0/30 | 9.50% | 0 | (contended) |
 
 Latency scales exactly with NFE and model calls are verified exact, so the
 compute was genuinely spent — the flat result is not an instrumentation
 artifact.
 
-**The NFE axis is completely flat at zero, and the non-generative BC floor is
-identical to the generative arms.** Nothing here indicts the generative
-objective: the regression policy fails in exactly the same way.
+**The NFE axis is completely flat at zero across a 100x compute range, and the
+non-generative BC floor is identical to the generative arms.** Nothing here
+indicts the generative objective: the regression policy fails in exactly the
+same way as flow matching and as diffusion at 100 NFE.
+
+The diffusion arm was evaluated on 30 episodes that are an exact verified
+subset of the 60, so the comparison is paired. On those identical 30 episodes
+every arm scores 0/30:
+
+| Arm | NFE | Success | Cubes placed | Δdist (m) | Clip |
+|---|--:|--:|--:|--:|--:|
+| behavior_cloning | 1 | 0/30 | 0 | — | 3.6% |
+| conditional_flow_matching | 1 | 0/30 | 0 | — | 2.6% |
+| conditional_flow_matching | 2 | 0/30 | 0 | −0.00025 | 3.6% |
+| conditional_flow_matching | 4 | 0/30 | 0 | +0.00153 | 5.4% |
+| conditional_flow_matching | 8 | 0/30 | 0 | +0.00132 | 6.7% |
+| **gaussian_diffusion** | **100** | **0/30** | **0** | **−0.00611** | **20.1%** |
+
+Diffusion clips 20.1% of steps — three to eight times more than the low-NFE
+arms — and still moves cubes slightly *away* from their goals. More aggressive
+actions are therefore not sufficient on their own, which tempers the
+saturation-deficit lead in §5 without refuting it.
 
 ## 4. Four explanations excluded with evidence
 

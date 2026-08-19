@@ -1,0 +1,89 @@
+{
+  "conclusion": {
+    "diffusion_clipping_note": "Diffusion clips 20.1% of steps versus 2.4-6.8% for the low-NFE arms, i.e. it emits substantially more extreme actions, and still moves cubes slightly AWAY from their goals (-0.0061 m). More aggressive actions are therefore not sufficient on their own -- which tempers, though does not refute, the saturation-deficit lead.",
+    "headline": "Gaussian diffusion at 100 NFE places no cube on the same 30 episodes where every 1-8 NFE arm and the non-generative BC floor also placed none. There is no multi-step ceiling on cube-triple under pure behavior cloning.",
+    "settles": "The NFE axis spans 1 to 100 -- a 100x compute range -- with success identically zero throughout. cube-triple under pure BC has no dynamic range for the low-NFE question and cannot discriminate generative objectives or sampler budgets in this setting.",
+    "shared_cause": "Because the non-generative regression floor fails identically to both the flow and diffusion arms, the cause is the behavior-cloning setup, not the sampler, the NFE budget, or the generative objective."
+  },
+  "cost_note": "Measured 100-NFE plan latency was ~789 ms, about 3x the 260 ms projected by linear extrapolation from low-NFE timings, because per-step Python and kernel launch overhead does not scale linearly. Actual evaluation took 5.95 h under GPU contention versus the 2.2 GPU-h estimate. The estimate was wrong and is recorded as such.",
+  "diffusion": {
+    "action_clip_step_fraction": 0.20146666666666666,
+    "checkpoint_sha256": "0bedcdf7bbee165ce937d6d7d59df238f2967a04d8e3cb7eb1b3a91102317dd2",
+    "cubes_placed": 0,
+    "episode_set_sha256": "3041eb142a6d043331454fb483b43da216a545c04d040fe62f87e330073e5701",
+    "episodes": 30,
+    "evaluation_runtime_hours": 5.950878854851342,
+    "mean_distance_reduction": -0.00610588099720381,
+    "mean_final_distance": 0.2770643090424748,
+    "mean_initial_distance": 0.270958428045271,
+    "method": "gaussian_diffusion",
+    "nfe": 100,
+    "raw": "data/phase9_evaluations/cube_triple_gaussian_diffusion_nfe100.json",
+    "success_rate": 0.0,
+    "successes": 0,
+    "verified_calls_per_plan": 100
+  },
+  "episode_set_hash_verified": true,
+  "latency_caveat": "Planner latency from this run was measured under contention from unrelated jobs and must not be compared with the stage-1 latencies.",
+  "outcome_matched": "expected_if_no_ceiling",
+  "paired_comparison_on_identical_30_episodes": {
+    "behavior_cloning@1": {
+      "action_clip_fraction": 0.03546666666666667,
+      "cubes_placed": null,
+      "episodes": 30,
+      "mean_distance_reduction": null,
+      "successes": 0,
+      "verified_calls_per_plan": 1
+    },
+    "conditional_flow_matching@1": {
+      "action_clip_fraction": 0.02576666666666667,
+      "cubes_placed": null,
+      "episodes": 30,
+      "mean_distance_reduction": null,
+      "successes": 0,
+      "verified_calls_per_plan": 1
+    },
+    "conditional_flow_matching@2": {
+      "action_clip_fraction": 0.0362,
+      "cubes_placed": 0,
+      "episodes": 30,
+      "mean_distance_reduction": -0.0002498668678315405,
+      "successes": 0,
+      "verified_calls_per_plan": 2
+    },
+    "conditional_flow_matching@4": {
+      "action_clip_fraction": 0.05373333333333334,
+      "cubes_placed": 0,
+      "episodes": 30,
+      "mean_distance_reduction": 0.0015323083188626264,
+      "successes": 0,
+      "verified_calls_per_plan": 4
+    },
+    "conditional_flow_matching@8": {
+      "action_clip_fraction": 0.0674,
+      "cubes_placed": 0,
+      "episodes": 30,
+      "mean_distance_reduction": 0.001315413844394145,
+      "successes": 0,
+      "verified_calls_per_plan": 8
+    },
+    "gaussian_diffusion@100": {
+      "action_clip_fraction": 0.2014666666666667,
+      "cubes_placed": 0,
+      "episodes": 30,
+      "mean_distance_reduction": -0.006105880997203809,
+      "successes": 0,
+      "verified_calls_per_plan": 100
+    }
+  },
+  "protocol": "experiments/pilots/stage2_diffusion_ceiling_v1.json",
+  "schema_version": "phase9-stage2-results-v1",
+  "statistical_bound": {
+    "method": "exact one-sided Clopper-Pearson",
+    "n": 30,
+    "note": "weaker than the 4.87% bound from the 60-episode low-NFE arms, as predeclared",
+    "successes": 0,
+    "upper_95": 0.095
+  },
+  "status": "NO_MULTI_STEP_CEILING_ALL_ARMS_ZERO"
+}
