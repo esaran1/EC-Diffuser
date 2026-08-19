@@ -49,7 +49,8 @@
       4,
       8
     ],
-    "note": "identical architecture to the cube-triple arms; parameter count differs only through the 37-D versus 46-D observation dimension and is recorded per arm at run time, and must agree within 1% across arms",
+    "note": "identical architecture to the cube-triple arms; the count 63,241,642 differs from cube-triple's 63,249,715 only through the 37-D versus 46-D observation dimension. Verified on CPU for both arms before launch; the trainer enforces it at run time and aborts on mismatch.",
+    "parameter_count": 63241642,
     "shared_across_methods": true
   },
   "compute_gate": "Run arms sequentially on one GPU. Stage 1 only is authorized by this manifest; stages 2 and 3 require the stage-1 result first. Do not launch while another process holds GPU memory.",
