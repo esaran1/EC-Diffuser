@@ -114,11 +114,19 @@ This is a measured association, not a demonstrated cause. It says *where*
 executed behavior departs from the data; it does not prove that restoring
 saturation would produce success.
 
+**The diffusion arm bears directly on this and weakens it.** At 100 NFE
+diffusion clips 20.1% of steps — much closer to the demonstrations' 32.1% than
+any low-NFE arm — yet it still places no cube and its mean cube distance
+*increases* by 0.0061 m. So closing the saturation gap is demonstrably not
+sufficient by itself. The deficit remains a real measured difference from the
+data, but it is not established as the operative cause.
+
 ## 6. What is and is not claimable
 
-**Supported:** *No arm exceeds ~5% success on cube-triple under this training
-budget and goal distribution, and success is invariant to NFE from 1 to 8 and
-to the presence of a generative objective at all.*
+**Supported:** *No arm exceeds ~5% success (~9.5% for the 30-episode diffusion
+arm) on cube-triple under this training budget and goal distribution, and
+success is invariant to NFE across a 100x range (1 to 100) and to the presence
+of a generative objective at all.*
 
 **Not supported:** *"Behavior cloning cannot solve cube-triple."* That needs
 multiple training seeds, a converged budget, and a critic baseline measured
@@ -136,6 +144,10 @@ this experiment cannot indict low-NFE generation.
   reference).
 - **No critic baseline was run.** The BC-versus-critic contrast is inferred
   from published work, not measured here.
+- **The diffusion arm used 30 episodes, not 60**, because measured 100-NFE
+  latency (789 ms/plan) put the full protocol at ~6.6 h, over the compute
+  gate. Its bound is 9.50% rather than 4.87%. The episode set is a verified
+  subset of the 60, so the comparison remains paired.
 - **The D1 easy/hard split was flawed**: it separated standardized
   *observation* distance but not physical cube distance, because the
   separating dimensions were arm proprioception. The stronger difficulty
@@ -152,6 +164,8 @@ resolved. Pursuing the low-NFE question here requires either adopting a critic
 (which changes the paradigm under study) or moving to a task where BC reaches
 non-trivial performance.
 
-The measured saturation deficit (§5) is the most specific lead: it is a
-concrete, quantified departure from the demonstration distribution that is
-shared by the generative and non-generative arms alike.
+The measured saturation deficit (§5) remains the most specific quantified
+departure from the demonstration distribution, but the diffusion arm shows it
+is not sufficient on its own: diffusion nearly closes the saturation gap
+(20.1% versus 32.1%) and still fails. Any follow-up should treat it as one
+component of a closed-loop failure rather than the cause.
