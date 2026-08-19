@@ -1,4 +1,17 @@
 {
+  "aborted_exploratory_attempt": {
+    "aborted": "2026-08-19T08:2x-04:00",
+    "arm": "behavior_cloning",
+    "artifacts": "none retained; the partial output directory was removed and no checkpoint was written",
+    "concurrent_processes": [
+      "2074128 Isaac Lab RL job, 4166 MiB",
+      "2074569 Isaac Lab RL job, 4168 MiB (earlier in the window)"
+    ],
+    "observed_contention": "per-step time swung between 0.11 s and 15.7 s, so no throughput or wall-clock figure from this attempt is usable",
+    "progress": "5,600 of 50,000 optimizer steps (11%)",
+    "reason": "aborted per instruction: the GPU was shared with unrelated Isaac Lab jobs and the run was only 11% complete, so it did not qualify as substantially progressed",
+    "started": "2026-08-19T08:12:35-04:00"
+  },
   "arms": {
     "behavior_cloning": {
       "config": {},
@@ -23,7 +36,7 @@
         "training_timesteps": 100
       },
       "inference_nfe": 100,
-      "role": "multi-step reference ceiling"
+      "role": "multi-step reference, only if justified by compute"
     },
     "shortcut_model": {
       "config": {
@@ -36,7 +49,7 @@
         2,
         4
       ],
-      "role": "second low-NFE objective, Tier B"
+      "role": "second low-NFE objective"
     }
   },
   "backbone": {
@@ -54,6 +67,11 @@
     "shared_across_methods": true
   },
   "compute_gate": "Run arms sequentially on one GPU. Stage 1 only is authorized by this manifest; stages 2 and 3 require the stage-1 result first. Do not launch while another process holds GPU memory.",
+  "decision_rule": {
+    "if_all_near_zero": "If BC, Flow, Shortcut, and Diffusion all remain near 0 to a few percent, stop treating pure-BC OGBench cube manipulation as the main benchmark. The next research question becomes whether value guidance/RL is fundamentally required, or whether entity-structured generative policies can improve matters without a critic.",
+    "if_flow_or_diffusion_exceeds_bc": "cube-double becomes valuable: run a controlled NFE sweep and independent training seeds.",
+    "no_new_method": "Do not implement a new method until cube-double indicates the regime."
+  },
   "evaluation": {
     "checkpoint_weights": "EMA",
     "environment": "cube-double-play singletask via the pinned native OGBench harness",
@@ -80,6 +98,11 @@
     "improved_meanflow": "cancelled; MVP (ICLR 2026) occupies the MeanFlow/cube-task intersection"
   },
   "external_comparison_rule": "Compare only against OGBench Table 2 -play-v0 baselines. Do NOT compare against MVP/FMQ/QC singletask numbers: per the official repository those target a fundamentally different problem formulation.",
+  "gpu_policy": {
+    "central_seed_rule": "Any training seed used for a central claim must be run on an uncontended GPU. Exploratory runs under contention may inform direction but their throughput, wall-clock, and latency numbers must not be reported.",
+    "measurement_rule": "All compute estimates must come from measured runtimes on an uncontended GPU. Never extrapolate high-NFE latency linearly from low-NFE timings: doing so underestimated 100-NFE cost by 3x (260 ms projected vs 789 ms measured).",
+    "rule": "Do not launch EC-Diffuser/OGBench GPU jobs while unrelated Isaac Lab jobs occupy the GPU. Verify the GPU is uncontended immediately before launch and record any concurrent processes."
+  },
   "hardware": {
     "count": 1,
     "device": "cuda:0",
@@ -109,27 +132,33 @@
   },
   "protocol_document": "experiments/protocols/cube_controlled_v1.md",
   "question": "Under pure behavior cloning at low NFE, with no critic, how far can a policy get on OGBench cube-double-play -- a task with documented headroom where GCIQL reaches 40 +/- 5 while GCBC reaches only 1 +/- 1?",
+  "questions_to_answer_after_stage_1": [
+    "Does Flow materially exceed the BC floor?",
+    "Does performance change meaningfully with NFE?",
+    "Does Diffusion outperform low-NFE Flow under the same BC training paradigm?",
+    "Is failure primarily a policy-learning/BC ceiling, or is there real dynamic range attributable to the generative objective?"
+  ],
   "reporting_rule": "every published table must carry a paradigm column (BC / offline-RL / offline->online) and a test-time NFE column including critic calls",
   "schema_version": "phase10-cube-double-bc-screen-v1",
   "staging": {
     "stage_1": {
       "arms": [
         "behavior_cloning",
-        "conditional_flow_matching"
+        "conditional_flow_matching",
+        "shortcut_model"
       ],
-      "estimated_gpu_hours": 1.0,
-      "purpose": "BC floor plus the primary low-NFE generative arm"
+      "purpose": "BC floor plus both low-NFE generative objectives",
+      "seeds": "ONE exploratory training seed (42) only; do not launch multiple seeds yet"
     },
     "stage_2": {
       "arms": [
         "gaussian_diffusion"
       ],
-      "cost_warning": "measured 100-NFE latency on cube-triple was 789 ms/plan, so a 60-episode evaluation costs ~6.6 h. Size any diffusion evaluation from that measurement, not from linear extrapolation of low-NFE timings.",
-      "estimated_gpu_hours": 0.5,
+      "cost_basis": "size from the MEASURED 789 ms/plan at 100 NFE on cube-triple, not from linear extrapolation of low-NFE timings. A 60-episode evaluation is ~6.6 h.",
       "purpose": "multi-step reference, only if stage 1 shows non-trivial performance"
     }
   },
-  "status": "PREDECLARED_AWAITING_EXECUTION",
+  "status": "PREDECLARED_AWAITING_UNCONTENDED_GPU",
   "task": {
     "action_dim": 5,
     "dataset_manifest": "experiments/datasets/converted/ogbench_cube_double_play_v0_manifest.json",
@@ -162,7 +191,7 @@
     "seed": 42
   },
   "why_this_task": {
-    "prediction_registered_in_advance": "If our BC-class arms land near GCBC's 1 +/- 1, that reproduces the published BC baseline on a task where success is demonstrably achievable, and the BC ceiling -- not the task -- is what limits us. If they land materially above 1, the generative objective is adding something GCBC lacks, and the NFE axis becomes measurable for the first time in this project.",
+    "publication_caveat": "Neither outcome is automatically publishable. A BC-ceiling null is useful evidence, but its value depends on whether it leads to a new diagnosis or method.",
     "published_baselines_play_v0": {
       "CRL": "10 \u00b12",
       "GCBC": "1 \u00b11",
@@ -171,7 +200,7 @@
       "HIQL": "6 \u00b12",
       "QRL": "1 \u00b10"
     },
-    "rationale": "cube-triple is near-zero for EVERY published method (max 4), so it has no dynamic range for any method. cube-double has a 40-point spread between the best value method and GCBC, which is exactly the range needed to detect whether a generative objective or an NFE budget matters.",
-    "source": "OGBench arXiv:2410.20092 Table 2, goal-conditioned -play-v0 setting"
+    "rationale": "cube-double has a 40-point spread between the best value method and GCBC, the dynamic range cube-triple lacks entirely (no published method exceeds 4 there).",
+    "source": "OGBench arXiv:2410.20092 Table 2, goal-conditioned -play-v0"
   }
 }
