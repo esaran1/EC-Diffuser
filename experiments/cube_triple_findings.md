@@ -6,15 +6,38 @@ result file under `data/phase9_evaluations/`.
 
 ## 1. What was asked
 
-Published results on OGBench `cube-triple` all come from **critic-based**
-methods: FMQ+QGBS reaches 0.88 on task 4 but needs a learned critic *at
-inference* with NFE 20–32; MVP uses Q-guided generate-and-select; QC is
-Q-learning throughout. **No published number exists for a pure
-behavior-cloning policy at low NFE.** That is the regime this project studies,
-so we measured it.
+> Under pure behavior cloning at 1–100 NFE, with no critic at training or test
+> time, how far can a policy get on OGBench cube-triple?
 
-> Under pure behavior cloning at 1–8 NFE, with no critic at training or test
-> time, how far can a policy get on cube-triple?
+### Correction to an earlier framing in this repository
+
+Earlier notes compared our results against MVP (0.32–0.52) and FMQ+QGBS (0.88)
+on cube-triple. **Those numbers are from `cube-triple-play-singletask-task4-v0`,
+a different benchmark setting**, and the comparison was invalid. Per the
+official OGBench repository, singletask variants are for standard
+reward-maximizing offline RL while `-play-v0` is goal-conditioned, and the two
+"target fundamentally different problem formulations, so direct success rate
+comparisons would not be meaningful." Those numbers are dropped here rather
+than merely relabeled.
+
+### The correct external reference
+
+We ran the goal-conditioned `cube-triple-play-v0` benchmark. The OGBench paper
+(arXiv:2410.20092, Table 2) reports for that exact setting, over 8 seeds and 5
+goals:
+
+| Method | cube-single | cube-double | **cube-triple** |
+|---|--:|--:|--:|
+| **GCBC** (our closest analogue) | 6 ±2 | 1 ±1 | **1 ±1** |
+| GCIVL | 53 ±4 | 36 ±3 | 1 ±0 |
+| GCIQL | 68 ±6 | 40 ±5 | 3 ±1 |
+| QRL | 5 ±1 | 1 ±0 | 0 ±0 |
+| CRL | 19 ±2 | 10 ±2 | 4 ±1 |
+| HIQL | 15 ±3 | 6 ±2 | 3 ±1 |
+
+**cube-triple-play is near-zero for every published method**, value-based ones
+included — GCIQL collapses 68 → 40 → 3 as cubes are added. The task is
+effectively unsolved in the goal-conditioned setting.
 
 ## 2. Setup, held fixed across every arm
 
@@ -88,6 +111,7 @@ saturation-deficit lead in §5 without refuting it.
 | **Action saturation** | clip fraction at execution | 2.4–6.8%, versus 82.9% in the earlier puzzle diagnostic |
 | **Near-misses** | per-cube goal distance | 0.243 → 0.241 m against a 0.04 m threshold |
 | **Goal difficulty** | D1-cube, predeclared easy/hard split | both 0/40; task 4 (goals 40% closer) also zero |
+| **A defect in our pipeline** | comparison with published GCBC on the same benchmark | GCBC scores 1 ±1; our 0/60 has a 4.87% upper bound — statistically indistinguishable, so the zero reproduces known behavior |
 
 The cube-distance metric is read from the same MuJoCo state the environment
 uses in `CubeEnv._compute_successes` and was verified to reproduce
@@ -128,9 +152,16 @@ arm) on cube-triple under this training budget and goal distribution, and
 success is invariant to NFE across a 100x range (1 to 100) and to the presence
 of a generative objective at all.*
 
+**Also supported, and this is the strongest form of the claim:** *our pipeline
+reproduces the published GCBC baseline on this benchmark.* GCBC scores 1 ±1 and
+our BC-class arms score 0/60 (upper bound 4.87%) — indistinguishable. The zero
+is a faithful measurement, not a defect.
+
 **Not supported:** *"Behavior cloning cannot solve cube-triple."* That needs
 multiple training seeds, a converged budget, and a critic baseline measured
-here rather than cited.
+here rather than cited. Note also that value-based methods score only 0–4 on
+this task, so the BC-versus-critic gap that exists on cube-single and
+cube-double has largely vanished by cube-triple.
 
 **Explicitly not supported:** *"Low-NFE generative modeling fails on
 compositional manipulation."* The non-generative floor fails identically, so
@@ -160,9 +191,16 @@ this experiment cannot indict low-NFE generation.
 
 cube-triple under pure BC has **no dynamic range** for the low-NFE question:
 every arm sits at the floor, so no NFE or objective comparison can be
-resolved. Pursuing the low-NFE question here requires either adopting a critic
-(which changes the paradigm under study) or moving to a task where BC reaches
-non-trivial performance.
+resolved. Crucially, this is not specific to BC — **no published method
+exceeds 4% on this task**, so adding a critic would not create dynamic range
+either. GCIQL manages 3 ±1.
+
+The productive move is therefore **not** to add a critic but to change task.
+The published numbers name the right target directly: **cube-double-play**,
+where GCIQL reaches 40 ±5 and GCBC only 1 ±1. That is a task with real
+headroom AND a large, documented BC-versus-value gap — exactly the dynamic
+range cube-triple lacks. It is also already downloaded, converted, normalized,
+and adapter-supported in this repository.
 
 The measured saturation deficit (§5) remains the most specific quantified
 departure from the demonstration distribution, but the diffusion arm shows it

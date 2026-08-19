@@ -1,0 +1,54 @@
+{
+  "correction_to_earlier_framing": {
+    "affected_files": [
+      "experiments/pilots/cube_triple_bc_screen_v1.json",
+      "experiments/protocols/cube_controlled_v1.md",
+      "experiments/cube_triple_findings.md",
+      "experiments/literature_novelty_audit.md"
+    ],
+    "consequence": "The correct external comparison for our arms is GCBC 1 \u00b11 and the other -play-v0 baselines, all <=4. Under that comparison our result is a faithful reproduction. The MVP/FMQ numbers must be dropped from any comparison table, not merely labeled with a different paradigm.",
+    "error": "Earlier notes in this repository compared our -play-v0 goal-conditioned results against MVP (0.32-0.52) and FMQ+QGBS (0.88) on cube-triple. Those numbers are from cube-triple-play-SINGLETASK-task4-v0.",
+    "why_it_was_wrong": "Per the official OGBench repository, singletask variants are for standard reward-maximizing offline RL, while -play-v0 is goal-conditioned. The documentation states the two settings 'target fundamentally different problem formulations, so direct success rate comparisons would not be meaningful.'"
+  },
+  "our_result": {
+    "setting": "same -play-v0 goal-conditioned benchmark, tasks 2/3/4, 60 episodes",
+    "successes": "0/60",
+    "upper_95": 0.0487
+  },
+  "published_reference": {
+    "cube_double_play_v0": {
+      "CRL": "10 \u00b12",
+      "GCBC": "1 \u00b11",
+      "GCIQL": "40 \u00b15",
+      "GCIVL": "36 \u00b13",
+      "HIQL": "6 \u00b12",
+      "QRL": "1 \u00b10"
+    },
+    "cube_single_play_v0": {
+      "CRL": "19 \u00b12",
+      "GCBC": "6 \u00b12",
+      "GCIQL": "68 \u00b16",
+      "GCIVL": "53 \u00b14",
+      "HIQL": "15 \u00b13",
+      "QRL": "5 \u00b11"
+    },
+    "cube_triple_play_v0": {
+      "CRL": "4 \u00b11",
+      "GCBC": "1 \u00b11",
+      "GCIQL": "3 \u00b11",
+      "GCIVL": "1 \u00b10",
+      "HIQL": "3 \u00b11",
+      "QRL": "0 \u00b10"
+    },
+    "setting": "goal-conditioned, -play-v0 datasets, 5 test-time goals, 8 seeds",
+    "source": "OGBench, arXiv:2410.20092, Table 2"
+  },
+  "purpose": "Determine whether the uniform zero on cube-triple reflects a defect in our pipeline or reproduces known benchmark behavior.",
+  "schema_version": "phase9-external-validation-v1",
+  "status": "RESULT_VALIDATED_AGAINST_PUBLISHED_BASELINES",
+  "verdict": {
+    "pipeline_is_correct": true,
+    "reasoning": "Published GCBC -- the direct BC-class analogue of our arms -- scores 1 \u00b11 on cube-triple-play-v0, statistically indistinguishable from our 0/60 whose 95% upper bound is 4.87%. EVERY method in the original paper scores <=4 on this task, including value-based ones. Our zero reproduces known benchmark behavior rather than revealing a defect.",
+    "task_is_near_zero_for_everyone": "cube-triple-play is the hardest cube task by a wide margin: GCIQL falls 68 -> 40 -> 3 from single to double to triple. It is effectively unsolved in the goal-conditioned setting, not merely hard for BC."
+  }
+}
