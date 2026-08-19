@@ -186,6 +186,18 @@
   "preregistered_outcome_matched": "bc_is_the_bottleneck",
   "protocol": "experiments/pilots/cube_triple_bc_screen_v1.json",
   "schema_version": "phase9-cube-triple-stage1-results-v1",
+  "statistical_bounds": {
+    "claimable": "'No arm exceeds ~5% success on cube-triple under this training budget and goal distribution' is supported. 'Behavior cloning cannot solve cube-triple' is NOT supported: it would require multiple training seeds, a converged budget, and control of the goal-distribution shift.",
+    "method": "exact one-sided Clopper-Pearson upper bound for zero successes",
+    "per_arm_0_of_60": {
+      "reading": "each arm's true success rate is below ~4.9% at 95% confidence, not provably exactly zero",
+      "upper_95": 0.0487
+    },
+    "pooled_0_of_300": {
+      "reading": "pooling all five arms bounds the rate below ~1%, but all arms share ONE training seed, so this is evaluation-episode confidence only and carries no training-seed uncertainty",
+      "upper_95": 0.0099
+    }
+  },
   "status": "STAGE1_COMPLETE_ALL_FIVE_ARMS_ZERO_SUCCESS",
   "training_results": "experiments/pilots/cube_triple_stage1_training_results_v1.json"
 }
