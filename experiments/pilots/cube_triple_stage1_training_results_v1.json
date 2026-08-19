@@ -44,11 +44,31 @@
     "note": "BC and Flow losses are NOT comparable in magnitude: BC regresses the trajectory directly while Flow regresses a velocity field. Only task performance under the paired native evaluation is comparable.",
     "optimizer_steps_identical": true,
     "parameter_counts_identical": true,
-    "peak_vram_identical": true
+    "parameter_counts_identical_all_three": true,
+    "peak_vram_identical": true,
+    "peak_vram_identical_all_three": true
+  },
+  "gaussian_diffusion": {
+    "all_logged_losses_finite": true,
+    "checkpoint": "data/phase9_runs/cube_triple_gaussian_diffusion_seed42_50000/state_50000.pt",
+    "checkpoint_sha256": "0bedcdf7bbee165ce937d6d7d59df238f2967a04d8e3cb7eb1b3a91102317dd2",
+    "fixed_validation_ema_final": 0.11708374135196209,
+    "fixed_validation_live_final": 0.12894580140709877,
+    "fixed_validation_live_first": 0.7975848093628883,
+    "gpu_hours": 0.398058808824733,
+    "optimizer_steps": 50000,
+    "parameter_count": 63249715,
+    "peak_vram_mib_torch": 1482.58251953125,
+    "runtime_seconds": 1433.0117117690388,
+    "seconds_per_optimizer_step": 0.028660234235380777,
+    "status": "PASS",
+    "validation_monotone_no_divergence": true,
+    "wrapper": "GaussianDiffusion"
   },
   "note": "Training-only result. No task performance is claimed until the paired native evaluation runs.",
   "protocol": "experiments/pilots/cube_triple_bc_screen_v1.json",
   "schema_version": "phase9-cube-triple-stage1-training-v1",
   "stage1_gpu_hours": 0.8013163576630177,
-  "status": "STAGE1_TRAINING_COMPLETE_EVALUATION_IN_PROGRESS"
+  "status": "ALL_THREE_ARMS_TRAINED",
+  "total_training_gpu_hours": 1.1993751664877508
 }
