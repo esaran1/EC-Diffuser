@@ -251,6 +251,25 @@ def main():
     parser.add_argument("--evaluation-seed", type=int, default=42000)
     parser.add_argument("--warmup-plans", type=int, default=10)
     parser.add_argument("--max-episode-steps", type=int)
+    parser.add_argument(
+        "--episode-subset",
+        type=Path,
+        help=(
+            "Optional predeclared episode list: a JSON file whose 'episodes' entries "
+            "each carry task_id and seed. When given, exactly these episodes are run "
+            "and --task-ids / --episodes-per-task / --evaluation-seed are ignored for "
+            "episode selection. Used for goal-difficulty-matched subsets."
+        ),
+    )
+    parser.add_argument(
+        "--episode-subset-key",
+        default="episodes",
+        help="Top-level key in --episode-subset holding the episode list.",
+    )
+    parser.add_argument(
+        "--expected-subset-sha256",
+        help="Refuse to run unless the selected (task_id, seed) list hashes to this.",
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -384,74 +403,104 @@ def main():
         set_seed(args.evaluation_seed - 1000 + warmup_index)
         plan(first_observation, first_info["goal"])
 
+    if args.episode_subset is not None:
+        subset = json.loads(args.episode_subset.read_text())
+        entries = subset[args.episode_subset_key]
+        episode_plan = [
+            (int(entry["task_id"]), index, int(entry["seed"]))
+            for index, entry in enumerate(entries)
+        ]
+        if not episode_plan:
+            raise ValueError("episode subset is empty")
+    else:
+        episode_plan = [
+            (task_id, episode_index,
+             args.evaluation_seed + task_id * 10000 + episode_index)
+            for task_id in args.task_ids
+            for episode_index in range(args.episodes_per_task)
+        ]
+    subset_sha256 = hashlib.sha256(
+        json.dumps(
+            [[task_id, seed] for task_id, _, seed in episode_plan],
+            sort_keys=True, separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if (
+        args.expected_subset_sha256 is not None
+        and subset_sha256 != args.expected_subset_sha256
+    ):
+        raise RuntimeError(
+            "episode set hash {} does not match the predeclared {}".format(
+                subset_sha256, args.expected_subset_sha256
+            )
+        )
+
     set_seed(args.evaluation_seed)
     torch.cuda.reset_peak_memory_stats(device)
     episodes = []
     all_latencies = []
     evaluation_start = time.perf_counter()
-    for task_id in args.task_ids:
-        for episode_index in range(args.episodes_per_task):
-            seed = args.evaluation_seed + task_id * 10000 + episode_index
-            set_seed(seed)
-            observation, info = seeded_reset(env, seed, {"task_id": task_id})
-            goal = np.asarray(info["goal"])
-            tracks_buttons = "button_states" in info
+    for task_id, episode_index, seed in episode_plan:
+        set_seed(seed)
+        observation, info = seeded_reset(env, seed, {"task_id": task_id})
+        goal = np.asarray(info["goal"])
+        tracks_buttons = "button_states" in info
+        if tracks_buttons:
+            puzzle_button_states = [np.asarray(info["button_states"]).copy()]
+            puzzle_target_button_states = np.asarray(
+                env.unwrapped._target_button_states
+            ).copy()
+        else:
+            puzzle_button_states = None
+            puzzle_target_button_states = None
+        initial_cube_distances = cube_goal_distances(env)
+        final_cube_distances = initial_cube_distances
+        episode_return = 0.0
+        clipped_actions = 0
+        success = False
+        terminated = False
+        truncated = False
+        steps = 0
+        calls = 0
+        for steps in range(1, episode_horizon + 1):
+            action, latency, observed_calls, clipped = plan(observation, goal)
+            all_latencies.append(latency)
+            calls += observed_calls
+            clipped_actions += int(clipped)
+            observation, reward, terminated, truncated, info = env.step(action)
             if tracks_buttons:
-                puzzle_button_states = [np.asarray(info["button_states"]).copy()]
-                puzzle_target_button_states = np.asarray(
-                    env.unwrapped._target_button_states
-                ).copy()
-            else:
-                puzzle_button_states = None
-                puzzle_target_button_states = None
-            initial_cube_distances = cube_goal_distances(env)
-            final_cube_distances = initial_cube_distances
-            episode_return = 0.0
-            clipped_actions = 0
-            success = False
-            terminated = False
-            truncated = False
-            steps = 0
-            calls = 0
-            for steps in range(1, episode_horizon + 1):
-                action, latency, observed_calls, clipped = plan(observation, goal)
-                all_latencies.append(latency)
-                calls += observed_calls
-                clipped_actions += int(clipped)
-                observation, reward, terminated, truncated, info = env.step(action)
-                if tracks_buttons:
-                    puzzle_button_states.append(
-                        np.asarray(info["button_states"]).copy()
-                    )
-                episode_return += float(reward)
-                observed_distances = cube_goal_distances(env)
-                if observed_distances is not None:
-                    final_cube_distances = observed_distances
-                success = bool(info.get("success", terminated))
-                if terminated or truncated:
-                    break
-            episodes.append({
-                "task_id": task_id,
-                "episode_index": episode_index,
-                "seed": seed,
-                "steps": steps,
-                "success": success,
-                "return": episode_return,
-                "terminated": bool(terminated),
-                "truncated": bool(truncated),
-                "model_calls": calls,
-                "clipped_action_steps": clipped_actions,
-                "cube_progress": summarize_cube_progress(
-                    initial_cube_distances, final_cube_distances
-                ),
-                "puzzle_progress": (
-                    summarize_puzzle_progress(
-                        puzzle_button_states, puzzle_target_button_states
-                    )
-                    if tracks_buttons
-                    else None
-                ),
-            })
+                puzzle_button_states.append(
+                    np.asarray(info["button_states"]).copy()
+                )
+            episode_return += float(reward)
+            observed_distances = cube_goal_distances(env)
+            if observed_distances is not None:
+                final_cube_distances = observed_distances
+            success = bool(info.get("success", terminated))
+            if terminated or truncated:
+                break
+        episodes.append({
+            "task_id": task_id,
+            "episode_index": episode_index,
+            "seed": seed,
+            "steps": steps,
+            "success": success,
+            "return": episode_return,
+            "terminated": bool(terminated),
+            "truncated": bool(truncated),
+            "model_calls": calls,
+            "clipped_action_steps": clipped_actions,
+            "cube_progress": summarize_cube_progress(
+                initial_cube_distances, final_cube_distances
+            ),
+            "puzzle_progress": (
+                summarize_puzzle_progress(
+                    puzzle_button_states, puzzle_target_button_states
+                )
+                if tracks_buttons
+                else None
+            ),
+        })
     torch.cuda.synchronize(device)
     runtime = time.perf_counter() - evaluation_start
     hook.remove()
@@ -488,6 +537,10 @@ def main():
         "native_episode_horizon": native_horizon,
         "executed_episode_horizon": episode_horizon,
         "evaluation_seed": args.evaluation_seed,
+        "episode_set_sha256": subset_sha256,
+        "episode_subset": (
+            str(args.episode_subset) if args.episode_subset is not None else None
+        ),
         "environment_action_space_seeded": True,
         "environment_action_space_cached_during_reset": True,
         "requested_nfe": args.nfe,

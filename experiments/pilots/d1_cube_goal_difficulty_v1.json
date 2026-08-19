@@ -1,0 +1,540 @@
+{
+  "arm_rationale": "BC floor and Flow at its cheapest and mid NFE. The full NFE sweep is unnecessary because stage 1 showed the NFE axis is flat; these three suffice to test the goal-difficulty hypothesis across the generative/non-generative split.",
+  "arms": [
+    "behavior_cloning@1",
+    "conditional_flow_matching@1",
+    "conditional_flow_matching@4"
+  ],
+  "caveat": "Even the EASY subset is not fully matched to training: its minimum standardized distance (4.805) still exceeds the training median (6.680). Only 11.1% of the eval pool falls at or below the training p75, so a perfectly matched comparison is not constructible from the official task goals. This is a limit of the benchmark, and is reported rather than hidden.",
+  "compute": "no training; ~0.3 GPU-h total",
+  "easy_subset": {
+    "episodes": [
+      {
+        "mean_cube_goal_distance": 0.31205605784849827,
+        "seed": 62026,
+        "standardized_goal_distance": 6.7507231153603895,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3050538728289447,
+        "seed": 62022,
+        "standardized_goal_distance": 7.090785428184427,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3073997082685281,
+        "seed": 62047,
+        "standardized_goal_distance": 7.307731678881158,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3125940188815713,
+        "seed": 62100,
+        "standardized_goal_distance": 7.572682919373485,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.31262821131834867,
+        "seed": 62070,
+        "standardized_goal_distance": 7.603102836867487,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3061391816925115,
+        "seed": 62027,
+        "standardized_goal_distance": 7.651309879388327,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3053311967989325,
+        "seed": 62028,
+        "standardized_goal_distance": 7.688529090569829,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3139349333658311,
+        "seed": 62033,
+        "standardized_goal_distance": 7.691417157299688,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3073353007691862,
+        "seed": 62030,
+        "standardized_goal_distance": 7.726150551793225,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.31039445490035134,
+        "seed": 72104,
+        "standardized_goal_distance": 5.828577689667561,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.31669567725140396,
+        "seed": 72062,
+        "standardized_goal_distance": 7.026637357693203,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.31816205814908677,
+        "seed": 72061,
+        "standardized_goal_distance": 7.3367483487990794,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.31372121877011416,
+        "seed": 72085,
+        "standardized_goal_distance": 7.506645989525786,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3178641026456368,
+        "seed": 72023,
+        "standardized_goal_distance": 7.5669129728821085,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3189097402705308,
+        "seed": 72055,
+        "standardized_goal_distance": 7.735665028981962,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.32171035493127226,
+        "seed": 72052,
+        "standardized_goal_distance": 7.760830317713373,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.311757049475259,
+        "seed": 72063,
+        "standardized_goal_distance": 7.771326142370229,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.31575939742082043,
+        "seed": 72016,
+        "standardized_goal_distance": 7.907973600173136,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.18868554814339414,
+        "seed": 82070,
+        "standardized_goal_distance": 4.804603985417403,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18770281665718166,
+        "seed": 82037,
+        "standardized_goal_distance": 6.46407703683399,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1845300824949725,
+        "seed": 82105,
+        "standardized_goal_distance": 6.642576681938468,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.19050183422969444,
+        "seed": 82059,
+        "standardized_goal_distance": 6.941988978841894,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18967656065735072,
+        "seed": 82085,
+        "standardized_goal_distance": 6.964793791979516,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18831426361023315,
+        "seed": 82080,
+        "standardized_goal_distance": 7.194865851443369,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18897188015998068,
+        "seed": 82107,
+        "standardized_goal_distance": 7.299277818943177,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18426202709385908,
+        "seed": 82077,
+        "standardized_goal_distance": 7.31175050159195,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18551897737985315,
+        "seed": 82043,
+        "standardized_goal_distance": 7.361611241006465,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18487634572098266,
+        "seed": 82010,
+        "standardized_goal_distance": 7.364471409143259,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.190933386513413,
+        "seed": 82028,
+        "standardized_goal_distance": 7.443312312106705,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18027929432502918,
+        "seed": 82065,
+        "standardized_goal_distance": 7.476680244267915,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18844837503213796,
+        "seed": 82094,
+        "standardized_goal_distance": 7.5478019289580605,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18856698322155677,
+        "seed": 82050,
+        "standardized_goal_distance": 7.573094941806848,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18141526265558985,
+        "seed": 82017,
+        "standardized_goal_distance": 7.7611578330358,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18546888844736756,
+        "seed": 82051,
+        "standardized_goal_distance": 7.762691738479788,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18477028968913375,
+        "seed": 82055,
+        "standardized_goal_distance": 7.790234365695251,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18316291026962847,
+        "seed": 82005,
+        "standardized_goal_distance": 7.801382508286166,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18839002085877735,
+        "seed": 82112,
+        "standardized_goal_distance": 7.883270281360748,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18657476211772028,
+        "seed": 82007,
+        "standardized_goal_distance": 7.887496871033171,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18514281774683247,
+        "seed": 82049,
+        "standardized_goal_distance": 7.891910234726187,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1896237256900081,
+        "seed": 82081,
+        "standardized_goal_distance": 7.898501001395767,
+        "task_id": 4
+      }
+    ],
+    "n": 40,
+    "per_task": {
+      "2": 9,
+      "3": 9,
+      "4": 22
+    },
+    "seed_set_sha256": "d65b4a35591d1b14b730b23fbd6de13c7a070c79768842e1e09b575662225178",
+    "standardized_goal_distance": {
+      "max": 7.907973600173136,
+      "mean": 7.3647825415954085,
+      "min": 4.804603985417403
+    }
+  },
+  "exact_change": "Re-evaluate the SAME stage-1 EMA checkpoints on a goal-difficulty-matched EASY subset and a count-matched HARD control. No retraining, no change to model, normalizer, horizon, success predicate, or timing boundary.",
+  "expected_if_false": "EASY and HARD are both zero with no material difference in cube distance reduction, indicating goal difficulty is not the operative cause and the failure is intrinsic to BC at this budget.",
+  "expected_if_true": "Success or cube placement is strictly greater on the EASY subset than on the HARD control for at least one arm; i.e. at least one cube reaches within 0.04 m, or mean cube distance reduction is materially positive on EASY.",
+  "hard_subset": {
+    "episodes": [
+      {
+        "mean_cube_goal_distance": 0.3149846710089434,
+        "seed": 62095,
+        "standardized_goal_distance": 11.696982877264139,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.30743506694259054,
+        "seed": 62102,
+        "standardized_goal_distance": 11.68684445114034,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3113739930482364,
+        "seed": 62038,
+        "standardized_goal_distance": 11.680929567750457,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.309321301002688,
+        "seed": 62078,
+        "standardized_goal_distance": 11.413546673161868,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.30662959456827155,
+        "seed": 62081,
+        "standardized_goal_distance": 11.248333475031345,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3103221067942603,
+        "seed": 62003,
+        "standardized_goal_distance": 11.186599734251415,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.31150233885447265,
+        "seed": 62000,
+        "standardized_goal_distance": 11.13266568871295,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3070220842998264,
+        "seed": 62079,
+        "standardized_goal_distance": 11.057835647272862,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.30787773441962335,
+        "seed": 62016,
+        "standardized_goal_distance": 10.741645714099217,
+        "task_id": 2
+      },
+      {
+        "mean_cube_goal_distance": 0.3100190833819761,
+        "seed": 72112,
+        "standardized_goal_distance": 11.387368169109292,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3151388368994253,
+        "seed": 72067,
+        "standardized_goal_distance": 11.324955402870641,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3175588892070708,
+        "seed": 72109,
+        "standardized_goal_distance": 11.266173669751625,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3216508603990235,
+        "seed": 72051,
+        "standardized_goal_distance": 11.099950173370914,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3141454250549258,
+        "seed": 72107,
+        "standardized_goal_distance": 11.046616141744886,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3126042962113391,
+        "seed": 72091,
+        "standardized_goal_distance": 11.011693079105186,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3129865878926054,
+        "seed": 72119,
+        "standardized_goal_distance": 10.960334102052943,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.311697134498437,
+        "seed": 72020,
+        "standardized_goal_distance": 10.911806481889668,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.3177956670110716,
+        "seed": 72079,
+        "standardized_goal_distance": 10.680060921522479,
+        "task_id": 3
+      },
+      {
+        "mean_cube_goal_distance": 0.18463111664240325,
+        "seed": 82101,
+        "standardized_goal_distance": 12.497050216780327,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18377071953575688,
+        "seed": 82034,
+        "standardized_goal_distance": 12.114998376397113,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18413226891662363,
+        "seed": 82041,
+        "standardized_goal_distance": 10.991386428100189,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1854677324863837,
+        "seed": 82091,
+        "standardized_goal_distance": 10.614605021808641,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.19347663433379722,
+        "seed": 82053,
+        "standardized_goal_distance": 10.528969958000369,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1923777275012153,
+        "seed": 82001,
+        "standardized_goal_distance": 10.515595293775718,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18582531130093027,
+        "seed": 82021,
+        "standardized_goal_distance": 10.430974893909976,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18763145977074988,
+        "seed": 82042,
+        "standardized_goal_distance": 10.225809025974135,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.19322753936581116,
+        "seed": 82110,
+        "standardized_goal_distance": 10.118098274250206,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18535226916015024,
+        "seed": 82029,
+        "standardized_goal_distance": 10.101440765162394,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.19225627374693144,
+        "seed": 82108,
+        "standardized_goal_distance": 10.068702194273943,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1920277976769622,
+        "seed": 82116,
+        "standardized_goal_distance": 10.020710062222498,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18873825969255106,
+        "seed": 82071,
+        "standardized_goal_distance": 9.975852636599713,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18544151801234607,
+        "seed": 82117,
+        "standardized_goal_distance": 9.971310720842766,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18610715482332263,
+        "seed": 82003,
+        "standardized_goal_distance": 9.940144037621188,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1846911935618306,
+        "seed": 82097,
+        "standardized_goal_distance": 9.930118341527182,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1832781342680029,
+        "seed": 82119,
+        "standardized_goal_distance": 9.904487872675622,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.1908361367289405,
+        "seed": 82056,
+        "standardized_goal_distance": 9.891904997392658,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18860786014026176,
+        "seed": 82099,
+        "standardized_goal_distance": 9.880084687390791,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18284056799888435,
+        "seed": 82102,
+        "standardized_goal_distance": 9.874764242736987,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18700926696403897,
+        "seed": 82088,
+        "standardized_goal_distance": 9.853302798138877,
+        "task_id": 4
+      },
+      {
+        "mean_cube_goal_distance": 0.18535870112041766,
+        "seed": 82098,
+        "standardized_goal_distance": 9.81512245752844,
+        "task_id": 4
+      }
+    ],
+    "n": 40,
+    "per_task": {
+      "2": 9,
+      "3": 9,
+      "4": 22
+    },
+    "seed_set_sha256": "7f15c5d2d1c5829fc86f4fd2166678b93116b1713499186f81190f70e77b0d55",
+    "standardized_goal_distance": {
+      "max": 12.497050216780327,
+      "mean": 10.719994381830299,
+      "min": 9.81512245752844
+    }
+  },
+  "hypothesis": "Stage-1's uniform 0/60 is caused, at least in part, by evaluation goals being systematically harder than the goals the policies were trained to reach, rather than solely by the policy class.",
+  "parent_results": "experiments/pilots/cube_triple_stage1_results_v1.json",
+  "primary_metric": "cubes_within_threshold and mean_distance_reduction (success is expected to be zero and is too coarse)",
+  "schema_version": "phase9-d1-cube-goal-difficulty-v1",
+  "selection_rule": {
+    "easy_rule": "all pool episodes with standardized goal distance <= threshold",
+    "easy_threshold_source": "75th percentile of the TRAINING relabeled-goal distance",
+    "easy_threshold_value": 7.915243744850159,
+    "frozen_before_policy_execution": true,
+    "hard_rule": "the N hardest pool episodes per task, N matched to the easy count per task",
+    "metric": "standardized L2 between reset observation and info['goal'], scaled by train-split per-dimension std",
+    "pool": "seeds 42000 + task_id*10000 + k for k in [0,120) and task_id in {2,3,4}",
+    "pool_size": 360
+  },
+  "status": "PREDECLARED_BEFORE_ANY_POLICY_RUN"
+}
