@@ -1,0 +1,49 @@
+{
+  "compute_gpu_hours": {
+    "evaluation": 2.2,
+    "training": 0.5
+  },
+  "evaluation": {
+    "checkpoint_weights": "EMA",
+    "episode_set_sha256": "3041eb142a6d043331454fb483b43da216a545c04d040fe62f87e330073e5701",
+    "episodes": 30,
+    "episodes_per_task": 10,
+    "native_horizon": 1000,
+    "paired_baseline": "On exactly these 30 episodes every stage-1 arm scored 0/30 with zero cubes placed.",
+    "pairing": "The 30 episodes are an exact SUBSET of the 60 stage-1 episodes (k in [0,10) of [0,20) per task), verified programmatically, so diffusion is compared against the low-NFE arms on identical task instances.",
+    "reduced_from_60": "100 NFE costs ~260 ms per plan, so 60 episodes would take ~4.3 GPU-h, above the 4 GPU-hour gate. 30 paired episodes cost ~2.2 GPU-h and bound a zero result below 9.5% at 95% confidence, which is sufficient for a binary falsification check.",
+    "success_predicate": "official OGBench info['success']",
+    "tasks": [
+      2,
+      3,
+      4
+    ]
+  },
+  "expected_if_ceiling_exists": "Diffusion places at least one cube within 0.04 m, or achieves a materially larger mean distance reduction than the low-NFE arms (which ranged -0.00025 to +0.00153 m on these episodes).",
+  "expected_if_no_ceiling": "Diffusion also scores 0/30 with no cube placed and a distance reduction in the same range, confirming a shared BC-setup cause.",
+  "parent": "experiments/pilots/cube_triple_stage1_results_v1.json",
+  "question": "Does the multi-step generative ceiling (Gaussian diffusion at 100 NFE) place any cube on cube-triple where every 1-8 NFE arm and the non-generative BC floor placed none, under an identical training and evaluation protocol?",
+  "schema_version": "phase9-stage2-diffusion-ceiling-v1",
+  "statistical_note": "A zero at n=30 bounds the true success rate below 9.50% (exact one-sided Clopper-Pearson). This is weaker than the 4.87% bound from the stage-1 arms and is stated in advance, not discovered afterwards.",
+  "status": "PREDECLARED_BEFORE_EVALUATION",
+  "training": {
+    "arm": "gaussian_diffusion",
+    "identical_to_stage_1": [
+      "dataset",
+      "manifest",
+      "normalizer",
+      "backbone",
+      "parameter count",
+      "horizon",
+      "optimizer",
+      "learning rate",
+      "EMA schedule",
+      "optimizer steps",
+      "examples seen",
+      "seed"
+    ],
+    "protocol": "experiments/pilots/cube_triple_bc_screen_v1.json",
+    "training_timesteps": 100
+  },
+  "why_it_matters": "If diffusion at 100 NFE also fails, the shared cause is the behavior-cloning setup rather than the sampler or the NFE budget, and cube-triple is settled as non-discriminative for the low-NFE question under pure BC. If it succeeds, an NFE-dependent gap exists and the low-NFE question becomes live."
+}
