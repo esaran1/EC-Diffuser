@@ -108,6 +108,7 @@
     "device": "cuda:0",
     "gpu": "NVIDIA GeForce RTX 4080"
   },
+  "launch_gate": "A launch script enforces the uncontended-GPU rule: it aborts if the GPU shows >2000 MiB used or any compute app, and re-checks before each arm. Verified to abort correctly while Isaac Lab jobs were resident.",
   "methods": {
     "behavior_cloning": {},
     "conditional_flow_matching": {
@@ -124,6 +125,28 @@
     }
   },
   "methods_note": "derived from arms[*].config; this is the key train_phase7_pilot.py reads. arms[*] additionally records role and inference NFE for evaluation.",
+  "preflight_verification": {
+    "all_four_arms": {
+      "finite_gradients": true,
+      "finite_loss": true,
+      "identical_across_arms": true,
+      "losses": {
+        "behavior_cloning": 0.8169,
+        "conditional_flow_matching": 1.2502,
+        "gaussian_diffusion": 0.9421,
+        "shortcut_model": 1.1084
+      },
+      "parameter_count": 63241642
+    },
+    "dataset": {
+      "action_dim": 5,
+      "normalizer_hash_verified": true,
+      "observation_dim": 37,
+      "windows": 997000
+    },
+    "note": "loss magnitudes are NOT comparable across arms -- each regresses a different target -- and are recorded only to show every arm optimizes finitely",
+    "performed": "2026-08-19, CPU only, no GPU"
+  },
   "preregistered_outcomes": {
     "bc_floor_matches": "behavior_cloning matches the generative arms -> generative modeling is not earning its cost here; a publishable negative result",
     "bc_is_the_bottleneck": "every arm including Gaussian@100 performs near zero -> BC without a critic cannot do this task, and the task cannot discriminate generative objectives for us; report and stop",
