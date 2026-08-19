@@ -19,6 +19,15 @@
       4
     ]
   },
+  "execution_incident": {
+    "action_taken": "none; unrelated process ownership was not assumed",
+    "contaminated": "planner latency mean/p50/p95 from this run were measured under GPU contention and must NOT be compared against the stage-1 latencies, which ran on an idle GPU",
+    "description": "Two unrelated Isaac Lab cloth-lifting RL jobs (Isaac-Lift-Cloth-Franka-v0, PIDs 1886289 and 1888057, 4166 MiB each) started AFTER this evaluation was launched and shared the GPU with it.",
+    "observed": "2026-08-18T22:05 -04:00 (approx)",
+    "precedent": "the same pattern was recorded for the 500k flow run in linux_logs/flow_full_run_incidents.txt",
+    "raw_note": "linux_logs/cube_triple_stage2_eval_incidents.txt (git-ignored)",
+    "unaffected": "success, cubes placed, and cube goal distances are deterministic given the fixed episode seeds and are unaffected; model calls are counted by a forward hook and verified against the requested NFE"
+  },
   "expected_if_ceiling_exists": "Diffusion places at least one cube within 0.04 m, or achieves a materially larger mean distance reduction than the low-NFE arms (which ranged -0.00025 to +0.00153 m on these episodes).",
   "expected_if_no_ceiling": "Diffusion also scores 0/30 with no cube placed and a distance reduction in the same range, confirming a shared BC-setup cause.",
   "parent": "experiments/pilots/cube_triple_stage1_results_v1.json",
