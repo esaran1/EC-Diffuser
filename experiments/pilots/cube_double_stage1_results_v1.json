@@ -1,9 +1,88 @@
 {
   "answers_to_the_four_questions": {
-    "bc_ceiling_or_generative_dynamic_range": "BC CEILING. Two tasks, two object counts, 1-100 NFE, generative and non-generative alike: all at the floor, all matching published GCBC.",
-    "does_diffusion_beat_low_nfe_flow": "Not run on cube-double; on cube-triple it did not.",
-    "does_flow_exceed_the_bc_floor": "No. Both 0/60. BC actually moves cubes slightly more (+0.0036 m vs -0.0003 m).",
-    "does_performance_change_with_nfe": "Pending Flow@2/4/8, but 1 NFE shows no separation from the floor."
+    "bc_ceiling_or_generative_dynamic_range": "BC CEILING, now demonstrated on a LEARNABLE task. cube-double has a documented 40-point gap between value-based methods (GCIQL 40 +/- 5) and behavior cloning (GCBC 1 +/- 1). Our arms land on the behavior-cloning side of that gap, matching GCBC. Two tasks, two object counts, 1-100 NFE, generative and non-generative alike: all at the behavior-cloning floor.",
+    "does_diffusion_outperform_low_nfe_flow": "Not measured on cube-double: the predeclared gate requires stage 1 to show non-trivial performance first, and it did not. On cube-triple diffusion at 100 NFE also scored zero.",
+    "does_flow_materially_exceed_the_bc_floor": "No. Every arm scores 0/60. On the secondary cube-distance metric the non-generative BC floor is the BEST arm (+0.00355 m versus -0.00133 to +0.00090 m for the generative arms), so generative modeling is not earning its cost here.",
+    "does_performance_change_meaningfully_with_nfe": "No. Flow at 1, 2, 4 and 8 NFE and Shortcut at 1 and 4 NFE are all 0/60. Verified model calls scale exactly and latency scales 2.84 -> 22.76 ms, so the compute was genuinely spent; the flatness is not an instrumentation artifact."
+  },
+  "arms": {
+    "behavior_cloning@1": {
+      "action_clip_fraction": 0.0309,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 40,
+      "mean_distance_reduction_m": 0.003551149927535955,
+      "planner_latency_ms": 2.792133844962033,
+      "raw": "data/phase10_evaluations/cube_double_behavior_cloning_nfe1.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 1
+    },
+    "conditional_flow_matching@1": {
+      "action_clip_fraction": 0.03506666666666667,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 20,
+      "mean_distance_reduction_m": -0.0003421388620110072,
+      "planner_latency_ms": 2.840119073252814,
+      "raw": "data/phase10_evaluations/cube_double_conditional_flow_matching_nfe1.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 1
+    },
+    "conditional_flow_matching@2": {
+      "action_clip_fraction": 0.03713333333333333,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 26,
+      "mean_distance_reduction_m": 0.0009006727665785398,
+      "planner_latency_ms": 6.280734581127763,
+      "raw": "data/phase10_evaluations/cube_double_conditional_flow_matching_nfe2.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 2
+    },
+    "conditional_flow_matching@4": {
+      "action_clip_fraction": 0.06556666666666666,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 30,
+      "mean_distance_reduction_m": -0.00015637923913615093,
+      "planner_latency_ms": 11.275844192970544,
+      "raw": "data/phase10_evaluations/cube_double_conditional_flow_matching_nfe4.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 4
+    },
+    "conditional_flow_matching@8": {
+      "action_clip_fraction": 0.0875,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 27,
+      "mean_distance_reduction_m": -0.0013299417310056738,
+      "planner_latency_ms": 22.760820860555395,
+      "raw": "data/phase10_evaluations/cube_double_conditional_flow_matching_nfe8.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 8
+    },
+    "shortcut_model@1": {
+      "action_clip_fraction": 0.11756666666666667,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 30,
+      "mean_distance_reduction_m": -2.3538985640639277e-05,
+      "planner_latency_ms": 2.9068541699399555,
+      "raw": "data/phase10_evaluations/cube_double_shortcut_model_nfe1.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 1
+    },
+    "shortcut_model@4": {
+      "action_clip_fraction": 0.13146666666666668,
+      "cubes_placed": 0,
+      "episodes_with_any_cube_closer": 22,
+      "mean_distance_reduction_m": 6.022417427143101e-05,
+      "planner_latency_ms": 11.051374927155363,
+      "raw": "data/phase10_evaluations/cube_double_shortcut_model_nfe4.json",
+      "success_rate": 0.0,
+      "successes": "0/60",
+      "verified_calls_per_plan": 4
+    }
   },
   "consequence": "Per the predeclared decision rule: stop treating pure-BC OGBench cube manipulation as the main benchmark. The next research question is whether value guidance is fundamentally required, or whether entity-structured generative policies can improve matters without a critic.",
   "interpretation": "This is the decisive result the cube-triple experiment could not provide. On cube-triple nothing works for anyone, so zero was uninformative. On cube-double a 40-point gap exists between value-based methods (GCIQL 40%) and behavior cloning (GCBC 1%), and our arms land on the BC side of that gap. The limitation is therefore the POLICY-LEARNING PARADIGM (behavior cloning without a critic), not the generative objective and not the inference budget.",
@@ -14,28 +93,16 @@
     "60 episodes per arm",
     "no critic baseline measured here"
   ],
-  "note": "Partial: BC@1 and Flow@1 complete; Flow@2/4/8 and Shortcut still running.",
   "protocol": "experiments/pilots/cube_double_bc_screen_v1.json",
-  "results_so_far": {
-    "behavior_cloning_nfe1": {
-      "action_clip_fraction": 0.0309,
-      "cubes_placed": 0,
-      "episodes_with_any_cube_closer": 40,
-      "latency_ms": 2.79,
-      "mean_distance_reduction": 0.00355,
-      "successes": "0/60"
-    },
-    "conditional_flow_matching_nfe1": {
-      "action_clip_fraction": 0.0351,
-      "cubes_placed": 0,
-      "episodes_with_any_cube_closer": 20,
-      "latency_ms": 2.84,
-      "mean_distance_reduction": -0.00034,
-      "successes": "0/60"
-    }
-  },
   "schema_version": "phase10-cube-double-stage1-results-v1",
-  "status": "BC_CEILING_CONFIRMED_ON_A_LEARNABLE_TASK",
+  "secondary_observation": "Shortcut clips 11.8-13.2% of steps versus 3.1-8.8% for BC and Flow, i.e. it emits substantially more extreme actions, and still places no cube. This mirrors the cube-triple diffusion arm (20.1% clipping, zero cubes) and further weakens the action-saturation lead as a sufficient explanation.",
+  "status": "COMPLETE_BC_CEILING_CONFIRMED_ON_A_LEARNABLE_TASK",
+  "totals": {
+    "arms": 7,
+    "episodes": 420,
+    "evaluation_gpu_hours": 0.55,
+    "training_gpu_hours": 1.42
+  },
   "training": {
     "behavior_cloning": {
       "gpu_hours": 0.4,
@@ -49,5 +116,6 @@
       "gpu_hours": 0.61,
       "parameter_count": 63241642
     }
-  }
+  },
+  "why_this_is_decisive": "cube-triple could not discriminate because no published method exceeds 4% there, so zero was uninformative. cube-double is solvable -- value-based methods reach 40% -- so zero here isolates the cause: the binding constraint is the policy-learning paradigm (behavior cloning without a critic), not the generative objective and not the inference budget."
 }
