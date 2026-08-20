@@ -376,40 +376,54 @@ loss curve alone (converged, -0.16% over the final quarter). Existing
 checkpoints at 100k / 300k / 500k make it possible to answer **behaviourally**,
 on the same episode set, with no retraining.
 
+**A labelling correction first.** Checkpoint *filenames* in this run are epoch
+labels, not step counts: `Trainer.save(epoch)` writes `state_{epoch}.pt` while
+storing the true `self.step` inside. Verified by reading every file:
+
+| File | True internal step |
+|---|--:|
+| `state_0.pt` | 99,000 |
+| `state_100000.pt` | 199,000 |
+| `state_200000.pt` | 299,000 |
+| `state_300000.pt` | 399,000 |
+| `state_400000.pt` (latest) | 499,000 |
+
+All step counts below are the **true internal steps**.
+
 | Checkpoint | Success | 95% CI | Cubes placed | Goal-success frac | Obj-goal dist |
 |---|--:|--:|--:|--:|--:|
-| Flow 100k | 28/32 = 87.5% | [0.710, 0.965] | 2.875 | 0.958 | 0.0231 |
-| **Flow 300k** | **31/32 = 96.9%** | [0.838, 0.999] | **2.969** | **0.990** | **0.0146** |
-| Flow 500k (final) | 27/32 = 84.4% | [0.672, 0.947] | 2.750 | 0.917 | 0.0194 |
+| Flow 199k | 28/32 = 87.5% | [0.710, 0.965] | 2.875 | 0.958 | 0.0231 |
+| **Flow 399k** | **31/32 = 96.9%** | [0.838, 0.999] | **2.969** | **0.990** | **0.0146** |
+| Flow 499k (final) | 27/32 = 84.4% | [0.672, 0.947] | 2.750 | 0.917 | 0.0194 |
 | Gaussian (100 NFE) | 30/32 = 93.75% | [0.792, 0.992] | 2.938 | 0.979 | 0.0162 |
 
 **Verdict: UNLIKELY that Flow is undertrained. The evidence points the other
 way — the final checkpoint appears to be past its best.**
 
-- Flow at 300k **outperforms** Flow at 500k on every metric.
-- Flow at 300k **matches or exceeds the Gaussian control** while using
+- Flow at 399k **outperforms** Flow at 499k on every metric.
+- Flow at 399k **matches or exceeds the Gaussian control** while using
   **4 network calls instead of 100**.
 
 Paired McNemar tests on 32 episodes:
 
 | Comparison | b | c | p |
 |---|--:|--:|--:|
-| Flow 300k vs Flow 500k | 4 | 0 | **0.125** |
-| Flow 300k vs Gaussian | 2 | 1 | 1.000 |
-| Gaussian vs Flow 500k | 4 | 1 | 0.375 |
-| Flow 100k vs Flow 500k | 5 | 4 | 1.000 |
+| Flow 399k vs Flow 499k | 4 | 0 | **0.125** |
+| Flow 399k vs Gaussian | 2 | 1 | 1.000 |
+| Gaussian vs Flow 499k | 4 | 1 | 0.375 |
+| Flow 199k vs Flow 499k | 5 | 4 | 1.000 |
 
 **Stated honestly: none of these reach significance at 32 episodes.** The 300k
-versus 500k contrast is the most suggestive — 300k wins all four discordant
+versus 500k contrast is the most suggestive — 399k wins all four discordant
 pairs, none the other way — but p = 0.125 does not establish it. A 96-episode
 confirmation of the three central arms is therefore run on a fresh shared
 episode set, and its result governs the conclusion.
 
 ### Why this matters more than the ranking
 
-The loss curve is **flat from roughly 100k onward** (figure
+The loss curve is **flat from roughly 200k onward** (figure
 `experiments/figures/flow_loss_isaacgym.png`, raw and smoothed), while task
-success over the same interval moves 87.5% -> 96.9% -> 84.4%. Loss statistics:
+success over the same interval moves 87.5% -> 96.9% -> 84.4% (199k / 399k / 499k). Loss statistics:
 
 | Quantity | Value |
 |---|--:|
@@ -423,6 +437,59 @@ claim about training length on this benchmark must be made from rollouts, not
 from the loss curve — including the prior phase's "converged" verdict, which
 was correct about the loss but could not have predicted the behavioural
 ranking.
+
+
+---
+
+## 12. Compute gate for any B / C training — item 22
+
+Measured from the **actual** Isaac Gym Flow run (`l1vkhnp9`), not extrapolated:
+
+| Quantity | Value |
+|---|--:|
+| Steady-state median | **0.2343 s/step** |
+| p5 / p25 / p50 / p75 | 0.2336 / 0.2339 / 0.2341 / 0.2345 |
+| Observed wall time, 500k steps | 39.03 h (includes contention spikes) |
+| Steady-state projection, 500k steps | **32.5 GPU-h per arm** |
+
+The p5-p75 band is tight (0.2336-0.2345), so this is genuine throughput rather
+than a contended average; the p95 of 0.74 reflects occasional interference and
+is excluded from the projection.
+
+**A matched B or C arm costs ~32.5 GPU-h. Both cost ~65 GPU-h.**
+
+The directive's gate is 4 GPU-h per run. This exceeds it by roughly 8x, so
+**B and C are not launched, and approval is required before they could be.**
+Substituting a shorter, undertrained run is explicitly excluded: the checkpoint
+sweep in section 11 shows training length changes success by 12 points on this
+task, so a truncated arm would not be a valid comparison against a 500k
+baseline.
+
+
+---
+
+## 13. Standardization preserves environment semantics — item 19
+
+If a standardized model were ever trained, its outputs must invert back through
+the *existing* interfaces rather than being handed to the environment or the
+decoder directly. Verified numerically on 50,000 real transitions:
+
+| Chain | Max abs error |
+|---|--:|
+| standardized -> [-1,1] -> raw action | **1.19e-07** |
+| standardized -> [-1,1] -> DLP feature space | **2.86e-06** |
+
+Both round trips are exact to floating-point tolerance.
+
+The guard matters, and is quantified:
+
+| Mistake | Magnitude of the error |
+|---|--:|
+| z-scored actions sent straight to Isaac Gym | wrong by up to **4.25** (on a [-1,1] action space) |
+| z-scored DLP sent straight to the decoder | wrong by up to **17.64** |
+
+Zero channels have sigma below 1e-3, so no special-casing is needed on this
+dataset beyond the guard already implemented.
 
 
 ---
