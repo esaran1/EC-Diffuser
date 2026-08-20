@@ -117,5 +117,5 @@
       "parameter_count": 63241642
     }
   },
-  "why_this_is_decisive": "cube-triple could not discriminate because no published method exceeds 4% there, so zero was uninformative. cube-double is solvable -- value-based methods reach 40% -- so zero here isolates the cause: the binding constraint is the policy-learning paradigm (behavior cloning without a critic), not the generative objective and not the inference budget."
+  "why_this_is_decisive": "cube-triple could not discriminate because no published method exceeds 4% there, so zero was uninformative. cube-double is solvable -- value-based methods reach 40% -- so a zero here is informative rather than vacuous. What is established: within this pure-imitation setup, changing the generative objective (BC / Flow / Shortcut) and spending 1->8 inference calls produces no measurable task-performance gain, because every arm sits at the BC floor. What is NOT established: that behavior cloning without a critic is the causal binding constraint. Published value-based results (GCIQL 40 vs GCBC 1) strongly suggest the learning objective matters, but we did not run a critic here, so that causal claim is not isolated by our own measurements."
 }
