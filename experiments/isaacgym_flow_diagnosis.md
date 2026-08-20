@@ -369,6 +369,64 @@ it is what costs Flow the 9 points.
 
 ---
 
+## 11. Checkpoint sweep — the undertraining question, answered behaviourally
+
+Item 4 asked whether Flow was undertrained. The prior phase answered from the
+loss curve alone (converged, -0.16% over the final quarter). Existing
+checkpoints at 100k / 300k / 500k make it possible to answer **behaviourally**,
+on the same episode set, with no retraining.
+
+| Checkpoint | Success | 95% CI | Cubes placed | Goal-success frac | Obj-goal dist |
+|---|--:|--:|--:|--:|--:|
+| Flow 100k | 28/32 = 87.5% | [0.710, 0.965] | 2.875 | 0.958 | 0.0231 |
+| **Flow 300k** | **31/32 = 96.9%** | [0.838, 0.999] | **2.969** | **0.990** | **0.0146** |
+| Flow 500k (final) | 27/32 = 84.4% | [0.672, 0.947] | 2.750 | 0.917 | 0.0194 |
+| Gaussian (100 NFE) | 30/32 = 93.75% | [0.792, 0.992] | 2.938 | 0.979 | 0.0162 |
+
+**Verdict: UNLIKELY that Flow is undertrained. The evidence points the other
+way — the final checkpoint appears to be past its best.**
+
+- Flow at 300k **outperforms** Flow at 500k on every metric.
+- Flow at 300k **matches or exceeds the Gaussian control** while using
+  **4 network calls instead of 100**.
+
+Paired McNemar tests on 32 episodes:
+
+| Comparison | b | c | p |
+|---|--:|--:|--:|
+| Flow 300k vs Flow 500k | 4 | 0 | **0.125** |
+| Flow 300k vs Gaussian | 2 | 1 | 1.000 |
+| Gaussian vs Flow 500k | 4 | 1 | 0.375 |
+| Flow 100k vs Flow 500k | 5 | 4 | 1.000 |
+
+**Stated honestly: none of these reach significance at 32 episodes.** The 300k
+versus 500k contrast is the most suggestive — 300k wins all four discordant
+pairs, none the other way — but p = 0.125 does not establish it. A 96-episode
+confirmation of the three central arms is therefore run on a fresh shared
+episode set, and its result governs the conclusion.
+
+### Why this matters more than the ranking
+
+The loss curve is **flat from roughly 100k onward** (figure
+`experiments/figures/flow_loss_isaacgym.png`, raw and smoothed), while task
+success over the same interval moves 87.5% -> 96.9% -> 84.4%. Loss statistics:
+
+| Quantity | Value |
+|---|--:|
+| Initial loss | 0.15447 |
+| Final loss | 0.11665 |
+| Minimum loss | 0.09812 |
+
+**Training loss is not a usable model-selection signal for this task.** A
+sub-1% movement in loss coexists with a 12-point swing in success. Any future
+claim about training length on this benchmark must be made from rollouts, not
+from the loss curve — including the prior phase's "converged" verdict, which
+was correct about the loss but could not have predicted the behavioural
+ranking.
+
+
+---
+
 ## 9. Compute
 
 | Item | Cost |
