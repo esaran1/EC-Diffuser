@@ -1,0 +1,22 @@
+{
+  "gaussian": {
+    "n_active": 24.0,
+    "particle_spread": 0.5182878642032543,
+    "nn_distance": 0.050791010752163857,
+    "feature_dispersion": 0.7160156338165203,
+    "n_samples": 48
+  },
+  "real_encoded": {
+    "n_active": 24.0,
+    "particle_spread": 0.47963354736566544,
+    "nn_distance": 0.07476828170062315,
+    "feature_dispersion": 0.5657132565975189
+  },
+  "flow": {
+    "n_active": 24.0,
+    "particle_spread": 0.4032242229829232,
+    "nn_distance": 0.04831946510017184,
+    "feature_dispersion": 0.4169837987671296,
+    "n_samples": 48
+  }
+}
