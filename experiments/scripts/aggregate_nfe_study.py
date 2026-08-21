@@ -80,6 +80,8 @@ def main():
                 tot += s["episodes"]
             else:
                 cells.append("    -   ")
+        if tot == 0:  # arm not run yet
+            continue
         lo, hi = clopper_pearson(succ, tot)
         pooled[lab] = (succ, tot, succ / tot, lo, hi)
         print(f"{lab:18s}" + "".join(f"{c:>12s}" for c in cells)
