@@ -35,6 +35,18 @@ def main():
     if not replicates:
         raise SystemExit("no results found")
 
+    # Pool only over replicates where EVERY arm has run. Mixing partial coverage
+    # would compare arms measured on different episode populations, which is
+    # exactly the confound this study is designed to avoid.
+    complete = [r for r in replicates if all(lab in runs[r] for lab in ORDER)]
+    if complete and complete != replicates:
+        print(f"[pooling] replicates with all {len(ORDER)} arms: {complete} "
+              f"(ignoring incomplete {sorted(set(replicates) - set(complete))})")
+        replicates = complete
+    elif not complete:
+        print(f"[pooling] WARNING: no replicate has all {len(ORDER)} arms yet; "
+              "figures below are provisional and not comparable across arms")
+
     # --- integrity: within a replicate, every arm must share one episode set ---
     print("=== EPISODE SET INTEGRITY ===")
     for r in replicates:
@@ -140,6 +152,28 @@ def main():
         paired[lab] = {"delta_vs_gaussian": delta, "b_arm_wins": b,
                        "c_gaussian_wins": c, "mcnemar_p": float(p), "n_paired": len(xs)}
         print(f"{lab:18s} {delta:+9.4f} {b:5d} {c:5d} {p:11.4f}")
+
+    # --- the study's actual question ---
+    print("\n=== MINIMUM SUFFICIENT NFE ===")
+    if REFERENCE in pooled:
+        g_rate = pooled[REFERENCE][2]
+        g_lo = pooled[REFERENCE][3]
+        print(f"Reference: Gaussian @100 NFE = {g_rate:.4f}, 95% CI lower bound {g_lo:.4f}")
+        print(f"{'arm':18s} {'rate':>8s} {'ci_lo':>8s} {'>= ref point?':>15s} {'ci overlaps ref?':>18s}")
+        answer = None
+        for lab, nfe in [(l, n) for l, n in
+                         [("flow_nfe1", 1), ("flow_nfe2", 2), ("flow_nfe4", 4),
+                          ("flow_nfe8", 8), ("flow_nfe16", 16)] if l in pooled]:
+            rate, lo, hi = pooled[lab][2], pooled[lab][3], pooled[lab][4]
+            meets = rate >= g_rate
+            overlaps = not (hi < pooled[REFERENCE][3] or lo > pooled[REFERENCE][4])
+            print(f"{lab:18s} {rate:8.4f} {lo:8.4f} {str(meets):>15s} {str(overlaps):>18s}")
+            if answer is None and meets:
+                answer = nfe
+        print(f"\nMinimum NFE whose pooled point estimate reaches the Gaussian "
+              f"reference: {answer}")
+        print("Caveat: with this sample size, 'reaches' means 'not measurably worse'; "
+              "see the power table before reading it as equivalence.")
 
     out = {
         "replicates": replicates,
