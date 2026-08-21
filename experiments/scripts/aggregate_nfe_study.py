@@ -112,13 +112,25 @@ def main():
         print(f"{lab:18s}" + "".join(f"{v:13.4f}" for v in vals))
 
     # --- between-replicate spread: the evaluation noise floor ---
+    # This is variability of ONE fixed checkpoint across episode sets. It is an
+    # arm property worth reporting separately from the mean: an arm can have a
+    # competitive average yet be markedly less dependable set to set.
     print("\n=== BETWEEN-REPLICATE SPREAD (evaluation noise, not training seeds) ===")
-    print(f"{'arm':18s} {'min':>8s} {'max':>8s} {'range':>8s} {'std':>8s}")
+    print(f"{'arm':18s} {'min':>8s} {'max':>8s} {'range':>8s} {'std':>8s} {'placed range':>13s}")
+    spread = {}
     for lab in ORDER:
         rates = [runs[r][lab]["summary"]["success_rate"] for r in replicates if lab in runs[r]]
+        placed = [runs[r][lab]["summary"]["cubes_placed"] for r in replicates if lab in runs[r]]
         if len(rates) > 1:
+            spread[lab] = {
+                "min": float(min(rates)), "max": float(max(rates)),
+                "range": float(max(rates) - min(rates)), "std": float(np.std(rates)),
+                "cubes_placed_range": float(max(placed) - min(placed)),
+                "n_replicates": len(rates),
+            }
             print(f"{lab:18s} {min(rates):8.4f} {max(rates):8.4f} "
-                  f"{max(rates)-min(rates):8.4f} {np.std(rates):8.4f}")
+                  f"{max(rates)-min(rates):8.4f} {np.std(rates):8.4f} "
+                  f"{max(placed)-min(placed):13.3f}")
 
     # --- paired differences vs the Gaussian reference ---
     print(f"\n=== PAIRED vs {REFERENCE} (episode-level, pooled over replicates) ===")
@@ -177,6 +189,7 @@ def main():
 
     out = {
         "replicates": replicates,
+        "between_replicate_spread": spread,
         "pooled": {k: {"successes": v[0], "episodes": v[1], "success_rate": v[2],
                        "ci95": [v[3], v[4]]} for k, v in pooled.items()},
         "paired_vs_gaussian": paired,
