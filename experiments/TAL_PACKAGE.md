@@ -52,6 +52,16 @@
   and 95.8% on 96. **32-episode evaluations cannot resolve anything smaller than
   ~10 points** — almost certainly larger than any probability-path effect.
 
+## NFE study (in progress at time of writing)
+
+Paired study on 3 independent 96-episode evaluation replicates: Flow at
+1/2/4/8/16 solver steps vs Gaussian at 100. Model calls verified by forward
+hook; latency scales exactly linearly (1.21 ms/episode-step at 1 NFE to
+19.72 at 16).
+
+First replicate, Flow arms: **85.4 / 88.5 / 88.5 / 84.4 / 85.4%** at NFE
+1/2/4/8/16 — flat within ~4 points across a **16x compute range**.
+
 ## One unresolved question
 
 **Is 3-cube PushCube simply saturated for both objectives — and if so, on what task

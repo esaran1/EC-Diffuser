@@ -1,0 +1,301 @@
+{
+  "replicates": [
+    0
+  ],
+  "pooled": {
+    "flow_nfe1": {
+      "successes": 82,
+      "episodes": 96,
+      "success_rate": 0.8541666666666666,
+      "ci95": [
+        0.7674364408622438,
+        0.9179152917287087
+      ]
+    },
+    "flow_nfe2": {
+      "successes": 85,
+      "episodes": 96,
+      "success_rate": 0.8854166666666666,
+      "ci95": [
+        0.8042219077619579,
+        0.9413920274643888
+      ]
+    },
+    "flow_nfe4": {
+      "successes": 85,
+      "episodes": 96,
+      "success_rate": 0.8854166666666666,
+      "ci95": [
+        0.8042219077619579,
+        0.9413920274643888
+      ]
+    },
+    "flow_nfe8": {
+      "successes": 81,
+      "episodes": 96,
+      "success_rate": 0.84375,
+      "ci95": [
+        0.7554158846985113,
+        0.9098275171386114
+      ]
+    },
+    "flow_nfe16": {
+      "successes": 82,
+      "episodes": 96,
+      "success_rate": 0.8541666666666666,
+      "ci95": [
+        0.7674364408622438,
+        0.9179152917287087
+      ]
+    },
+    "gaussian_nfe100": {
+      "successes": 79,
+      "episodes": 96,
+      "success_rate": 0.8229166666666666,
+      "ci95": [
+        0.7316814537399345,
+        0.8933229640980846
+      ]
+    }
+  },
+  "paired_vs_gaussian": {
+    "flow_nfe1": {
+      "delta_vs_gaussian": 0.03125,
+      "b_arm_wins": 12,
+      "c_gaussian_wins": 9,
+      "mcnemar_p": 0.6636238098144531,
+      "n_paired": 96
+    },
+    "flow_nfe2": {
+      "delta_vs_gaussian": 0.0625,
+      "b_arm_wins": 14,
+      "c_gaussian_wins": 8,
+      "mcnemar_p": 0.28627872467041016,
+      "n_paired": 96
+    },
+    "flow_nfe4": {
+      "delta_vs_gaussian": 0.0625,
+      "b_arm_wins": 14,
+      "c_gaussian_wins": 8,
+      "mcnemar_p": 0.28627872467041016,
+      "n_paired": 96
+    },
+    "flow_nfe8": {
+      "delta_vs_gaussian": 0.02083333333333337,
+      "b_arm_wins": 13,
+      "c_gaussian_wins": 11,
+      "mcnemar_p": 0.8388197422027588,
+      "n_paired": 96
+    },
+    "flow_nfe16": {
+      "delta_vs_gaussian": 0.03125,
+      "b_arm_wins": 11,
+      "c_gaussian_wins": 8,
+      "mcnemar_p": 0.6476058959960938,
+      "n_paired": 96
+    }
+  },
+  "per_set": {
+    "0": {
+      "flow_nfe1": {
+        "label": "flow_nfe1",
+        "arm": "flow",
+        "requested_nfe": 1,
+        "measured_calls_per_plan": 1.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 19.329364587142432,
+        "latency_p50_ms": 19.22982349060476,
+        "latency_p95_ms": 20.03923364682123,
+        "episodes": 96,
+        "successes": 82,
+        "success_rate": 0.8541666666666666,
+        "success_ci95": [
+          0.7674364408622438,
+          0.9179152917287087
+        ],
+        "goal_success_frac": 0.9270833333333334,
+        "avg_obj_dist": 0.031519895249706074,
+        "cubes_placed": 2.78125,
+        "cubes_moved": 2.9791666666666665,
+        "cubes_closer": 2.84375,
+        "cubes_farther": 0.13541666666666666,
+        "mean_progress": 0.16703535269092148,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9791666666666665,
+        "min_ee_to_cube": 0.026815412181652693,
+        "action_abs_mean": 0.1224546639010724,
+        "clip_fraction": 0.0040625,
+        "eef_path_length": 2.495307938506206,
+        "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+        "replicate": 0,
+        "wall_seconds": 89.05684518814087
+      },
+      "flow_nfe16": {
+        "label": "flow_nfe16",
+        "arm": "flow",
+        "requested_nfe": 16,
+        "measured_calls_per_plan": 16.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 315.47043615739034,
+        "latency_p50_ms": 315.4903114773333,
+        "latency_p95_ms": 316.5467016864568,
+        "episodes": 96,
+        "successes": 82,
+        "success_rate": 0.8541666666666666,
+        "success_ci95": [
+          0.7674364408622438,
+          0.9179152917287087
+        ],
+        "goal_success_frac": 0.8993055555555555,
+        "avg_obj_dist": 0.0408562354229313,
+        "cubes_placed": 2.6979166666666665,
+        "cubes_moved": 2.9166666666666665,
+        "cubes_closer": 2.7604166666666665,
+        "cubes_farther": 0.15625,
+        "mean_progress": 0.15768309473060071,
+        "contact_rate": 1.0,
+        "n_contacted": 2.90625,
+        "min_ee_to_cube": 0.026426292693940923,
+        "action_abs_mean": 0.13372008842209146,
+        "clip_fraction": 0.005104166666666667,
+        "eef_path_length": 2.671402387941877,
+        "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+        "replicate": 0,
+        "wall_seconds": 275.1604268550873
+      },
+      "flow_nfe2": {
+        "label": "flow_nfe2",
+        "arm": "flow",
+        "requested_nfe": 2,
+        "measured_calls_per_plan": 2.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 38.20969375142417,
+        "latency_p50_ms": 38.20521105080843,
+        "latency_p95_ms": 38.578004215378314,
+        "episodes": 96,
+        "successes": 85,
+        "success_rate": 0.8854166666666666,
+        "success_ci95": [
+          0.8042219077619579,
+          0.9413920274643888
+        ],
+        "goal_success_frac": 0.951388888888889,
+        "avg_obj_dist": 0.024242765590315685,
+        "cubes_placed": 2.8541666666666665,
+        "cubes_moved": 2.9791666666666665,
+        "cubes_closer": 2.8645833333333335,
+        "cubes_farther": 0.10416666666666667,
+        "mean_progress": 0.1737467445685373,
+        "contact_rate": 1.0,
+        "n_contacted": 2.96875,
+        "min_ee_to_cube": 0.026476745057152584,
+        "action_abs_mean": 0.11822114988437131,
+        "clip_fraction": 0.004270833333333334,
+        "eef_path_length": 2.3560962782551846,
+        "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+        "replicate": 0,
+        "wall_seconds": 105.6036331653595
+      },
+      "flow_nfe4": {
+        "label": "flow_nfe4",
+        "arm": "flow",
+        "requested_nfe": 4,
+        "measured_calls_per_plan": 4.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 77.03293726613776,
+        "latency_p50_ms": 77.11876160465181,
+        "latency_p95_ms": 77.83397812163457,
+        "episodes": 96,
+        "successes": 85,
+        "success_rate": 0.8854166666666666,
+        "success_ci95": [
+          0.8042219077619579,
+          0.9413920274643888
+        ],
+        "goal_success_frac": 0.9513888888888888,
+        "avg_obj_dist": 0.023559287408716045,
+        "cubes_placed": 2.8541666666666665,
+        "cubes_moved": 2.96875,
+        "cubes_closer": 2.8958333333333335,
+        "cubes_farther": 0.07291666666666667,
+        "mean_progress": 0.17393832269590348,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9583333333333335,
+        "min_ee_to_cube": 0.025403639490832575,
+        "action_abs_mean": 0.11625943871991089,
+        "clip_fraction": 0.003645833333333334,
+        "eef_path_length": 2.4326225457092128,
+        "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+        "replicate": 0,
+        "wall_seconds": 129.8388431072235
+      },
+      "flow_nfe8": {
+        "label": "flow_nfe8",
+        "arm": "flow",
+        "requested_nfe": 8,
+        "measured_calls_per_plan": 8.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 156.2271187539702,
+        "latency_p50_ms": 156.20179695542902,
+        "latency_p95_ms": 157.2128802537918,
+        "episodes": 96,
+        "successes": 81,
+        "success_rate": 0.84375,
+        "success_ci95": [
+          0.7554158846985113,
+          0.9098275171386114
+        ],
+        "goal_success_frac": 0.9340277777777778,
+        "avg_obj_dist": 0.0344968076775937,
+        "cubes_placed": 2.8020833333333335,
+        "cubes_moved": 2.96875,
+        "cubes_closer": 2.8541666666666665,
+        "cubes_farther": 0.11458333333333333,
+        "mean_progress": 0.1633959120081272,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9583333333333335,
+        "min_ee_to_cube": 0.0254443453316829,
+        "action_abs_mean": 0.11865245132551838,
+        "clip_fraction": 0.004722222222222222,
+        "eef_path_length": 2.452082203080257,
+        "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+        "replicate": 0,
+        "wall_seconds": 176.284925699234
+      },
+      "gaussian_nfe100": {
+        "label": "gaussian_nfe100",
+        "arm": "gaussian",
+        "requested_nfe": 100,
+        "measured_calls_per_plan": 100.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 1989.343211812488,
+        "latency_p50_ms": 1989.0690559986979,
+        "latency_p95_ms": 1994.552808208391,
+        "episodes": 96,
+        "successes": 79,
+        "success_rate": 0.8229166666666666,
+        "success_ci95": [
+          0.7316814537399345,
+          0.8933229640980846
+        ],
+        "goal_success_frac": 0.892361111111111,
+        "avg_obj_dist": 0.03575935691575675,
+        "cubes_placed": 2.6770833333333335,
+        "cubes_moved": 2.9583333333333335,
+        "cubes_closer": 2.8125,
+        "cubes_farther": 0.14583333333333334,
+        "mean_progress": 0.16242355814999124,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9479166666666665,
+        "min_ee_to_cube": 0.0265094786688375,
+        "action_abs_mean": 0.1200380355802675,
+        "clip_fraction": 0.0037152777777777774,
+        "eef_path_length": 2.406691257531444,
+        "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+        "replicate": 0,
+        "wall_seconds": 1283.5590813159943
+      }
+    }
+  },
+  "note": "Three episode sets are EVALUATION REPLICATES, not training seeds. One trained Flow checkpoint and one Gaussian checkpoint are used throughout; only the episodes and the solver-step count vary."
+}
