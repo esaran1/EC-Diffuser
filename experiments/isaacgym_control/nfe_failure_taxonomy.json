@@ -1,62 +1,62 @@
 {
   "flow_nfe1": {
-    "episodes": 192,
-    "failures": 37,
+    "episodes": 288,
+    "failures": 56,
     "never_approaches": 0,
     "no_contact": 0,
-    "wrong_direction": 27,
-    "insufficient": 10,
+    "wrong_direction": 41,
+    "insufficient": 15,
     "contact_rate": 1.0,
-    "mean_cubes_placed_on_failure": 1.4864864864864864
+    "mean_cubes_placed_on_failure": 1.5357142857142858
   },
   "flow_nfe2": {
-    "episodes": 192,
-    "failures": 24,
+    "episodes": 288,
+    "failures": 38,
     "never_approaches": 0,
     "no_contact": 0,
-    "wrong_direction": 14,
-    "insufficient": 10,
+    "wrong_direction": 26,
+    "insufficient": 12,
     "contact_rate": 1.0,
-    "mean_cubes_placed_on_failure": 1.7916666666666667
+    "mean_cubes_placed_on_failure": 1.5789473684210527
   },
   "flow_nfe4": {
-    "episodes": 96,
-    "failures": 11,
+    "episodes": 288,
+    "failures": 32,
     "never_approaches": 0,
     "no_contact": 0,
-    "wrong_direction": 7,
-    "insufficient": 4,
+    "wrong_direction": 19,
+    "insufficient": 13,
     "contact_rate": 1.0,
-    "mean_cubes_placed_on_failure": 1.7272727272727273
+    "mean_cubes_placed_on_failure": 1.59375
   },
   "flow_nfe8": {
-    "episodes": 96,
-    "failures": 15,
+    "episodes": 288,
+    "failures": 29,
     "never_approaches": 0,
     "no_contact": 0,
-    "wrong_direction": 8,
-    "insufficient": 7,
+    "wrong_direction": 18,
+    "insufficient": 11,
     "contact_rate": 1.0,
-    "mean_cubes_placed_on_failure": 1.7333333333333334
+    "mean_cubes_placed_on_failure": 1.793103448275862
   },
   "flow_nfe16": {
-    "episodes": 96,
-    "failures": 14,
+    "episodes": 288,
+    "failures": 33,
     "never_approaches": 0,
     "no_contact": 0,
-    "wrong_direction": 10,
-    "insufficient": 4,
+    "wrong_direction": 24,
+    "insufficient": 9,
     "contact_rate": 1.0,
-    "mean_cubes_placed_on_failure": 0.9285714285714286
+    "mean_cubes_placed_on_failure": 1.2121212121212122
   },
   "gaussian_nfe100": {
-    "episodes": 96,
-    "failures": 17,
+    "episodes": 288,
+    "failures": 38,
     "never_approaches": 0,
     "no_contact": 0,
-    "wrong_direction": 10,
-    "insufficient": 7,
+    "wrong_direction": 23,
+    "insufficient": 15,
     "contact_rate": 1.0,
-    "mean_cubes_placed_on_failure": 1.1764705882352942
+    "mean_cubes_placed_on_failure": 1.368421052631579
   }
 }

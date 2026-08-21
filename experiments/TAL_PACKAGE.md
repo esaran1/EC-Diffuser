@@ -52,23 +52,51 @@
   and 95.8% on 96. **32-episode evaluations cannot resolve anything smaller than
   ~10 points** — almost certainly larger than any probability-path effect.
 
-## NFE study (in progress at time of writing)
+## NFE study — complete (1,728 episodes, 1.75 GPU-h, no training)
 
-Paired study on 3 independent 96-episode evaluation replicates: Flow at
-1/2/4/8/16 solver steps vs Gaussian at 100. Model calls verified by forward
-hook; latency scales exactly linearly (1.21 ms/episode-step at 1 NFE to
-19.72 at 16).
+3 evaluation replicates x 96 episodes, all six arms paired within each set.
+Model calls verified exactly by forward hook (1/2/4/8/16/100).
 
-First replicate, Flow arms: **85.4 / 88.5 / 88.5 / 84.4 / 85.4%** at NFE
-1/2/4/8/16 — flat within ~4 points across a **16x compute range**.
+| Flow NFE | Success (n=288) | vs Gaussian | McNemar p | ms/episode-step |
+|---:|--:|--:|--:|--:|
+| 1 | 0.8056 | **−6.3 pts** | **0.0356** | 1.20 |
+| 2 | 0.8681 | ±0.0 | 1.0000 | 2.39 |
+| 4 | 0.8889 | +2.1 | 0.504 | 4.82 |
+| 8 | **0.8993** | +3.1 | 0.281 | 9.78 |
+| 16 | 0.8854 | +1.7 | 0.568 | 19.72 |
+| Gaussian 100 | 0.8681 | — | — | **127.77** |
+
+- **Minimum sufficient NFE is 2.** Flow at 2 calls ties Gaussian at 100 exactly
+  (b=32, c=32, p=1.0) for a **53x latency reduction**. Recommended operating
+  point is **4** — nominally best on every aggregate metric, 26x cheaper.
+- **1 NFE is the only significant contrast in the whole study** and is genuinely
+  worse. One call is too few; two suffice; past four there is no return.
+- **Zero approach failures and zero contact failures in 1,728 episodes**, at
+  every NFE. Contact rate is 1.0000 everywhere. Lowering NFE degrades *push
+  direction*, not approach or contact.
+- **The three replicates produced three different curve shapes** — flat, monotone
+  rising, and rising-then-falling. Any one of them alone would have been
+  reported confidently, and two would have been wrong. Only the pooled curve is
+  quotable.
+- **Evaluation noise floor is 3–11 points on 96 episodes.** Even n=288 resolves
+  only ~6–7 points.
+
+## 3-cube is saturated
+
+Five of six arms sit within noise of each other (3.1-point spread across Flow
+2–16, inside a 3–11 point noise floor), all with 100% contact rate. The task can
+no longer discriminate. A **4-cube** probe needs **no retraining and no new
+data** — DLP emits a fixed 24 particles/view regardless of cube count, cubes are
+procedural — only a `--num-entity` flag. Minimum probe ~0.7 GPU-h.
 
 ## One unresolved question
 
-**Is 3-cube PushCube simply saturated for both objectives — and if so, on what task
-does the probability path become measurable at all?**
+**Why is one solver step enough to approach a cube correctly but not enough to push
+it in the right direction?**
 
-At ~96% success with 4 failures left in 96 episodes, and 11-point swings from episode
-sampling alone, this benchmark cannot detect a path effect even if one exists. The
-next question is whether a harder setting (4–6 cubes, which the env already supports)
-opens enough dynamic range to make the VP hypothesis testable — or whether it must
-move to a different benchmark entirely.
+The failure taxonomy localizes the low-NFE deficit precisely: at 1 NFE, approach and
+contact are perfect (0 failures in 288 episodes) but wrong-direction pushes rise from
+18–24 to 41. So the extra integration step is not buying reachability or contact — it
+is buying accuracy in the contact-phase action. That is a specific, mechanistic
+question about what the second function evaluation contributes, and it is testable on
+existing checkpoints without training.
