@@ -4,12 +4,18 @@ Date: 2026-08-20. Branch `fast-generative-policies`. Continues
 `experiments/isaacgym_debug_investigation.md`; prior CPU-only findings are
 consumed, not repeated.
 
-All arms below run on **one recorded episode set**,
-`experiments/isaacgym_episode_set_v1.pkl`, SHA256
-`fb0a95a710ceb9fa2a36f73e1b4e36ff78563b8dddc8fdea4a662b849694afba`, 32
-episodes of 3-cube PushCube with fixed initial and goal cube positions. Every
-result file records that hash, so the Gaussian/Flow comparison is paired by
-construction rather than retrofitted.
+Two hash-locked episode sets of 3-cube PushCube with fixed initial and goal
+cube positions were used. Every result file records its set hash, so all
+comparisons are paired by construction rather than retrofitted.
+
+| Set | SHA256 (prefix) | Episodes | Role |
+|---|---|--:|---|
+| exploratory | `fb0a95a710ceb9fa` | 32 | first pass, sections 1/1b/11 |
+| **confirmation** | `c34b4c8ad456833c` | **96** | **authoritative, section 1c** |
+
+**Section 1c supersedes the 32-episode rankings.** The exploratory results are
+retained rather than deleted because one of them was wrong, and the reason it
+was wrong is itself a finding (section 1c.3).
 
 ---
 
@@ -57,7 +63,12 @@ sufficient to break the task.
 
 ---
 
-## 1b. Flow arm on the identical episodes — **FLOW WORKS**
+## 1b. Flow arm on the identical episodes — **FLOW WORKS** (exploratory, n=32)
+
+> **Superseded by section 1c.** The 32-episode numbers below are retained for
+> transparency. At 96 episodes Flow 499k scores 95.8%, not 84.4%, and
+> *significantly beats* Gaussian rather than trailing it. Read 1c for the
+> authoritative comparison.
 
 Checkpoint `data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42`,
 EMA weights, **4 solver steps** (verified: exactly 4 denoiser calls per plan),
@@ -117,6 +128,85 @@ it contacted all three cubes and moved all three, with 2-3 of them moving
 does not reuse it. In OGBench the arm travelled metres while cubes moved
 fractions of a millimetre. Here Flow moves cubes 0.1995 m on average — slightly
 *more* than Gaussian's 0.1982 m — and closes 0.179 m of goal distance.
+
+
+---
+
+## 1c. Confirmation at 96 episodes — **AUTHORITATIVE**
+
+Fresh episode set `c34b4c8ad456833c`, 96 episodes, all three arms paired on it.
+
+| Metric | Gaussian (100 NFE) | Flow 399k (4 NFE) | **Flow 499k (4 NFE)** |
+|---|--:|--:|--:|
+| **Success** | 83/96 = 86.46% | 88/96 = 91.67% | **92/96 = 95.83%** |
+| 95% CI | [0.780, 0.926] | [0.842, 0.963] | **[0.897, 0.989]** |
+| Goal-success fraction | 0.9236 | 0.9583 | **0.9826** |
+| Mean object-goal distance | 0.0318 | 0.0230 | **0.0154** |
+| Cubes placed / episode | 2.771 | 2.875 | **2.948** |
+| Cubes moved farther from goal | 0.125 | 0.063 | **0.021** |
+| Mean progress toward goal | 0.1555 | 0.1644 | **0.1723** |
+| Contact rate | 100% | 100% | 100% |
+| EE path length | 2.277 | 2.256 | **2.119** |
+| **Wall time, 96 episodes** | **1279 s** | **129 s** | **127 s** |
+
+### 1c.1 Flow beats the Gaussian control, significantly
+
+Paired McNemar on the same 96 episodes:
+
+| Comparison | b | c | p |
+|---|--:|--:|--:|
+| **Flow 499k vs Gaussian** | **11** | **2** | **0.0225** |
+| Flow 399k vs Gaussian | 13 | 8 | 0.383 |
+| Flow 499k vs Flow 399k | 8 | 4 | 0.388 |
+
+**Flow at 4 network calls significantly outperforms the canonical Gaussian
+checkpoint at 100 network calls (p = 0.0225)**, while running the same 96
+episodes **10x faster in wall-clock time** (127 s versus 1279 s). Flow wins on
+every metric in the table, not only on success.
+
+### 1c.2 The apparent late-training degradation was NOT real
+
+Section 11 reported Flow 399k at 96.9% against 499k at 84.4% on 32 episodes and
+flagged it as suggestive (p = 0.125) but unestablished. **At 96 episodes the
+ordering reverses**: 499k scores 95.8% against 399k's 91.7%, p = 0.388.
+
+**There is no late-training degradation.** The 32-episode result was
+small-sample noise, and the caution attached to it was warranted. The
+undertraining verdict stands as **UNLIKELY** — but for the plain reason that the
+final checkpoint is the best one, not because training past 399k hurts.
+
+### 1c.3 What this says about evaluation noise
+
+The same checkpoint scored **84.4% on 32 episodes and 95.8% on 96 episodes**.
+Both are correct measurements of the same policy; the difference is sampling.
+That is an 11-point swing from episode selection alone.
+
+This is the most important methodological lesson in the investigation, and it
+governs any future A/B/C comparison: **32-episode evaluations of this task
+cannot resolve differences smaller than roughly 10 points.** A probability-path
+effect would very likely be smaller than that.
+
+### 1c.4 Failure taxonomy at 96 episodes (item 8)
+
+| Category | Gaussian (13 failures) | Flow 499k (4 failures) |
+|---|--:|--:|
+| 1. Wrong-object selection | 0 | 0 |
+| 2. Never approaches object | 0 | 0 |
+| 3. Approaches but misses contact | 0 | 0 |
+| 4. Contacts but pushes wrong direction | 10 | 2 |
+| 5. Pushes correctly but insufficiently | 3 | 2 |
+| 6. Solves one object, fails composition | (counted in 4/5) | (counted in 4/5) |
+| 7. Planning correct, execution diverges | 0 | 0 |
+
+Neither arm ever fails to approach or to contact — contact rate is 100% for
+both. All failures are post-contact: pushing the wrong way, or not far enough.
+Notably **Gaussian pushes the wrong direction more often than Flow** (10 versus
+2), which is consistent with Flow's lower "cubes moved farther" figure (0.021
+versus 0.125).
+
+**The OGBench contact-failure conclusion does not transfer and is not reused.**
+There the arm travelled metres while cubes moved fractions of a millimetre.
+Here both arms contact every cube in every episode.
 
 
 ---
@@ -357,14 +447,19 @@ under-dispersed, mean-collapsed outputs, and that is what is measured.
 ### 10.4 But the imagination degradation does NOT prevent the task
 
 This is the crucial tension in the result, and it must not be smoothed over.
-Flow's imagined states are clearly worse, yet Flow still achieves **84.4%
-success against Gaussian's 93.75%, p = 0.375**. Whatever the imagination is
-doing wrong, the executed first action remains good enough to solve the task
-most of the time.
+Flow's imagined states are clearly worse, yet at 96 episodes Flow **outperforms
+Gaussian, 95.8% versus 86.5%, p = 0.0225**. The arm with visibly degraded
+imagination is the arm that wins the task.
 
-So imagination quality and task success are **partially decoupled** here. The
-degradation is real and measurable, but this experiment does not establish that
-it is what costs Flow the 9 points.
+So imagination quality and task success are not merely decoupled here — on this
+benchmark they point in **opposite directions**. The particle degradation is
+real and measured, but this experiment gives no evidence that it costs task
+performance, and some evidence against.
+
+A caveat on interpretation: EC-Diffuser's own ablation shows that *removing*
+generated latent states hurts multi-object performance badly (0.917 -> 0.423 at
+2 cubes). So generating states clearly matters. What these figures show is that
+the states need not be *visually clean* to serve that role.
 
 
 ---
@@ -397,12 +492,19 @@ All step counts below are the **true internal steps**.
 | Flow 499k (final) | 27/32 = 84.4% | [0.672, 0.947] | 2.750 | 0.917 | 0.0194 |
 | Gaussian (100 NFE) | 30/32 = 93.75% | [0.792, 0.992] | 2.938 | 0.979 | 0.0162 |
 
-**Verdict: UNLIKELY that Flow is undertrained. The evidence points the other
-way — the final checkpoint appears to be past its best.**
+> **Partially superseded by section 1c.** The direction of the 399k-vs-499k
+> contrast reverses at 96 episodes, so the "past its best" reading below is
+> **withdrawn**. The undertraining verdict itself is unchanged.
 
-- Flow at 399k **outperforms** Flow at 499k on every metric.
-- Flow at 399k **matches or exceeds the Gaussian control** while using
-  **4 network calls instead of 100**.
+**Verdict: UNLIKELY that Flow is undertrained.** At 96 episodes the final
+checkpoint is the best one (95.8%), so more training is not needed and the
+apparent late-training degradation seen at n=32 was sampling noise.
+
+- At n=32, Flow 399k appeared to outperform Flow 499k. **This reversed at n=96**
+  and is withdrawn.
+- Flow **matches or exceeds the Gaussian control** while using **4 network calls
+  instead of 100**. This survived confirmation and strengthened: at n=96 the
+  final Flow checkpoint beats Gaussian at p = 0.0225.
 
 Paired McNemar tests on 32 episodes:
 
@@ -490,6 +592,118 @@ The guard matters, and is quantified:
 
 Zero channels have sigma below 1e-3, so no special-casing is needed on this
 dataset beyond the guard already implemented.
+
+
+---
+
+## 14. Root-cause ranking
+
+The question this phase set out to answer was where Flow's failures come from:
+a bug, undertraining, the probability path, DLP/state prediction, action
+generation, or a genuine limitation.
+
+**The premise turned out to be wrong. In Isaac Gym, Flow does not fail.** It
+reaches 95.8% at 4 NFE against the canonical Gaussian checkpoint's 86.5% at 100
+NFE, significantly better (p = 0.0225) and 10x faster in wall clock.
+
+Ranked against the evidence:
+
+### 1. Most likely — there is no Flow defect to explain in Isaac Gym
+
+Flow beats the positive control on the benchmark the EC-Diffuser paper uses,
+with the paper's own data, encoder, backbone and environment. Contact rate is
+100%; no failure is a planning or approach failure. This is **Case 6** in the
+directive's decision tree.
+
+The direct consequence: **the OGBench nulls are not evidence of a Flow bug.**
+The same Flow implementation, objective and solver succeed here. Whatever
+happens in OGBench is specific to that setting — BC objective, task
+formulation, data, or representation mismatch — and not a property of flow
+matching or of low NFE.
+
+### 2. Second most likely — the mid-path scale collapse is real but unproven as a cost
+
+Measured and not in dispute: E[x²] = 0.121, the current path loses 89.2% of
+input scale mid-trajectory, per-group variance spans 65x, and Flow's generated
+particles are measurably under-dispersed (feature dispersion 0.417 versus 0.566
+real, 0.716 Gaussian).
+
+What is missing is any link from that to task cost. The arm with degraded
+imagination is the arm that wins. So this remains a **real property with an
+unproven consequence**, not a diagnosed fault.
+
+### 3. Unlikely / ruled out
+
+| Hypothesis | Status | Evidence |
+|---|---|---|
+| A bug in the action path | **Ruled out** | round trip 1.5e-08; one shared call site; Gaussian scores 86.5% through the same path |
+| Undertraining | **Ruled out** | final checkpoint is the best of three; loss flat from ~200k |
+| DLP representation / decoder | **Ruled out** | reconstruction MAE 1.8/255; cubes, colours and arm all faithful |
+| Action generation | **Ruled out** | Flow's action magnitude, clipping and EE path all match Gaussian; it places *more* cubes |
+| Contact failure (the OGBench story) | **Ruled out here** | 100% contact rate, every cube contacted, both arms |
+| Defect A, the asymmetric z action | **Not sufficient** | present in both arms; Gaussian and Flow both succeed through it; EE height stable across episodes |
+| A genuine limitation of the setup | **Not supported** | 95.8% is close to ceiling on this task |
+
+---
+
+## 15. Is a new training experiment justified? — item 20
+
+**No, not as the next step.**
+
+The directive is explicit that VP Flow should not be trained merely because it
+was suggested, and the evidence does not support it now:
+
+1. **There is no performance deficit to close.** Flow already beats the
+   Gaussian control at 4 NFE. A path change would be optimizing a system that
+   is winning, against a ceiling near 96%.
+2. **The measurement cannot resolve the effect.** The same checkpoint moved
+   11 points (84.4% -> 95.8%) purely by changing which 32 versus 96 episodes
+   were used. A probability-path effect is very unlikely to exceed that. At
+   96 episodes and ~96% success there are only 4 failures left to recover.
+3. **The cost is prohibitive at this stage.** ~32.5 GPU-h per matched arm,
+   ~65 GPU-h for B and C — roughly 8x the 4 GPU-h gate.
+4. **The one signal that does favour the path hypothesis is decoupled from
+   performance.** Under-dispersed particles are real, but they coexist with the
+   best task performance measured in this project.
+
+**This is Case 6, not Case 4.** Case 4 requires incoherent imagination *plus*
+converged training *plus* a performance problem. The third condition is absent.
+
+If the path question is pursued later, the honest framing is that it targets
+**generation quality**, not task success, and it needs a metric sensitive enough
+to detect it — which success rate on a near-ceiling task is not.
+
+---
+
+## 16. The single highest-value next experiment
+
+**Not a training run. An evaluation-power and variance study.**
+
+**Hypothesis.** Isaac Gym 3-cube success is near ceiling and dominated by
+episode sampling, so no probability-path comparison run on it can be trusted
+until the noise floor is characterized.
+
+**Arms** (all use existing checkpoints, no training):
+
+1. Flow 499k and Gaussian, each on **3 independent 96-episode sets**, to
+   measure between-set variance directly.
+2. The same arms on a **harder variant** — 4, 5 or 6 cubes, which the
+   environment already supports via `num_entity` and which EC-Diffuser used for
+   zero-shot generalization — to find a setting with headroom rather than a
+   ceiling.
+
+**Expected information.** Either a defensible noise floor and a task with
+dynamic range, in which case an A/B/C path comparison becomes designable and
+its required sample size is known; or the finding that 3-cube is saturated and
+the path question must move to a different benchmark.
+
+**Cost.** ~1.5 GPU-h. Six 96-episode Flow evaluations at ~130 s each plus two
+Gaussian at ~1280 s. Well inside the gate.
+
+**Why this before B/C.** It is roughly 40x cheaper than one training arm, and it
+determines whether B/C could be *interpreted* at all. Running a 65 GPU-h
+comparison whose effect size is smaller than the measurement noise would waste
+the compute and produce an uninterpretable answer.
 
 
 ---
