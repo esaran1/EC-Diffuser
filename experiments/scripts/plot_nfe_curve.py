@@ -94,8 +94,9 @@ def main():
     right.legend(fontsize=8, loc="lower right")
 
     n_rep = len(runs[have[0][0]])
+    plural = "replicate" if n_rep == 1 else "replicates"
     plt.suptitle(
-        f"Paired NFE study — {n_rep} evaluation replicates x 96 episodes, "
+        f"Paired NFE study — {n_rep} evaluation {plural} x 96 episodes, "
         "identical episodes within each replicate",
         fontsize=12,
     )

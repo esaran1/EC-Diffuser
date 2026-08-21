@@ -1,0 +1,62 @@
+{
+  "flow_nfe1": {
+    "episodes": 192,
+    "failures": 37,
+    "never_approaches": 0,
+    "no_contact": 0,
+    "wrong_direction": 27,
+    "insufficient": 10,
+    "contact_rate": 1.0,
+    "mean_cubes_placed_on_failure": 1.4864864864864864
+  },
+  "flow_nfe2": {
+    "episodes": 192,
+    "failures": 24,
+    "never_approaches": 0,
+    "no_contact": 0,
+    "wrong_direction": 14,
+    "insufficient": 10,
+    "contact_rate": 1.0,
+    "mean_cubes_placed_on_failure": 1.7916666666666667
+  },
+  "flow_nfe4": {
+    "episodes": 96,
+    "failures": 11,
+    "never_approaches": 0,
+    "no_contact": 0,
+    "wrong_direction": 7,
+    "insufficient": 4,
+    "contact_rate": 1.0,
+    "mean_cubes_placed_on_failure": 1.7272727272727273
+  },
+  "flow_nfe8": {
+    "episodes": 96,
+    "failures": 15,
+    "never_approaches": 0,
+    "no_contact": 0,
+    "wrong_direction": 8,
+    "insufficient": 7,
+    "contact_rate": 1.0,
+    "mean_cubes_placed_on_failure": 1.7333333333333334
+  },
+  "flow_nfe16": {
+    "episodes": 96,
+    "failures": 14,
+    "never_approaches": 0,
+    "no_contact": 0,
+    "wrong_direction": 10,
+    "insufficient": 4,
+    "contact_rate": 1.0,
+    "mean_cubes_placed_on_failure": 0.9285714285714286
+  },
+  "gaussian_nfe100": {
+    "episodes": 96,
+    "failures": 17,
+    "never_approaches": 0,
+    "no_contact": 0,
+    "wrong_direction": 10,
+    "insufficient": 7,
+    "contact_rate": 1.0,
+    "mean_cubes_placed_on_failure": 1.1764705882352942
+  }
+}
