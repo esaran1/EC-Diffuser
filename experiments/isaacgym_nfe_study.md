@@ -73,3 +73,43 @@ approximate power to detect a true difference is:
 resolve 3-point differences.** Any "no significant difference" below must be
 read as "not larger than about 5-7 points", not as "identical".
 
+
+## 3. Results
+
+*(filled in when all 18 runs complete)*
+
+## 4. Between-replicate variance
+
+*(filled in when all 18 runs complete)*
+
+## 5. Does the NFE trend replicate?
+
+This is the section that most affects how the study should be read.
+
+The two completed replicates **disagreed on the sign of the NFE trend**:
+
+| Replicate | Spearman rho | p | success at NFE 1/2/4/8/16 |
+|---|--:|--:|---|
+| 0 | −0.369 | 0.541 | 0.854 0.885 0.885 0.844 0.854 |
+| 1 | **+1.000** | **<0.001** | 0.760 0.865 0.885 0.896 0.917 |
+
+Same checkpoint, same six arms, same protocol — only the 96 episodes differ.
+
+Replicate 0 alone supports "the NFE axis is flat".
+Replicate 1 alone supports "success rises monotonically with NFE".
+
+Both would have been reported confidently from a single 96-episode run. This is
+the concrete justification for the three-replicate design, and it means **no
+per-set trend may be quoted on its own**; only the pooled curve is defensible.
+
+## 6. Answer to the study question
+
+*(filled in when all 18 runs complete)*
+
+## 7. Is 3-cube saturated?
+
+*(filled in when all 18 runs complete)*
+
+## 8. Compute
+
+*(filled in when all 18 runs complete)*
