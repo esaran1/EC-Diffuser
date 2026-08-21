@@ -1,105 +1,159 @@
 {
   "replicates": [
-    0
+    0,
+    1
   ],
-  "between_replicate_spread": {},
+  "between_replicate_spread": {
+    "flow_nfe1": {
+      "min": 0.7604166666666666,
+      "max": 0.8541666666666666,
+      "range": 0.09375,
+      "std": 0.046875,
+      "cubes_placed_range": 0.14583333333333348,
+      "n_replicates": 2
+    },
+    "flow_nfe2": {
+      "min": 0.8645833333333334,
+      "max": 0.8854166666666666,
+      "range": 0.02083333333333326,
+      "std": 0.01041666666666663,
+      "cubes_placed_range": 0.010416666666666519,
+      "n_replicates": 2
+    },
+    "flow_nfe4": {
+      "min": 0.8854166666666666,
+      "max": 0.8854166666666666,
+      "range": 0.0,
+      "std": 0.0,
+      "cubes_placed_range": 0.010416666666666519,
+      "n_replicates": 2
+    },
+    "flow_nfe8": {
+      "min": 0.84375,
+      "max": 0.8958333333333334,
+      "range": 0.05208333333333337,
+      "std": 0.026041666666666685,
+      "cubes_placed_range": 0.07291666666666652,
+      "n_replicates": 2
+    },
+    "flow_nfe16": {
+      "min": 0.8541666666666666,
+      "max": 0.9166666666666666,
+      "range": 0.0625,
+      "std": 0.03125,
+      "cubes_placed_range": 0.16666666666666696,
+      "n_replicates": 2
+    },
+    "gaussian_nfe100": {
+      "min": 0.8229166666666666,
+      "max": 0.875,
+      "range": 0.05208333333333337,
+      "std": 0.026041666666666685,
+      "cubes_placed_range": 0.13541666666666652,
+      "n_replicates": 2
+    }
+  },
   "per_replicate_nfe_trend": {
     "0": {
       "spearman_rho": -0.3689323936863109,
       "p": 0.5411457083064428
+    },
+    "1": {
+      "spearman_rho": 0.9999999999999999,
+      "p": 1.4042654220543672e-24
     }
   },
   "pooled": {
     "flow_nfe1": {
-      "successes": 82,
-      "episodes": 96,
-      "success_rate": 0.8541666666666666,
+      "successes": 155,
+      "episodes": 192,
+      "success_rate": 0.8072916666666666,
       "ci95": [
-        0.7674364408622438,
-        0.9179152917287087
+        0.7442995413485155,
+        0.8605369353292445
       ]
     },
     "flow_nfe2": {
-      "successes": 85,
-      "episodes": 96,
-      "success_rate": 0.8854166666666666,
+      "successes": 168,
+      "episodes": 192,
+      "success_rate": 0.875,
       "ci95": [
-        0.8042219077619579,
-        0.9413920274643888
+        0.8197396243484373,
+        0.9182423309122828
       ]
     },
     "flow_nfe4": {
-      "successes": 85,
-      "episodes": 96,
+      "successes": 170,
+      "episodes": 192,
       "success_rate": 0.8854166666666666,
       "ci95": [
-        0.8042219077619579,
-        0.9413920274643888
+        0.8316700845860691,
+        0.9267815862035889
       ]
     },
     "flow_nfe8": {
-      "successes": 81,
-      "episodes": 96,
-      "success_rate": 0.84375,
+      "successes": 167,
+      "episodes": 192,
+      "success_rate": 0.8697916666666666,
       "ci95": [
-        0.7554158846985113,
-        0.9098275171386114
+        0.8138129110503749,
+        0.9139322237678208
       ]
     },
     "flow_nfe16": {
-      "successes": 82,
-      "episodes": 96,
-      "success_rate": 0.8541666666666666,
+      "successes": 170,
+      "episodes": 192,
+      "success_rate": 0.8854166666666666,
       "ci95": [
-        0.7674364408622438,
-        0.9179152917287087
+        0.8316700845860691,
+        0.9267815862035889
       ]
     },
     "gaussian_nfe100": {
-      "successes": 79,
-      "episodes": 96,
-      "success_rate": 0.8229166666666666,
+      "successes": 163,
+      "episodes": 192,
+      "success_rate": 0.8489583333333334,
       "ci95": [
-        0.7316814537399345,
-        0.8933229640980846
+        0.7903351026962904,
+        0.8964522691300006
       ]
     }
   },
   "paired_vs_gaussian": {
     "flow_nfe1": {
-      "delta_vs_gaussian": 0.03125,
-      "b_arm_wins": 12,
-      "c_gaussian_wins": 9,
-      "mcnemar_p": 0.6636238098144531,
-      "n_paired": 96
+      "delta_vs_gaussian": -0.04166666666666674,
+      "b_arm_wins": 21,
+      "c_gaussian_wins": 29,
+      "mcnemar_p": 0.3222363203575469,
+      "n_paired": 192
     },
     "flow_nfe2": {
-      "delta_vs_gaussian": 0.0625,
-      "b_arm_wins": 14,
-      "c_gaussian_wins": 8,
-      "mcnemar_p": 0.28627872467041016,
-      "n_paired": 96
+      "delta_vs_gaussian": 0.02604166666666663,
+      "b_arm_wins": 25,
+      "c_gaussian_wins": 20,
+      "mcnemar_p": 0.5514843298025198,
+      "n_paired": 192
     },
     "flow_nfe4": {
-      "delta_vs_gaussian": 0.0625,
-      "b_arm_wins": 14,
-      "c_gaussian_wins": 8,
-      "mcnemar_p": 0.28627872467041016,
-      "n_paired": 96
+      "delta_vs_gaussian": 0.03645833333333326,
+      "b_arm_wins": 24,
+      "c_gaussian_wins": 17,
+      "mcnemar_p": 0.34888887944907765,
+      "n_paired": 192
     },
     "flow_nfe8": {
-      "delta_vs_gaussian": 0.02083333333333337,
-      "b_arm_wins": 13,
-      "c_gaussian_wins": 11,
-      "mcnemar_p": 0.8388197422027588,
-      "n_paired": 96
+      "delta_vs_gaussian": 0.02083333333333326,
+      "b_arm_wins": 23,
+      "c_gaussian_wins": 19,
+      "mcnemar_p": 0.6439689563703723,
+      "n_paired": 192
     },
     "flow_nfe16": {
-      "delta_vs_gaussian": 0.03125,
-      "b_arm_wins": 11,
-      "c_gaussian_wins": 8,
-      "mcnemar_p": 0.6476058959960938,
-      "n_paired": 96
+      "delta_vs_gaussian": 0.03645833333333326,
+      "b_arm_wins": 20,
+      "c_gaussian_wins": 13,
+      "mcnemar_p": 0.296206368599087,
+      "n_paired": 192
     }
   },
   "per_set": {
@@ -301,6 +355,206 @@
         "episode_set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
         "replicate": 0,
         "wall_seconds": 1283.5590813159943
+      }
+    },
+    "1": {
+      "flow_nfe1": {
+        "label": "flow_nfe1",
+        "arm": "flow",
+        "requested_nfe": 1,
+        "measured_calls_per_plan": 1.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 19.17333564626337,
+        "latency_p50_ms": 19.15355143137276,
+        "latency_p95_ms": 19.275176303926855,
+        "episodes": 96,
+        "successes": 73,
+        "success_rate": 0.7604166666666666,
+        "success_ci95": [
+          0.6625065300847667,
+          0.8416616238724858
+        ],
+        "goal_success_frac": 0.8784722222222222,
+        "avg_obj_dist": 0.04353723295692665,
+        "cubes_placed": 2.6354166666666665,
+        "cubes_moved": 2.9479166666666665,
+        "cubes_closer": 2.7083333333333335,
+        "cubes_farther": 0.22916666666666666,
+        "mean_progress": 0.15095520418556893,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9479166666666665,
+        "min_ee_to_cube": 0.026265639656533796,
+        "action_abs_mean": 0.13365656571824933,
+        "clip_fraction": 0.005243055555555556,
+        "eef_path_length": 2.688398430123925,
+        "episode_set_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+        "replicate": 1,
+        "wall_seconds": 96.65731906890869
+      },
+      "flow_nfe16": {
+        "label": "flow_nfe16",
+        "arm": "flow",
+        "requested_nfe": 16,
+        "measured_calls_per_plan": 16.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 315.6267116809169,
+        "latency_p50_ms": 315.6571879517287,
+        "latency_p95_ms": 316.6623300872743,
+        "episodes": 96,
+        "successes": 88,
+        "success_rate": 0.9166666666666666,
+        "success_ci95": [
+          0.8423891980923017,
+          0.9633344852787276
+        ],
+        "goal_success_frac": 0.954861111111111,
+        "avg_obj_dist": 0.02147306752158329,
+        "cubes_placed": 2.8645833333333335,
+        "cubes_moved": 2.9270833333333335,
+        "cubes_closer": 2.8854166666666665,
+        "cubes_farther": 0.052083333333333336,
+        "mean_progress": 0.17292403777052337,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9166666666666665,
+        "min_ee_to_cube": 0.0261756033966473,
+        "action_abs_mean": 0.11560231331063227,
+        "clip_fraction": 0.003958333333333334,
+        "eef_path_length": 2.3827011765291295,
+        "episode_set_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+        "replicate": 1,
+        "wall_seconds": 273.90523505210876
+      },
+      "flow_nfe2": {
+        "label": "flow_nfe2",
+        "arm": "flow",
+        "requested_nfe": 2,
+        "measured_calls_per_plan": 2.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 38.26146990739567,
+        "latency_p50_ms": 38.25392248108983,
+        "latency_p95_ms": 38.50373683962971,
+        "episodes": 96,
+        "successes": 83,
+        "success_rate": 0.8645833333333334,
+        "success_ci95": [
+          0.7795704110965058,
+          0.9258804469049744
+        ],
+        "goal_success_frac": 0.9479166666666666,
+        "avg_obj_dist": 0.02556585338849497,
+        "cubes_placed": 2.84375,
+        "cubes_moved": 2.9166666666666665,
+        "cubes_closer": 2.8020833333333335,
+        "cubes_farther": 0.10416666666666667,
+        "mean_progress": 0.16871755497413687,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9270833333333335,
+        "min_ee_to_cube": 0.02526427739940118,
+        "action_abs_mean": 0.11887832028532608,
+        "clip_fraction": 0.004027777777777778,
+        "eef_path_length": 2.4537082271029553,
+        "episode_set_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+        "replicate": 1,
+        "wall_seconds": 107.30512976646423
+      },
+      "flow_nfe4": {
+        "label": "flow_nfe4",
+        "arm": "flow",
+        "requested_nfe": 4,
+        "measured_calls_per_plan": 4.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 77.18697121264255,
+        "latency_p50_ms": 77.26733200252056,
+        "latency_p95_ms": 78.00156113225967,
+        "episodes": 96,
+        "successes": 85,
+        "success_rate": 0.8854166666666666,
+        "success_ci95": [
+          0.8042219077619579,
+          0.9413920274643888
+        ],
+        "goal_success_frac": 0.9479166666666666,
+        "avg_obj_dist": 0.025520818094567705,
+        "cubes_placed": 2.84375,
+        "cubes_moved": 2.9375,
+        "cubes_closer": 2.84375,
+        "cubes_farther": 0.09375,
+        "mean_progress": 0.16891921174828894,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9375,
+        "min_ee_to_cube": 0.025903848982125055,
+        "action_abs_mean": 0.118460338431307,
+        "clip_fraction": 0.003888888888888889,
+        "eef_path_length": 2.43837712580959,
+        "episode_set_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+        "replicate": 1,
+        "wall_seconds": 128.06813263893127
+      },
+      "flow_nfe8": {
+        "label": "flow_nfe8",
+        "arm": "flow",
+        "requested_nfe": 8,
+        "measured_calls_per_plan": 8.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 156.57396831123506,
+        "latency_p50_ms": 156.59845306072384,
+        "latency_p95_ms": 157.51131840515882,
+        "episodes": 96,
+        "successes": 86,
+        "success_rate": 0.8958333333333334,
+        "success_ci95": [
+          0.8167668306026107,
+          0.9489057985449494
+        ],
+        "goal_success_frac": 0.9583333333333334,
+        "avg_obj_dist": 0.02569147144095041,
+        "cubes_placed": 2.875,
+        "cubes_moved": 2.9270833333333335,
+        "cubes_closer": 2.8333333333333335,
+        "cubes_farther": 0.09375,
+        "mean_progress": 0.16896884106487656,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9270833333333335,
+        "min_ee_to_cube": 0.02630659542531551,
+        "action_abs_mean": 0.11768166263949953,
+        "clip_fraction": 0.0040277777777777786,
+        "eef_path_length": 2.4227671089271703,
+        "episode_set_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+        "replicate": 1,
+        "wall_seconds": 179.73482751846313
+      },
+      "gaussian_nfe100": {
+        "label": "gaussian_nfe100",
+        "arm": "gaussian",
+        "requested_nfe": 100,
+        "measured_calls_per_plan": 100.0,
+        "planner_calls": 600,
+        "latency_mean_ms": 2039.6873014426585,
+        "latency_p50_ms": 1990.1658950839192,
+        "latency_p95_ms": 2017.141666577663,
+        "episodes": 96,
+        "successes": 84,
+        "success_rate": 0.875,
+        "success_ci95": [
+          0.7918281115625381,
+          0.9337109042566752
+        ],
+        "goal_success_frac": 0.9375,
+        "avg_obj_dist": 0.028872464114101604,
+        "cubes_placed": 2.8125,
+        "cubes_moved": 2.9375,
+        "cubes_closer": 2.8333333333333335,
+        "cubes_farther": 0.10416666666666667,
+        "mean_progress": 0.1652222121677672,
+        "contact_rate": 1.0,
+        "n_contacted": 2.9270833333333335,
+        "min_ee_to_cube": 0.02673202917018595,
+        "action_abs_mean": 0.11669451873646015,
+        "clip_fraction": 0.0030555555555555557,
+        "eef_path_length": 2.430776293079058,
+        "episode_set_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+        "replicate": 1,
+        "wall_seconds": 1326.472351551056
       }
     }
   },
