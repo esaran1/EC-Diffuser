@@ -232,6 +232,18 @@ def main():
         def mean(key):
             return float(np.mean([r[key] for r in records]))
 
+        # Full distribution of cubes completed, 0..N. More informative than the
+        # all-or-nothing rate: it separates "placed three of four" from "placed
+        # none", which the success rate collapses together.
+        placed_counts = [r["cubes_placed"] for r in records]
+        distribution = {
+            f"{k}_of_{cli.num_entity}": int(sum(1 for c in placed_counts if c == k))
+            for k in range(cli.num_entity + 1)
+        }
+        distribution_frac = {
+            key: value / n for key, value in distribution.items()
+        }
+
         summary = {
             "label": label, "arm": arm, "requested_nfe": steps,
             "measured_calls_per_plan": stats["denoiser_calls"] / max(stats["total_planner_calls"], 1),
@@ -242,6 +254,9 @@ def main():
             "success_rate": successes / n, "success_ci95": [lo, hi],
             "goal_success_frac": mean("goal_success_frac"),
             "per_object_success": mean("per_object_success"),
+            "per_object_success_std": float(np.std([r["per_object_success"] for r in records])),
+            "cubes_completed_distribution": distribution,
+            "cubes_completed_distribution_frac": distribution_frac,
             "cubes_placed": mean("cubes_placed"),
             "avg_obj_dist": mean("avg_obj_dist"),
             "max_obj_dist": mean("max_obj_dist"),
