@@ -2,6 +2,13 @@
   "replicates": [
     0
   ],
+  "between_replicate_spread": {},
+  "per_replicate_nfe_trend": {
+    "0": {
+      "spearman_rho": -0.3689323936863109,
+      "p": 0.5411457083064428
+    }
+  },
   "pooled": {
     "flow_nfe1": {
       "successes": 82,

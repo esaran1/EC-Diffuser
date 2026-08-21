@@ -169,6 +169,33 @@ def main():
                        "c_gaussian_wins": c, "mcnemar_p": float(p), "n_paired": len(xs)}
         print(f"{lab:18s} {delta:+9.4f} {b:5d} {c:5d} {p:11.4f}")
 
+    # --- does the NFE trend replicate? ---
+    # Per-replicate monotonicity is reported because the sign of the trend is
+    # not guaranteed to agree between episode sets. If replicates disagree, the
+    # pooled curve is the only defensible summary and no per-set trend should
+    # be quoted on its own.
+    from scipy.stats import spearmanr
+
+    nfes = [(l, n) for l, n in [("flow_nfe1", 1), ("flow_nfe2", 2), ("flow_nfe4", 4),
+                                ("flow_nfe8", 8), ("flow_nfe16", 16)] if l in runs.get(replicates[0], {})]
+    if len(nfes) >= 3:
+        print("\n=== DOES THE NFE TREND REPLICATE? (Spearman within each set) ===")
+        print(f"{'replicate':>10s} {'rho':>8s} {'p':>8s}   success by NFE")
+        trends = {}
+        for r in replicates:
+            ys = [runs[r][l]["summary"]["success_rate"] for l, _ in nfes if l in runs[r]]
+            xs = [n for l, n in nfes if l in runs[r]]
+            if len(ys) < 3:
+                continue
+            rho, pval = spearmanr(xs, ys)
+            trends[r] = {"spearman_rho": float(rho), "p": float(pval)}
+            print(f"{r:>10d} {rho:+8.3f} {pval:8.3f}   "
+                  + " ".join(f"{v:.3f}" for v in ys))
+        signs = {np.sign(t["spearman_rho"]) for t in trends.values()}
+        if len(signs) > 1:
+            print("  ** replicates DISAGREE on the sign of the NFE trend **")
+            print("  => quote the pooled curve only; a per-set trend is not reproducible")
+
     # --- the study's actual question ---
     print("\n=== MINIMUM SUFFICIENT NFE ===")
     if REFERENCE in pooled:
@@ -194,6 +221,7 @@ def main():
     out = {
         "replicates": replicates,
         "between_replicate_spread": spread,
+        "per_replicate_nfe_trend": trends if "trends" in dir() else {},
         "pooled": {k: {"successes": v[0], "episodes": v[1], "success_rate": v[2],
                        "ci95": [v[3], v[4]]} for k, v in pooled.items()},
         "paired_vs_gaussian": paired,
