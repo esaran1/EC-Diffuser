@@ -112,9 +112,13 @@ def main():
         print(f"{lab:18s}" + "".join(f"{v:13.4f}" for v in vals))
 
     # --- between-replicate spread: the evaluation noise floor ---
-    # This is variability of ONE fixed checkpoint across episode sets. It is an
-    # arm property worth reporting separately from the mean: an arm can have a
-    # competitive average yet be markedly less dependable set to set.
+    # Variability of ONE fixed checkpoint across episode sets, reported separately
+    # from the mean because an arm can average well yet be less dependable.
+    #
+    # Read with care: with only three replicates a range is itself a noisy
+    # statistic. An observed range of 0.000 means two or three draws happened to
+    # coincide, NOT that the arm is deterministic. Only large, consistent
+    # differences in spread should be interpreted.
     print("\n=== BETWEEN-REPLICATE SPREAD (evaluation noise, not training seeds) ===")
     print(f"{'arm':18s} {'min':>8s} {'max':>8s} {'range':>8s} {'std':>8s} {'placed range':>13s}")
     spread = {}
