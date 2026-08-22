@@ -1,0 +1,187 @@
+{
+  "num_cubes": 4,
+  "episode_set_sha256": "5962c3abb4367eaa78b44949c0340389203621a153f28fdcec0efa83f10d6b9d",
+  "summaries": {
+    "flow_nfe1": {
+      "label": "flow_nfe1",
+      "arm": "flow",
+      "requested_nfe": 1,
+      "measured_calls_per_plan": 1.0,
+      "latency_mean_ms": 19.026056212749793,
+      "latency_per_episode_step_ms": 1.189128513296862,
+      "num_cubes": 4,
+      "episodes": 96,
+      "successes": 55,
+      "success_rate": 0.5729166666666666,
+      "success_ci95": [
+        0.4678250688022257,
+        0.673385760360171
+      ],
+      "goal_success_frac": 0.7916666666666666,
+      "per_object_success": 0.7916666666666666,
+      "per_object_success_std": 0.29901458530015257,
+      "cubes_completed_distribution": {
+        "0_of_4": 6,
+        "1_of_4": 5,
+        "2_of_4": 11,
+        "3_of_4": 19,
+        "4_of_4": 55
+      },
+      "cubes_completed_distribution_frac": {
+        "0_of_4": 0.0625,
+        "1_of_4": 0.052083333333333336,
+        "2_of_4": 0.11458333333333333,
+        "3_of_4": 0.19791666666666666,
+        "4_of_4": 0.5729166666666666
+      },
+      "cubes_placed": 3.1666666666666665,
+      "avg_obj_dist": 0.059313143938197754,
+      "max_obj_dist": 0.13597236783243716,
+      "cubes_moved": 3.9375,
+      "cubes_closer": 3.5416666666666665,
+      "cubes_farther": 0.3958333333333333,
+      "mean_progress": 0.1265036302114216,
+      "contact_rate": 1.0,
+      "n_contacted": 3.9270833333333335,
+      "min_ee_to_cube": 0.02405762285828435,
+      "action_abs_mean": 0.1422894394825454,
+      "clip_fraction": 0.0034953703703703705,
+      "eef_path_length": 4.295079833517472,
+      "episode_set_sha256": "5962c3abb4367eaa78b44949c0340389203621a153f28fdcec0efa83f10d6b9d",
+      "wall_seconds": 144.7417254447937
+    },
+    "flow_nfe4": {
+      "label": "flow_nfe4",
+      "arm": "flow",
+      "requested_nfe": 4,
+      "measured_calls_per_plan": 4.0,
+      "latency_mean_ms": 77.22575336778432,
+      "latency_per_episode_step_ms": 4.82660958548652,
+      "num_cubes": 4,
+      "episodes": 96,
+      "successes": 70,
+      "success_rate": 0.7291666666666666,
+      "success_ci95": [
+        0.6288607694507045,
+        0.8148465818170461
+      ],
+      "goal_success_frac": 0.9036458333333334,
+      "per_object_success": 0.9036458333333334,
+      "per_object_success_std": 0.17066731643553065,
+      "cubes_completed_distribution": {
+        "0_of_4": 0,
+        "1_of_4": 0,
+        "2_of_4": 11,
+        "3_of_4": 15,
+        "4_of_4": 70
+      },
+      "cubes_completed_distribution_frac": {
+        "0_of_4": 0.0,
+        "1_of_4": 0.0,
+        "2_of_4": 0.11458333333333333,
+        "3_of_4": 0.15625,
+        "4_of_4": 0.7291666666666666
+      },
+      "cubes_placed": 3.6145833333333335,
+      "avg_obj_dist": 0.030609776799489435,
+      "max_obj_dist": 0.07292104296114606,
+      "cubes_moved": 3.9375,
+      "cubes_closer": 3.7604166666666665,
+      "cubes_farther": 0.17708333333333334,
+      "mean_progress": 0.15467963315313682,
+      "contact_rate": 1.0,
+      "n_contacted": 3.8958333333333335,
+      "min_ee_to_cube": 0.024818785384316772,
+      "action_abs_mean": 0.11640425087711602,
+      "clip_fraction": 0.002800925925925926,
+      "eef_path_length": 3.4723758275310197,
+      "episode_set_sha256": "5962c3abb4367eaa78b44949c0340389203621a153f28fdcec0efa83f10d6b9d",
+      "wall_seconds": 198.75565147399902
+    },
+    "gaussian_nfe100": {
+      "label": "gaussian_nfe100",
+      "arm": "gaussian",
+      "requested_nfe": 100,
+      "measured_calls_per_plan": 100.0,
+      "latency_mean_ms": 1983.3614022949753,
+      "latency_per_episode_step_ms": 123.96008764343595,
+      "num_cubes": 4,
+      "episodes": 96,
+      "successes": 65,
+      "success_rate": 0.6770833333333334,
+      "success_ci95": [
+        0.5739422345697598,
+        0.7689594393654705
+      ],
+      "goal_success_frac": 0.8541666666666666,
+      "per_object_success": 0.8541666666666666,
+      "per_object_success_std": 0.23844839879707497,
+      "cubes_completed_distribution": {
+        "0_of_4": 0,
+        "1_of_4": 7,
+        "2_of_4": 11,
+        "3_of_4": 13,
+        "4_of_4": 65
+      },
+      "cubes_completed_distribution_frac": {
+        "0_of_4": 0.0,
+        "1_of_4": 0.07291666666666667,
+        "2_of_4": 0.11458333333333333,
+        "3_of_4": 0.13541666666666666,
+        "4_of_4": 0.6770833333333334
+      },
+      "cubes_placed": 3.4166666666666665,
+      "avg_obj_dist": 0.04652805026853457,
+      "max_obj_dist": 0.10674199366864438,
+      "cubes_moved": 3.9583333333333335,
+      "cubes_closer": 3.6979166666666665,
+      "cubes_farther": 0.25,
+      "mean_progress": 0.1395765762620916,
+      "contact_rate": 1.0,
+      "n_contacted": 3.9375,
+      "min_ee_to_cube": 0.025100751328864135,
+      "action_abs_mean": 0.13671994110431385,
+      "clip_fraction": 0.0025925925925925925,
+      "eef_path_length": 4.0783593865732355,
+      "episode_set_sha256": "5962c3abb4367eaa78b44949c0340389203621a153f28fdcec0efa83f10d6b9d",
+      "wall_seconds": 1923.7614958286285
+    }
+  },
+  "paired_vs_reference": {
+    "flow_nfe4": {
+      "delta_full_success": 0.05208333333333326,
+      "b_arm_wins": 24,
+      "c_reference_wins": 19,
+      "mcnemar_p": 0.542384011856484,
+      "delta_per_object": 0.04947916666666674,
+      "wilcoxon_p": 0.12455873705898392,
+      "n_paired": 96
+    },
+    "flow_nfe1": {
+      "delta_full_success": -0.10416666666666674,
+      "b_arm_wins": 15,
+      "c_reference_wins": 25,
+      "mcnemar_p": 0.1538599441628321,
+      "delta_per_object": -0.0625,
+      "wilcoxon_p": 0.12607783555879826,
+      "n_paired": 96
+    }
+  },
+  "three_to_four_cube": {
+    "gaussian_nfe100": {
+      "three_cube": 0.8680555555555556,
+      "four_cube": 0.6770833333333334,
+      "drop": 0.1909722222222222
+    },
+    "flow_nfe4": {
+      "three_cube": 0.8888888888888888,
+      "four_cube": 0.7291666666666666,
+      "drop": 0.1597222222222222
+    },
+    "flow_nfe1": {
+      "three_cube": 0.8055555555555556,
+      "four_cube": 0.5729166666666666,
+      "drop": 0.23263888888888895
+    }
+  }
+}

@@ -81,6 +81,30 @@ Model calls verified exactly by forward hook (1/2/4/8/16/100).
 - **Evaluation noise floor is 3–11 points on 96 episodes.** Even n=288 resolves
   only ~6–7 points.
 
+## 4-cube probe — Regime B, useful headroom (0.63 GPU-h, no retraining)
+
+Zero-shot **policy** generalization 3 -> 4 cubes (the DLP encoder saw up to six
+cubes, so this is not zero-shot representation learning). 96 hash-locked
+episodes, all three arms paired.
+
+| Arm | Calls | Full success | Per-object | 4-of-4 | ms/ep-step |
+|---|--:|--:|--:|--:|--:|
+| Gaussian | 100 | 0.677 | 0.854 | 65/96 | 124.0 |
+| **Flow @4** | **4** | **0.729** | **0.904** | **70/96** | **4.8** |
+| Flow @1 | 1 | 0.573 | 0.792 | 55/96 | 1.2 |
+
+- **4 cubes opens real headroom**: cross-arm span nearly doubles (0.083 -> 0.156)
+  and no arm collapses — zero 0-of-4 episodes for Gaussian and Flow @4.
+- **Per-object success drops only 4.4 points for Flow @4** (7.4 for Gaussian,
+  11.3 for Flow @1). Most of the full-success drop is the stricter 4-of-4
+  criterion, not a compositional breakdown.
+- **Contact rate stays 1.0000** for every arm; ~3.9 of 4 cubes contacted and
+  moved. The added object stresses placement, not reachability.
+- **The 3-cube NFE ordering survives out of distribution**: Flow @4 > Gaussian >
+  Flow @1 on every metric.
+- **Flow @4 leads but not significantly** (McNemar p = 0.54, Wilcoxon p = 0.13).
+  One training seed per method, so no algorithm-level claim.
+
 ## 3-cube is saturated
 
 Five of six arms sit within noise of each other (3.1-point spread across Flow
