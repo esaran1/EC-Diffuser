@@ -1,0 +1,200 @@
+[
+  {
+    "id": "C01",
+    "claim": "Gaussian @100 NFE, 3-cube, pooled 250/288 = 86.8% [82.3, 90.5]",
+    "evidence": "raw per-episode records, 3 replicates",
+    "raw": "experiments/isaacgym_control/nfe_study/r{0,1,2}_gaussian_nfe100.json",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For this checkpoint, 86.8% (250/288) across three paired 96-episode sets."
+  },
+  {
+    "id": "C02",
+    "claim": "Flow @4 NFE, 3-cube, 256/288 = 88.9%",
+    "evidence": "raw per-episode records",
+    "raw": "experiments/isaacgym_control/nfe_study/r*_flow_nfe4.json",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For this checkpoint, 88.9% (256/288)."
+  },
+  {
+    "id": "C03",
+    "claim": "Flow @2 ties Gaussian @100 exactly on 3-cube (0.8681 vs 0.8681)",
+    "evidence": "raw records; paired McNemar b=c=32",
+    "raw": "nfe_study r*_flow_nfe2 vs r*_gaussian_nfe100",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For these checkpoints, Flow at 2 calls matched Gaussian at 100 (equal success; b=c=32)."
+  },
+  {
+    "id": "C04",
+    "claim": "Minimum sufficient NFE is 2 on 3-cube",
+    "evidence": "pooled curve + power table",
+    "raw": "experiments/audit/canonical_results.csv",
+    "recomputed": true,
+    "status": "SUPPORTED BUT LIMITED",
+    "wording": "For this checkpoint, NFE>=2 was not measurably worse than Gaussian@100; the study is powered for ~7-point differences, so this is non-inferiority at that resolution, not equivalence."
+  },
+  {
+    "id": "C05",
+    "claim": "Latency scales linearly with NFE; per-call 19.1-19.9 ms",
+    "evidence": "planner-only timer with cuda.synchronize; uncontended",
+    "raw": "canonical_results.csv latency_* fields",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "Planner-only latency was proportional to NFE (per-call 19.1-19.9 ms across 1-100 calls) on an uncontended GPU."
+  },
+  {
+    "id": "C06",
+    "claim": "Measured model calls per planning decision == requested NFE for all arms",
+    "evidence": "forward hook on denoiser",
+    "raw": "canonical_results.csv measured_calls_per_plan",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "Model forward passes per planning decision equalled the requested NFE exactly for every arm."
+  },
+  {
+    "id": "C07",
+    "claim": "4-cube: Flow@4 0.729, Gaussian 0.677, Flow@1 0.573",
+    "evidence": "raw per-episode records, one 96-episode paired set",
+    "raw": "experiments/isaacgym_control/fourcube/4cube_*.json",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For these checkpoints on one paired 96-episode 4-cube set."
+  },
+  {
+    "id": "C08",
+    "claim": "Flow@4 beats Gaussian at 4 cubes",
+    "evidence": "paired McNemar p=0.542, Wilcoxon p=0.125, bootstrap CI includes 0",
+    "raw": "experiments/audit/recomputed_details.json",
+    "recomputed": true,
+    "status": "UNVERIFIED",
+    "wording": "Flow@4 was nominally ahead of Gaussian at 4 cubes; the difference is not statistically distinguishable at n=96."
+  },
+  {
+    "id": "C09",
+    "claim": "Flow@1 is worse than Flow@4 at 4 cubes",
+    "evidence": "paired McNemar p=0.0275, Wilcoxon p=0.0041, bootstrap CI [-0.180,-0.044] excludes 0",
+    "raw": "experiments/audit/recomputed_details.json",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For this checkpoint, Flow@1 placed materially fewer cubes than Flow@4 at 4 cubes (paired, p<0.01)."
+  },
+  {
+    "id": "C10",
+    "claim": "The Flow@4-Flow@1 gap GROWS with object count",
+    "evidence": "gap 3-cube +0.043 [0.013,0.073]; 4-cube +0.112 [0.044,0.180] -- CIs OVERLAP",
+    "raw": "experiments/audit/recomputed_details.json",
+    "recomputed": true,
+    "status": "UNVERIFIED",
+    "wording": "The gap was positive at both 3 and 4 cubes and larger at 4, but the confidence intervals overlap, so an increase is not established."
+  },
+  {
+    "id": "C11",
+    "claim": "Policy trained ONLY on 3-cube data",
+    "evidence": "direct tensor inspection: 200,000/200,000 frames have exactly 3 active cube slots",
+    "raw": "ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "The policy training set contains 3 cubes in 100% of frames; no 4/5/6-cube episode exists."
+  },
+  {
+    "id": "C12",
+    "claim": "DLP encoder saw up to 6 cubes",
+    "evidence": "EC-Diffuser arXiv:2412.18907v2 Appendix B: DLP trained on 600,000 images from an environment with 6 cubes",
+    "raw": "primary source (paper); NOT recorded in local hparams.json",
+    "recomputed": false,
+    "status": "VERIFIED",
+    "wording": "Zero-shot POLICY generalization only. The representation had prior exposure to these object counts."
+  },
+  {
+    "id": "C13",
+    "claim": "Action normalization round-trip is exact",
+    "evidence": "max abs err 1.49e-08 recomputed independently",
+    "raw": "ecdiffuser-data/.../3C_randcolor pkl",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "Action normalize/unnormalize round-trips to 1.5e-08."
+  },
+  {
+    "id": "C14",
+    "claim": "Normalized-zero action decodes to a downward command",
+    "evidence": "norm 0 -> raw z=-0.1498 -> -0.0187 m/step; EE height showed no drift",
+    "raw": "recomputed",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "Numerically true and quantified; not associated with any measured failure. Not asserted benign."
+  },
+  {
+    "id": "C15",
+    "claim": "Flow is not undertrained; final checkpoint is best",
+    "evidence": "32-episode sweep 199k/399k/499k -- EXPLORATORY, and its ordering reversed at n=96",
+    "raw": "experiments/isaacgym_control/flow_step*_results.json",
+    "recomputed": true,
+    "status": "SUPPORTED BUT LIMITED",
+    "wording": "Loss is flat after ~200k steps; the checkpoint comparison was exploratory at n=32 and its ordering did not replicate."
+  },
+  {
+    "id": "C16",
+    "claim": "DLP reconstruction is trustworthy (1.8/255 MAE)",
+    "evidence": "n=6 frames, front view, one episode, random actions, no CI",
+    "raw": "experiments/figures/dlp_reconstruction.png + dlp_imagination.py:69",
+    "recomputed": false,
+    "status": "SUPPORTED BUT LIMITED",
+    "wording": "On six sampled frames, per-pixel MAE was 1.8/255; background dominates this metric."
+  },
+  {
+    "id": "C17",
+    "claim": "Flow imagination is worse (dispersion 0.417 vs 0.566/0.716)",
+    "evidence": "ad hoc statistic, n=48, no CI, no validation against any quality ground truth",
+    "raw": "experiments/isaacgym_control/imagination_stats.json",
+    "recomputed": false,
+    "status": "UNVERIFIED",
+    "wording": "Decoded Flow futures appear qualitatively more smeared; a descriptive particle-dispersion statistic is lower for Flow. Not validated as a quality measure."
+  },
+  {
+    "id": "C18",
+    "claim": "Contact is not the failure mode",
+    "evidence": "contact_rate = 1.0000 for every arm at 3 and 4 cubes",
+    "raw": "canonical_results.csv contact_rate",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "Every arm contacted at least one cube in every episode; all failures were post-contact."
+  },
+  {
+    "id": "C19",
+    "claim": "Current [-1,1] representation has E[x^2]=0.121; linear path loses 89% of scale",
+    "evidence": "recomputed in prior phase from real data",
+    "raw": "experiments/feature_statistics.json",
+    "recomputed": false,
+    "status": "SUPPORTED BUT LIMITED",
+    "wording": "Descriptive property of the representation; no measured link to task performance."
+  },
+  {
+    "id": "C20",
+    "claim": "OGBench cube tasks sit at the BC floor",
+    "evidence": "prior phase, 810 episodes, one training seed",
+    "raw": "experiments/cube_triple_findings.md + data/phase9,10",
+    "recomputed": false,
+    "status": "OBSOLETE",
+    "wording": "Superseded as a research direction; not part of the current Isaac Gym story."
+  },
+  {
+    "id": "C21",
+    "claim": "Our Gaussian control reproduces / brackets the EC-Diffuser paper",
+    "evidence": "protocol differs: generalization checkpoint (100 steps, 12 layers, H=5) vs paper Table 5 standard config; our own episode draws",
+    "raw": "checkpoint args.json + paper Table 1/5",
+    "recomputed": true,
+    "status": "INCORRECT",
+    "wording": "Broadly consistent with the published 0.894 +/- 0.025; NOT a reproduction and the CI should not be said to 'bracket' it."
+  },
+  {
+    "id": "C22",
+    "claim": "5-cube results",
+    "evidence": "probe still running at audit time",
+    "raw": "pending",
+    "recomputed": false,
+    "status": "UNVERIFIED",
+    "wording": "No 5-cube claim may be made until the probe exits and its arms are verified."
+  }
+]
