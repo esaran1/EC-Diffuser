@@ -117,3 +117,34 @@ generalization test for the policy, with the single documented caveat that the
 DLP encoder saw up to 6 cubes during its own training.
 
 The probe is authorized to run once the GPU is free.
+
+---
+
+# Addendum: is `--num-entity 5` also valid? (2026-08-22)
+
+Re-verified for **five** cubes. **All five conditions hold; the 5-cube probe is
+valid.** Only the items that could differ from the 4-cube case are re-argued.
+
+| # | Condition | Verdict | Evidence |
+|---|---|---|---|
+| 1 | Env genuinely creates 5 cubes | **YES** | `_obj_state_dict` and `object_assets` are both built by looping `range(num_objects)`; cubes are procedural `create_box`; **9** colours defined and `numColors: 6` >= 5; reset uses the general collision-checked branch; `entity_to_steps[5] = 200` so episode length is defined upstream. A runtime assert in the probe fails loudly if `env.num_objects` differs from the request. |
+| 2 | Architecture accepts the representation | **YES** | `max_particles: None`, per-particle `features_dim: 10`. Re-ran forward passes through the canonical `model_config.pkl` at 48/72/120 particles — all clean. In practice the input is **unchanged at 480 dims** (see 3), so 5 cubes is not even a new shape for the model. |
+| 3 | DLP uses the same fixed particle budget | **YES** | `n_kp_enc = 24` per view. Observation is 2 x 24 x 10 = 480 at 3, 4 **and** 5 cubes. The fifth cube is absorbed by reassigning particles inside a fixed budget — the entity-centric mechanism under test. |
+| 4 | No 5-cube policy data in training | **YES** | Policy training tensors are `(2000, 100, 4, 6)` = eef + 3 cubes, with `numObjects: 3` and `RandNumObj: False`. No 4- or 5-cube episode exists. |
+| 5 | Criterion requires 5/5, per-object is k/5 | **YES** | `check_success` is unchanged: per-object absolute 0.04 m threshold, then `mean` over the object axis. Verified arithmetically: N=3 -> 3/3, N=4 -> 4/4, N=5 -> **5/5**, and `goal_success_frac` becomes k/5. |
+
+## The caveat, restated
+
+**This is zero-shot _policy_ generalization, not zero-shot representation
+learning.** The DLP encoder `dlp_push_6C` was trained on scenes containing up to
+**six** cubes, so a 5-cube scene is comfortably inside the representation's
+training range while being entirely outside the policy's. Every claim from this
+probe must be phrased accordingly.
+
+## One difficulty note specific to 5 cubes
+
+Episode length rises 150 -> 200 steps (`entity_to_steps[5]`), so the policy gets
+proportionally more time per cube than at 4 cubes did relative to 3. That
+partially offsets the added difficulty and should be kept in mind when reading
+the 3 -> 4 -> 5 scaling curve: the x-axis is not a pure difficulty axis, because
+the time budget moves with it.
