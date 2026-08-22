@@ -758,6 +758,120 @@
       "latency_p95_ms": null,
       "wall_seconds": 1923.7614958286285,
       "summary_mismatches": []
+    },
+    "5cube_flow_nfe1": {
+      "raw_file": "experiments/isaacgym_control/fourcube/5cube_flow_nfe1.json",
+      "raw_file_sha256": "26212a045d4d43f65b3d6ea3fd215f50e8b020d6fb0e01b1c36cb5da9c450025",
+      "arm": "flow",
+      "label": "flow_nfe1",
+      "num_cubes": 5,
+      "requested_nfe": 1,
+      "measured_calls_per_plan": 1.0,
+      "episode_set_sha256": "f8dff00dfd7b1752d84ba4dddf4649f811a61502a177160e27f48d3aeef8d478",
+      "replicate": null,
+      "episodes": 96,
+      "successes": 29,
+      "success_rate": 0.3020833333333333,
+      "ci95_lo": 0.2125183212868627,
+      "ci95_hi": 0.4042531638036794,
+      "per_object_success": 0.7208333333333332,
+      "per_object_success_std": 0.25211387012374376,
+      "cubes_placed_mean": 3.6041666666666665,
+      "cubes_completed_distribution": {
+        "0_of_5": 1,
+        "1_of_5": 6,
+        "2_of_5": 11,
+        "3_of_5": 23,
+        "4_of_5": 26,
+        "5_of_5": 29
+      },
+      "avg_obj_dist_mean": 0.07796184214142461,
+      "max_obj_dist_mean": 0.22503146533078203,
+      "contact_rate": 1.0,
+      "n_contacted_mean": 4.885416666666667,
+      "cubes_farther_mean": 0.8854166666666666,
+      "clip_fraction_mean": 0.00328125,
+      "latency_mean_ms": 19.033648457550328,
+      "latency_p50_ms": null,
+      "latency_p95_ms": null,
+      "wall_seconds": 196.02723717689514,
+      "summary_mismatches": []
+    },
+    "5cube_flow_nfe4": {
+      "raw_file": "experiments/isaacgym_control/fourcube/5cube_flow_nfe4.json",
+      "raw_file_sha256": "851cc5717659b7b8f1597a811b52850992d5eaa0beaabe52ffe93b7d579782c4",
+      "arm": "flow",
+      "label": "flow_nfe4",
+      "num_cubes": 5,
+      "requested_nfe": 4,
+      "measured_calls_per_plan": 4.0,
+      "episode_set_sha256": "f8dff00dfd7b1752d84ba4dddf4649f811a61502a177160e27f48d3aeef8d478",
+      "replicate": null,
+      "episodes": 96,
+      "successes": 45,
+      "success_rate": 0.46875,
+      "ci95_lo": 0.3661084523448652,
+      "ci95_hi": 0.5733715787239922,
+      "per_object_success": 0.7999999999999999,
+      "per_object_success_std": 0.24963130707842757,
+      "cubes_placed_mean": 4.0,
+      "cubes_completed_distribution": {
+        "0_of_5": 2,
+        "1_of_5": 4,
+        "2_of_5": 5,
+        "3_of_5": 15,
+        "4_of_5": 25,
+        "5_of_5": 45
+      },
+      "avg_obj_dist_mean": 0.06745672576653305,
+      "max_obj_dist_mean": 0.1922001404260906,
+      "contact_rate": 1.0,
+      "n_contacted_mean": 4.9375,
+      "cubes_farther_mean": 0.6041666666666666,
+      "clip_fraction_mean": 0.0031250000000000006,
+      "latency_mean_ms": 77.31793782020286,
+      "latency_p50_ms": null,
+      "latency_p95_ms": null,
+      "wall_seconds": 262.9513359069824,
+      "summary_mismatches": []
+    },
+    "5cube_gaussian_nfe100": {
+      "raw_file": "experiments/isaacgym_control/fourcube/5cube_gaussian_nfe100.json",
+      "raw_file_sha256": "09d8cea1f84f9d64f8ca9a022b4cfdda92c887987d16dde9805c13f8a805b25f",
+      "arm": "gaussian",
+      "label": "gaussian_nfe100",
+      "num_cubes": 5,
+      "requested_nfe": 100,
+      "measured_calls_per_plan": 100.0,
+      "episode_set_sha256": "f8dff00dfd7b1752d84ba4dddf4649f811a61502a177160e27f48d3aeef8d478",
+      "replicate": null,
+      "episodes": 96,
+      "successes": 40,
+      "success_rate": 0.4166666666666667,
+      "ci95_lo": 0.3168494065337071,
+      "ci95_hi": 0.5217678493181659,
+      "per_object_success": 0.7604166666666666,
+      "per_object_success_std": 0.2716341063255832,
+      "cubes_placed_mean": 3.8020833333333335,
+      "cubes_completed_distribution": {
+        "0_of_5": 3,
+        "1_of_5": 5,
+        "2_of_5": 7,
+        "3_of_5": 18,
+        "4_of_5": 23,
+        "5_of_5": 40
+      },
+      "avg_obj_dist_mean": 0.07394832154386677,
+      "max_obj_dist_mean": 0.19264707740512677,
+      "contact_rate": 1.0,
+      "n_contacted_mean": 4.9375,
+      "cubes_farther_mean": 0.75,
+      "clip_fraction_mean": 0.0027083333333333334,
+      "latency_mean_ms": 2182.801122952472,
+      "latency_p50_ms": null,
+      "latency_p95_ms": null,
+      "wall_seconds": 2847.594122171402,
+      "summary_mismatches": []
     }
   },
   "pairing": {
@@ -840,6 +954,18 @@
       "paired": true,
       "num_cubes": [
         4
+      ],
+      "episodes": [
+        96
+      ]
+    },
+    "5cube": {
+      "arms": 3,
+      "distinct_hashes": 1,
+      "hash": "f8dff00dfd7b1752d84ba4dddf4649f811a61502a177160e27f48d3aeef8d478",
+      "paired": true,
+      "num_cubes": [
+        5
       ],
       "episodes": [
         96
@@ -1213,6 +1339,51 @@
         -0.044270833333333336
       ],
       "bootstrap_p_two_sided": 0.0012
+    },
+    "5cube_flow_nfe4__vs__5cube_gaussian_nfe100": {
+      "n_paired": 96,
+      "delta_full_success": 0.052083333333333315,
+      "mcnemar_b": 18,
+      "mcnemar_c": 13,
+      "mcnemar_p_exact": 0.47312965989112854,
+      "delta_per_object": 0.03958333333333334,
+      "wilcoxon_p": 0.2454086316616868,
+      "diff_skew": -0.034272629014283164,
+      "bootstrap_ci95": [
+        -0.02916666666666667,
+        0.10833333333333332
+      ],
+      "bootstrap_p_two_sided": 0.2566
+    },
+    "5cube_flow_nfe1__vs__5cube_gaussian_nfe100": {
+      "n_paired": 96,
+      "delta_full_success": -0.11458333333333337,
+      "mcnemar_b": 16,
+      "mcnemar_c": 27,
+      "mcnemar_p_exact": 0.12628947438543037,
+      "delta_per_object": -0.03958333333333333,
+      "wilcoxon_p": 0.19879297840944377,
+      "diff_skew": 0.3655119859471453,
+      "bootstrap_ci95": [
+        -0.11041666666666666,
+        0.03125000000000001
+      ],
+      "bootstrap_p_two_sided": 0.2802
+    },
+    "5cube_flow_nfe1__vs__5cube_flow_nfe4": {
+      "n_paired": 96,
+      "delta_full_success": -0.16666666666666669,
+      "mcnemar_b": 12,
+      "mcnemar_c": 28,
+      "mcnemar_p_exact": 0.01658900337497471,
+      "delta_per_object": -0.07916666666666666,
+      "wilcoxon_p": 0.0213466935867987,
+      "diff_skew": 0.46208982833529705,
+      "bootstrap_ci95": [
+        -0.13958333333333336,
+        -0.016666666666666666
+      ],
+      "bootstrap_p_two_sided": 0.0152
     }
   }
 }

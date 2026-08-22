@@ -3,10 +3,13 @@
 Date: 2026-08-22. HEAD `6d75e92bcce4bdb6f7cd6ef0f4a650da532c5055`, tree clean.
 Environment, artifact hashes: `experiments/audit/repository_snapshot.md`.
 
-**Status of the 5-cube probe.** It was **still running** throughout this audit
-(PID 3725052, Gaussian arm at 48/96 as of 01:22). Its files and processes were
-not touched and no competing GPU work was launched. **No 5-cube number appears
-anywhere in this audit.** Claim C22 is UNVERIFIED pending clean exit.
+**Status of the 5-cube probe.** It was still running during the first pass of
+this audit and was not touched. It has since **exited cleanly**; all three arms
+completed (96 raw episode records each, one shared episode-set hash
+`f8dff00dfd7b1752`, measured calls 1.00 / 4.00 / 100.00, no call-count
+mismatches). Its results were then recomputed from raw records and are included
+below. Claim C22 is now **VERIFIED**, and it **changes a headline conclusion**
+(§3.2).
 
 ---
 
@@ -47,6 +50,26 @@ canonical values in `experiments/audit/canonical_results.csv`.
 | Flow @16 | 16.00 | 255/288 = 0.885 | [0.843, 0.920] | 0.932 |
 | Gaussian @100 | 100.00 | 250/288 = 0.868 | [0.823, 0.905] | 0.928 |
 
+### 5 cubes (1 paired set of 96, H=200)
+
+| Arm | Calls/decision | Full success | 95% CI | Per-object |
+|---|--:|--:|--:|--:|
+| Flow @1 | 1.00 | 29/96 = 0.302 | [0.213, 0.404] | 0.721 |
+| Flow @4 | 4.00 | 45/96 = 0.469 | [0.366, 0.573] | 0.800 |
+| Gaussian @100 | 100.00 | 40/96 = 0.417 | [0.317, 0.522] | 0.760 |
+
+Cubes-completed distribution (of 5):
+
+| Arm | 0/5 | 1/5 | 2/5 | 3/5 | 4/5 | 5/5 |
+|---|--:|--:|--:|--:|--:|--:|
+| Gaussian | 3 | 5 | 7 | 18 | 23 | 40 |
+| Flow @4 | 2 | 4 | 5 | 15 | 25 | 45 |
+| Flow @1 | 1 | 6 | 11 | 23 | 26 | 29 |
+
+Contact rate remains **1.0000** for all three arms; 4.89-4.94 of 5 cubes
+contacted. Paired: Flow@4 vs Gaussian p=0.473 (not distinguishable); **Flow@1 vs
+Flow@4 p=0.0166 full / p=0.0213 per-object, bootstrap [-0.140, -0.017]**.
+
 ### 4 cubes (1 paired set of 96, H=150)
 
 | Arm | Calls/decision | Full success | 95% CI | Per-object |
@@ -75,7 +98,7 @@ canonical values in `experiments/audit/canonical_results.csv`.
 | # | Prior claim | Audit finding |
 |---|---|---|
 | **1** | Our Gaussian control "brackets" the EC-Diffuser paper | **INCORRECT.** Our checkpoint is the *generalization* variant (100 diffusion steps, 12 layers, hidden 512, H=5 per its `args.json`); the paper's Table 5 standard config is 5 steps, 6 layers, hidden 256, horizon 3. Episode draws are ours, not the paper's. Correct wording: **"broadly consistent with the published 0.894 ± 0.025"**. Not a reproduction. |
-| **2** | The Flow@4−Flow@1 gap *grows* with object count | **NOT ESTABLISHED.** Paired bootstrap: 3 cubes +0.043 [0.013, 0.073]; 4 cubes +0.112 [0.044, 0.180]. **The CIs overlap.** The gap is positive at both counts; the *increase* is not distinguishable from sampling noise. |
+| **2** | The Flow@4−Flow@1 gap *grows* with object count | **REFUTED as stated.** With 5 cubes now in, the gap is **not monotonic**: +0.043 [0.013, 0.073] at 3, +0.112 [0.044, 0.180] at 4, **+0.079 [0.017, 0.140] at 5** — it *falls* from 4 to 5. Bootstrap on the difference of gaps: gap(4)−gap(3) = +0.069 [−0.005, +0.145] p=0.069; gap(5)−gap(3) = +0.036 [−0.033, +0.105] p=0.31; gap(5)−gap(4) = −0.033 [−0.126, +0.057] p=0.49. **No increase is established, and the non-monotonicity actively contradicts a simple scaling story.** What survives: the gap is **positive at all three object counts**. |
 | **3** | "Flow @4 beats Gaussian" at 4 cubes | **UNVERIFIED.** Paired McNemar p=0.542, Wilcoxon p=0.125, bootstrap CI [−0.008, +0.109] includes zero. Nominal lead only. |
 | **4** | Flow imagination is "worse" (dispersion 0.417 vs 0.566/0.716) | **UNVERIFIED as a quality claim.** Ad hoc statistic, n=48, no CI, transparency threshold 0.5 unjustified, never validated against any independent notion of imagination quality. |
 | **5** | DLP reconstruction "trustworthy" at 1.8/255 | **SUPPORTED BUT LIMITED.** n=6 frames, front view, one episode, under *random* actions rather than the policy's own state distribution. Per-pixel MAE over a mostly-static white table under-weights cube-level error. |
@@ -247,13 +270,42 @@ result, which item 1 (~65 GPU-h) then elevates to algorithm level.**
 
 ---
 
+## 11b. 5-cube regime classification
+
+**Regime B — ideal scaling regime.** Both methods retain substantial but clearly
+reduced performance, with useful separation among the three arms.
+
+| Regime | Verdict | Evidence |
+|---|---|---|
+| A. Still too easy | **No** | Best arm 0.469 full success; 51 of 96 episodes fail. |
+| **B. Ideal scaling** | **YES** | Full success spans 0.302-0.469; per-object 0.721-0.800; all three arms separated; no arm at ceiling or floor. |
+| C. Flow low-NFE weakness emerges | **No** | Flow@4 (0.469) is nominally *above* Gaussian (0.417), not below. |
+| D. Flow advantage strengthens | **Not claimable** | Flow@4 leads but p=0.473; and with one training seed this could not be an algorithm claim regardless. |
+| E. Joint collapse | **No** | 0-of-5 occurs in only 1-3 of 96 episodes per arm; contact rate 1.0000; 4.89-4.94 of 5 cubes contacted. |
+
+Per the standing instruction, 5 cubes being Regime B means **stop; do not run
+6 cubes.**
+
+**Which benchmark should be primary?** **5 cubes**, with 4 cubes retained as a
+mid-point. At 5 cubes the arms are furthest from ceiling (best 0.469) while
+still well clear of the floor, giving the widest dynamic range for any future
+comparison. 3 cubes is saturated and should be reported only as the in-
+distribution reference.
+
+---
+
 ## 12. Single next move
 
-**Finish and verify the running 5-cube probe, then run the fixed-horizon control
-at 4 cubes (H=100) — three arms, 96 episodes, ~0.6 GPU-h.**
+**Run the fixed-horizon control: 4 and 5 cubes at H=100 (matching the 3-cube
+budget) — Flow@4, Flow@1, Gaussian, 96 episodes each, ~1.5 GPU-h.**
 
-Rationale: the horizon confound (§6.2) is the cheapest MAJOR confound to remove,
-it is a prerequisite for *any* scaling statement, and at ~0.6 GPU-h it costs
-roughly 1% of a single training seed. It should precede all training work,
-because if object count and time budget cannot be separated, additional seeds
-would only add precision to a confounded axis.
+The 5-cube probe is now complete and verified, and it **refuted the
+gap-grows-with-object-count hypothesis** (§3.2): the penalty is non-monotonic
+(+0.043 / +0.112 / +0.079 at 3/4/5). Before that non-monotonicity can be
+interpreted at all, the horizon confound must be removed, because episode
+horizon rose 100 -> 150 -> 200 across exactly those three points and is a live
+candidate explanation for the 4 -> 5 dip.
+
+At ~1.5 GPU-h this costs roughly 2% of one training seed and is a prerequisite
+for any scaling statement. It must precede training work: additional seeds would
+otherwise only add precision to a confounded axis.
