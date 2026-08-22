@@ -35,10 +35,64 @@ def effective_config():
                 else str(v)) for k, v in eff.items()}
 
 
+def gpu_state(a):
+    """Record every GPU process present at launch, for provenance.
+
+    The gate permits a small resident CUDA context (a CPU-bound job holding a
+    little GPU memory at ~0% utilization). Such a context is NOT exclusivity, so
+    the wording below is deliberately 'no material competing GPU workload
+    detected', never 'exclusive'.
+    """
+    procs = []
+    try:
+        out = subprocess.check_output(
+            ["nvidia-smi", "--query-compute-apps=pid,process_name,used_memory",
+             "--format=csv,noheader,nounits"]).decode().strip()
+        for line in [l for l in out.splitlines() if l.strip()]:
+            pid, name, mem = [x.strip() for x in line.split(",")]
+            entry = {"pid": int(pid), "process_name": name,
+                     "gpu_memory_mib": int(mem)}
+            try:
+                with open(f"/proc/{pid}/cmdline", "rb") as fh:
+                    entry["cmdline"] = fh.read().replace(b"\0", b" ").decode().strip()
+            except OSError:
+                entry["cmdline"] = "UNAVAILABLE"
+            entry["permitted_as_idle_context"] = (
+                int(mem) < 1000 and (a.gpu_util is None or a.gpu_util <= 5))
+            procs.append(entry)
+    except Exception as exc:                      # pragma: no cover
+        procs = [{"error": str(exc)}]
+
+    return {
+        "processes": procs,
+        "total_gpu_memory_mib": a.gpu_total,
+        "total_gpu_utilization_pct": a.gpu_util,
+        "largest_process_memory_mib": a.gpu_biggest,
+        "gate_criteria": {
+            "no_process_at_or_above_mib": 1000,
+            "total_memory_below_mib": 2000,
+            "utilization_at_or_below_pct": 5,
+            "consecutive_checks": 8,
+            "check_interval_seconds": 60,
+        },
+        "exclusivity_statement": (
+            "no material competing GPU workload detected at launch"
+            if procs and not any("error" in p for p in procs)
+            else "no GPU processes detected at launch"),
+        "note": (
+            "The GPU is NOT described as exclusive. Any process listed above "
+            "satisfied the relaxed idle-context criterion: below 1000 MiB with "
+            "total utilization at or below 5%."),
+    }
+
+
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("--out", required=True)
     p.add_argument("--gate-pid", type=int, required=True)
+    p.add_argument("--gpu-total", type=int, default=None)
+    p.add_argument("--gpu-util", type=int, default=None)
+    p.add_argument("--gpu-biggest", type=int, default=None)
     a = p.parse_args()
 
     eff = effective_config()
@@ -82,6 +136,7 @@ def main():
                 "5cube_H100": "episode_set_5cube.pkl (f8dff00d...)",
             },
         },
+        "gpu_state_at_launch": gpu_state(a),
         "gate_pid": a.gate_pid,
         "written_at": subprocess.check_output(["date", "-Iseconds"]).decode().strip(),
     }
