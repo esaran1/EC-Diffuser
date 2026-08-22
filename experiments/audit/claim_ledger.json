@@ -83,7 +83,7 @@
   {
     "id": "C10",
     "claim": "The Flow@4-Flow@1 gap GROWS with object count",
-    "evidence": "gaps 3c +0.043[0.013,0.073], 4c +0.112[0.044,0.180], 5c +0.079[0.017,0.140]; bootstrap on gap differences all include 0; NON-MONOTONIC",
+    "evidence": "gaps 3c +0.043[0.013,0.073], 4c +0.112[0.044,0.180], 5c +0.079[0.017,0.140]; bootstrap on gap differences all include 0; NON-MONOTONIC ; fixed-H control (C26) shows the 4-cube gap is horizon-driven",
     "raw": "experiments/audit/recomputed_details.json",
     "recomputed": true,
     "status": "NOT ESTABLISHED",
@@ -214,5 +214,32 @@
     "recomputed": true,
     "status": "VERIFIED",
     "wording": "At 5 cubes all arms retain substantial partial competence; no arm approaches the floor."
+  },
+  {
+    "id": "C25",
+    "claim": "Fixed-horizon H=100 control at 4 and 5 cubes",
+    "evidence": "6 arms, frozen episode sets replayed (hashes 5962c3ab / f8dff00d match native), H override verified at runtime, calls 1/4/100 exact",
+    "raw": "experiments/isaacgym_control/fourcube/{4,5}cube_H100_*.json",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For these checkpoints under a fixed 100-step budget."
+  },
+  {
+    "id": "C26",
+    "claim": "The low-NFE penalty is horizon-dependent, not purely object-count-dependent",
+    "evidence": "Flow@4-Flow@1 per-object gap: native +0.043/+0.112/+0.079 at 3/4/5; fixed H=100 +0.043/-0.029/+0.081. Sign FLIPS at 4 cubes. Paired horizon contrast for Flow@1 at 4 cubes: H150-H100 = -0.109 per-object, Wilcoxon p=0.0049, boot [-0.182,-0.039].",
+    "raw": "experiments/audit/fixed_horizon_analysis.json",
+    "recomputed": true,
+    "status": "VERIFIED",
+    "wording": "For this checkpoint, giving Flow@1 the native 150-step budget at 4 cubes made it WORSE, not better; the apparent low-NFE penalty at 4 cubes does not survive holding execution time fixed."
+  },
+  {
+    "id": "C27",
+    "claim": "NFE x object-count interaction under fixed horizon",
+    "evidence": "fixed-H gaps -0.029 [-0.081,+0.023] at 4 and +0.081 [+0.013,+0.148] at 5; non-monotonic, 4-cube CI includes zero",
+    "raw": "experiments/audit/fixed_horizon_analysis.json",
+    "recomputed": true,
+    "status": "NOT ESTABLISHED",
+    "wording": "Under a fixed 100-step budget the low-NFE penalty is not monotonic in object count and is indistinguishable from zero at 4 cubes."
   }
 ]
