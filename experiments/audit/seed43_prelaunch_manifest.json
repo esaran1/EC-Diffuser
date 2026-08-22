@@ -128,5 +128,38 @@
       "verdict": "PASS - architectures identical; the raw checkpoint sum includes buffers and EMA bookkeeping, so it exceeds the .parameters() figure by the same amount for both seeds"
     },
     "verdict": "ALL LAUNCH CHECKS PASS - run left alone"
-  }
+  },
+  "contention_events": [
+    {
+      "detected_at": "2026-08-22T19:07",
+      "competing_process": {
+        "pid": 4076828,
+        "cmdline": "/home/jren313/miniconda3/envs/adp/bin/python experiments/exp5_endtoend_quality.py",
+        "gpu_memory_mib_range": [
+          4166,
+          4370
+        ]
+      },
+      "first_seen_snapshot": "2026-08-22T18:27:15-04:00",
+      "still_running_at": "2026-08-22T19:07:16-04:00",
+      "throughput_effect": {
+        "uncontended_s_per_step": 0.2339,
+        "uncontended_step_range": [
+          0,
+          3000
+        ],
+        "contended_s_per_step": 0.3094,
+        "contended_step_range": [
+          3000,
+          15000
+        ],
+        "slowdown_factor": 1.32,
+        "projected_wall_h_uncontended": 32.5,
+        "projected_wall_h_contended": 43.0
+      },
+      "evidence_of_optimization_compromise": "NONE",
+      "reasoning": "No OOM, CUDA error, or non-finite loss in the training log. Batch size, gradient accumulation, learning-rate schedule and RNG stream are unaffected by GPU time-slicing, which changes wall-clock throughput only, not arithmetic results. Memory headroom remained (12.0 of 16.4 GiB used).",
+      "action_taken": "Recorded only. Per protocol the run was neither killed nor restarted; a competing workload that degrades throughput without evidence of compromising the optimization does not warrant discarding a partially completed replication."
+    }
+  ]
 }
