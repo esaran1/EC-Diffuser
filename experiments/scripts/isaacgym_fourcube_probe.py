@@ -31,6 +31,11 @@ from diffuser.eval_utils import setup_isaac_env  # noqa: E402
 from isaacgym_control import ARMS, array_to_state_dict, entity_positions  # noqa: E402
 
 RESULTS_DIR = "experiments/isaacgym_control/fourcube"
+
+# Upstream table from diffuser/config/plan_pandapush_pint_single_gpu.py.
+# Episode length grows with cube count, so the difficulty axis and the time
+# budget move together -- noted when reading any scaling curve.
+ENTITY_TO_STEPS = {1: 30, 2: 50, 3: 100, 4: 150, 5: 200, 6: 200}
 THRESHOLD = 0.04  # dist_threshold from Config.yaml, absolute per object
 
 # Flow 4 is the recommended operating point from the completed NFE study:
@@ -50,7 +55,7 @@ class Args:
     dataset = "panda_push"
     num_entity = 4
     horizon = 5
-    max_episode_length = 150  # entity_to_steps[4], already defined upstream
+    max_episode_length = 150  # set from ENTITY_TO_STEPS at run time
     planning_only = True
     push_t = False
     multiview = True
@@ -175,6 +180,7 @@ def main():
 
     args = Args()
     args.num_entity = cli.num_entity
+    args.max_episode_length = ENTITY_TO_STEPS[cli.num_entity]
     utils.set_global_device(args.device)
     os.makedirs(RESULTS_DIR, exist_ok=True)
 

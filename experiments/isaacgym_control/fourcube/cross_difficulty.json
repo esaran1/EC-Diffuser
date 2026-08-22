@@ -1,0 +1,55 @@
+{
+  "3": {
+    "gaussian_nfe100": {
+      "n_cubes": 3,
+      "success_rate": 0.8680555555555556,
+      "per_object_success": 0.9282407407407408,
+      "cubes_placed": 2.7847222222222223,
+      "episodes": 288
+    },
+    "flow_nfe4": {
+      "n_cubes": 3,
+      "success_rate": 0.8888888888888888,
+      "per_object_success": 0.9479166666666666,
+      "cubes_placed": 2.84375,
+      "episodes": 288
+    },
+    "flow_nfe1": {
+      "n_cubes": 3,
+      "success_rate": 0.8055555555555556,
+      "per_object_success": 0.9050925925925926,
+      "cubes_placed": 2.7152777777777777,
+      "episodes": 288
+    }
+  },
+  "4": {
+    "gaussian_nfe100": {
+      "n_cubes": 4,
+      "success_rate": 0.6770833333333334,
+      "per_object_success": 0.8541666666666666,
+      "cubes_placed": 3.4166666666666665,
+      "episodes": 96,
+      "avg_obj_dist": 0.04652805026853457,
+      "contact_rate": 1.0
+    },
+    "flow_nfe4": {
+      "n_cubes": 4,
+      "success_rate": 0.7291666666666666,
+      "per_object_success": 0.9036458333333334,
+      "cubes_placed": 3.6145833333333335,
+      "episodes": 96,
+      "avg_obj_dist": 0.030609776799489435,
+      "contact_rate": 1.0
+    },
+    "flow_nfe1": {
+      "n_cubes": 4,
+      "success_rate": 0.5729166666666666,
+      "per_object_success": 0.7916666666666666,
+      "cubes_placed": 3.1666666666666665,
+      "episodes": 96,
+      "avg_obj_dist": 0.059313143938197754,
+      "contact_rate": 1.0
+    }
+  },
+  "5": {}
+}
