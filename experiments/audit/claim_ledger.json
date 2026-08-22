@@ -78,7 +78,7 @@
     "raw": "experiments/audit/recomputed_details.json",
     "recomputed": true,
     "status": "VERIFIED",
-    "wording": "For this checkpoint, Flow@1 placed materially fewer cubes than Flow@4 at 4 cubes (paired, p<0.01)."
+    "wording": "The inference-budget effect is established within this trained Flow checkpoint; independent Flow training seeds are still required to establish that it is an algorithm-level effect."
   },
   {
     "id": "C10",
@@ -86,8 +86,8 @@
     "evidence": "gaps 3c +0.043[0.013,0.073], 4c +0.112[0.044,0.180], 5c +0.079[0.017,0.140]; bootstrap on gap differences all include 0; NON-MONOTONIC",
     "raw": "experiments/audit/recomputed_details.json",
     "recomputed": true,
-    "status": "INCORRECT",
-    "wording": "The low-NFE penalty was positive at 3, 4 and 5 cubes. It is NOT monotonic in object count and no increase is statistically established."
+    "status": "NOT ESTABLISHED",
+    "wording": "The current checkpoint-level evidence does not support a monotonic increase in the NFE penalty with object count. The penalty was positive at 3, 4 and 5 cubes; no pairwise increase is statistically established."
   },
   {
     "id": "C11",
@@ -204,7 +204,7 @@
     "raw": "experiments/audit/recomputed_details.json",
     "recomputed": true,
     "status": "VERIFIED",
-    "wording": "For this checkpoint, Flow@1 placed materially fewer cubes than Flow@4 at 5 cubes (paired, p<0.05)."
+    "wording": "The inference-budget effect is established within this trained Flow checkpoint; independent Flow training seeds are still required to establish that it is an algorithm-level effect."
   },
   {
     "id": "C24",

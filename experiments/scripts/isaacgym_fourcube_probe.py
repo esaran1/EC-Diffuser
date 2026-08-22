@@ -176,17 +176,32 @@ def main():
     parser.add_argument("--episodes", type=int, default=96)
     parser.add_argument("--num-entity", type=int, default=4)
     parser.add_argument("--seed", type=int, default=40404)
+    parser.add_argument(
+        "--horizon", type=int, default=None,
+        help="override episode length; default is the native ENTITY_TO_STEPS value. "
+             "Used for the fixed-horizon control, which replays the SAME frozen "
+             "episode set under a different time budget.")
+    parser.add_argument(
+        "--tag", default="",
+        help="suffix for result filenames so a fixed-H run cannot overwrite "
+             "native-H results")
     cli = parser.parse_args()
 
     args = Args()
     args.num_entity = cli.num_entity
-    args.max_episode_length = ENTITY_TO_STEPS[cli.num_entity]
+    native = ENTITY_TO_STEPS[cli.num_entity]
+    args.max_episode_length = cli.horizon if cli.horizon is not None else native
+    if cli.horizon is not None and cli.horizon != native:
+        print(f"[horizon] OVERRIDE: using H={cli.horizon} instead of native H={native} "
+              f"for {cli.num_entity} cubes", flush=True)
     utils.set_global_device(args.device)
     os.makedirs(RESULTS_DIR, exist_ok=True)
 
     env = setup_isaac_env(args)
     env.horizon = args.max_episode_length
-    print(f"[env] num_objects={env.num_objects} horizon={env.horizon}", flush=True)
+    print(f"[env] num_objects={env.num_objects} horizon={env.horizon} "
+          f"native_horizon={native}", flush=True)
+    assert env.horizon == args.max_episode_length, "horizon override did not take effect"
     assert env.num_objects == cli.num_entity, (
         f"env built {env.num_objects} objects, expected {cli.num_entity}")
 
@@ -205,7 +220,8 @@ def main():
     assert episode_set["num_cubes"] == cli.num_entity, "episode set cube count mismatch"
 
     for label, arm, steps in PLAN:
-        out = os.path.join(RESULTS_DIR, f"{cli.num_entity}cube_{label}.json")
+        out = os.path.join(
+            RESULTS_DIR, f"{cli.num_entity}cube{cli.tag}_{label}.json")
         if os.path.exists(out):
             print(f"[skip] {out}", flush=True)
             continue
@@ -256,6 +272,8 @@ def main():
             "latency_mean_ms": stats.get("mean_ms"),
             "latency_per_episode_step_ms": (stats.get("mean_ms") or 0) / env.num_envs,
             "num_cubes": cli.num_entity,
+            "horizon": int(env.horizon),
+            "native_horizon": int(native),
             "episodes": n, "successes": successes,
             "success_rate": successes / n, "success_ci95": [lo, hi],
             "goal_success_frac": mean("goal_success_frac"),

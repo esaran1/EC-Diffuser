@@ -98,7 +98,7 @@ Flow@4 p=0.0166 full / p=0.0213 per-object, bootstrap [-0.140, -0.017]**.
 | # | Prior claim | Audit finding |
 |---|---|---|
 | **1** | Our Gaussian control "brackets" the EC-Diffuser paper | **INCORRECT.** Our checkpoint is the *generalization* variant (100 diffusion steps, 12 layers, hidden 512, H=5 per its `args.json`); the paper's Table 5 standard config is 5 steps, 6 layers, hidden 256, horizon 3. Episode draws are ours, not the paper's. Correct wording: **"broadly consistent with the published 0.894 ± 0.025"**. Not a reproduction. |
-| **2** | The Flow@4−Flow@1 gap *grows* with object count | **REFUTED as stated.** With 5 cubes now in, the gap is **not monotonic**: +0.043 [0.013, 0.073] at 3, +0.112 [0.044, 0.180] at 4, **+0.079 [0.017, 0.140] at 5** — it *falls* from 4 to 5. Bootstrap on the difference of gaps: gap(4)−gap(3) = +0.069 [−0.005, +0.145] p=0.069; gap(5)−gap(3) = +0.036 [−0.033, +0.105] p=0.31; gap(5)−gap(4) = −0.033 [−0.126, +0.057] p=0.49. **No increase is established, and the non-monotonicity actively contradicts a simple scaling story.** What survives: the gap is **positive at all three object counts**. |
+| **2** | The Flow@4−Flow@1 gap *grows* with object count | **The current checkpoint-level evidence does not support a monotonic increase in the NFE penalty with object count.** Gap: +0.043 [0.013, 0.073] at 3, +0.112 [0.044, 0.180] at 4, +0.079 [0.017, 0.140] at 5 — the point estimate falls from 4 to 5. Bootstrap on the difference of gaps: gap(4)−gap(3) = +0.069 [−0.005, +0.145] p=0.069; gap(5)−gap(3) = +0.036 [−0.033, +0.105] p=0.31; gap(5)−gap(4) = −0.033 [−0.126, +0.057] p=0.49. Every interval includes zero. What survives: the gap is **positive at all three object counts**. Note the native-horizon confound (§6.2) is unresolved here, so this evidence cannot yet separate object count from execution time. |
 | **3** | "Flow @4 beats Gaussian" at 4 cubes | **UNVERIFIED.** Paired McNemar p=0.542, Wilcoxon p=0.125, bootstrap CI [−0.008, +0.109] includes zero. Nominal lead only. |
 | **4** | Flow imagination is "worse" (dispersion 0.417 vs 0.566/0.716) | **UNVERIFIED as a quality claim.** Ad hoc statistic, n=48, no CI, transparency threshold 0.5 unjustified, never validated against any independent notion of imagination quality. |
 | **5** | DLP reconstruction "trustworthy" at 1.8/255 | **SUPPORTED BUT LIMITED.** n=6 frames, front view, one episode, under *random* actions rather than the policy's own state distribution. Per-pixel MAE over a mostly-static white table under-weights cube-level error. |
@@ -109,8 +109,9 @@ Flow@4 p=0.0166 full / p=0.0213 per-object, bootstrap [-0.140, -0.017]**.
 **New finding not previously tested:** Flow@1 vs Flow@4 at 4 cubes **is**
 statistically distinguishable — McNemar p=0.0275, Wilcoxon p=0.0041, bootstrap
 [−0.180, −0.044] excluding zero. This is the strongest single comparison in the
-project, and it is a *within-method* NFE contrast, immune to the one-seed
-objection that blocks cross-method claims.
+project. It is a *within-method* NFE contrast: **the inference-budget effect is
+established within this trained Flow checkpoint; independent Flow training seeds
+are still required to establish that it is an algorithm-level effect.**
 
 ---
 
@@ -299,12 +300,13 @@ distribution reference.
 **Run the fixed-horizon control: 4 and 5 cubes at H=100 (matching the 3-cube
 budget) — Flow@4, Flow@1, Gaussian, 96 episodes each, ~1.5 GPU-h.**
 
-The 5-cube probe is now complete and verified, and it **refuted the
-gap-grows-with-object-count hypothesis** (§3.2): the penalty is non-monotonic
-(+0.043 / +0.112 / +0.079 at 3/4/5). Before that non-monotonicity can be
-interpreted at all, the horizon confound must be removed, because episode
-horizon rose 100 -> 150 -> 200 across exactly those three points and is a live
-candidate explanation for the 4 -> 5 dip.
+The 5-cube probe is complete and verified. The current checkpoint-level evidence
+**does not support a monotonic increase in the NFE penalty with object count**
+(§3.2): +0.043 / +0.112 / +0.079 at 3/4/5, with all gap-difference intervals
+including zero. Before that pattern can be interpreted at all, the horizon
+confound must be removed, because episode horizon rose 100 -> 150 -> 200 across
+exactly those three points and is a live candidate explanation for the 4 -> 5
+dip.
 
 At ~1.5 GPU-h this costs roughly 2% of one training seed and is a prerequisite
 for any scaling statement. It must precede training work: additional seeds would
