@@ -1,0 +1,132 @@
+{
+  "seed": 43,
+  "git_sha": "7506ce48cc5e0ccbaf8ae41be7f3b8acf4944ba7",
+  "expected_git_sha": "7506ce48cc5e0ccbaf8ae41be7f3b8acf4944ba7",
+  "dataset_path": "/home/jren313/ecdiff-seed43-7506ce48/ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl",
+  "dataset_sha256": "7abf83b82fcf2bae801ddae6fa6138d505f4957570d638e37da1e5a5290baf12",
+  "dlp_path": "/home/jren313/ecdiff-seed43-7506ce48/ecdiffuser-data/latent_rep_chkpts/dlp_push_6C/dlp_panda_push.pth",
+  "dlp_sha256": "a8a1113048df79c0fd00cdd4539779a7b3c588cefc4e5f26eb50c0482f756236",
+  "effective_config": {
+    "env_config_dir": "env_config/generalization_num_cubes",
+    "model": "models.AdaLNPINTDenoiser",
+    "diffusion": "models.ConditionalFlowMatching",
+    "horizon": 5,
+    "features_dim": 10,
+    "hidden_dim": 512,
+    "projection_dim": 512,
+    "n_heads": 8,
+    "n_layers": 12,
+    "dropout": 0.0,
+    "n_diffusion_steps": 4,
+    "time_scale": 1000.0,
+    "action_weight": 10,
+    "max_particles": null,
+    "positional_bias": false,
+    "multiview": true,
+    "loss_weights": null,
+    "loss_discount": 1,
+    "predict_epsilon": false,
+    "renderer": "utils.ParticleRenderer",
+    "loader": "datasets.GoalDataset",
+    "normalizer": "SafeLimitsNormalizer",
+    "particle_normalizer": "ParticleLimitsNormalizer",
+    "preprocess_fns": [],
+    "clip_denoised": false,
+    "use_padding": true,
+    "max_path_length": 100,
+    "obs_only": false,
+    "action_only": false,
+    "logbase": "data",
+    "prefix": "flow/",
+    "n_steps_per_epoch": 1000,
+    "loss_type": "l1",
+    "n_train_steps": 500000.0,
+    "batch_size": 32,
+    "learning_rate": 8e-05,
+    "gradient_accumulate_every": 2,
+    "ema_decay": 0.995,
+    "save_freq": 1000,
+    "eval_freq": 20,
+    "sample_freq": 0,
+    "n_saves": 5,
+    "save_parallel": false,
+    "n_reference": 4,
+    "bucket": null,
+    "device": "cuda:0",
+    "seed": 43
+  },
+  "effective_config_sha256": "bb21856e7a13d1789ee004a54fb2fed220f149603a17920aeea1633dd181992a",
+  "command": "cd /home/jren313/ecdiff-seed43-7506ce48 && export PYTHONPATH=\"$PWD:$PWD/diffuser\" && WANDB_MODE=offline python diffuser/scripts/train.py --config config.pandapush_flow_single_gpu --num_entity 3 --rand_color --seed 43",
+  "output_directory": "/home/jren313/ecdiff-seed43-7506ce48/data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+  "expected_terminal_checkpoint_internal_step": 499000,
+  "expected_parameter_count": 60646925,
+  "expected_architecture": "AdaLNPINT hidden 512 / 12 layers / projection 512",
+  "prospective_endpoint": {
+    "primary_statistic": "equal-weight mean of per-object success (Flow@4 - Flow@1) across 3-cube, 4-cube and 5-cube at fixed H=100",
+    "seed42_reference_value": 0.0316,
+    "seed42_per_task": {
+      "3cube_H100": 0.043,
+      "4cube_H100": -0.029,
+      "5cube_H100": 0.081
+    },
+    "frozen_in_commit": "afbd02e",
+    "status": "prospective with respect to seed 43; derived from exploratory seed-42 evidence, NOT preregistered before seed 42",
+    "episode_sets": {
+      "3cube_H100": [
+        "replicate0_n96.pkl",
+        "replicate1_n96.pkl",
+        "replicate2_n96.pkl"
+      ],
+      "4cube_H100": "episode_set_4cube.pkl (5962c3ab...)",
+      "5cube_H100": "episode_set_5cube.pkl (f8dff00d...)"
+    }
+  },
+  "gpu_state_at_launch": {
+    "processes": [
+      {
+        "pid": 4074506,
+        "process_name": "/home/jren313/miniconda3/envs/adp/bin/python",
+        "gpu_memory_mib": 274,
+        "cmdline": "/home/jren313/miniconda3/envs/adp/bin/python experiments/exp3_calibration_guarantee.py --group-size 32",
+        "permitted_as_idle_context": true
+      }
+    ],
+    "total_gpu_memory_mib": 509,
+    "total_gpu_utilization_pct": 0,
+    "largest_process_memory_mib": 274,
+    "gate_criteria": {
+      "no_process_at_or_above_mib": 1000,
+      "total_memory_below_mib": 2000,
+      "utilization_at_or_below_pct": 5,
+      "consecutive_checks": 8,
+      "check_interval_seconds": 60
+    },
+    "exclusivity_statement": "no material competing GPU workload detected at launch",
+    "note": "The GPU is NOT described as exclusive. Any process listed above satisfied the relaxed idle-context criterion: below 1000 MiB with total utilization at or below 5%."
+  },
+  "gate_pid": 4073420,
+  "written_at": "2026-08-22T18:01:02-04:00",
+  "launch_verification": {
+    "seed_from_run_log": 43,
+    "architecture_hidden_dim": 512,
+    "architecture_n_layer": 12,
+    "output_directory_created": "/home/jren313/ecdiff-seed43-7506ce48/data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+    "training_pid": 4073420,
+    "start_timestamp": "2026-08-22T18:01:02-04:00",
+    "commit": "7506ce48cc5e0ccbaf8ae41be7f3b8acf4944ba7",
+    "parameter_count_reconciliation": {
+      "printed_by_run": 57480704,
+      "printed_is": "particle_transformer submodule only; seed 42 printed the same value",
+      "canonical_parameters": 60646925,
+      "buffers": 300,
+      "seed43_state_dict_total": 60649640,
+      "seed42_state_dict_total": 60649640,
+      "state_dicts_identical": true,
+      "key_count_both": 282,
+      "keys_only_in_one": [],
+      "shared_keys_with_differing_shapes": [],
+      "verdict": "PASS - architectures identical; the raw checkpoint sum includes buffers and EMA bookkeeping, so it exceeds the .parameters() figure by the same amount for both seeds"
+    },
+    "verdict": "ALL LAUNCH CHECKS PASS - run left alone"
+  }
+}
