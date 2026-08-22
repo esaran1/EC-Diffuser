@@ -155,3 +155,76 @@ placed, object-goal distance difference, per-task effects.
 
 Within-seed p-values do not constitute algorithm-level replication and will not
 be presented as such.
+
+---
+
+# Addendum: exact-commit worktree checks (2026-08-22)
+
+Seed 43 will train from the **exact seed-42 code state**, not current HEAD, to
+remove code-version drift entirely.
+
+## Worktree
+
+```
+git worktree add --detach /home/jren313/ecdiff-seed43-7506ce48 7506ce48cc5e0ccbaf8ae41be7f3b8acf4944ba7
+```
+
+- Worktree HEAD: `7506ce48cc5e0ccbaf8ae41be7f3b8acf4944ba7` (verified)
+- `git status --porcelain` in the worktree: empty (clean)
+- The `fast-generative-policies` workspace was **not** reset or modified;
+  `git worktree list` shows both trees side by side.
+
+`ecdiffuser-data` and `data/` are gitignored and therefore absent from a fresh
+worktree. Resolved as:
+
+- `ecdiffuser-data` -> **symlink** to the main tree's directory, so the training
+  data and DLP checkpoint are the *same bytes*, not a copy.
+- `data/` -> **new empty directory** in the worktree, so seed-43 output is
+  physically incapable of touching seed-42's files.
+
+## Verification performed inside the historical worktree
+
+| Check | Result |
+|---|---|
+| Canonical flow config exists | `diffuser/config/pandapush_flow_single_gpu.py` present |
+| Config identical to current HEAD's copy | `git diff 7506ce48 afbd02e -- <config>` is empty |
+| `--seed` supported | `diffuser/utils/args.py:16` `seed: int = 42` |
+| `--rand_color` -> mode `3C_dlp_randcolor` | hidden 512 / proj 512 / **12 layers** / 8 heads — **PASS** |
+| **Parameter count** | model instantiated from historical `pint.py`: **60,646,925** — **PASS** |
+| Dataset hash from worktree | `7abf83b8...0baf7` — matches |
+| DLP hash from worktree | `a8a11130...756236` — matches |
+| Output cannot overwrite seed 42 | worktree `data/` is empty; seed-42 lives in the main tree |
+| Effective config diff (historical code) | 48 keys, 2 differ: `seed` 42->43 and `_results_folder` — **ONLY seed + output metadata** |
+| Historical code executes | imports of `ConditionalFlowMatching`, `AdaLNPINTDenoiser`, `GoalDataset`, `Trainer` all succeed; `torch 2.1.2+cu121`, `cuda avail True` |
+| `Trainer` signature at `7506ce48` | 17 kwargs, none of the five later additions (`max_grad_norm`, `collect_step_diagnostics`, `adam_betas`, `lr_warmup_steps`, `dataloader_seed`) — confirms the pre-drift code path |
+
+**No incompatibility was found.** The historical commit runs in the current
+environment.
+
+## Launch command (from the worktree)
+
+```bash
+cd /home/jren313/ecdiff-seed43-7506ce48
+source /home/jren313/miniconda3/etc/profile.d/conda.sh
+conda activate ecdiffuser-linux
+export PYTHONPATH="$PWD:$PWD/diffuser"
+WANDB_MODE=offline python diffuser/scripts/train.py \
+    --config config.pandapush_flow_single_gpu \
+    --num_entity 3 \
+    --rand_color \
+    --seed 43
+```
+
+## Launch gate
+
+No unrelated compute process may hold substantial GPU memory. Instantaneous
+utilization of 0% is **not** sufficient; held memory counts as occupied. The
+gate requires zero compute apps and idle memory sustained across repeated checks
+to rule out a gap between jobs.
+
+## Checkpointing (approved, unchanged)
+
+Save schedule untouched. **No terminal save is added for seed 43** — the missing
+final 1,000 updates are exactly seed 42's behaviour. After training, the
+checkpoint's *internal* `step` field is verified rather than the filename;
+expected 499,000 in `state_400000.pt`, evaluated with **EMA** weights.
