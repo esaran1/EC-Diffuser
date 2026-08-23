@@ -159,7 +159,26 @@
       },
       "evidence_of_optimization_compromise": "NONE",
       "reasoning": "No OOM, CUDA error, or non-finite loss in the training log. Batch size, gradient accumulation, learning-rate schedule and RNG stream are unaffected by GPU time-slicing, which changes wall-clock throughput only, not arithmetic results. Memory headroom remained (12.0 of 16.4 GiB used).",
-      "action_taken": "Recorded only. Per protocol the run was neither killed nor restarted; a competing workload that degrades throughput without evidence of compromising the optimization does not warrant discarding a partially completed replication."
+      "action_taken": "Recorded only. Per protocol the run was neither killed nor restarted; a competing workload that degrades throughput without evidence of compromising the optimization does not warrant discarding a partially completed replication.",
+      "resolved": {
+        "cleared_by_step": 60000,
+        "throughput_by_phase_s_per_step": {
+          "0-3000": 0.2339,
+          "3000-30000": 0.3094,
+          "30000-60000": 0.3088,
+          "60000-90000": 0.2339,
+          "90000-101000": 0.2339
+        },
+        "note": "Contention spanned roughly steps 3,000-60,000 (about 12% of training). Throughput returned to the uncontended 0.2339 s/step once the competing job ended, matching seed 42's 0.2343 steady-state median. Affected wall-clock only."
+      }
+    }
+  ],
+  "milestones": [
+    {
+      "checkpoint": "state_100000.pt",
+      "internal_step": 100000,
+      "ema_present": true,
+      "note": "Label floors to 100000; this file is overwritten every 1,000 steps until step 200,000. Seed 42's file at the same label holds its final in-window save at internal step 199,000."
     }
   ]
 }
