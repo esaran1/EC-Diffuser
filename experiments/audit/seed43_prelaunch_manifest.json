@@ -180,5 +180,57 @@
       "ema_present": true,
       "note": "Label floors to 100000; this file is overwritten every 1,000 steps until step 200,000. Seed 42's file at the same label holds its final in-window save at internal step 199,000."
     }
-  ]
+  ],
+  "completion": {
+    "status": "COMPLETE",
+    "final_logged_step": 499900,
+    "terminal_checkpoint": "state_400000.pt",
+    "terminal_internal_step": 499000,
+    "terminal_internal_step_expected": 499000,
+    "terminal_checkpoint_sha256": "c8e00eadfed9b8a0b54c5423864457e5330434b748c50f820cb7d7a0328ac826",
+    "ema_present": true,
+    "checkpoint_internal_steps": {
+      "state_0.pt": 99000,
+      "state_100000.pt": 199000,
+      "state_200000.pt": 299000,
+      "state_300000.pt": 399000,
+      "state_400000.pt": 499000
+    },
+    "matches_seed42_checkpoint_structure": true,
+    "start": "2026-08-22T18:01:02-04:00",
+    "end": "2026-08-24T06:23:36-04:00",
+    "wall_hours": 36.38,
+    "seed42_wall_hours": 39.03,
+    "overall_median_s_per_step": 0.2339,
+    "seed42_steady_state_s_per_step": 0.2343,
+    "errors_in_log": 0,
+    "peak_vram_mib": "UNVERIFIED - torch peak memory was not instrumented for this run, as for seed 42",
+    "contention": {
+      "snapshots": 219,
+      "with_competing_process": 84,
+      "fraction": 0.38,
+      "note": "Competing adp-env jobs were present in 38% of snapshots but were mostly small; overall median throughput 0.2339 s/step still matches seed 42's 0.2343 steady-state median. Wall time 36.38 h sits between the 32.5 h uncontended projection and seed 42's 39.03 h."
+    },
+    "loss_comparison_vs_seed42": {
+      "0-25000": {
+        "seed42": 0.1282,
+        "seed43": 0.12825
+      },
+      "150000-200000": {
+        "seed42": 0.11673,
+        "seed43": 0.11697
+      },
+      "350000-400000": {
+        "seed42": 0.11525,
+        "seed43": 0.11525
+      },
+      "450000-500000": {
+        "seed42": 0.11504,
+        "seed43": 0.11453
+      },
+      "max_abs_window_difference": 0.00056,
+      "note": "Trajectories agree within +/-0.0006 across all windows."
+    },
+    "material_differences_from_seed42": "NONE identified"
+  }
 }
