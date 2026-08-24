@@ -1,0 +1,72 @@
+{
+  "seed42": {
+    "seed": 42,
+    "per_task": {
+      "3cube": {
+        "delta": 0.04282407407407407,
+        "n": 288
+      },
+      "4cube": {
+        "delta": -0.028645833333333332,
+        "n": 96
+      },
+      "5cube": {
+        "delta": 0.08125,
+        "n": 96
+      }
+    },
+    "primary": 0.031809413580246915,
+    "primary_ci95": [
+      0.0022173996913580217,
+      0.06170910493827161
+    ],
+    "bootstrap_p_two_sided": 0.0351
+  },
+  "seed43": {
+    "seed": 43,
+    "per_task": {
+      "3cube": {
+        "delta": 0.0046296296296296285,
+        "n": 288
+      },
+      "4cube": {
+        "delta": 0.06770833333333333,
+        "n": 96
+      },
+      "5cube": {
+        "delta": 0.043750000000000004,
+        "n": 96
+      }
+    },
+    "primary": 0.03869598765432098,
+    "primary_ci95": [
+      0.0046875000000000016,
+      0.07276234567901234
+    ],
+    "bootstrap_p_two_sided": 0.0255
+  },
+  "note": "Primary endpoint frozen before seed-43 training. Stratified paired bootstrap: resample episodes within each task, equal-weight the three task differences.",
+  "classification": {
+    "verdict": "B - directional but heterogeneous replication",
+    "reasoning": "The aggregate endpoint replicates closely: +0.0318 [+0.0022,+0.0617] for seed 42 and +0.0387 [+0.0047,+0.0728] for seed 43, both positive with CIs excluding zero. But the task localisation is entirely different. Seed 42's effect came from 3 and 5 cubes with a NEGATIVE 4-cube gap; seed 43's comes mainly from 4 cubes, with the 3-cube effect nearly vanishing (+0.0428 -> +0.0046, a 9x compression) and the 4-cube gap REVERSING sign (-0.0286 -> +0.0677). Two of three task effects change materially, so this is not a clean replication of the pattern, only of the aggregate direction.",
+    "mechanism_note": "The divergence is driven largely by the Flow@1 arm, which is seed-sensitive in opposite directions by task: seed 43's Flow@1 per-object is HIGHER than seed 42's at 3 cubes (0.9306 vs 0.9051) and LOWER at 4 cubes (0.8177 vs 0.9010) and 5 cubes (0.6708 vs 0.7021). Seed 42's negative 4-cube gap was produced by an unusually strong 1-NFE arm there, and that did not reproduce.",
+    "what_replicated": [
+      "The sign and rough magnitude of the aggregate F4-F1 endpoint (+0.032 vs +0.039).",
+      "A positive F4-F1 gap at 5 cubes in both seeds (+0.0813 vs +0.0438).",
+      "Contact rate of 1.0000 in every arm of both seeds.",
+      "Exact NFE: measured calls per planning decision equal the request in all arms."
+    ],
+    "what_did_not_replicate": [
+      "The 4-cube gap sign (-0.0286 -> +0.0677).",
+      "The 3-cube gap magnitude (+0.0428 -> +0.0046).",
+      "Any claim that the low-NFE penalty grows with object count: seed 42 gave -/+ at 4/5 cubes and seed 43 gives +/+ but DECREASING from 4 to 5."
+    ],
+    "permitted_claim": "Across two independently trained Flow checkpoints, allocating four solver steps instead of one produced a positive overall benefit on the predeclared fixed-H compositional evaluation (+0.032 and +0.039 equal-weight mean per-object success). The benefit's task localisation was NOT stable across training seeds. With N=2 training seeds this is checkpoint-level evidence for an overall inference-budget effect; it is not algorithm-level evidence, and it does not support an NFE-by-object-count interaction.",
+    "not_permitted": [
+      "Any algorithm-level claim from N=2 training seeds.",
+      "Pooling seed-42 and seed-43 episodes as n=192 or n=576.",
+      "'The NFE penalty grows with compositional complexity' - contradicted in both seeds.",
+      "'Flow@4 beats Flow@1 at every object count' - false for seed 42 at 4 cubes."
+    ]
+  }
+}
