@@ -19,6 +19,7 @@ import numpy as np
 NFE = "experiments/isaacgym_control/nfe_study"
 PROBES = "experiments/isaacgym_control/fourcube"
 S43 = "experiments/isaacgym_control/seed43"
+S44 = "experiments/isaacgym_control/seed44"
 TASKS = [("3cube", 3), ("4cube", 4), ("5cube", 5)]
 
 
@@ -41,6 +42,10 @@ def seed42_files(task, nfe):
 
 def seed43_files(task, nfe):
     return [f"{S43}/seed43_{task}_H100_flow_nfe{nfe}.json"]
+
+
+def seed44_files(task, nfe):
+    return [f"{S44}/seed44_{task}_H100_flow_nfe{nfe}.json"]
 
 
 def paired_diffs(f4_paths, f1_paths, cubes):
@@ -84,10 +89,11 @@ def endpoint(loader, seed_label, rng_seed=0, n_boot=20000):
 def main():
     s42 = endpoint(seed42_files, 42)
     s43 = endpoint(seed43_files, 43)
+    s44 = endpoint(seed44_files, 44)
 
     print("=== PRIMARY ENDPOINT: equal-weight mean of per-object F4-F1 at H=100 ===")
     print(f"{'seed':>6s} {'3 cubes':>12s} {'4 cubes':>12s} {'5 cubes':>12s} {'mean':>12s} {'95% CI':>22s}")
-    for r in (s42, s43):
+    for r in (s42, s43, s44):
         cells = []
         for t, _ in TASKS:
             v = r["per_task"].get(t)
@@ -99,16 +105,31 @@ def main():
             print(f"{r['seed']:>6d} " + " ".join(cells) + f" {r['primary']:+12.4f} {ci:>22s}")
 
     print("\n  n per task:")
-    for r in (s42, s43):
+    for r in (s42, s43, s44):
         ns = {t: (r["per_task"][t]["n"] if r["per_task"].get(t) else None) for t, _ in TASKS}
         print(f"    seed {r['seed']}: {ns}")
 
-    print("\n  Experimental unit: 2 independently trained Flow models.")
+    print("\n  Experimental unit: independently trained Flow models (see N above).")
     print("  Bootstrap CIs are CHECKPOINT-LEVEL (uncertainty over episodes given a")
     print("  trained model). They are not algorithm-level evidence, and episodes")
     print("  are never pooled across training seeds.")
 
-    out = {"seed42": s42, "seed43": s43,
+    # Three-seed descriptive summary. N=3 training seeds is the experimental
+    # unit; episodes are never pooled across seeds.
+    vals = [r["primary"] for r in (s42, s43, s44) if r["primary"] is not None]
+    three = None
+    if len(vals) == 3:
+        import statistics as st
+        three = {"values": vals, "mean": float(np.mean(vals)),
+                 "sd_sample": float(st.stdev(vals)), "min": float(min(vals)),
+                 "max": float(max(vals)), "range": float(max(vals) - min(vals)), "n_seeds": 3}
+        print("\n=== THREE-SEED AGGREGATE (N=3 independently trained Flow models) ===")
+        print(f"  values : {[round(v,4) for v in vals]}")
+        print(f"  mean {three['mean']:+.4f}   sd {three['sd_sample']:.4f}   "
+              f"range [{three['min']:+.4f}, {three['max']:+.4f}]")
+        print("  N=3 is small: this is descriptive replication, not a population estimate.")
+
+    out = {"seed42": s42, "seed43": s43, "seed44": s44, "three_seed": three,
            "note": ("Primary endpoint frozen before seed-43 training. Stratified "
                     "paired bootstrap: resample episodes within each task, "
                     "equal-weight the three task differences.")}
