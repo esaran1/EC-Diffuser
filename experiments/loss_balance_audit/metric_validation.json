@@ -1,0 +1,110 @@
+{
+  "phase2_feature_layout": {
+    "source": "dlp_utils.get_dlp_rep:261-267 (encoder) and get_recon_from_dlps:296-303 (decoder)",
+    "layout": {
+      "0:2": "pixel_xy (position)",
+      "2:4": "mu_scale",
+      "4:5": "mu_depth",
+      "5:9": "mu_features (appearance, learned_feature_dim=4)",
+      "9": "obj_on (transparency)"
+    },
+    "raw_stats": {
+      "pos_x": {
+        "mean": -0.4045,
+        "std": 0.2694,
+        "range": 1.9026
+      },
+      "pos_y": {
+        "mean": -0.0173,
+        "std": 0.369,
+        "range": 2.397
+      },
+      "scale_x": {
+        "mean": -1.2986,
+        "std": 0.2756,
+        "range": 1.8766
+      },
+      "scale_y": {
+        "mean": -1.2723,
+        "std": 0.2603,
+        "range": 1.2271
+      },
+      "depth": {
+        "mean": 0.1371,
+        "std": 0.6432,
+        "range": 5.4041
+      },
+      "vis_f0": {
+        "mean": -0.2855,
+        "std": 0.9171,
+        "range": 24.8427
+      },
+      "vis_f1": {
+        "mean": 0.5073,
+        "std": 1.104,
+        "range": 21.007
+      },
+      "vis_f2": {
+        "mean": 0.7083,
+        "std": 0.7325,
+        "range": 12.9682
+      },
+      "vis_f3": {
+        "mean": -0.4088,
+        "std": 0.9566,
+        "range": 23.4916
+      },
+      "transp": {
+        "mean": 0.9889,
+        "std": 0.0091,
+        "range": 0.0763
+      }
+    },
+    "conclusion": "Feature ranges span ~325x (vis_f0 24.84 vs transp 0.076). A raw Euclidean distance over all 10 dims is dominated by appearance channels and is NOT a meaningful state distance. Per-dimension normalisation is required, and matching should use position only."
+  },
+  "phase2_particle_geometry": {
+    "mean_pairwise_particle_distance": 0.6041,
+    "p5_nearest_neighbour_distance": 0.0793,
+    "index_wise_pos_change_t_to_t1": 0.39465,
+    "note": "Index-wise change between consecutive frames (0.395) is comparable to the mean pairwise spread (0.604) and exceeds the 5th-percentile neighbour distance by ~5x, so particle indices are not a reliable correspondence across time."
+  },
+  "phase4_sanity_checks": {
+    "identity": {
+      "pos_z": 0.0,
+      "chamfer": 0.0
+    },
+    "random_permutation": {
+      "pos_z": 0.0,
+      "chamfer": 0.0
+    },
+    "jitter_0.001": {
+      "pos_z": 0.0026,
+      "chamfer": 0.00125
+    },
+    "jitter_0.005": {
+      "pos_z": 0.0127,
+      "chamfer": 0.00603
+    },
+    "jitter_0.02": {
+      "pos_z": 0.0476,
+      "chamfer": 0.02069
+    },
+    "jitter_0.08": {
+      "pos_z": 0.1711,
+      "chamfer": 0.06225
+    },
+    "jitter_0.30": {
+      "pos_z": 0.4846,
+      "chamfer": 0.14088
+    },
+    "visual_only_jitter": {
+      "pos_z": 0.0,
+      "chamfer": 0.0
+    },
+    "collapse_to_centroid": {
+      "pos_z": 0.7942,
+      "chamfer": 0.24652
+    },
+    "verdict": "USABLE - exactly permutation invariant, strictly monotone in displacement, block-separating, detects collapse"
+  }
+}
