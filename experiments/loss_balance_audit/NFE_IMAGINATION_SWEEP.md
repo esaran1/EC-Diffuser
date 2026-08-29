@@ -216,3 +216,20 @@ change.
 It also sharpens the residual-gap question: if Heun closes most of the remaining
 1.17x, the gap was integration; if it does not, the residual is genuinely
 model/objective and the loss question returns with actual motivation.
+
+---
+
+## SUPERSEDED IN PART (see MATCHED_NFE_SOLVER_STUDY.md)
+
+This report described the NFE curve as "consistent with first-order integration
+error" and explicitly declined to claim it as proof. The subsequent matched-NFE
+solver study **falsified that mechanism as the explanation for the state
+deficit**: integrating the same learned field more accurately (midpoint at equal
+NFE; RK4 at 256 NFE) does not produce better state predictions, and the
+Flow-Gaussian residual survives essentially exact integration.
+
+The measured NFE curve itself stands unchanged. Its interpretation does not:
+the gains from NFE 1->8 are real but are not gains from converging to the ODE
+solution. The consequent downgrade of the loss hypothesis to LOWER PRIORITY is
+withdrawn; it returns to PLAUSIBLE (still not proven, and still not singled out
+above representation or formulation).
