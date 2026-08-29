@@ -1,0 +1,448 @@
+{
+  "slot_correspondence": {
+    "s42": {
+      "mean_slotwise_distance": 0.026820985600352287,
+      "mean_optimally_matched_distance": 0.024829646572470665,
+      "ratio_slot_over_optimal": 1.0802000761032104,
+      "fraction_where_identity_is_optimal": 0.07682291666666667
+    },
+    "s43": {
+      "mean_slotwise_distance": 0.02710016630589962,
+      "mean_optimally_matched_distance": 0.02516690082848072,
+      "ratio_slot_over_optimal": 1.0768177509307861,
+      "fraction_where_identity_is_optimal": 0.08854166666666667
+    },
+    "s44": {
+      "mean_slotwise_distance": 0.02597622573375702,
+      "mean_optimally_matched_distance": 0.02405308373272419,
+      "ratio_slot_over_optimal": 1.0799540281295776,
+      "fraction_where_identity_is_optimal": 0.06901041666666667
+    }
+  },
+  "decomposition_e16_anchored": {
+    "s42": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.019426336542751957,
+        "median": 0.01433202504568418,
+        "ci": [
+          0.004155489429100723,
+          0.034777441067935316
+        ],
+        "frac_negative": 0.4596354166666667
+      },
+      "parallel_future": {
+        "mean": 0.011663406601201132,
+        "median": 0.0029162304708734155,
+        "ci": [
+          0.006504147666847379,
+          0.01708077689659906
+        ]
+      },
+      "orthogonal_future_mean": 0.2597348722629249,
+      "frac_of_shift_along_target_axis": 0.16636789825568452,
+      "displacement_magnitude_mean": 0.2664962708950043,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.2817720051184847,
+          1.7517044380359121e-15
+        ],
+        "parallel_future": [
+          -0.27631176005343977,
+          6.329462579058698e-15
+        ],
+        "orthogonal_future": [
+          -0.027333703288952786,
+          0.4494086226557298
+        ],
+        "displacement_magnitude": [
+          -0.03143408594612282,
+          0.3843424804305696
+        ]
+      }
+    },
+    "s43": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.029715166507130002,
+        "median": 0.007984122964107708,
+        "ci": [
+          0.015118312213085799,
+          0.044205345433056646
+        ],
+        "frac_negative": 0.4752604166666667
+      },
+      "parallel_future": {
+        "mean": 0.01660117965889185,
+        "median": 0.0020136869279667735,
+        "ci": [
+          0.011073291615332437,
+          0.02250495700865826
+        ]
+      },
+      "orthogonal_future_mean": 0.2694019730212555,
+      "frac_of_shift_along_target_axis": 0.15840293407353753,
+      "displacement_magnitude_mean": 0.2767322361469269,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.23262103409387536,
+          6.763507626488507e-11
+        ],
+        "parallel_future": [
+          -0.21787462109759284,
+          1.0505815928234679e-09
+        ],
+        "orthogonal_future": [
+          -0.09686485258163324,
+          0.007223856360605428
+        ],
+        "displacement_magnitude": [
+          -0.1011306185967366,
+          0.005027852884257904
+        ]
+      }
+    },
+    "s44": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.03208583955735656,
+        "median": 0.0277529022171977,
+        "ci": [
+          0.017809852630492527,
+          0.04660396829617074
+        ],
+        "frac_negative": 0.4322916666666667
+      },
+      "parallel_future": {
+        "mean": 0.014677588836548239,
+        "median": 0.004267744021490216,
+        "ci": [
+          0.009912185073487005,
+          0.019622315516020682
+        ]
+      },
+      "orthogonal_future_mean": 0.25132645543393056,
+      "frac_of_shift_along_target_axis": 0.16104883045537519,
+      "displacement_magnitude_mean": 0.2575853765010834,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.2130601309630177,
+          2.469192241689168e-09
+        ],
+        "parallel_future": [
+          -0.2201794542600068,
+          6.929142138102112e-10
+        ],
+        "orthogonal_future": [
+          -0.08179863916802159,
+          0.023391570391398032
+        ],
+        "displacement_magnitude": [
+          -0.0830930953014718,
+          0.021280175895441317
+        ]
+      }
+    }
+  },
+  "decomposition_e512_anchored": {
+    "s42": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.22860118003580898,
+        "median": 0.2237088789341215,
+        "ci": [
+          0.20896041906660412,
+          0.2482931012014874
+        ],
+        "frac_negative": 0.203125
+      },
+      "parallel_future": {
+        "mean": 0.10150342062828106,
+        "median": 0.03175262734293938,
+        "ci": [
+          0.09052237248036667,
+          0.11319455876154809
+        ]
+      },
+      "orthogonal_future_mean": 0.23318273891345598,
+      "frac_of_shift_along_target_axis": 0.292452297762621,
+      "displacement_magnitude_mean": 0.2664962708950043,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.1916636961427411,
+          8.670506993528741e-08
+        ],
+        "parallel_future": [
+          -0.15967525956939624,
+          8.732074684090488e-06
+        ],
+        "orthogonal_future": [
+          -0.02554481916608881,
+          0.4796403884987498
+        ],
+        "displacement_magnitude": [
+          -0.03143408594612282,
+          0.3843424804305696
+        ]
+      }
+    },
+    "s43": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.2342707259274811,
+        "median": 0.2157622491553016,
+        "ci": [
+          0.21553460597599677,
+          0.2528593676035848
+        ],
+        "frac_negative": 0.20703125
+      },
+      "parallel_future": {
+        "mean": 0.10598267031643142,
+        "median": 0.03201058693230152,
+        "ci": [
+          0.09484690576697025,
+          0.11759449479225927
+        ]
+      },
+      "orthogonal_future_mean": 0.24233472811465617,
+      "frac_of_shift_along_target_axis": 0.2847415973090283,
+      "displacement_magnitude_mean": 0.2767322361469269,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.22280190708168368,
+          4.29122674773816e-10
+        ],
+        "parallel_future": [
+          -0.20820690338731526,
+          5.726720328839999e-09
+        ],
+        "orthogonal_future": [
+          -0.0938938606091078,
+          0.009225614718415728
+        ],
+        "displacement_magnitude": [
+          -0.1011306185967366,
+          0.005027852884257904
+        ]
+      }
+    },
+    "s44": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.22836156343929873,
+        "median": 0.2282487038348282,
+        "ci": [
+          0.210476471086998,
+          0.24586211614975464
+        ],
+        "frac_negative": 0.18229166666666666
+      },
+      "parallel_future": {
+        "mean": 0.0910600355035361,
+        "median": 0.03400956094264984,
+        "ci": [
+          0.08172434994029723,
+          0.10069185157150283
+        ]
+      },
+      "orthogonal_future_mean": 0.23054936205153354,
+      "frac_of_shift_along_target_axis": 0.2800601509364837,
+      "displacement_magnitude_mean": 0.2575853765010834,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.2260586014787487,
+          2.3470658234185174e-10
+        ],
+        "parallel_future": [
+          -0.2030944558791366,
+          1.3593418066105178e-08
+        ],
+        "orthogonal_future": [
+          -0.07345386878775496,
+          0.04184611302257781
+        ],
+        "displacement_magnitude": [
+          -0.0830930953014718,
+          0.021280175895441317
+        ]
+      }
+    }
+  },
+  "decomposition_independent_anchored": {
+    "s42": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.019426336542751957,
+        "median": 0.01433202504568418,
+        "ci": [
+          0.004076408707530239,
+          0.03460187675530172
+        ],
+        "frac_negative": 0.4596354166666667
+      },
+      "parallel_future": {
+        "mean": 0.011663406601201132,
+        "median": 0.0029162304708734155,
+        "ci": [
+          0.006434544682880035,
+          0.017060557888066798
+        ]
+      },
+      "orthogonal_future_mean": 0.2597348722629249,
+      "frac_of_shift_along_target_axis": 0.16636789825568452,
+      "displacement_magnitude_mean": 0.2664962708950043,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.2817720051184847,
+          1.7517044380359121e-15
+        ],
+        "parallel_future": [
+          -0.27631176005343977,
+          6.329462579058698e-15
+        ],
+        "orthogonal_future": [
+          -0.027333703288952786,
+          0.4494086226557298
+        ],
+        "displacement_magnitude": [
+          -0.03143408594612282,
+          0.3843424804305696
+        ]
+      }
+    },
+    "s43": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.029715166507130002,
+        "median": 0.007984122964107708,
+        "ci": [
+          0.015246891998747706,
+          0.04427955117351083
+        ],
+        "frac_negative": 0.4752604166666667
+      },
+      "parallel_future": {
+        "mean": 0.01660117965889185,
+        "median": 0.0020136869279667735,
+        "ci": [
+          0.010968013189530742,
+          0.02240411232160681
+        ]
+      },
+      "orthogonal_future_mean": 0.2694019730212555,
+      "frac_of_shift_along_target_axis": 0.15840293407353753,
+      "displacement_magnitude_mean": 0.2767322361469269,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.23262103409387536,
+          6.763507626488507e-11
+        ],
+        "parallel_future": [
+          -0.21787462109759284,
+          1.0505815928234679e-09
+        ],
+        "orthogonal_future": [
+          -0.09686485258163324,
+          0.007223856360605428
+        ],
+        "displacement_magnitude": [
+          -0.1011306185967366,
+          0.005027852884257904
+        ]
+      }
+    },
+    "s44": {
+      "n": 768,
+      "cos_future": {
+        "mean": 0.03208583955735656,
+        "median": 0.0277529022171977,
+        "ci": [
+          0.01741695621261233,
+          0.04669638672082791
+        ],
+        "frac_negative": 0.4322916666666667
+      },
+      "parallel_future": {
+        "mean": 0.014677588836548239,
+        "median": 0.004267744021490216,
+        "ci": [
+          0.009952744811350082,
+          0.019652595767665083
+        ]
+      },
+      "orthogonal_future_mean": 0.25132645543393056,
+      "frac_of_shift_along_target_axis": 0.16104883045537519,
+      "displacement_magnitude_mean": 0.2575853765010834,
+      "spearman_vs_delta_err": {
+        "cos_future": [
+          -0.2130601309630177,
+          2.469192241689168e-09
+        ],
+        "parallel_future": [
+          -0.2201794542600068,
+          6.929142138102112e-10
+        ],
+        "orthogonal_future": [
+          -0.08179863916802159,
+          0.023391570391398032
+        ],
+        "displacement_magnitude": [
+          -0.0830930953014718,
+          0.021280175895441317
+        ]
+      }
+    }
+  },
+  "interpolation": {
+    "s42": [
+      0.04379840707891466,
+      0.044746524794997335,
+      0.045623083108997285,
+      0.04561483592260629,
+      0.045440241820566975
+    ],
+    "s43": [
+      0.042964406065342096,
+      0.043877708911168156,
+      0.044563907898312514,
+      0.04447687539868639,
+      0.04418570749597469
+    ],
+    "s44": [
+      0.04266088920121547,
+      0.04361245646335495,
+      0.04447307740338147,
+      0.04450903601294461,
+      0.04443042063576286
+    ],
+    "alphas": [
+      0.0,
+      0.25,
+      0.5,
+      0.75,
+      1.0
+    ],
+    "monotone_increasing_all_seeds": false
+  },
+  "mean_shift": {
+    "s42": {
+      "mean_signed_displacement_norm": 0.003604843048378825,
+      "mean_unsigned_displacement": 0.026820985600352287,
+      "consistency_ratio_signed_over_unsigned": 0.13440382475472776,
+      "typical_E16_to_GT": 0.04379840707891466
+    },
+    "s43": {
+      "mean_signed_displacement_norm": 0.0033902041614055634,
+      "mean_unsigned_displacement": 0.02710016258060932,
+      "consistency_ratio_signed_over_unsigned": 0.1250990340490178,
+      "typical_E16_to_GT": 0.042964406065342096
+    },
+    "s44": {
+      "mean_signed_displacement_norm": 0.0035032809246331453,
+      "mean_unsigned_displacement": 0.02597622387111187,
+      "consistency_ratio_signed_over_unsigned": 0.13486490346001137,
+      "typical_E16_to_GT": 0.04266088920121547
+    }
+  }
+}
