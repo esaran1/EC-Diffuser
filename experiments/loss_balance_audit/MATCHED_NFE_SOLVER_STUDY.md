@@ -297,3 +297,48 @@ it must precede any objective-level work.
 
 No training. No loss modification. No MeanFlow. No VP. No new seeds. No full
 control evaluation.
+
+---
+
+# CORRECTIONS (see SOLVER_REFERENCE_AUDIT.md)
+
+A subsequent no-training audit found an **error in this report's reference
+analysis**. The following are **WITHDRAWN**:
+
+1. **"The Flow ODE is not integrable to machine precision."** False. That
+   conclusion came from measuring convergence with an unnormalized full-tensor
+   L2 norm that **included the 7,680 conditioned coordinates**. Measured
+   correctly — raw generated tensor, unconditioned coordinates only, normalized
+   by element count — Euler, midpoint and RK4 all converge monotonically and
+   agree at 512 NFE to mean_abs ~5e-4. **A converged reference exists**
+   (Euler@512).
+2. **The "reference uncertainty floor" (~0.14-0.17)** and **the entire
+   numerical-error column (section 5B)**, which were computed against a
+   non-converged RK4@64 endpoint.
+3. **"Euler@16 has already reached the Flow ODE's exact limit."** Not
+   established as stated.
+4. **"the residual is model-level"** — softened. Against a converged reference
+   the residual is **+0.00242, not +0.00712**, with a CI that spans Gaussian.
+
+**Also corrected:** the field was described as "rough". It is not — the network
+is 5x GELU with no ReLU/clamp/threshold, and local regularity is flat from 1e-2
+down to 1e-5 in both state and time. The real cause of the lost convergence
+order is `time_scale = 1000`: the fastest time-embedding mode has period
+Δt = 0.0063, so Euler@16's step spans ~10 full oscillations and no method
+reaches its formal order below ~512 NFE. A frozen-field control reproduces this
+exactly — the same solver code recovers textbook orders at time_scale=1 and
+collapses to order ~1 at time_scale=1000.
+
+**WHAT STANDS (no solver bug was found):**
+
+- **At matched practical NFE, canonical Euler gives lower ground-truth
+  imagination error than midpoint and Heun, across all three Flow seeds
+  (sections 5A, 7, 8).** This is the central empirical result and it is
+  unaffected.
+- The Heun mechanism (section 9), now reinforced by an RK-stage OOD analysis.
+- Euler bit-identity, determinism, and NFE accounting.
+- The practical recommendation: **use Euler**.
+
+Section 13's loss classification ("C — plausible again") is superseded: with a
+converged reference the residual is ~3x smaller and not significantly different
+from Gaussian, returning the loss hypothesis to **B — LOWER PRIORITY**.

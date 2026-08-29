@@ -1,0 +1,16 @@
+{
+  "perfect_identity": {
+    "mean": 0.0,
+    "max": 0.0,
+    "n": 96
+  },
+  "perfect_roundtrip_normalize_unnormalize": {
+    "mean": 4.581970493762929e-08,
+    "max": 7.182245553849498e-08,
+    "n": 96
+  },
+  "copy_current": {
+    "mean": 0.07352963867985333,
+    "n": 96
+  }
+}
