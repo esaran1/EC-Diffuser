@@ -13,6 +13,7 @@ import argparse, json, os, pickle, sys
 import isaacgym  # noqa: F401,E402  must precede torch
 import numpy as np, torch
 sys.path.insert(0, "experiments/loss_balance_audit")
+sys.path.insert(0, "experiments/scripts")
 from latent_metric import training_stats, block_errors, chamfer_position
 
 import diffuser.utils as utils
