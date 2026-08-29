@@ -1,0 +1,222 @@
+{
+  "protocol": {
+    "episode_set_sha": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+    "n_noise": 8,
+    "noise_bank_seed": 20260830,
+    "noise_bank_construction": "one torch.Generator(cpu) seeded NOISE_BANK_SEED per training seed; at each rollout step it draws N_NOISE tensors of shape (num_envs, horizon, transition_dim) in order; index i is reused verbatim by every arm",
+    "arms": [
+      "euler@16",
+      "euler@512"
+    ],
+    "advance_arm": "euler@16 noise index 0",
+    "within_run": "Isaac Gym/DLP observations are not bit-reproducible across processes; all endpoints and ground-truth futures used in paired comparisons are generated inside this single run"
+  },
+  "determinism_checks": {
+    "s42": {
+      "euler16_determinism_maxabs": 0.0
+    },
+    "s43": {
+      "euler16_determinism_maxabs": 0.0
+    },
+    "s44": {
+      "euler16_determinism_maxabs": 0.0
+    }
+  },
+  "per_seed": {
+    "s42_euler16": {
+      "mean_single_sample_error": 0.04379840707891466,
+      "best_of_8": 0.03211312343288834,
+      "dispersion_mean_pairwise": 0.039248544452199156,
+      "dispersion_median_pairwise": 0.036629232178841314,
+      "medoid_error": 0.038013883672344186
+    },
+    "s42_euler512": {
+      "mean_single_sample_error": 0.045440241820566975,
+      "best_of_8": 0.03320837267286455,
+      "dispersion_mean_pairwise": 0.04304093491026877,
+      "dispersion_median_pairwise": 0.04023216807815645,
+      "medoid_error": 0.03945227270014584
+    },
+    "s43_euler16": {
+      "mean_single_sample_error": 0.042964406065342096,
+      "best_of_8": 0.031473901035496965,
+      "dispersion_mean_pairwise": 0.03806461572076798,
+      "dispersion_median_pairwise": 0.03627514100766607,
+      "medoid_error": 0.0367563902012383
+    },
+    "s43_euler512": {
+      "mean_single_sample_error": 0.04418570749597469,
+      "best_of_8": 0.031352204396777474,
+      "dispersion_mean_pairwise": 0.04181044222492519,
+      "dispersion_median_pairwise": 0.041345873581511636,
+      "medoid_error": 0.03775115997996181
+    },
+    "s44_euler16": {
+      "mean_single_sample_error": 0.04266088920121547,
+      "best_of_8": 0.03179450721169511,
+      "dispersion_mean_pairwise": 0.03760958692527354,
+      "dispersion_median_pairwise": 0.037416737992316484,
+      "medoid_error": 0.037276012260311596
+    },
+    "s44_euler512": {
+      "mean_single_sample_error": 0.04443042063576286,
+      "best_of_8": 0.03294346529097917,
+      "dispersion_mean_pairwise": 0.041285975854927014,
+      "dispersion_median_pairwise": 0.04072536854073405,
+      "medoid_error": 0.0392635042371694
+    }
+  },
+  "paired_per_noise_E512_minus_E16": {
+    "s42": {
+      "mean": 0.0016418347416523222,
+      "median": 0.001544436439871788,
+      "ci": [
+        0.001282330360542498,
+        0.0020007149768086186
+      ],
+      "frac_noises_favouring_E16": 0.66015625,
+      "n": 768
+    },
+    "s43": {
+      "mean": 0.0012213014306325931,
+      "median": 0.0012721531093120575,
+      "ci": [
+        0.0008668439096557752,
+        0.0015755194028012434
+      ],
+      "frac_noises_favouring_E16": 0.6197916666666666,
+      "n": 768
+    },
+    "s44": {
+      "mean": 0.001769531434547389,
+      "median": 0.0016423705965280533,
+      "ci": [
+        0.0014264015802533927,
+        0.0021144700747148205
+      ],
+      "frac_noises_favouring_E16": 0.68359375,
+      "n": 768
+    },
+    "pooled_descriptive": {
+      "mean": 0.001544222535610768,
+      "median": 0.0015030819922685623,
+      "ci": [
+        0.001336429518404556,
+        0.0017462386709060714
+      ],
+      "frac_noises_favouring_E16": 0.6545138888888888,
+      "n": 2304
+    }
+  },
+  "displacement": {
+    "s42": {
+      "mean_displacement": 0.015682660705351736,
+      "spearman_displacement_vs_delta_gt": {
+        "rho": 0.06677924987665791,
+        "p": 0.0643580171614694
+      }
+    },
+    "s43": {
+      "mean_displacement": 0.015564537671404347,
+      "spearman_displacement_vs_delta_gt": {
+        "rho": 0.033900332095130825,
+        "p": 0.3481349589718732
+      }
+    },
+    "s44": {
+      "mean_displacement": 0.01539407308033939,
+      "spearman_displacement_vs_delta_gt": {
+        "rho": 0.04103415876457853,
+        "p": 0.2560410667030717
+      }
+    }
+  },
+  "best_of_K": {
+    "euler16": [
+      0.0432347800491617,
+      0.037942599104119124,
+      0.03440533492573498,
+      0.03179384389336013
+    ],
+    "euler512": [
+      0.04475188105795597,
+      0.0392321645160943,
+      0.03537773183836382,
+      0.03250134745354039
+    ]
+  },
+  "summary": {
+    "mean_single_sample_error_euler16": {
+      "mean": 0.04314123411515741,
+      "sd": 0.0005890143036653959,
+      "per_seed": [
+        0.04379840707891466,
+        0.042964406065342096,
+        0.04266088920121547
+      ]
+    },
+    "mean_single_sample_error_euler512": {
+      "mean": 0.044685456650768174,
+      "sd": 0.0006650162551452403,
+      "per_seed": [
+        0.045440241820566975,
+        0.04418570749597469,
+        0.04443042063576286
+      ]
+    },
+    "best_of_8_euler16": {
+      "mean": 0.03179384389336013,
+      "sd": 0.00031961171493720826,
+      "per_seed": [
+        0.03211312343288834,
+        0.031473901035496965,
+        0.03179450721169511
+      ]
+    },
+    "best_of_8_euler512": {
+      "mean": 0.03250134745354039,
+      "sd": 0.0010039628000698872,
+      "per_seed": [
+        0.03320837267286455,
+        0.031352204396777474,
+        0.03294346529097917
+      ]
+    },
+    "dispersion_euler16": {
+      "mean": 0.03830758236608022,
+      "sd": 0.0008460614852463432,
+      "per_seed": [
+        0.039248544452199156,
+        0.03806461572076798,
+        0.03760958692527354
+      ]
+    },
+    "dispersion_euler512": {
+      "mean": 0.04204578433004033,
+      "sd": 0.0009008383602575586,
+      "per_seed": [
+        0.04304093491026877,
+        0.04181044222492519,
+        0.041285975854927014
+      ]
+    },
+    "medoid_error_euler16": {
+      "mean": 0.03734876204463136,
+      "sd": 0.0006318954468956184,
+      "per_seed": [
+        0.038013883672344186,
+        0.0367563902012383,
+        0.037276012260311596
+      ]
+    },
+    "medoid_error_euler512": {
+      "mean": 0.03882231230575902,
+      "sd": 0.0009324343740710084,
+      "per_seed": [
+        0.03945227270014584,
+        0.03775115997996181,
+        0.0392635042371694
+      ]
+    }
+  }
+}

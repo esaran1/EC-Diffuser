@@ -1,0 +1,25 @@
+{
+  "protocol": {
+    "episode_set_sha": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+    "n_noise": 8,
+    "noise_bank_seed": 20260830,
+    "noise_bank_construction": "one torch.Generator(cpu) seeded NOISE_BANK_SEED per training seed; at each rollout step it draws N_NOISE tensors of shape (num_envs, horizon, transition_dim) in order; index i is reused verbatim by every arm",
+    "arms": [
+      "euler@16",
+      "euler@512"
+    ],
+    "advance_arm": "euler@16 noise index 0",
+    "within_run": "Isaac Gym/DLP observations are not bit-reproducible across processes; all endpoints and ground-truth futures used in paired comparisons are generated inside this single run"
+  },
+  "determinism_checks": {
+    "s42": {
+      "euler16_determinism_maxabs": 0.0
+    },
+    "s43": {
+      "euler16_determinism_maxabs": 0.0
+    },
+    "s44": {
+      "euler16_determinism_maxabs": 0.0
+    }
+  }
+}
