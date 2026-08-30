@@ -1,0 +1,31 @@
+work,arxiv_or_venue,year,family,robot,joint_state_action,one_step,variable_nfe,scratch_or_distill,consistency_obj,meanflow,stepsize_cond,adaptive_compute,objective_scope,retains_aux_state_obj,entity_centric,compositional_eval,strongest_overlap
+Shortcut Models,2410.12557 ICLR25 Oral,2025,shortcut/flow-map,no,no,yes,yes,scratch,no,no,YES,no,ALL coords,n/a,no,no,step-size conditioning we would reuse
+MeanFlow,2505.13447 NeurIPS25 Oral,2025,average-velocity,no,no,yes,yes,scratch,no,YES,interval (t r),no,ALL coords,n/a,no,no,interval-average objective
+Consistency Flow Matching,2407.02398,2024,velocity-consistency,no,no,few-step,no,scratch,YES,no,no,no,ALL coords,n/a,no,no,consistency on FM
+Rectified Flow/Reflow,2209.03003,2022,rectified flow,no,no,few-step,no,iterative retrain,no,no,no,no,ALL coords,n/a,no,no,path straightening
+Diffusion Policy,2303.04137 RSS23,2023,DDPM,yes,no,no,no,scratch,no,no,no,no,action only,no,no,no,baseline policy family
+EC-Diffuser,2412.18907 ICLR25,2025,DDPM,yes,YES,no,no,scratch,no,no,no,no,ALL coords uniform,n/a (no low-step obj),YES,YES,our base model
+MP1,2507.10543 AAAI26,2026,MeanFlow,yes,no,YES,no,scratch,no,YES,interval,no,action only,no,no,no,1-NFE manipulation baseline
+ManiFlow,2509.01819 CoRL25,2025,FM+consistency,yes,no,1-2 step,no,scratch,YES,no,no,no,action only,no,no,no,consistency FM policy
+Consistency Policy,CoRL24,2024,CTM distillation,yes,no,YES,no,distill,YES,no,no,no,action only,no,no,no,distilled 1-step policy
+ManiCM,2406.01586,2024,consistency,yes,no,YES,no,distill,YES,no,no,no,action only,no,no,no,distilled 1-step policy
+FlowPolicy,2412.04987 AAAI25,2025,consistent FM,yes,no,YES,no,scratch,YES,no,no,no,action only,no,no,no,consistent FM policy
+OneDP,NVIDIA,2024,KL distillation,yes,no,YES,no,distill,no,no,no,no,action only,no,no,no,1-step policy
+AdaFlow,NeurIPS24,2024,variance-adaptive FM,yes,no,no,YES,scratch,no,no,no,YES,action only,no,no,no,adaptive NFE
+SnapFlow,2604.05656,2026,progressive self-distill,yes,no,YES,no,distill,YES,no,no,no,ALL - split by SAMPLE not subspace,no,no,no,mixes objectives across batch not across tensor
+Let It Be Simple,2606.05737,2026,FM + high-noise time bias,yes,no,YES,no,scratch,no,no,no,no,action only,explicitly none,no,no,cheap 1-step baseline to run
+FreqPolicy,2506.08822,2025,frequency consistency,yes,no,few-step,no,scratch,YES,no,no,no,frequency bands,no,no,no,subset-consistency but spectral not semantic
+Block-wise Adaptive Caching,2506.13456 ICLR26,2026,inference caching,yes,no,n/a,n/a,inference-time,no,no,no,YES,transformer LAYERS not output coords,n/a,no,no,terminology collision only
+SeFA-Policy,2511.08583,2025,selective flow alignment,yes,no,few-step,no,-,no,no,no,no,flow paths not subspaces,no,no,no,name collision on 'selective'
+ReinFlow,2505.22094 NeurIPS25,2025,RL finetune of FM,yes,no,1-4 step,no,RL finetune,no,no,no,no,action only,no,no,no,post-training of flow policy
+EfficientFlow,2512.02020 AAAI26,2026,equivariant FM,yes,no,no,no,scratch,no,no,no,no,action only,no,no,no,fast FM policy
+Flash-WAM,2606.05254,2026,consistency distillation,yes,YES,YES,no,distill,YES,no,no,no,ALL - DIFFERENT consistency fn per modality,NO - both streams collapsed,no,no,HIGHEST THREAT: per-modality objective differentiation
+Efficient-WAM,2606.10040,2026,diffusion,yes,YES,no,YES,scratch,no,no,no,YES,per-branch STEP BUDGET,no,no,no,per-branch NFE; gives ACTION more steps (opposite of ours)
+DreamZero-Flash,2602.15922,2026,flow,yes,YES,YES,no,distill,no,no,no,no,per-modality TIME DISTRIBUTION,no,no,no,training-time per-modality asymmetry
+X-WAM,2604.26694,2026,flow matching,yes,YES,no,no,scratch,no,no,no,no,SAME FM loss both; coupled timesteps,yes (both FM),no,no,timestep coupling only - not objective differentiation
+Dual-Stream Diffusion VLA,2510.27607,2025,diffusion,yes,YES,no,no,scratch,no,no,no,no,per-stream step counts N_o=q*N_A,no,no,no,earliest 'vision needs more steps than action'
+UVA,2503.00200,2025,diffusion,yes,YES,no,no,scratch,no,no,no,no,two decoupled diffusion heads,architectural not objective,no,no,architectural decoupling
+PAD,2411.18179 NeurIPS24,2024,DiT joint denoising,yes,YES,no,no,scratch,no,no,no,no,uniform,n/a,no,no,canonical joint image+action denoising
+S-VAM,2603.16195,2026,self-distill VFM features,yes,partial (separate action expert),YES(features),no,distill,no,no,no,no,VISUAL FEATURES; action = plain DDPM,yes but action is separate DiT,no,no,RESOLVED: 'semantic'=scene semantics not subspaces
+MWM,2603.07799,2026,consistency distillation,no (navigation),no,few-step,no,distill,YES,no,no,no,STATE/visual rollout,n/a,no,no,RESOLVED: navigation; no action subspace
+3D-DLP,2606.19451 ICML26,2026,diffusion,yes,YES,no,no,scratch,no,no,no,no,uniform,n/a,YES,-,direct EC-Diffuser descendant
