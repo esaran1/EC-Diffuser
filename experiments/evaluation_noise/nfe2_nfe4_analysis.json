@@ -1,0 +1,168 @@
+{
+  "protocol": {
+    "R": 3,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "arms": [
+      2,
+      4
+    ],
+    "practical_margin_pp": 5.0,
+    "estimand": "p_i = per-episode success frequency over R physics realizations",
+    "pairing": "episodes paired across arms; physics realizations NOT paired"
+  },
+  "per_seed": {
+    "42": {
+      "p_nfe2": 0.8680555555555555,
+      "p_nfe4": 0.861111111111111,
+      "delta": -0.0069444444444444475,
+      "ci": [
+        -0.0763888888888889,
+        0.0625
+      ],
+      "eff_successes_nfe2": 83.33333333333333,
+      "eff_successes_nfe4": 82.66666666666666,
+      "n_episodes": 96
+    },
+    "43": {
+      "p_nfe2": 0.8298611111111112,
+      "p_nfe4": 0.8194444444444445,
+      "delta": -0.010416666666666671,
+      "ci": [
+        -0.09027777777777778,
+        0.06944444444444446
+      ],
+      "eff_successes_nfe2": 79.66666666666667,
+      "eff_successes_nfe4": 78.66666666666667,
+      "n_episodes": 96
+    },
+    "44": {
+      "p_nfe2": 0.8819444444444443,
+      "p_nfe4": 0.8993055555555554,
+      "delta": 0.017361111111111112,
+      "ci": [
+        -0.04861111111111111,
+        0.08333333333333333
+      ],
+      "eff_successes_nfe2": 84.66666666666666,
+      "eff_successes_nfe4": 86.33333333333331,
+      "n_episodes": 96
+    }
+  },
+  "three_seed": {
+    "deltas": [
+      -0.0069444444444444475,
+      -0.010416666666666671,
+      0.017361111111111112
+    ],
+    "mean": -2.3129646346357427e-18,
+    "sd": 0.015135065776182897
+  },
+  "margin": {
+    "42": {
+      "within_margin": false,
+      "excludes_zero": false
+    },
+    "43": {
+      "within_margin": false,
+      "excludes_zero": false
+    },
+    "44": {
+      "within_margin": false,
+      "excludes_zero": false
+    }
+  },
+  "episode_delta": {
+    "42": {
+      "positive": 18,
+      "zero": 57,
+      "negative": 21,
+      "mean_abs_nonzero": 0.41025641025641024
+    },
+    "43": {
+      "positive": 22,
+      "zero": 51,
+      "negative": 23,
+      "mean_abs_nonzero": 0.45185185185185184
+    },
+    "44": {
+      "positive": 18,
+      "zero": 65,
+      "negative": 13,
+      "mean_abs_nonzero": 0.44086021505376355
+    }
+  },
+  "sensitivity": {
+    "42": {
+      "nfe2": {
+        "robust_success": 70,
+        "robust_fail": 3,
+        "sensitive": 23
+      },
+      "nfe4": {
+        "robust_success": 63,
+        "robust_fail": 0,
+        "sensitive": 33
+      }
+    },
+    "43": {
+      "nfe2": {
+        "robust_success": 59,
+        "robust_fail": 0,
+        "sensitive": 37
+      },
+      "nfe4": {
+        "robust_success": 65,
+        "robust_fail": 6,
+        "sensitive": 25
+      }
+    },
+    "44": {
+      "nfe2": {
+        "robust_success": 69,
+        "robust_fail": 1,
+        "sensitive": 26
+      },
+      "nfe4": {
+        "robust_success": 75,
+        "robust_fail": 1,
+        "sensitive": 20
+      }
+    }
+  },
+  "secondary": {
+    "goal_success_frac": [
+      0.0011574074074074045,
+      -0.003472222222222218,
+      0.0011574074074074125
+    ],
+    "cubes_placed": [
+      0.003472222222222205,
+      -0.010416666666666676,
+      0.003472222222222226
+    ],
+    "avg_obj_dist": [
+      -0.00051255996125595,
+      0.0006335099428219498,
+      -0.0022043828252612412
+    ],
+    "max_obj_dist": [
+      0.0012553398232234428,
+      0.0034710524293283646,
+      -0.009574805085624876
+    ],
+    "n_contacted": [
+      0.017361111111111115,
+      0.0034722222222222238,
+      -0.006944444444444443
+    ],
+    "cubes_farther": [
+      0.027777777777777776,
+      0.03125000000000001,
+      -0.0034722222222222203
+    ]
+  }
+}

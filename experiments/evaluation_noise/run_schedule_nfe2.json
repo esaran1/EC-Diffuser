@@ -1,0 +1,113 @@
+{
+ "R": 3,
+ "arms": [
+  2,
+  4
+ ],
+ "measured_sec_per_realization": {
+  "nfe2": 122,
+  "nfe4": 133
+ },
+ "projection_gpu_h": {
+  "raw": 0.637,
+  "with_15pct_overhead": 0.733
+ },
+ "rule": "arm order alternates with (repeat + seed_index) parity; frozen before launch",
+ "schedule": [
+  {
+   "nfe": 2,
+   "repeat": 1,
+   "seed": 42
+  },
+  {
+   "nfe": 4,
+   "repeat": 1,
+   "seed": 42
+  },
+  {
+   "nfe": 4,
+   "repeat": 2,
+   "seed": 42
+  },
+  {
+   "nfe": 2,
+   "repeat": 2,
+   "seed": 42
+  },
+  {
+   "nfe": 2,
+   "repeat": 3,
+   "seed": 42
+  },
+  {
+   "nfe": 4,
+   "repeat": 3,
+   "seed": 42
+  },
+  {
+   "nfe": 4,
+   "repeat": 1,
+   "seed": 43
+  },
+  {
+   "nfe": 2,
+   "repeat": 1,
+   "seed": 43
+  },
+  {
+   "nfe": 2,
+   "repeat": 2,
+   "seed": 43
+  },
+  {
+   "nfe": 4,
+   "repeat": 2,
+   "seed": 43
+  },
+  {
+   "nfe": 4,
+   "repeat": 3,
+   "seed": 43
+  },
+  {
+   "nfe": 2,
+   "repeat": 3,
+   "seed": 43
+  },
+  {
+   "nfe": 2,
+   "repeat": 1,
+   "seed": 44
+  },
+  {
+   "nfe": 4,
+   "repeat": 1,
+   "seed": 44
+  },
+  {
+   "nfe": 4,
+   "repeat": 2,
+   "seed": 44
+  },
+  {
+   "nfe": 2,
+   "repeat": 2,
+   "seed": 44
+  },
+  {
+   "nfe": 2,
+   "repeat": 3,
+   "seed": 44
+  },
+  {
+   "nfe": 4,
+   "repeat": 3,
+   "seed": 44
+  }
+ ],
+ "seeds": [
+  42,
+  43,
+  44
+ ]
+}
