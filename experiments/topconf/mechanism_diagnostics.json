@@ -1,0 +1,71 @@
+{
+  "protocol": {
+    "n_cond": 96,
+    "n_noise": 4,
+    "sample_seed": 20260902,
+    "noise_seed": 20260901,
+    "targets": "recorded replay (arm-neutral); no model-authored targets",
+    "variants": {
+      "A": "full 2-step Euler",
+      "B": "2nd step updates action only",
+      "C": "2nd step updates state only",
+      "D": "state frozen at step1, action recomputed"
+    }
+  },
+  "per_seed": {
+    "42": {
+      "action_err": {
+        "NFE1": 0.016682682558894157,
+        "A_full2": 0.017845170572400093,
+        "B_action_only": 0.017845170572400093,
+        "C_state_only": 0.65265291929245,
+        "D_state_then_action": 0.02356228232383728
+      },
+      "state_err": {
+        "NFE1": 0.20962230042399219,
+        "A_full2": 0.10726013685537812
+      },
+      "residual_norm": {
+        "action": 0.06274200975894928,
+        "state": 4.573798656463623
+      },
+      "action_move_1to2": 0.012400880455970764
+    },
+    "43": {
+      "action_err": {
+        "NFE1": 0.017415177077054977,
+        "A_full2": 0.016054412350058556,
+        "B_action_only": 0.016054412350058556,
+        "C_state_only": 0.6520956158638,
+        "D_state_then_action": 0.020928310230374336
+      },
+      "state_err": {
+        "NFE1": 0.21164385916199535,
+        "A_full2": 0.10799152468098328
+      },
+      "residual_norm": {
+        "action": 0.0638127401471138,
+        "state": 4.581309795379639
+      },
+      "action_move_1to2": 0.008956319652497768
+    },
+    "44": {
+      "action_err": {
+        "NFE1": 0.019443422555923462,
+        "A_full2": 0.017608029767870903,
+        "B_action_only": 0.017608029767870903,
+        "C_state_only": 0.6529150605201721,
+        "D_state_then_action": 0.02027762681245804
+      },
+      "state_err": {
+        "NFE1": 0.2096886847090597,
+        "A_full2": 0.10758076167743032
+      },
+      "residual_norm": {
+        "action": 0.05082736536860466,
+        "state": 4.58305025100708
+      },
+      "action_move_1to2": 0.010454852133989334
+    }
+  }
+}
