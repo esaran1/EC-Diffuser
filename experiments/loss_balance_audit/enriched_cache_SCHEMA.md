@@ -66,3 +66,30 @@ Noise bank: one `torch.Generator(cpu)` seeded **20260830** per training seed,
 drawing 8 tensors per rollout step in order. Isaac Gym/DLP latents are **not
 bit-reproducible across processes** — all paired analysis must use tensors from
 within this one file.
+
+---
+
+# `arm_neutral_endpoints.npz` — arm-neutral cache schema
+
+- sha256: `12720b9b02e507cb63df089f0a580364807610a63d4007828d044d2d2674783b`
+- 43 keys, 53 MB. Generator: `arm_neutral_eval.py` (1580 s).
+- **No Isaac Gym, no encoding, no model-authored targets.**
+
+| key | shape | meaning |
+|---|---|---|
+| `cond_id` | (96,) | `ep{episode}_t{timestep}` |
+| `episode`, `timestep` | (96,) | indices into the replay buffer |
+| `cur_latent` | (96,48,10) | recorded `obs[s]` (both views) |
+| `goal_latent` | (96,48,10) | recorded episode goal |
+| `target_t1_latent` | (96,48,10) | **recorded `obs[s+1]`** — state target |
+| `target_action` | (96,3) | **recorded `act[s]`** — action target |
+| `{arm}_full_norm` | (96,8,5,483) | model-space transition tensor |
+| `{arm}_obs_unnorm` | (96,8,5,480) | observation channels, data units |
+| `{arm}_act_unnorm` | (96,8,5,3) | action channels, data units |
+| `x0_hash` | (96,) | sha256[:16] of noise index 0 |
+| `_preflight` | scalar | JSON preflight validation record |
+
+Timestep mapping: generated t=1 ↔ `obs[s+1]`; generated `action[0]` ↔ `act[s]`,
+which drives `obs[s] → obs[s+1]`. t=4 is conditioned on the **episode goal**.
+Sampling: 96 distinct successful episodes, seed 20260902; noise bank seed
+20260901. **In-distribution (no train/val split exists), not held out.**
