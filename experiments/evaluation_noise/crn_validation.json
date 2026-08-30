@@ -1,0 +1,27 @@
+{
+  "gate_A_same_seed_repeat_maxabs": 0.0,
+  "gate_B_canonical_vs_injected_z_maxabs": 0.0,
+  "gate_C_different_seed_maxabs": 1.6832470893859863,
+  "gate_D_marginals": {
+    "canonical_mean": -0.21624895930290222,
+    "canonical_sd": 0.508003830909729,
+    "crn_mean": -0.21955248713493347,
+    "crn_sd": 0.506396472454071,
+    "ks": [
+      {
+        "stat": 0.03125,
+        "p": 0.9138097236306763
+      },
+      {
+        "stat": 0.0203125,
+        "p": 0.9994099704893635
+      },
+      {
+        "stat": 0.025,
+        "p": 0.9883748503770309
+      }
+    ]
+  },
+  "crn_base_seed": 20260905,
+  "seed_derivation": "sha256('base|batch_start|decision')[:8] little-endian mod 2^63-1"
+}
