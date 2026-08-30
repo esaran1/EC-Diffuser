@@ -1,0 +1,105 @@
+{
+ "schedule": [
+  {
+   "seed": 42,
+   "repeat": 1,
+   "nfe": 1
+  },
+  {
+   "seed": 42,
+   "repeat": 1,
+   "nfe": 4
+  },
+  {
+   "seed": 42,
+   "repeat": 2,
+   "nfe": 4
+  },
+  {
+   "seed": 42,
+   "repeat": 2,
+   "nfe": 1
+  },
+  {
+   "seed": 42,
+   "repeat": 3,
+   "nfe": 1
+  },
+  {
+   "seed": 42,
+   "repeat": 3,
+   "nfe": 4
+  },
+  {
+   "seed": 43,
+   "repeat": 1,
+   "nfe": 4
+  },
+  {
+   "seed": 43,
+   "repeat": 1,
+   "nfe": 1
+  },
+  {
+   "seed": 43,
+   "repeat": 2,
+   "nfe": 1
+  },
+  {
+   "seed": 43,
+   "repeat": 2,
+   "nfe": 4
+  },
+  {
+   "seed": 43,
+   "repeat": 3,
+   "nfe": 4
+  },
+  {
+   "seed": 43,
+   "repeat": 3,
+   "nfe": 1
+  },
+  {
+   "seed": 44,
+   "repeat": 1,
+   "nfe": 1
+  },
+  {
+   "seed": 44,
+   "repeat": 1,
+   "nfe": 4
+  },
+  {
+   "seed": 44,
+   "repeat": 2,
+   "nfe": 4
+  },
+  {
+   "seed": 44,
+   "repeat": 2,
+   "nfe": 1
+  },
+  {
+   "seed": 44,
+   "repeat": 3,
+   "nfe": 1
+  },
+  {
+   "seed": 44,
+   "repeat": 3,
+   "nfe": 4
+  }
+ ],
+ "rule": "arm order alternates with (repeat + seed_index) parity; 30 -> 18 runs at R=3; recorded before launch and not changed",
+ "R": 3,
+ "seeds": [
+  42,
+  43,
+  44
+ ],
+ "arms": [
+  1,
+  4
+ ]
+}

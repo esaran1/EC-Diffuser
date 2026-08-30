@@ -1,0 +1,11 @@
+{
+ "path": "experiments/isaacgym_episode_sets/replicate0_n96.pkl",
+ "stored_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+ "file_sha256": "c760dd58d4cde41c0db4256f163854ad3dbf03a2e65c081beb866abe29af7603",
+ "n_episodes": 96,
+ "cubes": 3,
+ "gen_seed": 20260820,
+ "init_sha256": "b5b16bcda726b76bd8b21d46ab91b464b5c3e120e13575e72ef7cfefa3ea8313",
+ "goal_sha256": "7875ce901889dc5461e546b018c7c2db57fa895c037a398a893efd99738641f3",
+ "horizon": 100
+}
