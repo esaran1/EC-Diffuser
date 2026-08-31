@@ -1,0 +1,8 @@
+diffusers==0.35.2
+gym-pusht==0.1.6
+gymnasium==0.29.1
+lerobot==0.3.2
+numpy==2.2.6
+pymunk==6.11.1
+torch==2.10.0
+torchcodec==0.10.0

@@ -1,0 +1,17 @@
+nsteps=1 calls/plan=1.00 success=0.0% max_rew=0.0879 lat=12.7ms wall=83s
+  timesteps[1] first=0 last=0 -> results/nfe1_sweep.json
+nsteps=2 calls/plan=2.00 success=88.0% max_rew=0.9674 lat=19.9ms wall=86s
+  timesteps[2] first=50 last=0 -> results/nfe2_sweep.json
+nsteps=4 calls/plan=4.00 success=84.0% max_rew=0.9206 lat=34.3ms wall=89s
+  timesteps[4] first=75 last=0 -> results/nfe4_sweep.json
+nsteps=5 calls/plan=5.00 success=88.0% max_rew=0.9633 lat=40.2ms wall=102s
+  timesteps[5] first=80 last=0 -> results/nfe5_sweep.json
+nsteps=10 calls/plan=10.00 success=86.0% max_rew=0.9370 lat=74.1ms wall=140s
+  timesteps[10] first=90 last=0 -> results/nfe10_sweep.json
+nsteps=20 calls/plan=20.00 success=90.0% max_rew=0.9600 lat=139.8ms wall=246s
+  timesteps[20] first=95 last=0 -> results/nfe20_sweep.json
+nsteps=50 calls/plan=50.00 success=92.0% max_rew=0.9789 lat=340.6ms wall=518s
+  timesteps[50] first=98 last=0 -> results/nfe50_sweep.json
+nsteps=100 calls/plan=100.00 success=86.0% max_rew=0.9277 lat=702.8ms wall=989s
+  timesteps[100] first=99 last=0 -> results/nfe100_sweep.json
+SWEEP_TOTAL 2298.48 s
