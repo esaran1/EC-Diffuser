@@ -1,0 +1,6 @@
+/home/jren313/miniconda3/envs/lerobot-pusht/lib/python3.10/site-packages/pygame/pkgdata.py:25: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_stream, resource_exists
+Loading weights from local directory
+nsteps=2 calls/plan=2.00 success=60.8% max_rew=0.9315 lat=18.9ms wall=705s
+  timesteps[2] first=50 last=0 -> results/nfe2_confirm500.json
+CONFIRM_TOTAL 711.19 s

@@ -56,7 +56,7 @@ def run(policy, seeds, max_steps=300, device="cuda"):
             rewards.append(float(r)); done = term or trunc
         recs.append({"seed": int(sd), "sum_reward": float(np.sum(rewards)),
                      "max_reward": float(np.max(rewards)),
-                     "success": bool(np.max(rewards) > 0.95),
+                     "success": bool(np.max(rewards) >= 1.0),  # env: coverage > success_threshold <=> reward saturates at 1.0
                      "steps": len(rewards), "unet_calls": cnt.n, "n_plans": nplans,
                      "calls_per_plan": cnt.n/max(nplans,1)})
     cnt.h.remove(); env.close()

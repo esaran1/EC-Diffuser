@@ -1,0 +1,20 @@
+{
+  "n": 500,
+  "nfe2_success": 0.608,
+  "nfe100_success": 0.654,
+  "nfe2_reward": 0.9314885665607249,
+  "nfe100_reward": 0.9551318575760519,
+  "delta_success": -0.046,
+  "delta_success_ci": [
+    -0.106,
+    0.016
+  ],
+  "delta_reward": -0.023643291015327045,
+  "delta_reward_ci": [
+    -0.043515819069140524,
+    -0.0045663906851684
+  ],
+  "mcnemar_b": 133,
+  "mcnemar_c": 110,
+  "mcnemar_p": 0.15801483310327233
+}
