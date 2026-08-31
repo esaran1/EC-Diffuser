@@ -1,0 +1,31 @@
+{
+  "protocol": {
+    "feature": "raw physical: 3 cube xyz + eef xyz (9+3=12 dims)",
+    "metric": "mean distance to 5 nearest reference states",
+    "reference": "states visited by NFE4 policy (in-support proxy)"
+  },
+  "nfe1": {
+    "knn_mean": 0.10028117150068283,
+    "knn_median": 0.04628059267997742,
+    "knn_p90": 0.08645031303167344,
+    "knn_early": 0.06410908699035645,
+    "knn_mid": 0.10706627368927002,
+    "knn_late": 0.11158212274312973
+  },
+  "nfe2": {
+    "knn_mean": 0.05843387171626091,
+    "knn_median": 0.0458386167883873,
+    "knn_p90": 0.07811247184872629,
+    "knn_early": 0.04936748743057251,
+    "knn_mid": 0.06056855246424675,
+    "knn_late": 0.06083238124847412
+  },
+  "nfe4": {
+    "knn_mean": 0.02214227057993412,
+    "knn_median": 0.017587073147296906,
+    "knn_p90": 0.04691821299493313,
+    "knn_early": 0.037007857114076614,
+    "knn_mid": 0.025768153369426727,
+    "knn_late": 0.01108359545469284
+  }
+}
