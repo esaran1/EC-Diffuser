@@ -94,3 +94,30 @@ Immediately before each run, record `nvidia-smi` compute processes, memory,
 utilization and timestamp. **No other GPU-heavy job may run concurrently.** If a
 process appears mid-run, flag that run invalid and stop — do not reinterpret.
 Unrelated jobs are never killed.
+
+## 10. §11 targeted prior-art check (downstream consequence only)
+
+Two narrow searches on *learned-policy* outcome sensitivity to GPU environment
+index / scenario-to-slot permutation.
+
+**No kill shot.** Nothing found demonstrating E1 or E2.
+
+**What IS documented (and must be conceded up front):** Isaac Lab's own
+reproducibility documentation states that *"due to GPU work scheduling …
+any modification to execution ordering can result in minor changes in the least
+significant bits of output data,"* and that identical results hold only for the
+same hardware and version. GPUSimBench documents inter-environment divergence at
+the physics layer.
+
+**Consequence for our framing (revised per instruction).** We do **not** claim
+environment-index dependence as a new simulator phenomenon — it is vendor-
+documented and independently benchmarked. Our narrower question stands:
+
+> Can arbitrary scenario-to-GPU-environment assignment alter the measured outcome
+> of a *learned robot policy* under a fixed evaluation protocol — i.e. can an
+> implementation detail that nominally affects only evaluation packing and
+> throughput materially change reported policy success?
+
+The vendor documentation says bits change; it says nothing about whether task
+success changes. That gap is what E1 measures, and the ~24% sign-instability
+result is why a bit-level change is not obviously benign here.
