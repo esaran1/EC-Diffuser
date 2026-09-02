@@ -13,3 +13,4 @@ d4rl
 # Downloaded third-party model/dataset cache (lerobot/diffusion_pusht + lerobot/pusht).
 # Provenance (revision + sha256) is recorded in PROVENANCE.md; do not redistribute weights.
 experiments/topconf/lerobot_pusht/hf_cache/
+experiments/policy_improvement/launch_gate.log
