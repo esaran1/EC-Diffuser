@@ -131,3 +131,33 @@ Every other arm has R=3, so pilot-uncertainty quantification rests on a single
 policy, and the reliability curve's bins hold 1-6 comparisons. A second deep bank
 on a different checkpoint would materially strengthen this — but it is a GPU
 experiment and is **not** proposed now.
+
+---
+
+## ADDENDUM (figure package) — tie-handling correction
+
+Building the paper figures exposed a defect in the sign-agreement counts in §5
+above. `np.sign(0) == 0`, so a nested view with **exactly** Δ = 0 never matched
+the reference sign and was silently counted as a *disagreement*. With 96 binary
+scenarios, exact ties are common: **7 of 108 nested views**.
+
+A tie is not a sign reversal. Corrected counts:
+
+| quantity | as published above | corrected |
+|---|--:|--:|
+| sign disagreement, pooled | 23/108 = 21.3% | **16/108 = 14.8%** (strict reversals) |
+| ...ties excluded from denominator | — | 15.8% |
+| §5 bin [0, 0.25) sign correct | 44.4% (4/9) | **66.7% (6/9)** |
+| §5 bin [0.25, 0.5) | 70.4% | **77.8%** |
+| §5 bin [0.5, 1) | 75.0% | **83.3%** |
+| §5 bin [1, ∞) | 97.2% | 97.2% (unchanged) |
+
+**What survives:** sign reliability is still monotone in the held-out
+signal-to-resolution ratio, and the [1, ∞) bin is unchanged. The qualitative
+conclusion of §5 stands.
+
+**What changes:** the low bin is no longer at chance. The claim "single-realization
+sign is a coin flip for weak effects" is **withdrawn** — 66.7%, not 44.4%.
+The practical-category negative result (§6) is unaffected: still flat, 72–78%.
+
+Superseded headline numbers, in order: 24% → 21.3% → **14.8%**.
