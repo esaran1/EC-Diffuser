@@ -90,15 +90,16 @@ for k,(t,s,c,cal,v) in enumerate(rows):
                label="reconstructed R=1 views" if k==0 else None)
     bad=[x for x in v if abs(x)>1e-9 and np.sign(x)!=np.sign(cal)]
     if bad: ax.scatter([k]*len(bad),bad,s=16,color="#b2182b",zorder=3,
-                       label="sign reversal vs reference" if k==0 else None)
+                       label="opposite point-estimate direction" if k==0 else None)
     ax.scatter([k],[cal],marker="_",s=260,color="#2166ac",lw=2,zorder=4,
-               label="multi-realization reference (R=3)" if k==0 else None)
+               label="higher-replication estimate (R=3)" if k==0 else None)
 ax.set_xticks(range(len(rows)))
 ax.set_xticklabels([f"{t}\ns{s}\n{c}" for t,s,c,_,_ in rows],fontsize=6)
 ax.set_ylabel("Δ success (pp)")
-ax.set_title("Fig 3  A single physics realization can flip the conclusion\n"
-             "12 unique calibrated contrasts × 9 nested R=1 views each (nested, not independent).\n"
-             "16/108 = 14.8% strict sign reversals (7 exact ties shown in grey, not counted as reversals)",
-             fontsize=8.5)
+ax.set_title("Fig 3  Single-realization evaluation is unstable at the level of the comparison itself\n"
+             "9 of 12 calibrated contrasts contain at least one R=1 view with the opposite point-estimate\n"
+             "direction to the higher-replication estimate; 11 of 12 change practical category.\n"
+             "Unit of analysis = the contrast (12); the 9 R=1 views per contrast are nested within it.",
+             fontsize=8)
 ax.legend(loc="upper left",framealpha=.9)
 save(fig,"fig3_policy_conclusion_instability")
