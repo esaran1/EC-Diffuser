@@ -1,0 +1,80 @@
+{
+ "protocol": "five fixed DEVELOPMENT evaluation scenario sets",
+ "note": "evaluation-scenario seeds; NOT training seeds and NOT repeated physics realizations",
+ "task": "3-cube PushCube",
+ "N": 96,
+ "git_commit": "44d53d7e4274f2ae7060f82814e1b651be7fb7dd",
+ "sets": [
+  {
+   "eval_seed_id": "E0",
+   "gen_seed": 20260820,
+   "path": "experiments/isaacgym_episode_sets/replicate0_n96.pkl",
+   "n_episodes": 96,
+   "cubes": 3,
+   "horizon": 100,
+   "num_envs_at_generation": 16,
+   "init_sha256": "b5b16bcda726b76bd8b21d46ab91b464b5c3e120e13575e72ef7cfefa3ea8313",
+   "goal_sha256": "7875ce901889dc5461e546b018c7c2db57fa895c037a398a893efd99738641f3",
+   "payload_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+   "stored_seed": 20260820,
+   "status": "preexisting"
+  },
+  {
+   "eval_seed_id": "E1s",
+   "gen_seed": 20261820,
+   "path": "experiments/isaacgym_episode_sets/replicate1_n96.pkl",
+   "n_episodes": 96,
+   "cubes": 3,
+   "horizon": 100,
+   "num_envs_at_generation": 16,
+   "init_sha256": "d2b75951f35220ae4d48ed93666557e494770cedd8891ab9453a5b40aba75de7",
+   "goal_sha256": "8d1f94299e2013a002e45ae0d5c5370badba1fe9853e88e5c91833b2d5d8fd21",
+   "payload_sha256": "0047468fa69c00b89159b7b8235b6af444115c00ce33d205841b78c4810816ce",
+   "stored_seed": 20261820,
+   "status": "preexisting"
+  },
+  {
+   "eval_seed_id": "E2s",
+   "gen_seed": 20262820,
+   "path": "experiments/isaacgym_episode_sets/replicate2_n96.pkl",
+   "n_episodes": 96,
+   "cubes": 3,
+   "horizon": 100,
+   "num_envs_at_generation": 16,
+   "init_sha256": "00c9e7e9d5e3bf6df3bfda3698b3728b0754adf6079a8a885f8e5db63fffab5e",
+   "goal_sha256": "1add5b17eed96638d09c1f6ed3e1d87d6fa649c478493aeb7646a79dd33271ae",
+   "payload_sha256": "586e5b8d2f7c44f8b9d1ae7592a3d72af42b1fdf18af4cd50a6c9f7e6663b429",
+   "stored_seed": 20262820,
+   "status": "preexisting"
+  },
+  {
+   "eval_seed_id": "E3s",
+   "gen_seed": 20263820,
+   "path": "experiments/isaacgym_episode_sets/replicate3_n96.pkl",
+   "n_episodes": 96,
+   "cubes": 3,
+   "horizon": 100,
+   "num_envs_at_generation": 16,
+   "init_sha256": "8a7d96eb9ae78f08ae9ce89dee17d12c35f12a07fdbce7e2963f80493865c099",
+   "goal_sha256": "d59b48e1276e3e5bc63719dda83609efc831cf5e1feaa93eac90d729cadfff37",
+   "payload_sha256": "94a32b3a658432677daa6aae9d14d20c674150c43e93cf7f64022435a4259442",
+   "stored_seed": 20263820,
+   "status": "generated"
+  },
+  {
+   "eval_seed_id": "E4s",
+   "gen_seed": 20264820,
+   "path": "experiments/isaacgym_episode_sets/replicate4_n96.pkl",
+   "n_episodes": 96,
+   "cubes": 3,
+   "horizon": 100,
+   "num_envs_at_generation": 16,
+   "init_sha256": "126028368f9bc04c2da457ac3bd578b703994e7f3a3133c82633a574b6dd8bbf",
+   "goal_sha256": "07ce502f6465e560031ae6e8c28d061194f14b7d22058af14b37b3871066d7dc",
+   "payload_sha256": "01362243b23ac20c353f164904cee1be4e6816c949cf6f6c509341f57432bf93",
+   "stored_seed": 20264820,
+   "status": "generated"
+  }
+ ],
+ "distinct_init_hashes": true
+}
