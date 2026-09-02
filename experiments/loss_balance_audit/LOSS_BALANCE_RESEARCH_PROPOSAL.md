@@ -515,3 +515,62 @@ defaulting to current behaviour, so canonical training is byte-identical unless
 explicitly enabled) at ~3.3 GPU-h.
 
 **STOPPING HERE FOR APPROVAL.**
+
+---
+
+# CORRECTION (advisor feedback, 2026-09-02): LOSS BALANCING IS REOPENED
+
+## What was wrong
+
+This document reasoned from a measured comparison of **state-token gradient
+norms against action-direction gradient norms** (action 0.115 vs state 0.074,
+median ratio 0.88) toward the conclusion that state does not dominate
+optimization, and hence that semantic loss reweighting is not motivated.
+
+**Tal explicitly rejects this reasoning.** State-token gradients and
+action-direction gradients are **not directly comparable quantities**. They live
+in different spaces, have different dimensionalities, different physical units,
+and different relationships to task performance. Their ratio does not measure
+"optimization pressure balance", and no conclusion about the appropriate loss
+balance follows from it.
+
+## What the gradient audit actually supports
+
+The single defensible conclusion from the gradient measurement is:
+
+> **Action gradients are nonzero / alive — the action branch is receiving a
+> learning signal.**
+
+That rules out a dead-branch pathology. It says nothing about whether the
+current balance is *correct*.
+
+## Claim status changes
+
+| Claim | Old status | New status |
+|---|---|---|
+| "Action gradients are nonzero; the action branch trains" | supported | **RETAINED — supported** |
+| "Gradient magnitudes are comparable, therefore state does not dominate optimization" | frozen conclusion | **WITHDRAWN — invalid comparison** |
+| "Semantic loss reweighting is not motivated" | frozen conclusion | **WITHDRAWN — DO NOT CITE** |
+| "Naive gradient-magnitude comparison determines the state/action loss balance" | implicit premise | **WITHDRAWN — false** |
+
+**Replacement frozen statement:**
+
+> Naive gradient-magnitude comparison does not determine the appropriate
+> state/action loss balance.
+
+## Consequence
+
+**Loss balancing is REOPENED as an active research direction.** The prior
+NO-GO on this direction is void. Any future loss-balance work must define the
+balance **semantically** (independently normalized state and action losses with
+explicit λ coefficients), not by matching gradient norms or by
+dimension-counting (480 state dims vs 3 action dims is *not* a justification —
+see the phase plan §8).
+
+Retained from the original audit as still-valid factual findings:
+- `action_weight=10` is inherited from Janner's Diffuser, **not** an EC-Diffuser
+  design choice; the EC-Diffuser paper's objective (§4.3) is a plain L1 with no
+  action weighting.
+- `loss_discount=1` normalizes the temporal vector to exactly `[1,1,1,1,1]`.
+- Observations are conditioned (and so contribute zero loss) at t=0 and t=4;
+  actions are active at all 5 timesteps with weights `[10,1,1,1,1]`.
