@@ -35,4 +35,7 @@ base["diffusion"].update(
     n_saves=60,                 # keep every 1k checkpoint in the staged range
     eval_freq=0,
     sample_freq=0,
+    # infrastructure: refuse to start on a shared GPU, and checkpoint+exit
+    # cleanly if a foreign GPU process appears mid-run.
+    require_uncontended_gpu=True,
 )

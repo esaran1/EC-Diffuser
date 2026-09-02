@@ -1,6 +1,7 @@
 import warnings
 warnings.filterwarnings('ignore')
 import os
+import json
 from diffuser.eval_utils import setup_isaac_env, evaluate_policy, wandb_log_eval_stats
 from diffuser.utils.arrays import set_global_device
 from diffuser.configuration import diffusion_wrapper_kwargs, flow_sampling_kwargs
@@ -162,9 +163,30 @@ wandb_run.name = savepath_folder_name
 
 n_epochs = int(args.n_train_steps // args.n_steps_per_epoch)
 
+# --- optional GPU contention guard (infrastructure only) --------------------
+# Enabled with --require_uncontended_gpu; refuses to start on a shared GPU and
+# writes a full-state checkpoint then exits cleanly if a foreign GPU process
+# appears mid-run. Does not touch model computation (proven in
+# experiments/policy_improvement/validate_resume.py and guard_noeffect probe).
+if getattr(args, 'require_uncontended_gpu', False):
+    from diffuser.utils import gpu_guard
+    launch_snapshot = gpu_guard.require_uncontended()
+    with open(os.path.join(args.savepath, 'gpu_launch_snapshot.json'), 'w') as fh:
+        json.dump(launch_snapshot, fh, indent=1)
+    print(f'[ gpu_guard ] launch snapshot: {launch_snapshot["gpu"]}', flush=True)
+    trainer.contention_monitor = gpu_guard.ContentionMonitor(
+        baseline_pids=[a['pid'] for a in launch_snapshot['compute_apps']])
+
 for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')
     trainer.train(n_train_steps=args.n_steps_per_epoch)
+
+    if getattr(trainer, 'contention_event', None) is not None:
+        with open(os.path.join(args.savepath, 'contention_event.json'), 'w') as fh:
+            json.dump(trainer.contention_event, fh, indent=1)
+        print('[ gpu_guard ] contention detected; full-state checkpoint written, '
+              'stopping cleanly.', flush=True)
+        break
 
     if args.eval_freq and i % args.eval_freq == 0:
         plan_args.savepath = logger.savepath = os.path.join(args.savepath, f'epoch_{i}')

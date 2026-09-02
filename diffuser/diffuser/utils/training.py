@@ -2,6 +2,7 @@ import os
 import copy
 import math
 import numbers
+import random
 import numpy as np
 import torch
 import einops
@@ -88,6 +89,8 @@ class Trainer(object):
             dataloader_generator = torch.Generator()
             dataloader_generator.manual_seed(dataloader_seed)
         self.dataloader_seed = dataloader_seed
+        self.dataloader_generator = dataloader_generator
+        self.batches_drawn = 0
         self.dataloader = cycle(torch.utils.data.DataLoader(
             self.dataset, batch_size=train_batch_size, num_workers=1,
             shuffle=True, pin_memory=True, generator=dataloader_generator,
@@ -158,6 +161,7 @@ class Trainer(object):
             step_infos = {}
             for i in range(self.gradient_accumulate_every):
                 batch = next(self.dataloader)
+                self.batches_drawn += 1
                 batch = batch_to_device(batch)
 
                 loss, infos = self.model.loss(*batch)
@@ -290,6 +294,20 @@ class Trainer(object):
             if self.sample_freq and self.step % self.sample_freq == 0:
                 self.render_samples(front_bg=front_bg, side_bg=side_bg)
 
+            # --- contention guard (infrastructure only; no tensor work) ---
+            monitor = getattr(self, 'contention_monitor', None)
+            if monitor is not None:
+                event = monitor.check()
+                if event is not None:
+                    self.save(f'contention_{self.step}')
+                    self.contention_event = event
+                    print(f'[ contention ] foreign GPU process detected at step '
+                          f'{self.step}: {event}', flush=True)
+                    print('[ contention ] wrote emergency full-state checkpoint; '
+                          'exiting cleanly', flush=True)
+                    self.step += 1
+                    return list(self.train_history)
+
             self.step += 1
         return list(self.train_history)
 
@@ -323,7 +341,34 @@ class Trainer(object):
         data = {
             'step': self.step,
             'model': self.model.state_dict(),
-            'ema': self.ema_model.state_dict()
+            'ema': self.ema_model.state_dict(),
+            # --- full-state resume payload (infrastructure only; does not
+            # affect model computation, loss, or optimizer hyperparameters) ---
+            'optimizer': self.optimizer.state_dict(),
+            'rng': {
+                'torch_cpu': torch.get_rng_state(),
+                'torch_cuda_all': (
+                    torch.cuda.get_rng_state_all()
+                    if torch.cuda.is_available() else None
+                ),
+                'numpy': np.random.get_state(),
+                'python': random.getstate(),
+                'dataloader_generator': (
+                    self.dataloader_generator.get_state()
+                    if getattr(self, 'dataloader_generator', None) is not None
+                    else None
+                ),
+            },
+            'batches_drawn': self.batches_drawn,
+            'meta': {
+                'dataloader_seed': self.dataloader_seed,
+                'train_lr': self.train_lr,
+                'adam_betas': self.adam_betas,
+                'lr_warmup_steps': self.lr_warmup_steps,
+                'gradient_accumulate_every': self.gradient_accumulate_every,
+                'batch_size': self.batch_size,
+                'full_state_version': 1,
+            },
         }
         savepath = os.path.join(self.logdir, f'state_{epoch}.pt')
         torch.save(data, savepath)
@@ -341,6 +386,46 @@ class Trainer(object):
         self.step = data['step']
         self.model.load_state_dict(data['model'])
         self.ema_model.load_state_dict(data['ema'])
+        # --- full-state restore; older checkpoints simply lack these keys ---
+        if 'optimizer' in data:
+            self.optimizer.load_state_dict(data['optimizer'])
+        rng = data.get('rng')
+        if rng is not None:
+            if rng.get('torch_cpu') is not None:
+                torch.set_rng_state(rng['torch_cpu'].cpu()
+                                    if hasattr(rng['torch_cpu'], 'cpu')
+                                    else rng['torch_cpu'])
+            if rng.get('torch_cuda_all') is not None and torch.cuda.is_available():
+                torch.cuda.set_rng_state_all([t.cpu() if hasattr(t, 'cpu') else t
+                                              for t in rng['torch_cuda_all']])
+            if rng.get('numpy') is not None:
+                np.random.set_state(rng['numpy'])
+            if rng.get('python') is not None:
+                random.setstate(rng['python'])
+            gen_state = rng.get('dataloader_generator')
+            if (gen_state is not None
+                    and getattr(self, 'dataloader_generator', None) is not None):
+                self.dataloader_generator.set_state(
+                    gen_state.cpu() if hasattr(gen_state, 'cpu') else gen_state)
+                # the infinite cycle() holds a live iterator bound to the old
+                # generator state; rebuild it so the restored state takes effect
+                self.dataloader = cycle(torch.utils.data.DataLoader(
+                    self.dataset, batch_size=self.batch_size, num_workers=1,
+                    shuffle=True, pin_memory=True,
+                    generator=self.dataloader_generator,
+                ))
+                # NOTE on exactness: torch's RandomSampler draws a fresh
+                # base_seed via `torch.empty((), dtype=int64).random_(generator=g)`
+                # when each epoch's iterator is created, and derives the
+                # permutation from it internally. That per-epoch seed is NOT
+                # recoverable from the generator state, so restoring the
+                # generator does not reproduce the in-flight epoch's order.
+                # Everything else (model, EMA, optimizer moments, step, RNG)
+                # restores bit-exactly - verified by validate_resume.py.
+                # We therefore restore the generator (so future epochs follow
+                # the same stream) and record how many batches were drawn, but
+                # we do NOT claim bit-exact continuation of the data order.
+                self.batches_drawn = data.get('batches_drawn', 0)
 
     #-----------------------------------------------------------------------------#
     #--------------------------------- rendering ---------------------------------#
