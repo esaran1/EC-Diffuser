@@ -104,6 +104,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--epoch", default="latest")
     ap.add_argument("--loadpath", default="imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42")
+    ap.add_argument("--tag", default="mf20k", help="output filename prefix")
     ap.add_argument("--skip-control", action="store_true")
     ap.add_argument("--only-sets", nargs="*", default=None,
                     help="restrict control eval to these set ids")
@@ -160,11 +161,11 @@ def main():
                         ax[r, c].set_title("current (cond)" if c == 0 else
                                            ("GOAL CONDITION" if c == args.horizon - 1
                                             else f"predicted t={c}"), fontsize=11)
-                ax[r, 0].text(-0.16, 0.5, f"MF NFE{nfe}", transform=ax[r, 0].transAxes,
+                ax[r, 0].text(-0.16, 0.5, f"NFE{nfe}", transform=ax[r, 0].transAxes,
                               fontsize=12, va="center", ha="right", fontweight="bold")
-            fig.suptitle(f"MeanFlow 20k imagination ({tag}) - episode {e}", fontsize=14)
+            fig.suptitle(f"{cli.tag} imagination ({tag}) - episode {e}", fontsize=14)
             fig.tight_layout()
-            p = f"{OUT}/mf20k_imagination_{tag}_ep{e}.png"
+            p = f"{OUT}/{cli.tag}_imagination_{tag}_ep{e}.png"
             fig.savefig(p, dpi=120); plt.close(fig); print("wrote", p, flush=True)
 
     if not cli.skip_control:
@@ -197,8 +198,8 @@ def main():
             flag = "" if not foreign_post else "  !! CONTENDED DURING RUN - INVALID"
             print(f"control {name}: success={sr:.4f} (n={n}, {time.time()-t0:.0f}s)"
                   f"{flag}", flush=True)
-        if cli.merge and os.path.exists(f"{OUT}/phase2_20k_diagnostics.json"):
-            prev = json.load(open(f"{OUT}/phase2_20k_diagnostics.json"))
+        if cli.merge and os.path.exists(f"{OUT}/{cli.tag}_diagnostics.json"):
+            prev = json.load(open(f"{OUT}/{cli.tag}_diagnostics.json"))
             merged = dict(prev.get("control", {}))
             merged.update(res["control"])          # new results win
             res = {**prev, **res, "control": merged}
@@ -210,7 +211,7 @@ def main():
             res["control_sd"] = float(np.std(valid, ddof=1))
         else:
             res["control_mean"] = res["control_sd"] = None
-    json.dump(res, open(f"{OUT}/phase2_20k_diagnostics.json", "w"), indent=1)
+    json.dump(res, open(f"{OUT}/{cli.tag}_diagnostics.json", "w"), indent=1)
     print(json.dumps(res, indent=1))
 
 

@@ -199,3 +199,17 @@ for i in range(n_epochs):
         stat_save_path = os.path.join(plan_args.savepath, 'eval_stats.pkl')
         eval_stat_dict = evaluate_policy(policy, env, plan_args, logger, num_eval_episodes=100, exe_steps=plan_args.exe_steps, stat_save_path=stat_save_path)
         wandb_log_eval_stats(env, eval_stat_dict, plan_args)
+
+#-----------------------------------------------------------------------------#
+#------------------------------- final save ----------------------------------#
+#-----------------------------------------------------------------------------#
+# The periodic saver fires on `step % save_freq == 0` and labels by
+# `step // label_freq * label_freq`. The loop runs steps 0..N-1, so a save
+# scheduled exactly at step N never fires and the true final weights are lost.
+# Save them explicitly here. This runs AFTER the training loop has finished,
+# so it cannot affect training, batch order, or any RNG stream consumed by
+# training.
+if getattr(trainer, 'contention_event', None) is None:
+    trainer.save('final')
+    print(f'[ train ] saved FINAL checkpoint at step {trainer.step} '
+          f'-> {args.savepath}/state_final.pt', flush=True)
