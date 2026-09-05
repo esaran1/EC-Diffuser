@@ -1,0 +1,22 @@
+{
+ "epoch": "18981",
+ "note": "recomputed from return_details; model not modified",
+ "LIVE": {
+  "meanflow_loss": 0.27202131748199465,
+  "action_loss": 0.16843685569862524,
+  "state_loss": 0.2693327983220418,
+  "action_over_state": 0.6253856075011887,
+  "action_grad": 0.08524488545954227,
+  "action_grad_alive": true,
+  "n_batches": 30
+ },
+ "EMA": {
+  "meanflow_loss": 0.2702172875404358,
+  "action_loss": 0.1544808715581894,
+  "state_loss": 0.2677894999583562,
+  "action_over_state": 0.5768742672218763,
+  "action_grad": 0.072048852344354,
+  "action_grad_alive": true,
+  "n_batches": 30
+ }
+}

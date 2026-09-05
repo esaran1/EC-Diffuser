@@ -105,6 +105,11 @@ def main():
     ap.add_argument("--epoch", default="latest")
     ap.add_argument("--loadpath", default="imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42")
     ap.add_argument("--skip-control", action="store_true")
+    ap.add_argument("--only-sets", nargs="*", default=None,
+                    help="restrict control eval to these set ids")
+    ap.add_argument("--skip-offline", action="store_true")
+    ap.add_argument("--merge", action="store_true",
+                    help="merge control results into existing json")
     cli = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
     args = Args(); utils.set_global_device(args.device)
@@ -115,7 +120,8 @@ def main():
     dev = args.device; norm = exp.dataset.normalizer
     res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch)}
 
-    for tag, m in (("LIVE", exp.diffusion), ("EMA", exp.ema)):
+    for tag, m in ((("LIVE", exp.diffusion), ("EMA", exp.ema))
+                   if not cli.skip_offline else ()):
         res[tag] = loss_probe(m, exp.dataset, dev)
         ae, se = replay_error(m, exp.dataset, dev)
         res[tag].update(replay_action_error=ae, replay_state_error=se)
@@ -132,7 +138,8 @@ def main():
             args.horizon - 1: torch.as_tensor(norm.normalize(g, "observations"), device=dev, dtype=torch.float32)}
     front = env.env.obs_dict["media"][:, 0]
     _, z_bg = extract_dlp_features_with_bg(front, env.latent_rep_model, dev)
-    for tag, m in (("EMA", exp.ema), ("LIVE", exp.diffusion)):
+    for tag, m in ((("EMA", exp.ema), ("LIVE", exp.diffusion))
+                   if not cli.skip_offline else ()):
         imag = {}
         for nfe in NFES:
             torch.manual_seed(NOISE_SEED)
@@ -165,7 +172,9 @@ def main():
         from diffuser.utils import gpu_guard
         res["control"] = {}
         me = os.getpid()
-        for name, fn in SETS:
+        todo = [(n, f) for n, f in SETS
+                if cli.only_sets is None or n in cli.only_sets]
+        for name, fn in todo:
             pre = gpu_guard.snapshot()
             foreign = [a for a in pre["compute_apps"]
                        if a["pid"] != me and a["used_mib"] >= 1000]
@@ -188,8 +197,13 @@ def main():
             flag = "" if not foreign_post else "  !! CONTENDED DURING RUN - INVALID"
             print(f"control {name}: success={sr:.4f} (n={n}, {time.time()-t0:.0f}s)"
                   f"{flag}", flush=True)
+        if cli.merge and os.path.exists(f"{OUT}/phase2_20k_diagnostics.json"):
+            prev = json.load(open(f"{OUT}/phase2_20k_diagnostics.json"))
+            merged = dict(prev.get("control", {}))
+            merged.update(res["control"])          # new results win
+            res = {**prev, **res, "control": merged}
         valid = [res["control"][k]["success"] for k, _ in SETS
-                 if res["control"][k].get("status") == "VALID"]
+                 if res["control"].get(k, {}).get("status") == "VALID"]
         res["n_valid_sets"] = len(valid)
         if len(valid) >= 2:
             res["control_mean"] = float(np.mean(valid))

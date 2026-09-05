@@ -1,0 +1,195 @@
+{
+ "loadpath": "imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+ "epoch": "18981",
+ "LIVE": {
+  "objective": 0.26061786661545433,
+  "action_loss": NaN,
+  "state_loss": NaN,
+  "action_grad": 0.07309921110669772,
+  "action_grad_alive": true,
+  "replay_action_error": 0.12752538872882724,
+  "replay_state_error": 0.227547870328029
+ },
+ "EMA": {
+  "objective": 0.2612799366315206,
+  "action_loss": NaN,
+  "state_loss": NaN,
+  "action_grad": 0.06478992514312268,
+  "action_grad_alive": true,
+  "replay_action_error": 0.11640263705824812,
+  "replay_state_error": 0.22826502844691277
+ },
+ "control": {
+  "E0": {
+   "success": 0.0,
+   "n": 96,
+   "seconds": 129.4136233329773,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1788631404.4621062,
+    "iso": "2026-09-05T14:03:24",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 7598, 16376, 99"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7430
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1788631533.8591862,
+    "iso": "2026-09-05T14:05:33",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 7602, 16376, 95"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7434
+     }
+    ]
+   },
+   "foreign_during": []
+  },
+  "E1s": {
+   "success": 0.0,
+   "n": 96,
+   "seconds": 125.8938295841217,
+   "status": "INVALID_CONTENDED_DURING",
+   "pre_snapshot": {
+    "timestamp": 1788631534.0093799,
+    "iso": "2026-09-05T14:05:34",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 7602, 16376, 95"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7434
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1788631659.8677242,
+    "iso": "2026-09-05T14:07:39",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12369, 16376, 90"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7434
+     },
+     {
+      "pid": 1191611,
+      "name": "python",
+      "used_mib": 4762
+     }
+    ]
+   },
+   "foreign_during": [
+    {
+     "pid": 1191611,
+     "name": "python",
+     "used_mib": 4762
+    }
+   ]
+  },
+  "E2s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1191611,
+     "name": "python",
+     "used_mib": 4762
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1788631660.0360885,
+    "iso": "2026-09-05T14:07:40",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12369, 16376, 90"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7434
+     },
+     {
+      "pid": 1191611,
+      "name": "python",
+      "used_mib": 4762
+     }
+    ]
+   }
+  },
+  "E3s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1191611,
+     "name": "python",
+     "used_mib": 4762
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1788631660.2038097,
+    "iso": "2026-09-05T14:07:40",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12369, 16376, 90"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7434
+     },
+     {
+      "pid": 1191611,
+      "name": "python",
+      "used_mib": 4762
+     }
+    ]
+   }
+  },
+  "E4s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1191611,
+     "name": "python",
+     "used_mib": 4762
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1788631660.3751898,
+    "iso": "2026-09-05T14:07:40",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12369, 16376, 90"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1186615,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 7434
+     },
+     {
+      "pid": 1191611,
+      "name": "python",
+      "used_mib": 4762
+     }
+    ]
+   }
+  }
+ },
+ "n_valid_sets": 1,
+ "control_mean": null,
+ "control_sd": null
+}

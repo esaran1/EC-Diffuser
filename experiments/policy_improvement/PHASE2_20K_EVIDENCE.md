@@ -121,3 +121,50 @@ configuration**. Whatever the control shows, the wording will be:
 
 and **not** "MeanFlow does not work" — one formulation and one optimization
 configuration were tested.
+
+---
+
+## 6. Semantic losses reconstructed (§7 resolved — no N/A needed)
+
+The NaNs were an instrumentation artifact, now fixed offline. `ImprovedMeanFlow`
+exposes `meanflow_loss` / `unweighted_meanflow_loss` / `boundary_fraction`, and
+its public `loss()` takes no kwargs — so the semantic split was recomputed by
+calling `_compute_meanflow_loss(..., return_details=True)` (read-only) and
+applying the model's own error definition
+`|compound_velocity − target_velocity|` under its own conditioning mask.
+**The trained model was neither modified nor retrained.** Fixed `(r,t)`/noise
+draw across LIVE and EMA; 30 batches each.
+
+| | LIVE | EMA |
+|---|--:|--:|
+| meanflow loss | 0.2720 | 0.2702 |
+| **action loss** | **0.1684** | **0.1545** |
+| **state loss** | **0.2693** | **0.2678** |
+| action / state | 0.625 | 0.577 |
+| action grad norm | 0.0852 | 0.0720 |
+| action grad alive | **yes** | **yes** |
+
+LIVE and EMA agree closely on every quantity — no deployment-weight pathology.
+
+## 7. Five-seed control — attempt 2 (clean launch, per-set gating)
+
+Launched with the GPU verified clean (no compute processes at 14:03:10). The
+harness snapshots `nvidia-smi` immediately before and after **each** set.
+
+| set | success | status | note |
+|---|--:|---|---|
+| **E0** | **0.0000** | **VALID** | n=96, 129 s, no foreign process before or after |
+| E1s | 0.0000 | **INVALID_CONTENDED_DURING** | PID 1191611 (4762 MiB) appeared mid-set |
+| E2s | — | **ABORTED_CONTENDED** | refused to start; foreign process present |
+| E3s | — | **ABORTED_CONTENDED** | refused to start |
+| E4s | — | **ABORTED_CONTENDED** | refused to start |
+
+**n_valid = 1 of 5. Mean and SD are deliberately not computed.**
+
+The gating behaved exactly as intended: rather than emitting five
+contamination-confounded numbers, it produced one trustworthy value and
+explicitly refused the rest. A retry loop is armed to re-run only the four
+outstanding sets whenever the GPU is genuinely clean, merging results.
+
+**Still NOT CLASSIFIED** — the predeclared gate requires the uncontended
+five-seed control, and four sets remain outstanding.
