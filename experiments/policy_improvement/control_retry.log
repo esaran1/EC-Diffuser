@@ -1,0 +1,158 @@
+[2026-09-05T14:13:17-04:00] attempt 3: GPU clean, running: E1s E2s E3s E4s
+Importing module 'gym_38' (/home/jren313/software/isaacgym/python/isaacgym/_bindings/linux-x86_64/gym_38.so)
+Setting GYM_USD_PLUG_INFO_PATH to /home/jren313/software/isaacgym/python/isaacgym/_bindings/linux-x86_64/usd/plugInfo.json
+[ utils/colab ] Warning: not importing colab dependencies
+PyTorch version 2.1.2+cu121
+Device count 1
+/home/jren313/software/isaacgym/python/isaacgym/_bindings/src/gymtorch
+Using /home/jren313/.cache/torch_extensions/py38_cu121 as PyTorch extensions root...
+Emitting ninja build file /home/jren313/.cache/torch_extensions/py38_cu121/gymtorch/build.ninja...
+Building extension module gymtorch...
+Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
+ninja: no work to do.
+[Warning] [carb.gym.plugin] useGpu is set, forcing single scene (0 subscenes)
+Not connected to PVD
++++ Using GPU PhysX
+Physics Engine: PhysX
+Physics Device: cuda:0
+GPU Pipeline: enabled
+Compute Device: 0
+Graphics Device: 0
+
+Loading pretrained DLP...
+DLP Config
+prior std: 1.0
+keypoints range: [-1, 1]
+total number of kp: 64 -> prior kp: 32
+number of kp from encoder: 24
+kp_activation: tanh
+learnable feature dim: 4
+bg learnable feature dim: 1
+object patch size: 32
+learn particles depth: True
+learn particles scale: True
+conv shape:  torch.Size([64, 4, 4])
+conv shape:  torch.Size([64, 8, 8])
+conv shape:  torch.Size([64, 8, 8])
+ObjDecCNN: fc to cnn num upsample: 2
+conv shape:  torch.Size([128, 32, 32])
+Loaded pretrained representation model from ecdiffuser-data/latent_rep_chkpts/dlp_push_6C/dlp_panda_push.pth
+
+[ utils/serialization ] Loaded config from data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42/dataset_config.pkl
+
+[utils/config ] Config: <class 'diffuser.datasets.sequence.GoalDataset'>
+    action_only: False
+    dataset_name: panda_push
+    dataset_path: ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+    horizon: 5
+    max_path_length: 100
+    normalizer: SafeLimitsNormalizer
+    obs_only: False
+    overfit: False
+    particle_normalizer: ParticleLimitsNormalizer
+    preprocess_fns: []
+    single_view: False
+    use_padding: True
+
+[ utils/serialization ] Loaded config from data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42/render_config.pkl
+
+[utils/config ] Config: <class 'diffuser.utils.rendering.ParticleRenderer'>
+    env: None
+    num_entity: 3
+    particle_dim: 10
+    single_view: False
+
+[ utils/serialization ] Loaded config from data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.pint.IntervalAdaLNPINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.fast_generation.ImprovedMeanFlow'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    clip_denoised: False
+    horizon: 5
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    predict_epsilon: False
+    time_scale: 1000.0
+
+[ utils/serialization ] Loaded config from data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42/trainer_config.pkl
+
+[utils/config ] Config: <class 'diffuser.utils.training.Trainer'>
+    bucket: None
+    ema_decay: 0.995
+    gradient_accumulate_every: 8
+    label_freq: 333
+    n_reference: 4
+    results_folder: data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42
+    sample_freq: 0
+    save_freq: 1000
+    save_parallel: False
+    train_batch_size: 8
+    train_lr: 4e-05
+
+[ utils/serialization ] Overriding dataset path: ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+[ datasets/buffer ] Loaded 2000 episodes from ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+[ datasets/buffer ] Finalized replay buffer | 2000 episodes
+[ datasets/buffer ] Found 1950 successful episodes
+goals X shape:  (2000, 48, 10)
+The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+[ utils/normalization ] Skipping state_observations | <class 'diffuser.datasets.normalization.SafeLimitsNormalizer'>
+The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+[ utils/normalization ] Skipping state_goals | <class 'diffuser.datasets.normalization.SafeLimitsNormalizer'>
+
+                    [ utils/normalization ] Constant data in dimension 0 | max = min = 0.0
+[ datasets/sequence ] Dataset fields: [ datasets/buffer ] Fields:
+    info_goal_success_frac: (2000,)
+    info_goals_reached: (2000,)
+    goals: (2000, 100, 48, 10)
+    observations: (2000, 100, 48, 10)
+    state_observations: (2000, 100, 4, 6)
+    state_goals: (2000, 100, 4, 6)
+    actions: (2000, 100, 3)
+    rewards: (2000, 100, 1)
+    terminals: (2000, 100, 1)
+    normed_observations: (2000, 100, 480)
+    normed_actions: (2000, 100, 3)
+    normed_goals: (2000, 100, 480)
+[ datasets/sequence ] Dataset normalizer: observations: [ Normalizer ] dim: 10
+    -: [ -1.34  -1.31  -2.36  -1.8   -2.24 -11.58 -11.45  -5.57 -13.74   0.92]
+    +: [ 0.8   1.08 -0.46 -0.54  3.21 13.26 11.91  8.59  9.92  1.  ]
+]
+actions: [ Normalizer ] dim: 3
+    -: [-1.   -1.   -0.36]
+    +: [1.   1.   0.06]
+]
+rewards: [ Normalizer ] dim: 1
+    -: [-2.76]
+    +: [-0.01]
+]
+terminals: [ Normalizer ] dim: 1
+    -: [-1.]
+    +: [1.]
+]
+
+particle transformer # parameters: 57480704
+
+[ utils/serialization ] Loading model epoch: 18981
+
+control E1s: success=0.0000 (n=96, 131s)
+control E2s: success=0.0000 (n=96, 127s)
