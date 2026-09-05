@@ -161,15 +161,41 @@ def main():
             fig.savefig(p, dpi=120); plt.close(fig); print("wrote", p, flush=True)
 
     if not cli.skip_control:
+        sys.path.insert(0, "diffuser")
+        from diffuser.utils import gpu_guard
         res["control"] = {}
+        me = os.getpid()
         for name, fn in SETS:
+            pre = gpu_guard.snapshot()
+            foreign = [a for a in pre["compute_apps"]
+                       if a["pid"] != me and a["used_mib"] >= 1000]
+            if foreign:
+                res["control"][name] = dict(status="ABORTED_CONTENDED", foreign=foreign,
+                                            pre_snapshot=pre)
+                print(f"control {name}: ABORTED - foreign GPU process present: {foreign}",
+                      flush=True)
+                continue
             ep = pickle.load(open(f"experiments/isaacgym_episode_sets/{fn}", "rb"))
             t0 = time.time()
             sr, n = control(exp.ema, env, args, ep, dev, norm)
-            res["control"][name] = dict(success=sr, n=n, seconds=time.time() - t0)
-            print(f"control {name}: success={sr:.4f} (n={n}, {time.time()-t0:.0f}s)", flush=True)
-        v = [res["control"][k]["success"] for k, _ in SETS]
-        res["control_mean"] = float(np.mean(v)); res["control_sd"] = float(np.std(v, ddof=1))
+            post = gpu_guard.snapshot()
+            foreign_post = [a for a in post["compute_apps"]
+                            if a["pid"] != me and a["used_mib"] >= 1000]
+            res["control"][name] = dict(
+                success=sr, n=n, seconds=time.time() - t0,
+                status="VALID" if not foreign_post else "INVALID_CONTENDED_DURING",
+                pre_snapshot=pre, post_snapshot=post, foreign_during=foreign_post)
+            flag = "" if not foreign_post else "  !! CONTENDED DURING RUN - INVALID"
+            print(f"control {name}: success={sr:.4f} (n={n}, {time.time()-t0:.0f}s)"
+                  f"{flag}", flush=True)
+        valid = [res["control"][k]["success"] for k, _ in SETS
+                 if res["control"][k].get("status") == "VALID"]
+        res["n_valid_sets"] = len(valid)
+        if len(valid) >= 2:
+            res["control_mean"] = float(np.mean(valid))
+            res["control_sd"] = float(np.std(valid, ddof=1))
+        else:
+            res["control_mean"] = res["control_sd"] = None
     json.dump(res, open(f"{OUT}/phase2_20k_diagnostics.json", "w"), indent=1)
     print(json.dumps(res, indent=1))
 
