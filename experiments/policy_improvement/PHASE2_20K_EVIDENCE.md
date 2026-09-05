@@ -168,3 +168,73 @@ outstanding sets whenever the GPU is genuinely clean, merging results.
 
 **Still NOT CLASSIFIED** — the predeclared gate requires the uncontended
 five-seed control, and four sets remain outstanding.
+
+---
+
+## 8. FIVE-SEED CONTROL COMPLETE — all five VALID, all uncontended
+
+| set | gen seed | success | n | seconds | foreign ≥1 GB during | status |
+|---|--:|--:|--:|--:|---|---|
+| **E0** | 20260820 | **0.0000** | 96 | 129 | none | **VALID** |
+| **E1s** | 20261820 | **0.0000** | 96 | 131 | none | **VALID** |
+| **E2s** | 20262820 | **0.0000** | 96 | 127 | none | **VALID** |
+| **E3s** | 20263820 | **0.0000** | 96 | 131 | none | **VALID** |
+| **E4s** | 20264820 | **0.0000** | 96 | 130 | none | **VALID** |
+| **macro mean** | | **0.0000** | | | | |
+| **SD** | | **0.0000** | | | | |
+
+Reported as five separate columns, never pooled into a single n=480 figure.
+
+**Contention provenance.** Every set carries an `nvidia-smi` snapshot taken
+immediately before and after it. The one process appearing in each snapshot is
+**the evaluation job itself** (PID 1186615 for E0, PID 1199463 for E1s–E4s);
+`foreign_during` is empty for all five. No foreign process was present at any
+point during any set. E0 came from the second attempt and E1s–E4s from the
+opportunistic retry, under the identical frozen protocol and the same checkpoint
+(epoch 18981).
+
+The earlier contaminated results (attempt 1 E0/E1s, attempt 2 E1s) were
+discarded and are not part of this table.
+
+## 9. FINAL CLASSIFICATION — **MF-NO-GO**
+
+> **Boundary ImprovedMeanFlow with the current PandaPush formulation, LR 4e-5,
+> and a 20k-step viability budget did not establish a usable policy.**
+
+This is explicitly **not** "MeanFlow does not work" — one formulation and one
+optimization configuration were tested.
+
+Converging evidence, none of which rests on a single endpoint:
+
+| axis | finding |
+|---|---|
+| training | objective 0.857 → 0.265 by step 1k, then flat through 20k (19,900 within noise of 1,000) |
+| imagination | incoherent at NFE 1/2/4/**10**/**15**; Standard Flow coherent on the same frozen examples; DLP + Gaussian controls clean, so not a decoder artifact |
+| offline replay (EMA) | action **0.1164**, state **0.2283** vs Standard Flow **0.0221** / **0.0488** at NFE4 (~5× worse) |
+| semantic losses (EMA) | action 0.1545, state 0.2678 |
+| optimization health | action gradients **alive** (LIVE 0.0852, EMA 0.0720); **LIVE ≈ EMA** — no dead-branch and no EMA pathology to explain the failure away |
+| control | **0/96 on all five** frozen evaluation sets, macro mean 0.0000, SD 0.0000 |
+
+MF-CONDITIONAL would require the closed-loop control to be surprisingly useful
+despite the poor offline diagnostics; it is uniformly zero. MF-GO would require
+genuinely usable behaviour across the five sets. Neither holds.
+
+## 10. Is a 50k extension scientifically justified? — **No**
+
+No specific rationale exists. 19k steps after the initial drop produced no
+objective trend; imagination stayed incoherent at every NFE; neutral replay
+stayed ~5× worse than Standard Flow; and all five control sets are at zero.
+"Maybe more training" does not justify ~6.5 further GPU-h, and the operational
+decision is NO-GO for additional compute on this configuration.
+
+## 11. Phase-2 compute ledger (closed)
+
+| item | GPU-h |
+|---|--:|
+| aborted attempt 1 (bad projection) | 0.05 |
+| aborted attempt 2 (contention) | 0.324 |
+| **valid 20k run** | **3.175** |
+| diagnostics + control (incl. discarded contaminated runs) | ~0.35 |
+| **total** | **~3.90** of the 5.0 cap |
+
+**Phase 2 is permanently closed.**
