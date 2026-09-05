@@ -1,0 +1,54 @@
+{
+ "A": {
+  "init_hash": "2a4aa88a0e463b0b",
+  "first_batches": [
+   3793.905762,
+   3469.019043,
+   3508.618408
+  ],
+  "pred_hash": "69758b49b7fc1d8e",
+  "mask_terminal_action": false,
+  "lambda_action": 1.0,
+  "weight_sum": 2442.0,
+  "action_weight_t0": 10.0
+ },
+ "B": {
+  "init_hash": "2a4aa88a0e463b0b",
+  "first_batches": [
+   3793.905762,
+   3469.019043,
+   3508.618408
+  ],
+  "pred_hash": "69758b49b7fc1d8e",
+  "mask_terminal_action": true,
+  "lambda_action": 1.0,
+  "weight_sum": 2442.0,
+  "action_weight_t0": 10.0
+ },
+ "C": {
+  "init_hash": "2a4aa88a0e463b0b",
+  "first_batches": [
+   3793.905762,
+   3469.019043,
+   3508.618408
+  ],
+  "pred_hash": "69758b49b7fc1d8e",
+  "mask_terminal_action": true,
+  "lambda_action": 2.0,
+  "weight_sum": 2484.0,
+  "action_weight_t0": 20.0
+ },
+ "D": {
+  "init_hash": "2a4aa88a0e463b0b",
+  "first_batches": [
+   3793.905762,
+   3469.019043,
+   3508.618408
+  ],
+  "pred_hash": "69758b49b7fc1d8e",
+  "mask_terminal_action": true,
+  "lambda_action": 5.0,
+  "weight_sum": 2610.0,
+  "action_weight_t0": 50.0
+ }
+}

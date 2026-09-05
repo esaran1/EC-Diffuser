@@ -31,8 +31,20 @@ class ConditionalFlowMatching(nn.Module):
         n_solver_steps=None,
         n_diffusion_steps=None,
         time_scale=1000.0,
+        mask_terminal_action=False,
+        lambda_action=1.0,
     ):
-        """Initialize a flow wrapper compatible with GaussianDiffusion configs."""
+        """Initialize a flow wrapper compatible with GaussianDiffusion configs.
+
+        Phase-3 loss-screen knobs (both default to current canonical behaviour,
+        so an unmodified config trains byte-identically to before):
+          mask_terminal_action -- exclude the t=H-1 action slice from the loss.
+              That target is a normalized ZERO placeholder, not an executed
+              action. Masking REMOVES supervision; it is an ablation, not an
+              action-emphasis change (action share 0.879%% -> 0.816%%).
+          lambda_action -- multiplies the ENTIRE action-side objective,
+              including the inherited t=0 first-action weight of 10.
+        """
         super().__init__()
         if not isinstance(horizon, int) or isinstance(horizon, bool) or horizon < 1:
             raise ValueError("horizon must be an integer of at least one")
@@ -71,6 +83,15 @@ class ConditionalFlowMatching(nn.Module):
         self.time_scale = float(time_scale)
 
         # clip_denoised and predict_epsilon are diffusion-only compatibility fields.
+        if isinstance(mask_terminal_action, bool):
+            self.mask_terminal_action = mask_terminal_action
+        else:
+            raise TypeError("mask_terminal_action must be boolean")
+        if isinstance(lambda_action, bool) or not isinstance(lambda_action, numbers.Real):
+            raise TypeError("lambda_action must be a finite positive number")
+        if not math.isfinite(float(lambda_action)) or float(lambda_action) <= 0.0:
+            raise ValueError("lambda_action must be a finite positive number")
+        self.lambda_action = float(lambda_action)
         weights = self._make_loss_weights(
             self.action_weight, self.loss_discount, self.loss_weights
         )
@@ -139,6 +160,9 @@ class ConditionalFlowMatching(nn.Module):
             weights[:, :self.action_dim] = 0.0
         if self.action_only:
             weights[:, self.action_dim:] = 0.0
+        lam = getattr(self, "lambda_action", 1.0)
+        if self.action_dim and lam != 1.0:
+            weights[:, :self.action_dim] = weights[:, :self.action_dim] * float(lam)
         if not torch.any(weights > 0):
             raise ValueError("loss settings leave no active trajectory dimensions")
         return weights
@@ -215,9 +239,14 @@ class ConditionalFlowMatching(nn.Module):
         return x
 
     def _make_conditioning_mask(self, x, cond):
+        # (terminal-action masking is applied at the end of this method)
         mask = torch.ones_like(x, dtype=torch.bool)
         for timestep in cond:
             mask[:, timestep, self.action_dim:] = False
+        if getattr(self, "mask_terminal_action", False) and self.action_dim:
+            # t=H-1 action target is a normalized zero placeholder, not an
+            # executed action. Excluding it REMOVES supervision (ablation).
+            mask[:, self.horizon - 1, :self.action_dim] = False
         return mask
 
     def _call_model(self, x, cond, model_time):

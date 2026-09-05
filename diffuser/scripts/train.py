@@ -93,6 +93,11 @@ trainer_config = utils.Config(
     results_folder=args.savepath,
     bucket=args.bucket,
     n_reference=args.n_reference,
+    # Paired training stream: with a seeded generator every arm of a loss
+    # screen draws the identical batch sequence, so the only difference
+    # between arms is the registered loss change. None (default) reproduces
+    # the previous unseeded behaviour.
+    dataloader_seed=getattr(args, 'dataloader_seed', None),
 )
 
 #-----------------------------------------------------------------------------#
