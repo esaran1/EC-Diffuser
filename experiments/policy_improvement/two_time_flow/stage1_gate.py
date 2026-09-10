@@ -158,6 +158,11 @@ def main():
     res["train_seconds"] = time.time() - t0
     res["train_history"] = hist
     tt.eval()
+    # persist the fine-tuned weights so Stage A can do pre-vs-post
+    torch.save({"model": tt.model.state_dict(), "steps": cli.steps,
+                "p_diag": cli.p_diag, "lr": cli.lr},
+               f"{OUT}/ft_state.pt")
+    print(f"[saved] {OUT}/ft_state.pt", flush=True)
 
     # ---- diagonal retention after fine-tune ----
     res["post_ft"] = {}

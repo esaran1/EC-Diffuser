@@ -20,9 +20,9 @@
    "state": 0.29393185178438824
   }
  },
- "s_per_step": 0.23135201930999755,
- "projected_gpu_h": 0.12926444980833265,
- "train_seconds": 236.66081523895264,
+ "s_per_step": 0.2560612154006958,
+ "projected_gpu_h": 0.13612811538908218,
+ "train_seconds": 256.43525862693787,
  "train_history": [
   {
    "step": 0,
