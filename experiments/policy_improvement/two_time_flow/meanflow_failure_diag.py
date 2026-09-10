@@ -77,7 +77,60 @@ def main():
         angular_err_deg=float(np.degrees(np.arccos(np.clip(a["cos"], -1, 1))).mean()),
         output_effective_rank=er, n_samples=len(a["cos"]))
 
-    # ---- OMP gradient-starvation test: bin cosine by target magnitude ----
+    # ---- §3 OMP test, PER SEMANTIC BLOCK (action and state separately) ----
+    def block_stats(model, is_mf, nb=NB):
+        """Per-block target/pred norms, cosine, abs error, binned by target norm."""
+        out = {"action": {k: [] for k in ("tn","pn","cos","abserr")},
+               "state":  {k: [] for k in ("tn","pn","cos","abserr")}}
+        itr = iter(dl)
+        for i in range(nb):
+            try: bb_ = next(itr)
+            except StopIteration: itr = iter(dl); bb_ = next(itr)
+            xx = bb_.trajectories.to(dev); cc = {k: v.to(dev) for k, v in bb_.conditions.items()}
+            torch.manual_seed(3000 + i)
+            if is_mf:
+                _, _, dd = model._compute_meanflow_loss(xx, cc, return_details=True)
+                pr = dd["compound_velocity"].detach()
+            else:
+                _, _, dd = model._compute_flow_loss(xx, cc, return_details=True)
+                pr = dd.get("prediction")
+                if pr is None:
+                    pr = model._call_model(dd["xt"], cc, dd["model_time"]).detach()
+                pr = pr.detach()
+            tg = dd["target_velocity"].detach(); mk = dd["conditioning_mask"]
+            for nm, sl in (("action", slice(0, ad)), ("state", slice(ad, None))):
+                p_ = (pr[:, :, sl] * mk[:, :, sl]).reshape(pr.shape[0], -1)
+                t_ = (tg[:, :, sl] * mk[:, :, sl]).reshape(tg.shape[0], -1)
+                out[nm]["tn"] += t_.norm(dim=1).tolist()
+                out[nm]["pn"] += p_.norm(dim=1).tolist()
+                out[nm]["cos"] += torch.nn.functional.cosine_similarity(p_, t_, dim=1).tolist()
+                out[nm]["abserr"] += (p_ - t_).abs().mean(dim=1).tolist()
+        return out
+
+    def binned(o):
+        r = {}
+        for nm, dct in o.items():
+            arr = {k: np.array(v) for k, v in dct.items()}
+            qs = np.quantile(arr["tn"], [0, .25, .5, .75, 1.0])
+            rows = []
+            for lo, hi in zip(qs[:-1], qs[1:]):
+                sel = (arr["tn"] >= lo) & (arr["tn"] <= hi)
+                if sel.sum() < 3: continue
+                cs = np.clip(arr["cos"][sel], -1, 1)
+                rows.append(dict(
+                    targ_norm_lo=float(lo), targ_norm_hi=float(hi), n=int(sel.sum()),
+                    targ_norm_mean=float(arr["tn"][sel].mean()),
+                    pred_norm_mean=float(arr["pn"][sel].mean()),
+                    norm_ratio_mean=float((arr["pn"][sel] / np.maximum(arr["tn"][sel],1e-9)).mean()),
+                    cos_mean=float(cs.mean()), cos_sd=float(cs.std(ddof=1)) if sel.sum()>1 else None,
+                    angular_err_deg=float(np.degrees(np.arccos(cs)).mean()),
+                    abs_err_mean=float(arr["abserr"][sel].mean())))
+            r[nm] = rows
+        return r
+
+    res["omp_per_block_bins_meanflow"] = binned(block_stats(m, True))
+
+    # ---- pooled bins (kept for continuity) ----
     q = np.quantile(a["targ_norm"], [0, .25, .5, .75, 1.0])
     bins = []
     for lo, hi in zip(q[:-1], q[1:]):
@@ -165,6 +218,67 @@ def main():
                        cos_mean=float(a2["cos"][sel].mean()),
                        norm_ratio_mean=float(a2["ratio"][sel].mean())))
     res["standard_flow_magnitude_bins"] = b2
+
+    # ---- §4 DM1 representation battery at PREDECLARED locations ----
+    def repr_battery(model, is_mf, nb=12):
+        net = model.model if hasattr(model, "model") else model
+        blocks = None
+        for attr in ("particle_transformer",):
+            if hasattr(net, attr):
+                pt = getattr(net, attr)
+                for battr in ("blocks", "layers", "h"):
+                    if hasattr(pt, battr):
+                        blocks = list(getattr(pt, battr)); break
+        loc = {}
+        if blocks:
+            n = len(blocks)
+            loc = {"early_block": blocks[0], "middle_block": blocks[n//2],
+                   "late_block": blocks[-1]}
+        if hasattr(net, "time_mlp"):
+            loc["time_embedding"] = net.time_mlp
+        store = {k: [] for k in loc}
+        hs = []
+        def mk(k):
+            def hook(mod, inp, outp):
+                o = outp[0] if isinstance(outp, tuple) else outp
+                if torch.is_tensor(o):
+                    store[k].append(o.detach().reshape(o.shape[0], -1).float().cpu())
+            return hook
+        for k, mod in loc.items(): hs.append(mod.register_forward_hook(mk(k)))
+        itr = iter(dl)
+        with torch.no_grad():
+            for i in range(nb):
+                try: bb_ = next(itr)
+                except StopIteration: itr = iter(dl); bb_ = next(itr)
+                xx = bb_.trajectories.to(dev); cc = {k: v.to(dev) for k, v in bb_.conditions.items()}
+                torch.manual_seed(4000 + i)
+                if is_mf: model._compute_meanflow_loss(xx, cc)
+                else: model._compute_flow_loss(xx, cc)
+        for h in hs: h.remove()
+        out = {}
+        for k, chunks in store.items():
+            if not chunks: continue
+            M = torch.cat(chunks)[:256]
+            if M.shape[0] < 4: continue
+            Mc = M - M.mean(0, keepdim=True)
+            er, sv = eff_rank(M)
+            Z = torch.nn.functional.normalize(M, dim=1)
+            S = (Z @ Z.T)
+            iu = torch.triu_indices(S.shape[0], S.shape[0], offset=1)
+            pw = S[iu[0], iu[1]]
+            out[k] = dict(n=int(M.shape[0]), dim=int(M.shape[1]),
+                          effective_rank=er,
+                          eff_rank_frac=float(er / min(M.shape)),
+                          feature_var_mean=float(Mc.var(0).mean()),
+                          pairwise_cos_mean=float(pw.mean()),
+                          pairwise_cos_sd=float(pw.std(ddof=1)),
+                          feature_norm_mean=float(M.norm(dim=1).mean()),
+                          top_sv_frac=float((sv[0] / sv.sum())))
+        return out
+
+    res["dm1_representation_meanflow"] = repr_battery(m, True)
+    res["dm1_representation_standard_flow"] = repr_battery(m2, False)
+    res["omp_per_block_bins_standard_flow"] = binned(block_stats(m2, False))
 
     json.dump(res, open(OUT, "w"), indent=1)
     print(json.dumps(res, indent=1))
