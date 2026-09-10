@@ -1,0 +1,22 @@
+{
+ "loadpath": "phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+ "epoch": "final",
+ "LIVE": {
+  "objective": 0.24646799763043722,
+  "action_loss": 0.16698114573955536,
+  "state_loss": 0.2438460240761439,
+  "action_grad": 0.08856322305897872,
+  "action_grad_alive": true,
+  "replay_action_error": 0.11248628182026248,
+  "replay_state_error": 0.20378515124320984
+ },
+ "EMA": {
+  "objective": 0.24113980283339817,
+  "action_loss": 0.14378050938248635,
+  "state_loss": 0.2390955701470375,
+  "action_grad": 0.07566064360241095,
+  "action_grad_alive": true,
+  "replay_action_error": 0.10119989681212853,
+  "replay_state_error": 0.20410957808295885
+ }
+}
