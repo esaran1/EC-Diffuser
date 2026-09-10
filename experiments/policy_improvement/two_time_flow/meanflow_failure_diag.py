@@ -269,9 +269,9 @@ def main():
             out[k] = dict(n=int(M.shape[0]), dim=int(M.shape[1]),
                           effective_rank=er,
                           eff_rank_frac=float(er / min(M.shape)),
-                          feature_var_mean=float(Mc.var(0).mean()),
+                          feature_var_mean=float(Mc.var(0, unbiased=True).mean()),
                           pairwise_cos_mean=float(pw.mean()),
-                          pairwise_cos_sd=float(pw.std(ddof=1)),
+                          pairwise_cos_sd=float(pw.std(unbiased=True)),
                           feature_norm_mean=float(M.norm(dim=1).mean()),
                           top_sv_frac=float((sv[0] / sv.sum())))
         return out

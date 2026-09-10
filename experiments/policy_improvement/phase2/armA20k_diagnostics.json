@@ -128,77 +128,75 @@
   "E3s": {
    "success": 0.0,
    "n": 96,
-   "seconds": 140.62277936935425,
-   "status": "INVALIDATED_OVERLAP_MIDSET",
+   "seconds": 142.49004340171814,
+   "status": "VALID",
    "pre_snapshot": {
-    "timestamp": 1788999830.674141,
-    "iso": "2026-09-09T20:23:50",
+    "timestamp": 1789000166.2178583,
+    "iso": "2026-09-09T20:29:26",
     "gpu": [
-     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 96"
+     "0, NVIDIA GeForce RTX 4080, 2613, 16376, 0"
     ],
     "compute_apps": [
      {
-      "pid": 52265,
+      "pid": 73603,
       "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
-      "used_mib": 2514
+      "used_mib": 2508
      }
     ]
    },
    "post_snapshot": {
-    "timestamp": 1788999971.3023908,
-    "iso": "2026-09-09T20:26:11",
+    "timestamp": 1789000308.704023,
+    "iso": "2026-09-09T20:31:48",
     "gpu": [
-     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 58"
+     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 76"
     ],
     "compute_apps": [
      {
-      "pid": 52265,
+      "pid": 73603,
       "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
       "used_mib": 2514
      }
     ]
    },
-   "foreign_during": [],
-   "note": "a short-lived diagnostic process of ours existed mid-set; killed before the post-snapshot so the boundary guard did not observe it"
+   "foreign_during": []
   },
   "E4s": {
    "success": 0.0,
    "n": 96,
-   "seconds": 138.22808837890625,
-   "status": "INVALIDATED_OVERLAP_MIDSET",
+   "seconds": 140.17173290252686,
+   "status": "VALID",
    "pre_snapshot": {
-    "timestamp": 1788999971.4085524,
-    "iso": "2026-09-09T20:26:11",
+    "timestamp": 1789000308.8188474,
+    "iso": "2026-09-09T20:31:48",
     "gpu": [
-     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 15"
+     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 76"
     ],
     "compute_apps": [
      {
-      "pid": 52265,
+      "pid": 73603,
       "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
       "used_mib": 2514
      }
     ]
    },
    "post_snapshot": {
-    "timestamp": 1789000109.63586,
-    "iso": "2026-09-09T20:28:29",
+    "timestamp": 1789000448.9866533,
+    "iso": "2026-09-09T20:34:08",
     "gpu": [
-     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 95"
+     "0, NVIDIA GeForce RTX 4080, 2619, 16376, 44"
     ],
     "compute_apps": [
      {
-      "pid": 52265,
+      "pid": 73603,
       "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
       "used_mib": 2514
      }
     ]
    },
-   "foreign_during": [],
-   "note": "a short-lived diagnostic process of ours existed mid-set; killed before the post-snapshot so the boundary guard did not observe it"
+   "foreign_during": []
   }
  },
- "n_valid_sets": 3,
- "control_mean": null,
- "control_sd": null
+ "n_valid_sets": 5,
+ "control_mean": 0.0,
+ "control_sd": 0.0
 }
