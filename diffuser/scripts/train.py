@@ -2,6 +2,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import os
 import json
+import torch
 from diffuser.eval_utils import setup_isaac_env, evaluate_policy, wandb_log_eval_stats
 from diffuser.utils.arrays import set_global_device
 from diffuser.configuration import diffusion_wrapper_kwargs, flow_sampling_kwargs
@@ -98,6 +99,12 @@ trainer_config = utils.Config(
     # between arms is the registered loss change. None (default) reproduces
     # the previous unseeded behaviour.
     dataloader_seed=getattr(args, 'dataloader_seed', None),
+    # Fine-tuning knobs. Defaults reproduce the canonical trainer exactly:
+    #   step_start_ema=2000 (canonical), lr_warmup_steps=0 (canonical).
+    # A warm-start fine-tune MUST pass step_start_ema=0, otherwise step_ema()
+    # hard-copies LIVE->EMA for the whole run and destroys the canonical EMA.
+    step_start_ema=getattr(args, 'step_start_ema', 2000),
+    lr_warmup_steps=getattr(args, 'lr_warmup_steps', 0),
 )
 
 #-----------------------------------------------------------------------------#
@@ -182,6 +189,28 @@ if getattr(args, 'require_uncontended_gpu', False):
     trainer.contention_monitor = gpu_guard.ContentionMonitor(
         baseline_pids=[a['pid'] for a in launch_snapshot['compute_apps']])
 
+# ---------------------------------------------------------------------------
+# Warm start: initialize the trainable network from the canonical `model` and
+# the EMA from the canonical `ema`, i.e. continuation semantics. We deliberately
+# do NOT copy ema -> model; they differ materially (relative RMS ~3.66%).
+# Adam is NOT restored: the canonical checkpoint predates full-state saving and
+# contains only {step, model, ema}, so all arms restart Adam identically.
+if getattr(args, 'warm_start_checkpoint', None):
+    _wpath = args.warm_start_checkpoint
+    _wdata = torch.load(_wpath, map_location=args.device)
+    trainer.model.load_state_dict(_wdata['model'])
+    trainer.ema_model.load_state_dict(_wdata['ema'])
+    trainer.step = 0                      # fine-tuning step counter starts at 0
+    _has_opt = 'optimizer' in _wdata
+    print(f'[ warm_start ] {_wpath} (canonical step {_wdata.get("step")}) '
+          f'-> model+ema loaded; optimizer_in_ckpt={_has_opt}; Adam restarted',
+          flush=True)
+    del _wdata
+
+from diffuser.utils.run_lock import RunLock
+_run_lock = RunLock(args.savepath).acquire()
+print(f'[ run_lock ] acquired {_run_lock.path} pid={os.getpid()}', flush=True)
+
 for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')
     trainer.train(n_train_steps=args.n_steps_per_epoch)
@@ -213,3 +242,5 @@ if getattr(trainer, 'contention_event', None) is None:
     trainer.save('final')
     print(f'[ train ] saved FINAL checkpoint at step {trainer.step} '
           f'-> {args.savepath}/state_final.pt', flush=True)
+_run_lock.release()
+print('[ run_lock ] released', flush=True)
