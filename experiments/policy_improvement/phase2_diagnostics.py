@@ -187,15 +187,40 @@ def main():
                 continue
             ep = pickle.load(open(f"experiments/isaacgym_episode_sets/{fn}", "rb"))
             t0 = time.time()
+            # CONTINUOUS mid-set contention monitor: the boundary-only guard
+            # provably missed a short-lived intruder during the Arm-A gate.
+            import threading
+            _mon = {"max_foreign_mib": 0, "events": [], "stop": False}
+            def _poll():
+                while not _mon["stop"]:
+                    try:
+                        for app in gpu_guard.compute_apps():
+                            pid_, nm_, mib_ = app
+                            if pid_ != me and mib_ >= 1000:
+                                _mon["max_foreign_mib"] = max(_mon["max_foreign_mib"], mib_)
+                                _mon["events"].append({"pid": pid_, "name": nm_,
+                                    "used_mib": mib_, "iso": time.strftime("%H:%M:%S")})
+                    except Exception:
+                        pass
+                    time.sleep(5)
+            _th = threading.Thread(target=_poll, daemon=True); _th.start()
             sr, n = control(exp.ema, env, args, ep, dev, norm)
+            _mon["stop"] = True; _th.join(timeout=8)
             post = gpu_guard.snapshot()
             foreign_post = [a for a in post["compute_apps"]
                             if a["pid"] != me and a["used_mib"] >= 1000]
+            mid = _mon["events"]
+            bad = bool(foreign_post) or bool(mid)
             res["control"][name] = dict(
                 success=sr, n=n, seconds=time.time() - t0,
-                status="VALID" if not foreign_post else "INVALID_CONTENDED_DURING",
-                pre_snapshot=pre, post_snapshot=post, foreign_during=foreign_post)
-            flag = "" if not foreign_post else "  !! CONTENDED DURING RUN - INVALID"
+                status="VALID" if not bad else "INVALID_CONTENDED_DURING",
+                pre_snapshot=pre, post_snapshot=post, foreign_during=foreign_post,
+                midset_max_foreign_mib=_mon["max_foreign_mib"],
+                midset_events=mid[:20], midset_event_count=len(mid),
+                start_iso=time.strftime("%Y-%m-%dT%H:%M:%S",
+                                        time.localtime(t0)),
+                end_iso=time.strftime("%Y-%m-%dT%H:%M:%S"))
+            flag = "" if not bad else f"  !! CONTENDED (mid-set events={len(mid)}, max {_mon['max_foreign_mib']} MiB) - INVALID"
             print(f"control {name}: success={sr:.4f} (n={n}, {time.time()-t0:.0f}s)"
                   f"{flag}", flush=True)
         if cli.merge and os.path.exists(f"{OUT}/{cli.tag}_diagnostics.json"):

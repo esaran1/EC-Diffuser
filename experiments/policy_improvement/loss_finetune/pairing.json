@@ -1,0 +1,89 @@
+{
+ "canonical_ckpt": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+ "canonical_step": 499000,
+ "canonical_model_hash": "b60f9dfab310a102",
+ "canonical_ema_hash": "2d17d9347b181c36",
+ "arms": {
+  "A": {
+   "model_init_hash": "63b3ab52686124f4",
+   "first_batches": [
+    3793.905762,
+    3469.019043,
+    3508.618408
+   ],
+   "pred_hash": "ecc9af02b973fa7b",
+   "mask_terminal_action": false,
+   "lambda_action": 1.0,
+   "action_weight": 10.0,
+   "lr": 1e-05,
+   "warmup": 100,
+   "step_start_ema": 0,
+   "dataloader_seed": 20260905,
+   "n_train_steps": 2000,
+   "warm_start": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+   "weight_sum": 2442.0,
+   "action_weight_t0": 10.0
+  },
+  "B": {
+   "model_init_hash": "63b3ab52686124f4",
+   "first_batches": [
+    3793.905762,
+    3469.019043,
+    3508.618408
+   ],
+   "pred_hash": "ecc9af02b973fa7b",
+   "mask_terminal_action": true,
+   "lambda_action": 1.0,
+   "action_weight": 10.0,
+   "lr": 1e-05,
+   "warmup": 100,
+   "step_start_ema": 0,
+   "dataloader_seed": 20260905,
+   "n_train_steps": 2000,
+   "warm_start": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+   "weight_sum": 2442.0,
+   "action_weight_t0": 10.0
+  },
+  "C": {
+   "model_init_hash": "63b3ab52686124f4",
+   "first_batches": [
+    3793.905762,
+    3469.019043,
+    3508.618408
+   ],
+   "pred_hash": "ecc9af02b973fa7b",
+   "mask_terminal_action": true,
+   "lambda_action": 2.0,
+   "action_weight": 10.0,
+   "lr": 1e-05,
+   "warmup": 100,
+   "step_start_ema": 0,
+   "dataloader_seed": 20260905,
+   "n_train_steps": 2000,
+   "warm_start": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+   "weight_sum": 2442.0,
+   "action_weight_t0": 10.0
+  },
+  "D": {
+   "model_init_hash": "63b3ab52686124f4",
+   "first_batches": [
+    3793.905762,
+    3469.019043,
+    3508.618408
+   ],
+   "pred_hash": "ecc9af02b973fa7b",
+   "mask_terminal_action": true,
+   "lambda_action": 5.0,
+   "action_weight": 10.0,
+   "lr": 1e-05,
+   "warmup": 100,
+   "step_start_ema": 0,
+   "dataloader_seed": 20260905,
+   "n_train_steps": 2000,
+   "warm_start": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+   "weight_sum": 2442.0,
+   "action_weight_t0": 10.0
+  }
+ },
+ "paired": true
+}

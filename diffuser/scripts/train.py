@@ -2,7 +2,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import os
 import json
-import torch
+import time
 from diffuser.eval_utils import setup_isaac_env, evaluate_policy, wandb_log_eval_stats
 from diffuser.utils.arrays import set_global_device
 from diffuser.configuration import diffusion_wrapper_kwargs, flow_sampling_kwargs
@@ -196,6 +196,7 @@ if getattr(args, 'require_uncontended_gpu', False):
 # Adam is NOT restored: the canonical checkpoint predates full-state saving and
 # contains only {step, model, ema}, so all arms restart Adam identically.
 if getattr(args, 'warm_start_checkpoint', None):
+    import torch   # after isaacgym has been imported by eval_utils
     _wpath = args.warm_start_checkpoint
     _wdata = torch.load(_wpath, map_location=args.device)
     trainer.model.load_state_dict(_wdata['model'])
@@ -244,3 +245,29 @@ if getattr(trainer, 'contention_event', None) is None:
           f'-> {args.savepath}/state_final.pt', flush=True)
 _run_lock.release()
 print('[ run_lock ] released', flush=True)
+
+# §13 completion sentinel: written ONLY after a verified final save, so a
+# scheduler can advance on artifact evidence instead of process-name matching
+# (a stale regex previously blocked the workflow for hours).
+if getattr(trainer, 'contention_event', None) is None:
+    import hashlib as _hl
+    _fp = os.path.join(args.savepath, 'state_final.pt')
+    _ck = torch.load(_fp, map_location='cpu')
+    _sent = {
+        'run_dir': args.savepath,
+        'pid': os.getpid(),
+        'final_internal_step': int(_ck['step']),
+        'expected_steps': int(args.n_train_steps),
+        'step_matches': bool(int(_ck['step']) == int(args.n_train_steps)),
+        'checkpoint_path': _fp,
+        'checkpoint_sha256_16': _hl.sha256(open(_fp,'rb').read()).hexdigest()[:16],
+        'end_timestamp': time.time(),
+        'end_iso': time.strftime('%Y-%m-%dT%H:%M:%S'),
+        'exit_status': 'clean',
+    }
+    del _ck
+    with open(os.path.join(args.savepath, 'RUN_COMPLETE.json'), 'w') as fh:
+        json.dump(_sent, fh, indent=1)
+    print(f"[ sentinel ] RUN_COMPLETE.json written "
+          f"(step {_sent['final_internal_step']}, matches={_sent['step_matches']})",
+          flush=True)
