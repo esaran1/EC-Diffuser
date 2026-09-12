@@ -19,6 +19,13 @@ def diffusion_wrapper_kwargs(args, observation_dim, action_dim):
     }
     if hasattr(args, "time_scale"):
         kwargs["time_scale"] = args.time_scale
+    # Loss-screen knobs. These MUST be forwarded explicitly: this function is a
+    # whitelist, so anything omitted silently falls back to the wrapper's
+    # constructor default. Omitting them made every loss arm train arm A's
+    # objective and produce byte-identical checkpoints.
+    for _k in ("mask_terminal_action", "lambda_action"):
+        if hasattr(args, _k):
+            kwargs[_k] = getattr(args, _k)
     return kwargs
 
 
