@@ -14,3 +14,7 @@ d4rl
 # Provenance (revision + sha256) is recorded in PROVENANCE.md; do not redistribute weights.
 experiments/topconf/lerobot_pusht/hf_cache/
 experiments/policy_improvement/launch_gate.log
+
+# Stage-B probe checkpoints: large .pt artifacts kept on disk for provenance
+# (including the INVALID_contended runs) but never committed.
+experiments/policy_improvement/loss_finetune/mechanism/probe_runs/
