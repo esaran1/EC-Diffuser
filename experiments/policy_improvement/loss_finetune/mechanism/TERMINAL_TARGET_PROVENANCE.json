@@ -1,0 +1,15 @@
+{
+  "terminal_action_value": [
+    0.0,
+    0.0,
+    0.7060304880142212
+  ],
+  "unique_rows": 1,
+  "std": [
+    0.0,
+    0.0,
+    2.002716064453125e-05
+  ],
+  "n": 5000,
+  "dataset_class": "GoalDataset"
+}
