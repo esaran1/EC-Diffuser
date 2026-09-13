@@ -1,0 +1,11 @@
+{
+  "config": "config.pandapush_lossft_armB_seed42",
+  "final_step": 500,
+  "save_at": [
+    10,
+    100,
+    250,
+    500
+  ],
+  "effective_denominator": 46464
+}

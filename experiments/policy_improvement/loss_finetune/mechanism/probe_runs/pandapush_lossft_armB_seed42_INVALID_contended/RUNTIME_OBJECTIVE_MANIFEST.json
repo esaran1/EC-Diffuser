@@ -1,0 +1,50 @@
+{
+  "actual": {
+    "action_block_row_sums": [
+      30.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ],
+    "action_block_sum": 42.0,
+    "action_dim": 3,
+    "denominator_ignores_terminal_mask": false,
+    "first_action_weight": 10.0,
+    "horizon": 5,
+    "lambda_action": 1.0,
+    "loss_weight_matrix_sha16": "f6f56c359875b7f4",
+    "loss_weight_matrix_shape": [
+      5,
+      483
+    ],
+    "loss_weight_matrix_sum": 2442.0,
+    "mask_terminal_action": true,
+    "observation_block_sum": 2400.0,
+    "terminal_action_status": "MASKED",
+    "terminal_action_weight_row": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "expected": {
+    "first_action_weight": 10.0,
+    "lambda_action": 1.0,
+    "mask_terminal_action": true
+  },
+  "failures": [],
+  "run_id": "pandapush_lossft_armB_seed42",
+  "terminal_mask_probe": {
+    "conditioning_mask_total_active": 46464,
+    "denominator_ignores_terminal_mask": false,
+    "effective_loss_denominator": 46464,
+    "loss_denominator": 46464,
+    "loss_denominator_without_terminal_mask": 46560,
+    "probe_batch": 32,
+    "renormalization_ratio": 1.0020661157024793,
+    "terminal_action_elements_active": 0,
+    "terminal_action_masked": true
+  },
+  "verdict": "PASS"
+}
