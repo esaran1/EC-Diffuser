@@ -97,6 +97,30 @@ class ConditionalFlowMatching(nn.Module):
         )
         self.register_buffer("loss_weight_matrix", weights)
 
+    def rebuild_loss_weight_matrix(self):
+        """Recompute `loss_weight_matrix` from the CONFIGURED objective knobs.
+
+        `loss_weight_matrix` is a registered buffer, so it is serialized into
+        every checkpoint and RESTORED by `load_state_dict`. A warm start from a
+        canonical checkpoint therefore overwrites the freshly constructed,
+        correctly lambda-scaled matrix with the canonical lambda=1 matrix --
+        silently reverting the objective while `self.lambda_action` still
+        reports the configured value. That mismatch is invisible to any check
+        that inspects only scalar attributes.
+
+        Call this after any `load_state_dict` that restores a foreign matrix.
+        Returns (previous_sum, new_sum) so callers can log what changed.
+        """
+        previous = float(self.loss_weight_matrix.sum().item())
+        weights = self._make_loss_weights(
+            self.action_weight, self.loss_discount, self.loss_weights
+        )
+        self.loss_weight_matrix = weights.to(
+            device=self.loss_weight_matrix.device,
+            dtype=self.loss_weight_matrix.dtype,
+        )
+        return previous, float(self.loss_weight_matrix.sum().item())
+
     @staticmethod
     def _validate_solver_steps(value, name):
         if isinstance(value, bool) or not isinstance(value, int):

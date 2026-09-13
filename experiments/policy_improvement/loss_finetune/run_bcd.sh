@@ -44,6 +44,19 @@ for ARM in B C D; do
       echo "[$(date -Iseconds)] arm $ARM step mismatch - stopping" >> "$LOG"; exit 1
     fi
   fi
+  # --- SECTION 16: early scientific divergence check -------------------------
+  # From the ACTUAL production runs, not a preflight: once two arms exist, their
+  # first periodic checkpoint (step 500) must no longer be byte-identical. If
+  # different runtime objectives still yield identical weights, the objective is
+  # not reaching optimization and there is no point burning the remaining arms.
+  # This is an engineering validity check, not an adaptive scientific gate.
+  $PY experiments/policy_improvement/loss_finetune/rerun/early_divergence_check.py \
+    --runroot "$RUNROOT" --sub "$SUB" --arm "$ARM" >> "$LOG" 2>&1
+  if [ $? -ne 0 ]; then
+    echo "[$(date -Iseconds)] arm $ARM EARLY DIVERGENCE CHECK FAILED - STOPPING ALL" >> "$LOG"
+    exit 1
+  fi
+
   # diagnostics + five-seed control
   if [ ! -f "experiments/policy_improvement/phase2/lossft_${ARM}_diagnostics.json" ]; then
     wait_clean || exit 1

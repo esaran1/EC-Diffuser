@@ -1,0 +1,56 @@
+{
+  "arm": "D",
+  "losses": {
+    "conditioning_mask_denominator": 46464.0,
+    "terminal_action_contribution": 0.0,
+    "total_loss": 0.2609410881996155,
+    "unweighted_action_loss": 0.07941950112581253,
+    "unweighted_flow_loss": 0.25479555130004883,
+    "unweighted_observation_loss": 0.256257027387619,
+    "weighted_action_contribution": 0.00680191395804286,
+    "weighted_observation_contribution": 0.2541392147541046
+  },
+  "model_params_sha16_before": "11a8fb1354d76c70",
+  "objective": {
+    "action_block_row_sums": [
+      150.0,
+      15.0,
+      15.0,
+      15.0,
+      15.0
+    ],
+    "action_block_sum": 210.0,
+    "action_dim": 3,
+    "first_action_weight": 50.0,
+    "horizon": 5,
+    "lambda_action": 5.0,
+    "loss_weight_matrix_sha16": "7a213faa3753a368",
+    "loss_weight_matrix_shape": [
+      5,
+      483
+    ],
+    "loss_weight_matrix_sum": 2610.0,
+    "mask_terminal_action": true,
+    "matrix_sum_after_rebuild": 2610.0,
+    "matrix_sum_restored_from_checkpoint": 2442.0,
+    "observation_block_sum": 2400.0,
+    "terminal_action_status": "MASKED",
+    "terminal_action_weight_row": [
+      5.0,
+      5.0,
+      5.0
+    ]
+  },
+  "one_step": {
+    "action_grad_norm": 0.222013307607612,
+    "grad_norm": 0.34220141665862025,
+    "loss_before_update": 0.2609410881996155,
+    "model_params_sha16_after_one_step": "667d5a0c20dc1dc5"
+  },
+  "prediction_sha16": "795d8ef6942a0ba3",
+  "terminal_mask_probe": {
+    "conditioning_mask_total_active": 1932,
+    "terminal_action_elements_active": 0,
+    "terminal_action_masked": true
+  }
+}

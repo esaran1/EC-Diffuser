@@ -1,0 +1,257 @@
+{
+  "ctor_params": [
+    "horizon",
+    "observation_dim",
+    "action_dim",
+    "n_timesteps",
+    "loss_type",
+    "clip_denoised",
+    "predict_epsilon",
+    "action_weight",
+    "loss_discount",
+    "loss_weights",
+    "obs_only",
+    "action_only",
+    "n_solver_steps",
+    "n_diffusion_steps",
+    "time_scale",
+    "mask_terminal_action",
+    "lambda_action"
+  ],
+  "trainer_params": [
+    "ema_decay",
+    "train_batch_size",
+    "train_lr",
+    "gradient_accumulate_every",
+    "step_start_ema",
+    "update_ema_every",
+    "log_freq",
+    "sample_freq",
+    "save_freq",
+    "label_freq",
+    "save_parallel",
+    "results_folder",
+    "n_reference",
+    "bucket",
+    "max_grad_norm",
+    "collect_step_diagnostics",
+    "adam_betas",
+    "lr_warmup_steps",
+    "dataloader_seed"
+  ],
+  "arms": {
+    "A": {
+      "forwarded": {
+        "horizon": 5,
+        "observation_dim": 480,
+        "action_dim": 4,
+        "n_timesteps": 4,
+        "loss_type": "l1",
+        "clip_denoised": false,
+        "predict_epsilon": false,
+        "action_weight": 10,
+        "loss_weights": null,
+        "loss_discount": 1,
+        "obs_only": false,
+        "action_only": false,
+        "time_scale": 1000.0,
+        "mask_terminal_action": false,
+        "lambda_action": 1.0
+      },
+      "config_fields_ctor_accepts": [
+        "action_only",
+        "action_weight",
+        "clip_denoised",
+        "horizon",
+        "lambda_action",
+        "loss_discount",
+        "loss_type",
+        "loss_weights",
+        "mask_terminal_action",
+        "n_diffusion_steps",
+        "obs_only",
+        "predict_epsilon",
+        "time_scale"
+      ],
+      "OMITTED_FROM_WHITELIST": [
+        "n_diffusion_steps"
+      ],
+      "mask_terminal_action": false,
+      "lambda_action": 1.0,
+      "trainer_side_set": [
+        "bucket",
+        "dataloader_seed",
+        "ema_decay",
+        "gradient_accumulate_every",
+        "lr_warmup_steps",
+        "n_reference",
+        "sample_freq",
+        "save_freq",
+        "save_parallel",
+        "step_start_ema"
+      ],
+      "OMITTED_EXCLUDING_BENIGN_ALIASES": []
+    },
+    "B": {
+      "forwarded": {
+        "horizon": 5,
+        "observation_dim": 480,
+        "action_dim": 4,
+        "n_timesteps": 4,
+        "loss_type": "l1",
+        "clip_denoised": false,
+        "predict_epsilon": false,
+        "action_weight": 10,
+        "loss_weights": null,
+        "loss_discount": 1,
+        "obs_only": false,
+        "action_only": false,
+        "time_scale": 1000.0,
+        "mask_terminal_action": true,
+        "lambda_action": 1.0
+      },
+      "config_fields_ctor_accepts": [
+        "action_only",
+        "action_weight",
+        "clip_denoised",
+        "horizon",
+        "lambda_action",
+        "loss_discount",
+        "loss_type",
+        "loss_weights",
+        "mask_terminal_action",
+        "n_diffusion_steps",
+        "obs_only",
+        "predict_epsilon",
+        "time_scale"
+      ],
+      "OMITTED_FROM_WHITELIST": [
+        "n_diffusion_steps"
+      ],
+      "mask_terminal_action": true,
+      "lambda_action": 1.0,
+      "trainer_side_set": [
+        "bucket",
+        "dataloader_seed",
+        "ema_decay",
+        "gradient_accumulate_every",
+        "lr_warmup_steps",
+        "n_reference",
+        "sample_freq",
+        "save_freq",
+        "save_parallel",
+        "step_start_ema"
+      ],
+      "OMITTED_EXCLUDING_BENIGN_ALIASES": []
+    },
+    "C": {
+      "forwarded": {
+        "horizon": 5,
+        "observation_dim": 480,
+        "action_dim": 4,
+        "n_timesteps": 4,
+        "loss_type": "l1",
+        "clip_denoised": false,
+        "predict_epsilon": false,
+        "action_weight": 10,
+        "loss_weights": null,
+        "loss_discount": 1,
+        "obs_only": false,
+        "action_only": false,
+        "time_scale": 1000.0,
+        "mask_terminal_action": true,
+        "lambda_action": 2.0
+      },
+      "config_fields_ctor_accepts": [
+        "action_only",
+        "action_weight",
+        "clip_denoised",
+        "horizon",
+        "lambda_action",
+        "loss_discount",
+        "loss_type",
+        "loss_weights",
+        "mask_terminal_action",
+        "n_diffusion_steps",
+        "obs_only",
+        "predict_epsilon",
+        "time_scale"
+      ],
+      "OMITTED_FROM_WHITELIST": [
+        "n_diffusion_steps"
+      ],
+      "mask_terminal_action": true,
+      "lambda_action": 2.0,
+      "trainer_side_set": [
+        "bucket",
+        "dataloader_seed",
+        "ema_decay",
+        "gradient_accumulate_every",
+        "lr_warmup_steps",
+        "n_reference",
+        "sample_freq",
+        "save_freq",
+        "save_parallel",
+        "step_start_ema"
+      ],
+      "OMITTED_EXCLUDING_BENIGN_ALIASES": []
+    },
+    "D": {
+      "forwarded": {
+        "horizon": 5,
+        "observation_dim": 480,
+        "action_dim": 4,
+        "n_timesteps": 4,
+        "loss_type": "l1",
+        "clip_denoised": false,
+        "predict_epsilon": false,
+        "action_weight": 10,
+        "loss_weights": null,
+        "loss_discount": 1,
+        "obs_only": false,
+        "action_only": false,
+        "time_scale": 1000.0,
+        "mask_terminal_action": true,
+        "lambda_action": 5.0
+      },
+      "config_fields_ctor_accepts": [
+        "action_only",
+        "action_weight",
+        "clip_denoised",
+        "horizon",
+        "lambda_action",
+        "loss_discount",
+        "loss_type",
+        "loss_weights",
+        "mask_terminal_action",
+        "n_diffusion_steps",
+        "obs_only",
+        "predict_epsilon",
+        "time_scale"
+      ],
+      "OMITTED_FROM_WHITELIST": [
+        "n_diffusion_steps"
+      ],
+      "mask_terminal_action": true,
+      "lambda_action": 5.0,
+      "trainer_side_set": [
+        "bucket",
+        "dataloader_seed",
+        "ema_decay",
+        "gradient_accumulate_every",
+        "lr_warmup_steps",
+        "n_reference",
+        "sample_freq",
+        "save_freq",
+        "save_parallel",
+        "step_start_ema"
+      ],
+      "OMITTED_EXCLUDING_BENIGN_ALIASES": []
+    }
+  },
+  "benign_aliases_cleared": [
+    "n_diffusion_steps"
+  ],
+  "ANY_OMISSION": false,
+  "ANY_REAL_OMISSION": false
+}

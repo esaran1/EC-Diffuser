@@ -1,0 +1,382 @@
+{
+  "arms": {
+    "A": {
+      "losses": {
+        "conditioning_mask_denominator": 46560.0,
+        "terminal_action_contribution": 2.4477476472384296e-05,
+        "total_loss": 0.25499725341796875,
+        "unweighted_action_loss": 0.06590991467237473,
+        "unweighted_flow_loss": 0.2542946934700012,
+        "unweighted_observation_loss": 0.256257027387619,
+        "weighted_action_contribution": 0.0013820554595440626,
+        "weighted_observation_contribution": 0.25361520051956177
+      },
+      "objective": {
+        "action_block_row_sums": [
+          30.0,
+          3.0,
+          3.0,
+          3.0,
+          3.0
+        ],
+        "action_block_sum": 42.0,
+        "action_dim": 3,
+        "first_action_weight": 10.0,
+        "horizon": 5,
+        "lambda_action": 1.0,
+        "loss_weight_matrix_sha16": "f6f56c359875b7f4",
+        "loss_weight_matrix_shape": [
+          5,
+          483
+        ],
+        "loss_weight_matrix_sum": 2442.0,
+        "mask_terminal_action": false,
+        "matrix_sum_after_rebuild": 2442.0,
+        "matrix_sum_restored_from_checkpoint": 2442.0,
+        "observation_block_sum": 2400.0,
+        "terminal_action_status": "ACTIVE",
+        "terminal_action_weight_row": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "one_step": {
+        "action_grad_norm": 0.08574756185126439,
+        "grad_norm": 0.15628602229640678,
+        "loss_before_update": 0.25499725341796875,
+        "model_params_sha16_after_one_step": "12fe259cd29826ab"
+      }
+    },
+    "B": {
+      "losses": {
+        "conditioning_mask_denominator": 46464.0,
+        "terminal_action_contribution": 0.0,
+        "total_loss": 0.25549960136413574,
+        "unweighted_action_loss": 0.07941950112581253,
+        "unweighted_flow_loss": 0.25479555130004883,
+        "unweighted_observation_loss": 0.256257027387619,
+        "weighted_action_contribution": 0.0013603827683255076,
+        "weighted_observation_contribution": 0.2541392147541046
+      },
+      "objective": {
+        "action_block_row_sums": [
+          30.0,
+          3.0,
+          3.0,
+          3.0,
+          3.0
+        ],
+        "action_block_sum": 42.0,
+        "action_dim": 3,
+        "first_action_weight": 10.0,
+        "horizon": 5,
+        "lambda_action": 1.0,
+        "loss_weight_matrix_sha16": "f6f56c359875b7f4",
+        "loss_weight_matrix_shape": [
+          5,
+          483
+        ],
+        "loss_weight_matrix_sum": 2442.0,
+        "mask_terminal_action": true,
+        "matrix_sum_after_rebuild": 2442.0,
+        "matrix_sum_restored_from_checkpoint": 2442.0,
+        "observation_block_sum": 2400.0,
+        "terminal_action_status": "MASKED",
+        "terminal_action_weight_row": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "one_step": {
+        "action_grad_norm": 0.08157372889949162,
+        "grad_norm": 0.1520632606899391,
+        "loss_before_update": 0.25549960136413574,
+        "model_params_sha16_after_one_step": "f3c3f9900d4eb566"
+      }
+    },
+    "C": {
+      "losses": {
+        "conditioning_mask_denominator": 46464.0,
+        "terminal_action_contribution": 0.0,
+        "total_loss": 0.2568599283695221,
+        "unweighted_action_loss": 0.07941950112581253,
+        "unweighted_flow_loss": 0.25479555130004883,
+        "unweighted_observation_loss": 0.256257027387619,
+        "weighted_action_contribution": 0.0027207655366510153,
+        "weighted_observation_contribution": 0.2541392147541046
+      },
+      "objective": {
+        "action_block_row_sums": [
+          60.0,
+          6.0,
+          6.0,
+          6.0,
+          6.0
+        ],
+        "action_block_sum": 84.0,
+        "action_dim": 3,
+        "first_action_weight": 20.0,
+        "horizon": 5,
+        "lambda_action": 2.0,
+        "loss_weight_matrix_sha16": "9b0c1e8c169f8586",
+        "loss_weight_matrix_shape": [
+          5,
+          483
+        ],
+        "loss_weight_matrix_sum": 2484.0,
+        "mask_terminal_action": true,
+        "matrix_sum_after_rebuild": 2484.0,
+        "matrix_sum_restored_from_checkpoint": 2442.0,
+        "observation_block_sum": 2400.0,
+        "terminal_action_status": "MASKED",
+        "terminal_action_weight_row": [
+          2.0,
+          2.0,
+          2.0
+        ]
+      },
+      "one_step": {
+        "action_grad_norm": 0.10935341811219947,
+        "grad_norm": 0.18746805198133412,
+        "loss_before_update": 0.2568599283695221,
+        "model_params_sha16_after_one_step": "39fff97169cdbae8"
+      }
+    },
+    "D": {
+      "losses": {
+        "conditioning_mask_denominator": 46464.0,
+        "terminal_action_contribution": 0.0,
+        "total_loss": 0.2609410881996155,
+        "unweighted_action_loss": 0.07941950112581253,
+        "unweighted_flow_loss": 0.25479555130004883,
+        "unweighted_observation_loss": 0.256257027387619,
+        "weighted_action_contribution": 0.00680191395804286,
+        "weighted_observation_contribution": 0.2541392147541046
+      },
+      "objective": {
+        "action_block_row_sums": [
+          150.0,
+          15.0,
+          15.0,
+          15.0,
+          15.0
+        ],
+        "action_block_sum": 210.0,
+        "action_dim": 3,
+        "first_action_weight": 50.0,
+        "horizon": 5,
+        "lambda_action": 5.0,
+        "loss_weight_matrix_sha16": "7a213faa3753a368",
+        "loss_weight_matrix_shape": [
+          5,
+          483
+        ],
+        "loss_weight_matrix_sum": 2610.0,
+        "mask_terminal_action": true,
+        "matrix_sum_after_rebuild": 2610.0,
+        "matrix_sum_restored_from_checkpoint": 2442.0,
+        "observation_block_sum": 2400.0,
+        "terminal_action_status": "MASKED",
+        "terminal_action_weight_row": [
+          5.0,
+          5.0,
+          5.0
+        ]
+      },
+      "one_step": {
+        "action_grad_norm": 0.222013307607612,
+        "grad_norm": 0.34220141665862025,
+        "loss_before_update": 0.2609410881996155,
+        "model_params_sha16_after_one_step": "667d5a0c20dc1dc5"
+      }
+    }
+  },
+  "checks": [
+    {
+      "check": "same forward predictions before update",
+      "detail": "['795d8ef6942a0ba3']",
+      "ok": true
+    },
+    {
+      "check": "same initialized weights (canonical)",
+      "detail": "['11a8fb1354d76c70']",
+      "ok": true
+    },
+    {
+      "check": "same horizon",
+      "detail": "[5]",
+      "ok": true
+    },
+    {
+      "check": "same action_dim",
+      "detail": "[3]",
+      "ok": true
+    },
+    {
+      "check": "observation weighting identical across arms",
+      "detail": "[2400.0]",
+      "ok": true
+    },
+    {
+      "check": "same unweighted observation error",
+      "detail": "[0.256257027388]",
+      "ok": true
+    },
+    {
+      "check": "B/C/D same unweighted action error (weighting differs, errors do not)",
+      "detail": "[0.079419501126]",
+      "ok": true
+    },
+    {
+      "check": "arm A mask_terminal_action == False",
+      "detail": "actual False",
+      "ok": true
+    },
+    {
+      "check": "arm A lambda_action == 1.0",
+      "detail": "actual 1.0",
+      "ok": true
+    },
+    {
+      "check": "arm A terminal mask in force in real loss path",
+      "detail": "{'conditioning_mask_total_active': 1935, 'terminal_action_elements_active': 3, 'terminal_action_masked': False}",
+      "ok": true
+    },
+    {
+      "check": "arm B mask_terminal_action == True",
+      "detail": "actual True",
+      "ok": true
+    },
+    {
+      "check": "arm B lambda_action == 1.0",
+      "detail": "actual 1.0",
+      "ok": true
+    },
+    {
+      "check": "arm B terminal mask in force in real loss path",
+      "detail": "{'conditioning_mask_total_active': 1932, 'terminal_action_elements_active': 0, 'terminal_action_masked': True}",
+      "ok": true
+    },
+    {
+      "check": "arm C mask_terminal_action == True",
+      "detail": "actual True",
+      "ok": true
+    },
+    {
+      "check": "arm C lambda_action == 2.0",
+      "detail": "actual 2.0",
+      "ok": true
+    },
+    {
+      "check": "arm C terminal mask in force in real loss path",
+      "detail": "{'conditioning_mask_total_active': 1932, 'terminal_action_elements_active': 0, 'terminal_action_masked': True}",
+      "ok": true
+    },
+    {
+      "check": "arm D mask_terminal_action == True",
+      "detail": "actual True",
+      "ok": true
+    },
+    {
+      "check": "arm D lambda_action == 5.0",
+      "detail": "actual 5.0",
+      "ok": true
+    },
+    {
+      "check": "arm D terminal mask in force in real loss path",
+      "detail": "{'conditioning_mask_total_active': 1932, 'terminal_action_elements_active': 0, 'terminal_action_masked': True}",
+      "ok": true
+    },
+    {
+      "check": "arm C action block == 2.0x B",
+      "detail": "got 84.0 want 84.0",
+      "ok": true
+    },
+    {
+      "check": "arm D action block == 5.0x B",
+      "detail": "got 210.0 want 210.0",
+      "ok": true
+    },
+    {
+      "check": "arm C weighted action contribution == 2.0x B",
+      "detail": "got 0.0027207655366510153 want 0.0027207655366510153",
+      "ok": true
+    },
+    {
+      "check": "arm D weighted action contribution == 5.0x B",
+      "detail": "got 0.00680191395804286 want 0.006801913841627538",
+      "ok": true
+    },
+    {
+      "check": "A has active terminal action contribution",
+      "detail": "2.4477476472384296e-05",
+      "ok": true
+    },
+    {
+      "check": "B/C/D terminal action contribution is exactly zero",
+      "detail": "",
+      "ok": true
+    },
+    {
+      "check": "masking reduces the loss denominator (supervision removed)",
+      "detail": "A 46560.0 -> B 46464.0",
+      "ok": true
+    },
+    {
+      "check": "one-step divergence A vs B",
+      "detail": "distinct",
+      "ok": true
+    },
+    {
+      "check": "one-step divergence A vs C",
+      "detail": "distinct",
+      "ok": true
+    },
+    {
+      "check": "one-step divergence A vs D",
+      "detail": "distinct",
+      "ok": true
+    },
+    {
+      "check": "one-step divergence B vs C",
+      "detail": "distinct",
+      "ok": true
+    },
+    {
+      "check": "one-step divergence B vs D",
+      "detail": "distinct",
+      "ok": true
+    },
+    {
+      "check": "one-step divergence C vs D",
+      "detail": "distinct",
+      "ok": true
+    },
+    {
+      "check": "arm A gradient finite and nonzero",
+      "detail": "0.15628602229640678",
+      "ok": true
+    },
+    {
+      "check": "arm B gradient finite and nonzero",
+      "detail": "0.1520632606899391",
+      "ok": true
+    },
+    {
+      "check": "arm C gradient finite and nonzero",
+      "detail": "0.18746805198133412",
+      "ok": true
+    },
+    {
+      "check": "arm D gradient finite and nonzero",
+      "detail": "0.34220141665862025",
+      "ok": true
+    }
+  ],
+  "failures": [],
+  "n_checks": 36,
+  "n_failed": 0,
+  "verdict": "PAIRED"
+}

@@ -201,12 +201,66 @@ if getattr(args, 'warm_start_checkpoint', None):
     _wdata = torch.load(_wpath, map_location=args.device)
     trainer.model.load_state_dict(_wdata['model'])
     trainer.ema_model.load_state_dict(_wdata['ema'])
+    # `loss_weight_matrix` is a registered BUFFER, so the canonical checkpoint
+    # carries its own lambda=1 copy and the load above silently overwrites the
+    # correctly lambda-scaled matrix built by the constructor. The scalar
+    # `lambda_action` attribute survives, so the arm would look configured
+    # while training the baseline objective -- the same byte-identical-arm
+    # symptom as the kwargs whitelist defect, from a different cause. Rebuild
+    # from the configured knobs and log the correction.
+    for _which, _mod in (('model', trainer.model), ('ema', trainer.ema_model)):
+        _before, _after = _mod.rebuild_loss_weight_matrix()
+        print(f'[ warm_start ] {_which}: loss_weight_matrix rebuilt after load '
+              f'(sum {_before} -> {_after}, lambda_action={_mod.lambda_action})',
+              flush=True)
     trainer.step = 0                      # fine-tuning step counter starts at 0
     _has_opt = 'optimizer' in _wdata
     print(f'[ warm_start ] {_wpath} (canonical step {_wdata.get("step")}) '
           f'-> model+ema loaded; optimizer_in_ckpt={_has_opt}; Adam restarted',
           flush=True)
     del _wdata
+
+# ---------------------------------------------------------------------------
+# MANDATORY fail-loud objective verification, immediately before optimizer
+# step 0. `diffusion_wrapper_kwargs` is a whitelist: anything it omits silently
+# falls back to a constructor default. That once made four loss arms train the
+# same objective and produce byte-identical checkpoints, undetected until after
+# the compute was spent. This asserts that the objective the trainer ACTUALLY
+# constructed matches the parsed config, and aborts before any training if not.
+# It never warns and continues.
+from diffuser.utils.objective_guard import assert_objective
+_expected_objective = {
+    'mask_terminal_action': bool(getattr(args, 'mask_terminal_action', False)),
+    'lambda_action': float(getattr(args, 'lambda_action', 1.0)),
+    # lambda_action scales the ENTIRE action block, the inherited t=0
+    # first-action weight included, so the expected first-action entry is
+    # action_weight * lambda (e.g. 10 -> 20 at lambda=2), not action_weight.
+    'first_action_weight': float(args.action_weight) * float(getattr(args, 'lambda_action', 1.0)),
+}
+_manifest = assert_objective(
+    trainer.model,                       # the wrapper the trainer optimizes
+    _expected_objective,
+    run_id=args.savepath.rstrip('/').split('/')[-1],
+    manifest_path=None,                  # written below, after trainer fields
+)
+# step_start_ema is trainer-side, not wrapper-side, but a wrong value silently
+# destroys the warm-started EMA, so it is recorded and checked here too.
+_sse_expected = int(getattr(args, 'step_start_ema', 2000))
+_sse_actual = int(trainer.step_start_ema)
+_manifest['trainer'] = {
+    'step_start_ema_expected': _sse_expected,
+    'step_start_ema_actual': _sse_actual,
+    'lr_warmup_steps': int(getattr(trainer, 'lr_warmup_steps', 0)),
+    'dataloader_seed': getattr(args, 'dataloader_seed', None),
+    'train_lr': float(args.learning_rate),
+}
+if _sse_expected != _sse_actual:
+    raise RuntimeError(
+        f'step_start_ema mismatch: config {_sse_expected}, trainer {_sse_actual}')
+with open(os.path.join(args.savepath, 'RUNTIME_OBJECTIVE_MANIFEST.json'), 'w') as fh:
+    json.dump(_manifest, fh, indent=2, sort_keys=True)
+print(f'[ objective_guard ] step_start_ema expected={_sse_expected} '
+      f'actual={_sse_actual}', flush=True)
 
 from diffuser.utils.run_lock import RunLock
 _run_lock = RunLock(args.savepath).acquire()
