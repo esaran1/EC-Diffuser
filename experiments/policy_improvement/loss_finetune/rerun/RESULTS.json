@@ -29,6 +29,255 @@
       "macro": 0.775,
       "manifest": null,
       "sd": 0.05965758776365145
+    },
+    "B": {
+      "EMA": {
+        "action_grad": 0.07292145987351735,
+        "action_grad_alive": true,
+        "action_loss": 0.07634605622539918,
+        "objective": 0.22451938639084498,
+        "replay_action_error": 0.17224050934116045,
+        "replay_state_error": 0.20533167074124017,
+        "state_loss": 0.22488859444856643
+      },
+      "LIVE": {
+        "action_grad": 0.07459150614837805,
+        "action_grad_alive": true,
+        "action_loss": 0.0760297717526555,
+        "objective": 0.23259721199671426,
+        "replay_action_error": 0.17297962432106337,
+        "replay_state_error": 0.20530730113387108,
+        "state_loss": 0.23303173532088597
+      },
+      "control": {
+        "E0": 0.75,
+        "E1s": 0.8333333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.8020833333333334,
+        "E4s": 0.8125
+      },
+      "macro": 0.8041666666666668,
+      "manifest": {
+        "actual": {
+          "action_block_row_sums": [
+            30.0,
+            3.0,
+            3.0,
+            3.0,
+            3.0
+          ],
+          "action_block_sum": 42.0,
+          "action_dim": 3,
+          "first_action_weight": 10.0,
+          "horizon": 5,
+          "lambda_action": 1.0,
+          "loss_weight_matrix_sha16": "f6f56c359875b7f4",
+          "loss_weight_matrix_shape": [
+            5,
+            483
+          ],
+          "loss_weight_matrix_sum": 2442.0,
+          "mask_terminal_action": true,
+          "observation_block_sum": 2400.0,
+          "terminal_action_status": "MASKED",
+          "terminal_action_weight_row": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "expected": {
+          "first_action_weight": 10.0,
+          "lambda_action": 1.0,
+          "mask_terminal_action": true
+        },
+        "failures": [],
+        "run_id": "3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+        "terminal_mask_probe": {
+          "conditioning_mask_total_active": 46464,
+          "loss_denominator": 46464,
+          "loss_denominator_without_terminal_mask": 46560,
+          "probe_batch": 32,
+          "renormalization_ratio": 1.0020661157024793,
+          "terminal_action_elements_active": 0,
+          "terminal_action_masked": true
+        },
+        "trainer": {
+          "dataloader_seed": 20260905,
+          "lr_warmup_steps": 100,
+          "step_start_ema_actual": 0,
+          "step_start_ema_expected": 0,
+          "train_lr": 1e-05
+        },
+        "verdict": "PASS"
+      },
+      "sd": 0.032442523963328
+    },
+    "C": {
+      "EMA": {
+        "action_grad": 0.1316482195009788,
+        "action_grad_alive": true,
+        "action_loss": 0.07600655928254127,
+        "objective": 0.22600205093622208,
+        "replay_action_error": 0.17203131938974062,
+        "replay_state_error": 0.20530274013678232,
+        "state_loss": 0.22490158528089524
+      },
+      "LIVE": {
+        "action_grad": 0.13357960072656472,
+        "action_grad_alive": true,
+        "action_loss": 0.0756437291080753,
+        "objective": 0.23408316572507223,
+        "replay_action_error": 0.17245887592434883,
+        "replay_state_error": 0.2051800601184368,
+        "state_loss": 0.23302751630544663
+      },
+      "control": {
+        "E0": 0.7083333333333334,
+        "E1s": 0.78125,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7916666666666666,
+        "E4s": 0.8229166666666666
+      },
+      "macro": 0.7854166666666667,
+      "manifest": {
+        "actual": {
+          "action_block_row_sums": [
+            60.0,
+            6.0,
+            6.0,
+            6.0,
+            6.0
+          ],
+          "action_block_sum": 84.0,
+          "action_dim": 3,
+          "first_action_weight": 20.0,
+          "horizon": 5,
+          "lambda_action": 2.0,
+          "loss_weight_matrix_sha16": "9b0c1e8c169f8586",
+          "loss_weight_matrix_shape": [
+            5,
+            483
+          ],
+          "loss_weight_matrix_sum": 2484.0,
+          "mask_terminal_action": true,
+          "observation_block_sum": 2400.0,
+          "terminal_action_status": "MASKED",
+          "terminal_action_weight_row": [
+            2.0,
+            2.0,
+            2.0
+          ]
+        },
+        "expected": {
+          "first_action_weight": 20.0,
+          "lambda_action": 2.0,
+          "mask_terminal_action": true
+        },
+        "failures": [],
+        "run_id": "3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+        "terminal_mask_probe": {
+          "conditioning_mask_total_active": 46464,
+          "loss_denominator": 46464,
+          "loss_denominator_without_terminal_mask": 46560,
+          "probe_batch": 32,
+          "renormalization_ratio": 1.0020661157024793,
+          "terminal_action_elements_active": 0,
+          "terminal_action_masked": true
+        },
+        "trainer": {
+          "dataloader_seed": 20260905,
+          "lr_warmup_steps": 100,
+          "step_start_ema_actual": 0,
+          "step_start_ema_expected": 0,
+          "train_lr": 1e-05
+        },
+        "verdict": "PASS"
+      },
+      "sd": 0.04693283469195335
+    },
+    "D": {
+      "EMA": {
+        "action_grad": 0.3177545060714086,
+        "action_grad_alive": true,
+        "action_loss": 0.07579811047762633,
+        "objective": 0.23044255872567496,
+        "replay_action_error": 0.17183738946914673,
+        "replay_state_error": 0.20526778201262155,
+        "state_loss": 0.22493247389793397
+      },
+      "LIVE": {
+        "action_grad": 0.3093143840630849,
+        "action_grad_alive": true,
+        "action_loss": 0.07548404292513927,
+        "objective": 0.2386595865090688,
+        "replay_action_error": 0.17200315619508424,
+        "replay_state_error": 0.20531507954001427,
+        "state_loss": 0.23317944010098776
+      },
+      "control": {
+        "E0": 0.7083333333333334,
+        "E1s": 0.7604166666666666,
+        "E2s": 0.8333333333333334,
+        "E3s": 0.8229166666666666,
+        "E4s": 0.8125
+      },
+      "macro": 0.7875,
+      "manifest": {
+        "actual": {
+          "action_block_row_sums": [
+            150.0,
+            15.0,
+            15.0,
+            15.0,
+            15.0
+          ],
+          "action_block_sum": 210.0,
+          "action_dim": 3,
+          "first_action_weight": 50.0,
+          "horizon": 5,
+          "lambda_action": 5.0,
+          "loss_weight_matrix_sha16": "7a213faa3753a368",
+          "loss_weight_matrix_shape": [
+            5,
+            483
+          ],
+          "loss_weight_matrix_sum": 2610.0,
+          "mask_terminal_action": true,
+          "observation_block_sum": 2400.0,
+          "terminal_action_status": "MASKED",
+          "terminal_action_weight_row": [
+            5.0,
+            5.0,
+            5.0
+          ]
+        },
+        "expected": {
+          "first_action_weight": 50.0,
+          "lambda_action": 5.0,
+          "mask_terminal_action": true
+        },
+        "failures": [],
+        "run_id": "3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+        "terminal_mask_probe": {
+          "conditioning_mask_total_active": 46464,
+          "loss_denominator": 46464,
+          "loss_denominator_without_terminal_mask": 46560,
+          "probe_batch": 32,
+          "renormalization_ratio": 1.0020661157024793,
+          "terminal_action_elements_active": 0,
+          "terminal_action_masked": true
+        },
+        "trainer": {
+          "dataloader_seed": 20260905,
+          "lr_warmup_steps": 100,
+          "step_start_ema_actual": 0,
+          "step_start_ema_expected": 0,
+          "train_lr": 1e-05
+        },
+        "verdict": "PASS"
+      },
+      "sd": 0.05239490141649704
     }
   },
   "canonical": {

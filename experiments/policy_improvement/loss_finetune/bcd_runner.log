@@ -1,0 +1,37 @@
+[2026-09-13T10:29:28-04:00] CORRECTED RERUN starting at commit 812dea0
+[2026-09-13T10:52:23-04:00] RELAUNCH: corrected B/C/D pinned at commit 9c8e8e0
+[2026-09-13T11:21:06-04:00] GPU stable-clean for 180s
+[2026-09-13T11:21:06-04:00] launching arm B training
+[2026-09-13T11:29:01-04:00] arm B training exited rc=0
+[2026-09-13T11:29:01-04:00] arm B RUNTIME_OBJECTIVE_MANIFEST.json verdict=PASS
+[2026-09-13T11:29:01-04:00] arm B RUNTIME_OBJECTIVE_MANIFEST_after10.json verdict=PASS
+[early_divergence] 'early10' parameter hashes: {'B': '4303019714de9c48'}
+[early_divergence]   fewer than two arms at 'early10'; nothing to compare yet
+[early_divergence] '500' parameter hashes: {'A': '4db2ce3a9b5d2267', 'B': '4d120db3f9ec8a4b'}
+[early_divergence] VERDICT: PASS -- all available arms distinct
+[2026-09-13T11:31:47-04:00] GPU stable-clean for 180s
+[2026-09-13T11:31:47-04:00] arm B diagnostics+control
+[2026-09-13T11:43:46-04:00] arm B diagnostics exited rc=0
+[2026-09-13T11:46:28-04:00] GPU stable-clean for 180s
+[2026-09-13T11:46:28-04:00] launching arm C training
+[2026-09-13T11:54:23-04:00] arm C training exited rc=0
+[2026-09-13T11:54:23-04:00] arm C RUNTIME_OBJECTIVE_MANIFEST.json verdict=PASS
+[2026-09-13T11:54:23-04:00] arm C RUNTIME_OBJECTIVE_MANIFEST_after10.json verdict=PASS
+[early_divergence] 'early10' parameter hashes: {'B': '4303019714de9c48', 'C': '9d06479e302ec419'}
+[early_divergence] '500' parameter hashes: {'A': '4db2ce3a9b5d2267', 'B': '4d120db3f9ec8a4b', 'C': '235428ac50bb2525'}
+[early_divergence] VERDICT: PASS -- all available arms distinct
+[2026-09-13T11:57:10-04:00] GPU stable-clean for 180s
+[2026-09-13T11:57:10-04:00] arm C diagnostics+control
+[2026-09-13T12:09:15-04:00] arm C diagnostics exited rc=0
+[2026-09-13T12:11:58-04:00] GPU stable-clean for 180s
+[2026-09-13T12:11:58-04:00] launching arm D training
+[2026-09-13T12:19:52-04:00] arm D training exited rc=0
+[2026-09-13T12:19:52-04:00] arm D RUNTIME_OBJECTIVE_MANIFEST.json verdict=PASS
+[2026-09-13T12:19:52-04:00] arm D RUNTIME_OBJECTIVE_MANIFEST_after10.json verdict=PASS
+[early_divergence] 'early10' parameter hashes: {'B': '4303019714de9c48', 'C': '9d06479e302ec419', 'D': '49eb44d71945ec4e'}
+[early_divergence] '500' parameter hashes: {'A': '4db2ce3a9b5d2267', 'B': '4d120db3f9ec8a4b', 'C': '235428ac50bb2525', 'D': 'bf36881c9933b90e'}
+[early_divergence] VERDICT: PASS -- all available arms distinct
+[2026-09-13T12:22:42-04:00] GPU stable-clean for 180s
+[2026-09-13T12:22:42-04:00] arm D diagnostics+control
+[2026-09-13T12:34:51-04:00] arm D diagnostics exited rc=0
+[2026-09-13T12:34:51-04:00] B/C/D COMPLETE

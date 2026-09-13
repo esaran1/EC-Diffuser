@@ -1,0 +1,20 @@
+{
+  "per_label": {
+    "500": {
+      "collisions": [],
+      "compared": true,
+      "hashes": {
+        "A": "4db2ce3a9b5d2267",
+        "B": "4d120db3f9ec8a4b"
+      },
+      "verdict": "PASS"
+    },
+    "early10": {
+      "compared": false,
+      "hashes": {
+        "B": "4303019714de9c48"
+      }
+    }
+  },
+  "verdict": "PASS"
+}

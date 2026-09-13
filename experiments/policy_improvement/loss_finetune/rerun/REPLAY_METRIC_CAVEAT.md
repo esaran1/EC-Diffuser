@@ -18,10 +18,27 @@ se.append(float((xs[:, 1:4, ad:] - x[:, 1:4, ad:]).abs().mean())) # state: t=1..
 ```
 
 The action term includes **t = H-1**, which is exactly the slice Arm B (and C, D)
-no longer supervise. That target is a normalized ZERO placeholder and is trivially
-predictable when supervised, so including it pulls A's and canonical's average
-*down*. Once masked, the model has no reason to emit the placeholder there and the
-all-timestep mean rises — mechanically, regardless of control quality.
+no longer supervise. That target is a normalized ZERO placeholder. A supervised
+arm learns to emit it almost exactly; an arm that masks it has no reason to, so
+the all-timestep mean rises — mechanically, regardless of control quality.
+
+**Verified by per-timestep decomposition** (`REPLAY_PER_TIMESTEP.json`, EMA):
+
+| arm | t=0 (executed) | t=1 | t=2 | t=3 | **t=H-1** | reported all-t |
+|---|--:|--:|--:|--:|--:|--:|
+| A | 0.01634 | 0.03228 | 0.04047 | 0.04970 | **0.00062** | 0.02788 |
+| B | 0.01640 | 0.03263 | 0.04043 | 0.04961 | **0.72214** | 0.17224 |
+| C | 0.01631 | 0.03239 | 0.04012 | 0.04921 | **0.72214** | 0.17203 |
+| D | 0.01622 | 0.03205 | 0.03988 | 0.04890 | **0.72214** | 0.17184 |
+
+The reported-style column reproduces the diagnostics values exactly. **The entire
+difference lives at t=H-1**: A predicts the placeholder (0.00062), B/C/D do not
+(0.72214, identical to five decimals across all three — they simply stopped
+emitting it). At t=0..3 all four arms agree to about three decimal places, and
+the **executed** action t=0 is essentially unchanged (0.01622-0.01640).
+
+So masking removed a learned behaviour that only ever applied to a non-executed
+placeholder slot. It did not degrade the actions the policy actually takes.
 
 Note the state term already restricts itself to `t=1:4`, i.e. the metric's own
 author excluded conditioned/degenerate steps on the state side but not on the
@@ -59,9 +76,22 @@ throughout, confirming λ=1 leaves the state side untouched.
    predeclared against Arm A, **cannot be applied to B/C/D** for the same reason.
    Closed-loop control, imagination and NaN checks still apply.
 
-## Outstanding verification
+## Verification completed
 
-A per-timestep decomposition of the replay action error (t=0..4 separately) would
-confirm the increase is confined to t=H-1. That probe needs GPU and was deferred
-so as not to overlap the pinned scientific runs. It is run after the program
-completes and reported with the results.
+The per-timestep decomposition above was run after the program finished, on a
+free GPU, and confirms the increase is confined entirely to t=H-1. The useful
+comparable quantities across ALL arms are the **executed action error at t=0**
+(0.01622-0.01640, a spread of ~1.1%) and the mean excluding the terminal slice
+(0.03426-0.03477).
+
+**A methodological note worth keeping.** A first version of this probe rebuilt
+the dataset from the arm config and used seed 20260905, and produced numbers
+(A t=H-1 = 0.81093, matching B/C/D) that contradicted the diagnostics. That was
+the probe being wrong, not the diagnostics: the diagnostics loads via
+`utils.load_diffusion` with an explicit `override_dataset_path` and uses
+NOISE_SEED = 20260902. Once the probe imported the diagnostics' own loader,
+dataset override and seed, it reproduced the reported values exactly.
+
+The lesson is the same one that produced this entire re-run: a verification
+script that reimplements the path it is checking, instead of calling it, can be
+confidently wrong.
