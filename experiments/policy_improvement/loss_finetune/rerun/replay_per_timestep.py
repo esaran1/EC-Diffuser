@@ -32,7 +32,7 @@ from isaacgym_control import Args  # noqa: E402
 
 # Same constant the diagnostics uses for replay sampling.
 NOISE_SEED = 20260902
-SUB = "3C_dlp_adalnpint_randcolor_H5_T4_seed42"
+SUB_TMPL = "3C_dlp_adalnpint_randcolor_H5_T4_seed{}"
 OVERRIDE_DATASET = ("ecdiffuser-data/push_cubes/3C_randcolor/"
                     "panda_push_replay_buffer_dlp.pkl")
 
@@ -67,6 +67,8 @@ def per_timestep_replay(diff, ds, dev, nfe=4, n_batches=12):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--arms", default="A,B,C,D")
+    ap.add_argument("--seed", type=int, default=42,
+                    help="fine-tuning stochastic seed identifying the run dirs")
     ap.add_argument("--out", default="experiments/policy_improvement/loss_finetune/"
                                      "rerun/REPLAY_PER_TIMESTEP.json")
     cli = ap.parse_args()
@@ -77,7 +79,7 @@ def main():
     results = {}
 
     for arm in [a.strip() for a in cli.arms.split(",") if a.strip()]:
-        loadpath = "lossft_arm{}/{}".format(arm, SUB)
+        loadpath = "lossft_arm{}/{}".format(arm, SUB_TMPL.format(cli.seed))
         if not os.path.exists(os.path.join("data", args.dataset, loadpath,
                                            "state_final.pt")):
             print("skip arm {}: no final checkpoint".format(arm))

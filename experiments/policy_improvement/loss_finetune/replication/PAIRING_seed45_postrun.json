@@ -1,0 +1,11 @@
+{
+  "drift": 0.0011665296035674145,
+  "failures": [],
+  "matrix_sums": {
+    "A": 2442.0,
+    "B": 2442.0
+  },
+  "seed": 45,
+  "stage": "postrun",
+  "verdict": "PASS"
+}
