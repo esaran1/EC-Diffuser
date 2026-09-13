@@ -21,7 +21,13 @@ import sys
 import torch
 
 ARMS = ("A", "B", "C", "D")
-STEP = 500
+# Checkpoints to compare, cheapest/earliest first. `early10` comes from 10 real
+# optimizer steps in the actual production run and is the mandatory in-run
+# check: an arm that silently reverted to the canonical matrix is caught after
+# ~10 steps rather than after 2,000. `500` is retained as a second, later
+# confirmation. Arm A predates the early10 mechanism, so it only participates
+# in the step-500 comparison.
+STEP_LABELS = ("early10", "500")
 
 
 def param_hash(path):
@@ -46,44 +52,57 @@ def main():
     parser.add_argument("--arm", required=True)
     cli = parser.parse_args()
 
-    found = {}
-    for arm in ARMS:
-        path = os.path.join(cli.runroot, "lossft_arm{}".format(arm), cli.sub,
-                            "state_{}.pt".format(STEP))
-        if os.path.exists(path):
-            found[arm] = param_hash(path)
+    report = {"per_label": {}, "verdict": "PASS"}
+    any_collision = False
+    compared_any = False
 
-    print("[early_divergence] step-{} parameter hashes: {}".format(STEP, found))
+    for label in STEP_LABELS:
+        found = {}
+        for arm in ARMS:
+            path = os.path.join(cli.runroot, "lossft_arm{}".format(arm), cli.sub,
+                                "state_{}.pt".format(label))
+            if os.path.exists(path):
+                found[arm] = param_hash(path)
 
-    if len(found) < 2:
-        print("[early_divergence] fewer than two arms available; nothing to compare yet")
-        return 0
+        print("[early_divergence] '{}' parameter hashes: {}".format(label, found))
 
-    collisions = []
-    arms = sorted(found)
-    for i, x in enumerate(arms):
-        for y in arms[i + 1:]:
-            if found[x] == found[y]:
-                collisions.append((x, y, found[x]))
+        if len(found) < 2:
+            print("[early_divergence]   fewer than two arms at '{}'; "
+                  "nothing to compare yet".format(label))
+            report["per_label"][label] = {"hashes": found, "compared": False}
+            continue
 
-    report = {
-        "step": STEP,
-        "hashes": found,
-        "collisions": [{"a": a, "b": b, "sha16": h} for a, b, h in collisions],
-        "verdict": "FAIL" if collisions else "PASS",
-    }
+        compared_any = True
+        collisions = []
+        arms = sorted(found)
+        for i, x in enumerate(arms):
+            for y in arms[i + 1:]:
+                if found[x] == found[y]:
+                    collisions.append((x, y, found[x]))
+
+        for a, b, h in collisions:
+            print("[early_divergence]   *** {} and {} IDENTICAL at '{}' ({}) ***".format(
+                a, b, label, h))
+        any_collision = any_collision or bool(collisions)
+        report["per_label"][label] = {
+            "hashes": found,
+            "compared": True,
+            "collisions": [{"a": a, "b": b, "sha16": h} for a, b, h in collisions],
+            "verdict": "FAIL" if collisions else "PASS",
+        }
+
+    report["verdict"] = "FAIL" if any_collision else "PASS"
     out = os.path.join(os.path.dirname(os.path.abspath(__file__)),
                        "EARLY_DIVERGENCE_{}.json".format(cli.arm))
     with open(out, "w") as handle:
         json.dump(report, handle, indent=2, sort_keys=True)
 
-    if collisions:
-        for a, b, h in collisions:
-            print("[early_divergence] *** {} and {} IDENTICAL at step {} ({}) ***".format(
-                a, b, STEP, h))
+    if any_collision:
         print("[early_divergence] VERDICT: FAIL -- objective not reaching optimization")
         return 1
-
+    if not compared_any:
+        print("[early_divergence] VERDICT: PASS (nothing comparable yet)")
+        return 0
     print("[early_divergence] VERDICT: PASS -- all available arms distinct")
     return 0
 

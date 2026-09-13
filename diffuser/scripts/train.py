@@ -237,11 +237,19 @@ _expected_objective = {
     # action_weight * lambda (e.g. 10 -> 20 at lambda=2), not action_weight.
     'first_action_weight': float(args.action_weight) * float(getattr(args, 'lambda_action', 1.0)),
 }
+# Probe the conditioning mask with the REAL batch size and the REAL cond
+# timesteps, so the manifest records the denominator this run actually trains
+# with rather than a unit-batch stand-in. Cond timesteps come from a real
+# dataset item, not an assumption.
+_probe_batch = utils.batchify(dataset[0])
+_cond_timesteps = tuple(sorted(int(_t) for _t in _probe_batch[1]))
 _manifest = assert_objective(
     trainer.model,                       # the wrapper the trainer optimizes
     _expected_objective,
     run_id=args.savepath.rstrip('/').split('/')[-1],
     manifest_path=None,                  # written below, after trainer fields
+    cond_timesteps=_cond_timesteps,
+    probe_batch=int(args.batch_size),
 )
 # step_start_ema is trainer-side, not wrapper-side, but a wrong value silently
 # destroys the warm-started EMA, so it is recorded and checked here too.
@@ -266,9 +274,43 @@ from diffuser.utils.run_lock import RunLock
 _run_lock = RunLock(args.savepath).acquire()
 print(f'[ run_lock ] acquired {_run_lock.path} pid={os.getpid()}', flush=True)
 
+# MANDATORY actual-run divergence evidence. The preflight one-step sentinel is
+# NOT a substitute for checking the real process: run a short prefix of genuine
+# optimizer steps and save the weights, so an arm that silently reverted to the
+# canonical matrix is caught after ~10 steps instead of after 2,000. Written for
+# every warm-start run; the cross-arm comparison is done by the runner.
+_EARLY_STEPS = 10
+if getattr(args, 'warm_start_checkpoint', None):
+    trainer.train(n_train_steps=_EARLY_STEPS)
+    trainer.save(f'early{_EARLY_STEPS}')
+    _early_manifest = {
+        'run_id': args.savepath.rstrip('/').split('/')[-1],
+        'steps': int(trainer.step),
+        'mask_terminal_action': bool(trainer.model.mask_terminal_action),
+        'lambda_action': float(trainer.model.lambda_action),
+        'loss_weight_matrix_sum': float(trainer.model.loss_weight_matrix.sum().item()),
+        'checkpoint': os.path.join(args.savepath, f'state_early{_EARLY_STEPS}.pt'),
+    }
+    with open(os.path.join(args.savepath, 'EARLY_DIVERGENCE_LOCAL.json'), 'w') as fh:
+        json.dump(_early_manifest, fh, indent=2, sort_keys=True)
+    print(f'[ early_divergence ] saved {_EARLY_STEPS}-step checkpoint at '
+          f'internal step {trainer.step}, matrix sum '
+          f'{_early_manifest["loss_weight_matrix_sum"]}', flush=True)
+    # Re-verify the objective AFTER real optimizer steps: nothing in training
+    # should have restored a foreign matrix.
+    assert_objective(
+        trainer.model, _expected_objective,
+        run_id=_early_manifest['run_id'] + f'-after{_EARLY_STEPS}steps',
+        manifest_path=os.path.join(args.savepath,
+                                   f'RUNTIME_OBJECTIVE_MANIFEST_after{_EARLY_STEPS}.json'),
+        cond_timesteps=_cond_timesteps, probe_batch=int(args.batch_size))
+
 for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')
-    trainer.train(n_train_steps=args.n_steps_per_epoch)
+    _remaining = args.n_steps_per_epoch
+    if i == 0 and getattr(args, 'warm_start_checkpoint', None):
+        _remaining = args.n_steps_per_epoch - _EARLY_STEPS   # keep total at n_train_steps
+    trainer.train(n_train_steps=_remaining)
 
     if getattr(trainer, 'contention_event', None) is not None:
         with open(os.path.join(args.savepath, 'contention_event.json'), 'w') as fh:

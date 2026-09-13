@@ -73,7 +73,7 @@ def describe_objective(diffusion):
     }
 
 
-def verify_terminal_mask_effective(diffusion, cond_timesteps=(0,)):
+def verify_terminal_mask_effective(diffusion, cond_timesteps=(0,), batch=1):
     """Confirm the terminal-action mask is genuinely in force in the real loss path.
 
     Scalar attributes can be right while the mask never reaches the loss. This
@@ -84,25 +84,51 @@ def verify_terminal_mask_effective(diffusion, cond_timesteps=(0,)):
     action_dim = int(diffusion.action_dim)
     horizon = int(diffusion.horizon)
     transition_dim = int(diffusion.transition_dim)
-    probe = torch.zeros(1, horizon, transition_dim)
-    cond = {int(t): torch.zeros(1, int(diffusion.observation_dim)) for t in cond_timesteps}
+    probe = torch.zeros(batch, horizon, transition_dim)
+    cond = {int(t): torch.zeros(batch, int(diffusion.observation_dim))
+            for t in cond_timesteps}
     mask = diffusion._make_conditioning_mask(probe, cond)
     terminal_action_slice = mask[:, horizon - 1, :action_dim]
+
+    # The loss denominator is `conditioning_mask.sum()` -- the count of ACTIVE
+    # (unmasked) coordinates. That is the registered design (commit 58d07c4:
+    # "GaussianDiffusion applies weights once and reduces by element count.
+    # Restrict that count to unconditioned elements when masking is present"),
+    # established before the terminal-action knob existed. Masking therefore
+    # removes coordinates from BOTH numerator and denominator by design.
+    # Recorded here so every run logs the denominator it actually trains with.
+    denominator = int(mask.sum().item())
+
+    # What the denominator would be with the terminal mask off, so the
+    # renormalization factor introduced by masking is explicit in the log.
+    unmasked = torch.ones_like(mask)
+    for timestep in cond:
+        unmasked[:, int(timestep), action_dim:] = False
+    denominator_without_terminal_mask = int(unmasked.sum().item())
+
+    ratio = (float(denominator_without_terminal_mask) / float(denominator)
+             if denominator else None)
+
     return {
         "terminal_action_elements_active": int(terminal_action_slice.sum().item()),
         "terminal_action_masked": bool(terminal_action_slice.sum().item() == 0),
-        "conditioning_mask_total_active": int(mask.sum().item()),
+        "conditioning_mask_total_active": denominator,
+        "probe_batch": int(batch),
+        "loss_denominator": denominator,
+        "loss_denominator_without_terminal_mask": denominator_without_terminal_mask,
+        "renormalization_ratio": ratio,
     }
 
 
-def assert_objective(diffusion, expected, run_id, manifest_path=None, cond_timesteps=(0,)):
+def assert_objective(diffusion, expected, run_id, manifest_path=None,
+                     cond_timesteps=(0,), probe_batch=1):
     """Verify the constructed objective, write a manifest, and ABORT on mismatch.
 
     `expected` maps knob name -> intended value, taken from the parsed config.
     Raises ObjectiveMismatch before any optimizer step if reality disagrees.
     """
     actual = describe_objective(diffusion)
-    mask_probe = verify_terminal_mask_effective(diffusion, cond_timesteps)
+    mask_probe = verify_terminal_mask_effective(diffusion, cond_timesteps, probe_batch)
 
     failures = []
 
@@ -206,6 +232,12 @@ def assert_objective(diffusion, expected, run_id, manifest_path=None, cond_times
     print("[objective_guard]   action block sum={}  observation block sum={}".format(
         actual["action_block_sum"], actual["observation_block_sum"]))
     print("[objective_guard]   terminal action      {}".format(actual["terminal_action_status"]))
+    print("[objective_guard]   loss denominator     {} (unmasked would be {}, "
+          "renormalization x{})".format(
+              mask_probe["loss_denominator"],
+              mask_probe["loss_denominator_without_terminal_mask"],
+              "{:.6f}".format(mask_probe["renormalization_ratio"])
+              if mask_probe["renormalization_ratio"] is not None else "n/a"))
     print("[objective_guard]   verdict: {}".format(manifest["verdict"]))
 
     if failures:
