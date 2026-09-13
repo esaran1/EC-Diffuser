@@ -1,0 +1,51 @@
+[2026-09-13T13:57:25-04:00] REPLICATION start, commit c6057c3
+[2026-09-13T13:57:25-04:00] === replicate 1: finetune_seed=43 dataloader_seed=20260906 order='B A' ===
+[verify_pair] seed=43 dataloader_seed=20260906 stage=preflight
+[ utils/colab ] Warning: not importing colab dependencies
+[ utils/setup ] Reading config: config.pandapush_lossft_armA:3C_dlp_randcolor
+[ utils/setup ] Found extras: ['--dataloader_seed', '20260906', '--device', 'cpu']
+[ utils/setup ] Overriding config | dataloader_seed : 20260905 --> 20260906
+[ utils/setup ] Overriding config | device : cuda:0 --> cpu
+[ utils/setup ] Setting seed: 43
+[ utils/setup ] Setting exp_name to: lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43
+[ utils/setup ] Made savepath: data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43
+[ utils/setup ] Saved args to data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43/args.json
+[ utils/config ] Imported diffuser.models:AdaLNPINTDenoiser
+[ utils/config ] Imported diffuser.models:ConditionalFlowMatching
+particle transformer # parameters: 57480704
+[ utils/setup ] Reading config: config.pandapush_lossft_armB:3C_dlp_randcolor
+[ utils/setup ] Found extras: ['--dataloader_seed', '20260906', '--device', 'cpu']
+[ utils/setup ] Overriding config | dataloader_seed : 20260905 --> 20260906
+[ utils/setup ] Overriding config | device : cuda:0 --> cpu
+[ utils/setup ] Setting seed: 43
+[ utils/setup ] Setting exp_name to: lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43
+[ utils/setup ] Made savepath: data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43
+[ utils/setup ] Saved args to data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43/args.json
+[ utils/config ] Imported diffuser.models:AdaLNPINTDenoiser
+[ utils/config ] Imported diffuser.models:ConditionalFlowMatching
+particle transformer # parameters: 57480704
+  [PASS] same initial weights
+  [PASS] same forward prediction
+  [PASS] same canonical source
+  [PASS] same seed
+  [PASS] same dataloader_seed
+  [PASS] same lr
+  [PASS] same warmup
+  [PASS] same step_start_ema
+  [PASS] same n_train_steps
+  [PASS] same action_weight
+  [PASS] same unweighted observation loss
+  [PASS] observation weighting identical
+  [PASS] lambda_action identical and 1.0
+  [PASS] action weight matrix identical (mask is not a weight change)
+  [PASS] A terminal action ACTIVE
+  [PASS] B terminal action MASKED
+  [PASS] denominator A > B (supervision removed)
+  [PASS] renormalization ratio ~1.002066
+  [PASS] A/B unweighted action losses differ (different active set)
+  denominators: A=46560 B=46464 ratio=1.002066116
+[verify_pair] VERDICT: PASS
+[2026-09-13T14:00:16-04:00] GPU stable-clean for 180s
+[2026-09-13T14:00:16-04:00] r1 launching arm B (seed 43)
+[2026-09-13T14:00:20-04:00] r1 arm B training exited rc=1
+[2026-09-13T14:00:20-04:00] r1 arm B NO SENTINEL - STOPPING ALL
