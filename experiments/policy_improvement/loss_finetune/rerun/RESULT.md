@@ -1,14 +1,29 @@
 # Corrected Canonical-Checkpoint Loss Fine-Tuning — RESULT
 
-**Classification: LOSS-FT-NULL** (with one preliminary, unreplicated signal).
+**Classification: LOSS-FT-GO — NARROWLY FOR TERMINAL-MASK REPLICATION.**
+
+> **Classification corrected 2026-09-13.** This report originally read
+> LOSS-FT-NULL. That did not match the predeclared rule, which set LOSS-FT-GO
+> when a corrected intervention shows a signal coherent enough *to justify
+> replication across additional training seeds* — not when an effect is
+> established. A vs B meets that condition (+2.92 pp, 4/5 sets up, 0 down,
+> leave-one-out positive throughout), and this report itself recommends
+> multi-seed replication. GO here means **the next registered replication
+> experiment is justified**, nothing more. The result is not established.
 
 The corrected execution is scientifically valid: all four arms provably trained
-their intended objectives. Over a 2,000-step warm-start fine-tuning window, from
-one training seed, **neither terminal-action masking nor action-side loss
-weighting produced a change in closed-loop control that this protocol can
-resolve.** The A→B difference (+2.92 pp) is the one result that sits above the
-observed identical-policy evaluation spread and is recorded as **preliminary and
-unreplicated**, not established.
+their intended objectives.
+
+Over a 2,000-step warm-start fine-tuning window from one fine-tuning seed:
+
+- **Action-side weighting (λ=2, λ=5): no improvement found.** Both weighted arms
+  landed slightly below terminal masking alone, by margins on the scale of
+  simulator variability. Scope is the tested λ values and window only — see §19.
+- **Terminal-action masking (A→B): a coherent preliminary signal.** +2.92 pp
+  macro, 4/5 sets improved, 0 worse, leave-one-out positive throughout. This is
+  **preliminary and unreplicated**, not established — but it is coherent enough
+  to justify the registered multi-seed replication, which is what the GO
+  classification authorizes and all it authorizes.
 
 Code pinned at commit **`9c8e8e0`** for every scientific run.
 
@@ -387,15 +402,26 @@ Honest note: the probe line includes a first probe run whose numbers were invali
 (wrong loader/seed, §13) and had to be repeated. That consumed part of the
 headroom; it is counted, not hidden.
 
-## 18. Classification: **LOSS-FT-NULL**
+## 18. Classification: **LOSS-FT-GO — NARROWLY FOR TERMINAL-MASK REPLICATION**
 
-The corrected execution is valid, so LOSS-FT-INVALID is retired. It is not
-LOSS-FT-GO: the only candidate signal is a single contrast from one training
-seed that clears the macro-level identical-policy spread but not the per-set
-spread on 4 of 5 sets, while both weighting interventions were flat-to-negative.
-That does not meet the bar of "meaningful enough, after red-teaming and
-simulator-variability context, to justify replication across additional seeds"
-as a demonstrated effect — though see §20.
+The corrected execution is valid, so LOSS-FT-INVALID is retired.
+
+The predeclared rule sets **GO** when a corrected intervention shows a signal
+coherent enough, after red-teaming and simulator-variability context, **to
+justify replication across additional training seeds**. That is a bar for
+warranting the next experiment, not a bar for an established effect. **A vs B
+meets it**: +2.92 pp macro, 4/5 sets improved, 0 worse, leave-one-out delta
+positive across all five drops (+2.08…+3.65 pp), B's macro above the highest of
+four identical-policy repeats, and no state or imagination degradation.
+
+An earlier revision of this report recorded LOSS-FT-NULL. That conflated "not
+established" with "not worth replicating" and did not match the registered rule;
+it is corrected here.
+
+**GO is narrow.** It applies only to the terminal-mask arm and authorizes only
+paired multi-seed replication of A vs B. It is **not** a claim that terminal
+masking improves the policy. The action-weighting arms (C, D) are **not** part
+of this GO — see §16 and §19.
 
 ## 19. Tal's question, answered plainly
 
@@ -405,14 +431,28 @@ as a demonstrated effect — though see §20.
 
 **Essentially no — with one caveat worth a second look.**
 
-**Action-vs-state loss weighting: no.** Multiplying the entire action-side
-objective by 2× or 5× measurably changed the optimization — action gradients
-scaled 1.8× and 4.4×, and the weights moved further from the starting point in
-proportion to λ — yet closed-loop success did **not** improve. Both weighted arms
-came out slightly *below* masking alone (−1.9 and −1.7 pp), by margins on the
-scale of this simulator's run-to-run variability. They also did no harm: state
-prediction and imagination were untouched. So the model was **not** being held
-back by under-weighting of actions in a way this intervention could fix.
+**Action-vs-state loss weighting: no improvement found, over what was tested.**
+Multiplying the entire action-side objective by 2× or 5× measurably changed the
+optimization — action gradients scaled 1.8× and 4.4×, and the weights moved
+further from the starting point in proportion to λ — yet closed-loop success did
+**not** improve. Both weighted arms came out slightly *below* masking alone
+(−1.9 and −1.7 pp), by margins on the scale of this simulator's run-to-run
+variability. They also did no harm: state prediction and imagination were
+untouched.
+
+> **In this single-seed 2,000-step fine-tuning experiment, increasing the
+> action-side loss weight to λ=2 or λ=5 did not improve closed-loop control
+> relative to terminal masking alone.** We found no evidence that the tested
+> action up-weighting improved the competent policy over this short fine-tuning
+> window.
+
+The scope of that statement is exactly: **one** fine-tuning seed, λ ∈ {1, 2, 5},
+a 2,000-step perturbation window. It does **not** support inferring that action
+weighting never helps, that the baseline weighting is globally optimal, that
+longer training would also be null, or that untested λ values would be null.
+
+*(An earlier revision read "the model was not being held back by under-weighting
+of actions." That was too broad for this evidence and is corrected here.)*
 
 **Terminal-action supervision: possibly, but unproven.** Removing supervision on
 the final-step action target — a normalized zero placeholder that is never
