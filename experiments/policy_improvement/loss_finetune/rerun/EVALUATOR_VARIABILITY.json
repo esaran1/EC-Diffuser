@@ -1,0 +1,48 @@
+{
+  "macro": {
+    "A": 0.775,
+    "B": 0.79375,
+    "C": 0.7791666666666668,
+    "D": 0.7833333333333334
+  },
+  "macro_empirical_sd": 0.008046270990455837,
+  "macro_range_pp": 1.8749999999999933,
+  "note": "DESCRIPTIVE EVALUATOR VARIABILITY - four independent evaluations of ONE byte-identical policy (the invalid B/C/D runs were byte-identical to Arm A). NOT a predeclared significance threshold; four repeats do not estimate the evaluation distribution precisely.",
+  "per_run": {
+    "A": {
+      "E0": 0.6875,
+      "E1s": 0.8229166666666666,
+      "E2s": 0.8229166666666666,
+      "E3s": 0.7395833333333334,
+      "E4s": 0.8020833333333334
+    },
+    "B": {
+      "E0": 0.75,
+      "E1s": 0.8125,
+      "E2s": 0.8125,
+      "E3s": 0.8125,
+      "E4s": 0.78125
+    },
+    "C": {
+      "E0": 0.7083333333333334,
+      "E1s": 0.78125,
+      "E2s": 0.8333333333333334,
+      "E3s": 0.8020833333333334,
+      "E4s": 0.7708333333333334
+    },
+    "D": {
+      "E0": 0.7395833333333334,
+      "E1s": 0.7708333333333334,
+      "E2s": 0.8229166666666666,
+      "E3s": 0.7395833333333334,
+      "E4s": 0.84375
+    }
+  },
+  "per_set_range_pp": {
+    "E0": 6.25,
+    "E1s": 5.208333333333326,
+    "E2s": 2.083333333333337,
+    "E3s": 7.2916666666666625,
+    "E4s": 7.2916666666666625
+  }
+}
