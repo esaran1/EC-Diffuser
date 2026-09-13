@@ -54,6 +54,8 @@ def describe_objective(diffusion):
     return {
         "mask_terminal_action": bool(getattr(diffusion, "mask_terminal_action", False)),
         "lambda_action": float(getattr(diffusion, "lambda_action", 1.0)),
+        "denominator_ignores_terminal_mask": bool(
+            getattr(diffusion, "denominator_ignores_terminal_mask", False)),
         "action_dim": action_dim,
         "horizon": horizon,
         "first_action_weight": float(weights[0, 0].item()) if action_dim else None,
@@ -106,10 +108,21 @@ def verify_terminal_mask_effective(diffusion, cond_timesteps=(0,), batch=1):
         unmasked[:, int(timestep), action_dim:] = False
     denominator_without_terminal_mask = int(unmasked.sum().item())
 
+    # Arm B' restores the unmasked count as the divisor while keeping the masked
+    # numerator, so the EFFECTIVE denominator differs from the mask's own sum.
+    # Report what the loss actually divides by, not just what the mask contains.
+    effective_denominator = denominator
+    if (getattr(diffusion, "denominator_ignores_terminal_mask", False)
+            and bool(terminal_action_slice.sum().item() == 0) and action_dim):
+        effective_denominator = denominator + batch * action_dim
+
     ratio = (float(denominator_without_terminal_mask) / float(denominator)
              if denominator else None)
 
     return {
+        "effective_loss_denominator": int(effective_denominator),
+        "denominator_ignores_terminal_mask": bool(
+            getattr(diffusion, "denominator_ignores_terminal_mask", False)),
         "terminal_action_elements_active": int(terminal_action_slice.sum().item()),
         "terminal_action_masked": bool(terminal_action_slice.sum().item() == 0),
         "conditioning_mask_total_active": denominator,

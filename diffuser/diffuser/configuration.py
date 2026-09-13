@@ -23,7 +23,8 @@ def diffusion_wrapper_kwargs(args, observation_dim, action_dim):
     # whitelist, so anything omitted silently falls back to the wrapper's
     # constructor default. Omitting them made every loss arm train arm A's
     # objective and produce byte-identical checkpoints.
-    for _k in ("mask_terminal_action", "lambda_action"):
+    for _k in ("mask_terminal_action", "lambda_action",
+               "denominator_ignores_terminal_mask"):
         if hasattr(args, _k):
             kwargs[_k] = getattr(args, _k)
     return kwargs

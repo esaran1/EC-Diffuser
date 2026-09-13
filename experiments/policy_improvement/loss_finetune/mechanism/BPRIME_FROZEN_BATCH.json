@@ -1,0 +1,106 @@
+{
+  "arms": {
+    "B": {
+      "mask_sum": 46464,
+      "numerator": 11871.533203125,
+      "objective": {
+        "action_block_row_sums": [
+          30.0,
+          3.0,
+          3.0,
+          3.0,
+          3.0
+        ],
+        "action_block_sum": 42.0,
+        "action_dim": 3,
+        "denominator_ignores_terminal_mask": false,
+        "first_action_weight": 10.0,
+        "horizon": 5,
+        "lambda_action": 1.0,
+        "loss_weight_matrix_sha16": "f6f56c359875b7f4",
+        "loss_weight_matrix_shape": [
+          5,
+          483
+        ],
+        "loss_weight_matrix_sum": 2442.0,
+        "mask_terminal_action": true,
+        "observation_block_sum": 2400.0,
+        "terminal_action_status": "MASKED",
+        "terminal_action_weight_row": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "pred_sha": "795d8ef6942a0ba3",
+      "probe": {
+        "conditioning_mask_total_active": 46464,
+        "denominator_ignores_terminal_mask": false,
+        "effective_loss_denominator": 46464,
+        "loss_denominator": 46464,
+        "loss_denominator_without_terminal_mask": 46560,
+        "probe_batch": 32,
+        "renormalization_ratio": 1.0020661157024793,
+        "terminal_action_elements_active": 0,
+        "terminal_action_masked": true
+      },
+      "terminal_numerator": 0.0,
+      "total_loss": 0.25549960136413574,
+      "unweighted_action": 0.07941950112581253,
+      "unweighted_observation": 0.256257027387619
+    },
+    "Bprime": {
+      "mask_sum": 46464,
+      "numerator": 11871.533203125,
+      "objective": {
+        "action_block_row_sums": [
+          30.0,
+          3.0,
+          3.0,
+          3.0,
+          3.0
+        ],
+        "action_block_sum": 42.0,
+        "action_dim": 3,
+        "denominator_ignores_terminal_mask": true,
+        "first_action_weight": 10.0,
+        "horizon": 5,
+        "lambda_action": 1.0,
+        "loss_weight_matrix_sha16": "f6f56c359875b7f4",
+        "loss_weight_matrix_shape": [
+          5,
+          483
+        ],
+        "loss_weight_matrix_sum": 2442.0,
+        "mask_terminal_action": true,
+        "observation_block_sum": 2400.0,
+        "terminal_action_status": "MASKED",
+        "terminal_action_weight_row": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "pred_sha": "795d8ef6942a0ba3",
+      "probe": {
+        "conditioning_mask_total_active": 46464,
+        "denominator_ignores_terminal_mask": true,
+        "effective_loss_denominator": 46560,
+        "loss_denominator": 46464,
+        "loss_denominator_without_terminal_mask": 46560,
+        "probe_batch": 32,
+        "renormalization_ratio": 1.0020661157024793,
+        "terminal_action_elements_active": 0,
+        "terminal_action_masked": true
+      },
+      "terminal_numerator": 0.0,
+      "total_loss": 0.25497278571128845,
+      "unweighted_action": 0.07941950112581253,
+      "unweighted_observation": 0.256257027387619
+    }
+  },
+  "c_expected": 0.9979381443298969,
+  "failures": [],
+  "ratio": 0.997938095989056,
+  "verdict": "PASS"
+}

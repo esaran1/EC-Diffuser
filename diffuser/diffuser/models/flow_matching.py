@@ -33,6 +33,7 @@ class ConditionalFlowMatching(nn.Module):
         time_scale=1000.0,
         mask_terminal_action=False,
         lambda_action=1.0,
+        denominator_ignores_terminal_mask=False,
     ):
         """Initialize a flow wrapper compatible with GaussianDiffusion configs.
 
@@ -92,6 +93,10 @@ class ConditionalFlowMatching(nn.Module):
         if not math.isfinite(float(lambda_action)) or float(lambda_action) <= 0.0:
             raise ValueError("lambda_action must be a finite positive number")
         self.lambda_action = float(lambda_action)
+        if not isinstance(denominator_ignores_terminal_mask, bool):
+            raise TypeError("denominator_ignores_terminal_mask must be boolean")
+        # Arm B' only. Defaults to False, so every existing arm is byte-identical.
+        self.denominator_ignores_terminal_mask = denominator_ignores_terminal_mask
         weights = self._make_loss_weights(
             self.action_weight, self.loss_discount, self.loss_weights
         )
@@ -336,6 +341,17 @@ class ConditionalFlowMatching(nn.Module):
         denominator = conditioning_mask.sum()
         if denominator.item() == 0 or not torch.any(active_weights > 0):
             raise ValueError("conditioning and loss settings leave no active elements")
+        # Arm B': isolate the terminal-mask ABLATION from the active-coordinate
+        # RENORMALIZATION it inherits. Masking removes the t=H-1 action slice from
+        # both numerator and denominator (the registered semantics, commit
+        # 58d07c4). Setting this flag keeps the masked numerator but restores the
+        # denominator an UNMASKED run would have used, so B' = c * B exactly with
+        # c = 46464/46560. Numerator, mask structure and weights are untouched.
+        if (getattr(self, "denominator_ignores_terminal_mask", False)
+                and getattr(self, "mask_terminal_action", False) and self.action_dim):
+            denominator = denominator + torch.as_tensor(
+                x1.shape[0] * self.action_dim,
+                device=denominator.device, dtype=denominator.dtype)
         # GaussianDiffusion applies weights once and reduces by element count.
         # Restrict that count to unconditioned elements when masking is present.
         loss = (error * active_weights).sum() / denominator.to(x1.dtype)
