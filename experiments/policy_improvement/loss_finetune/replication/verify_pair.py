@@ -39,12 +39,25 @@ REF_CFG = ("data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42/
 
 def build(arm, seed, dataloader_seed, torch, utils, dwk):
     """Construct one arm exactly as train.py does, including the post-load rebuild."""
-    sys.argv = ["train.py", "--config", "config.pandapush_lossft_arm{}".format(arm),
+    # Use the SAME per-replicate config the runner passes to train.py. The
+    # dataloader seed lives in that config rather than on the command line:
+    # train.py parses args twice ('diffusion' then 'plan'), and add_extras
+    # re-applies CLI extras to the plan config, which has no dataloader_seed key
+    # and raises. Declaring it in the config keeps the pinned code untouched.
+    sys.argv = ["train.py",
+                "--config", "config.pandapush_lossft_arm{}_seed{}".format(arm, seed),
                 "--num_entity", "3", "--rand_color",
-                "--seed", str(seed), "--dataloader_seed", str(dataloader_seed),
-                "--device", "cpu"]
+                "--seed", str(seed), "--device", "cpu"]
     from diffuser.utils.args import ArgsParser
     args = ArgsParser().parse_args("diffusion")
+    # The config must actually carry the intended dataloader seed.
+    if int(args.dataloader_seed) != int(dataloader_seed):
+        raise SystemExit(
+            "arm {} seed {}: config dataloader_seed {} != intended {}".format(
+                arm, seed, args.dataloader_seed, dataloader_seed))
+    # And train.py's SECOND parse (the 'plan' pass) must also succeed, or the
+    # run dies after the model is built. Exercise it here, at zero GPU cost.
+    ArgsParser().parse_args("plan", savepath=args.savepath)
 
     import pickle
     with open(REF_CFG, "rb") as fh:

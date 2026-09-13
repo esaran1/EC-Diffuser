@@ -27,7 +27,7 @@ set -u
 cd /home/jren313/EC-Diffuser-1
 export CUDA_VISIBLE_DEVICES=0
 export PYTHONPATH="$PWD:$PWD/diffuser"
-export LD_LIBRARY_PATH="/home/jren313/miniconda3/envs/ecdiffuser-linux/lib:$LD_LIBRARY_PATH"
+export LD_LIBRARY_PATH="/home/jren313/miniconda3/envs/ecdiffuser-linux/lib:${LD_LIBRARY_PATH-}"
 PY=/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python
 RUNROOT=data/panda_push
 LOG=experiments/policy_improvement/loss_finetune/replication/replication_runner.log
@@ -93,8 +93,8 @@ for SPEC in "${REPLICATES[@]}"; do
       wait_clean || exit 1
       echo "[$(date -Iseconds)] r$R launching arm $ARM (seed $FSEED)" >> "$LOG"
       WANDB_MODE=offline $PY diffuser/scripts/train.py \
-        --config config.pandapush_lossft_arm${ARM} --num_entity 3 --rand_color \
-        --seed "$FSEED" --dataloader_seed "$DLSEED" \
+        --config config.pandapush_lossft_arm${ARM}_seed${FSEED} \
+        --num_entity 3 --rand_color --seed "$FSEED" \
         > "linux_logs/lossft_r${R}_arm${ARM}_seed${FSEED}.txt" 2>&1
       rc=$?
       echo "[$(date -Iseconds)] r$R arm $ARM training exited rc=$rc" >> "$LOG"
