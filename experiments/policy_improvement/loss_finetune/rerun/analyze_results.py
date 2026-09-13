@@ -51,7 +51,17 @@ def main():
     for a in "ABCD":
         m = manifest(a)
         if not m:
-            print("{:<5}(no manifest - arm not yet run)".format(a))
+            if a == "A":
+                # Arm A ran before the runtime-manifest mechanism existed. Its
+                # objective is verified instead by the stored loss_weight_matrix
+                # in its own checkpoint, which the corrected production path
+                # reproduces byte-identically (sha16 f6f56c359875b7f4) -- see
+                # the section-10 "A would remain A" check.
+                print("{:<5}{:<8}{:<8}{:<12.1f}{:<12.1f}{:<12.1f}{}".format(
+                    "A", "False", "1.0", 2442.0, 42.0, 2400.0,
+                    "PRE-MANIFEST (verified via stored matrix sha f6f56c359875b7f4)"))
+            else:
+                print("{:<5}(no manifest - arm not yet run)".format(a))
             continue
         o = m["actual"]
         print("{:<5}{:<8}{:<8}{:<12.1f}{:<12.1f}{:<12.1f}{}".format(
@@ -129,6 +139,13 @@ def main():
             "arm " + a,
             d["LIVE"]["replay_action_error"], d["LIVE"]["replay_state_error"],
             d["EMA"]["replay_action_error"], d["EMA"]["replay_state_error"]))
+    print("\n  !! replay ACTION error is NOT comparable between A/canonical and")
+    print("     B/C/D: replay_error averages over ALL horizon steps including")
+    print("     t=H-1, the slice B/C/D no longer supervise, so the active set")
+    print("     differs. B vs C vs D ARE mutually comparable (same mask).")
+    print("     Replay STATE error (t=1:4) is comparable everywhere.")
+    print("     Replay is not equivalent to closed-loop control and is not used")
+    print("     to rank arms. See REPLAY_METRIC_CAVEAT.md.")
 
     print("\nunweighted (semantic) losses -- comparable across arms;")
     print("raw TOTAL loss is NOT comparable because the objectives are weighted differently.")
