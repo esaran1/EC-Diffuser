@@ -1,4 +1,15 @@
 #!/bin/bash
+# SUPERSEDED -- DO NOT RUN DIRECTLY.
+#
+# This script launched GPU work on its own stable-clean check. With more than one
+# such runner armed, two of OUR jobs could observe the same clean window and
+# launch simultaneously, contaminating each other. All GPU work in this program
+# now goes through the single orchestrator (orchestrate.py), which serializes
+# every launch behind one program-wide lease (gpu_lease.py).
+#
+# Kept for provenance only. Refuses to run.
+echo "SUPERSEDED: use orchestrate.py (single serialized GPU path). Refusing." >&2
+exit 64
 # Stage C: one additional clean control evaluation (R=2) for all eight A/B policies.
 #
 # Same frozen evaluator, same checkpoints, same NFE, same success criterion as the
