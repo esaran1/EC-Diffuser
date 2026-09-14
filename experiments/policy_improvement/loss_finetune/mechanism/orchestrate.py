@@ -54,6 +54,41 @@ def cpu(command):
     return subprocess.call(ENV + command, shell=True)
 
 
+def eval_is_valid(tag, sets=("E0", "E1s", "E2s", "E3s", "E4s")):
+    """True only if a diagnostics file exists AND all five sets are VALID.
+
+    `phase2_diagnostics.py` exits 0 even when its continuous contention monitor
+    invalidates or aborts sets, so file existence is not evidence of a usable
+    result. A contaminated run must be re-run, not skipped as 'already done'.
+    """
+    path = os.path.join(P2, "{}_diagnostics.json".format(tag))
+    if not os.path.exists(path):
+        return False
+    try:
+        d = json.load(open(path))
+    except Exception:
+        return False
+    if d.get("control_mean") is None or d.get("n_valid_sets") != len(sets):
+        return False
+    ctrl = d.get("control", {})
+    return all(ctrl.get(s, {}).get("status") == "VALID" for s in sets)
+
+
+def quarantine_invalid(tag):
+    """Move a contaminated diagnostics file aside, preserving it."""
+    path = os.path.join(P2, "{}_diagnostics.json".format(tag))
+    if os.path.exists(path) and not eval_is_valid(tag):
+        dest = os.path.join(P2, "{}_diagnostics_INVALID_contended.json".format(tag))
+        i = 1
+        while os.path.exists(dest):
+            dest = os.path.join(
+                P2, "{}_diagnostics_INVALID_contended.{}.json".format(tag, i))
+            i += 1
+        os.replace(path, dest)
+        log("quarantined contaminated result: {} -> {}".format(
+            os.path.basename(path), os.path.basename(dest)))
+
+
 # ---------------------------------------------------------------- stage B ---
 def stage_b():
     probe = os.path.join(HERE, "bprime_probe.py")
@@ -121,19 +156,31 @@ def stage_c():
     """One extra clean realization for all eight EXISTING A/B checkpoints."""
     plan = [(42, "A"), (42, "B"), (43, "B"), (43, "A"),
             (44, "A"), (44, "B"), (45, "B"), (45, "A")]   # predeclared balanced
+    MAX_ATTEMPTS = 3
     for seed, arm in plan:
         tag = "lossft_rep2_{}{}".format(arm, seed)
-        if os.path.exists(os.path.join(P2, tag + "_diagnostics.json")):
-            log("stage C: {} already complete".format(tag))
-            continue
-        rc = gpu("stageC:{}".format(tag),
-                 "WANDB_MODE=disabled WANDB_SILENT=true {py} "
-                 "experiments/policy_improvement/phase2_diagnostics.py "
-                 "--loadpath lossft_arm{arm}/{sub} --epoch final --tag {tag} "
-                 "--skip-offline > linux_logs/{tag}.txt 2>&1".format(
-                     py=PY, arm=arm, sub=SUB_T.format(seed), tag=tag))
-        log("stage C: {} rc={}".format(tag, rc))
-        if rc != 0:
+        for attempt in range(1, MAX_ATTEMPTS + 1):
+            if eval_is_valid(tag):
+                log("stage C: {} already complete and VALID".format(tag))
+                break
+            quarantine_invalid(tag)     # never overwrite a contaminated artifact
+            rc = gpu("stageC:{}".format(tag),
+                     "WANDB_MODE=disabled WANDB_SILENT=true {py} "
+                     "experiments/policy_improvement/phase2_diagnostics.py "
+                     "--loadpath lossft_arm{arm}/{sub} --epoch final --tag {tag} "
+                     "--skip-offline > linux_logs/{tag}.txt 2>&1".format(
+                         py=PY, arm=arm, sub=SUB_T.format(seed), tag=tag))
+            log("stage C: {} attempt {} rc={} valid={}".format(
+                tag, attempt, rc, eval_is_valid(tag)))
+            if rc != 0:
+                return False
+            if eval_is_valid(tag):
+                break
+            log("stage C: {} contaminated (contention during evaluation); "
+                "retrying".format(tag))
+        if not eval_is_valid(tag):
+            log("stage C: {} still not VALID after {} attempts".format(
+                tag, MAX_ATTEMPTS))
             return False
     return True
 
