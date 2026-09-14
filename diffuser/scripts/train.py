@@ -244,22 +244,38 @@ if getattr(args, 'warm_start_checkpoint', None):
 # Legacy runs are untouched so completed arms stay comparable.
 if getattr(args, 'clean_first_step', False):
     import torch as _t
-    _n_before = sum(1 for p in trainer.model.parameters() if p.grad is not None)
-    _norm_before = float(sum(float(p.grad.detach().double().pow(2).sum())
-                             for p in trainer.model.parameters()
-                             if p.grad is not None) ** 0.5)
+
+    def _grad_stats(_mod):
+        """(count, L2 norm) over every parameter carrying a .grad."""
+        _n = 0
+        _sq = 0.0
+        for _p in _mod.parameters():
+            if _p.grad is not None:
+                _n += 1
+                _sq += float(_p.grad.detach().double().pow(2).sum())
+        return _n, (_sq ** 0.5 if _n else 0.0)
+
+    # Measure BOTH sides. The EMA model is a deepcopy made before the sanity
+    # backward, so it should carry no gradients -- but that is verified here,
+    # not assumed. The invariant is that no stale gradient exists ANYWHERE that
+    # could enter the first optimizer step.
+    _n_before, _norm_before = _grad_stats(trainer.model)
+    _ema_n_before, _ema_norm_before = _grad_stats(trainer.ema_model)
+
     trainer.optimizer.zero_grad(set_to_none=True)
     trainer.model.zero_grad(set_to_none=True)
     trainer.ema_model.zero_grad(set_to_none=True)
-    _n_after = sum(1 for p in trainer.model.parameters() if p.grad is not None)
-    _norm_after = float(sum(float(p.grad.detach().double().pow(2).sum())
-                            for p in trainer.model.parameters()
-                            if p.grad is not None) ** 0.5) if _n_after else 0.0
-    # FAIL LOUD: no residual sanity gradient may survive into step 1.
-    if _n_after != 0 or _norm_after != 0.0:
+
+    _n_after, _norm_after = _grad_stats(trainer.model)
+    _ema_n_after, _ema_norm_after = _grad_stats(trainer.ema_model)
+
+    # FAIL LOUD: no residual gradient may survive into step 1, on either side.
+    if _n_after or _norm_after or _ema_n_after or _ema_norm_after:
         raise RuntimeError(
-            f'clean_first_step: {_n_after} params still carry gradients '
-            f'(norm {_norm_after}); refusing to start training')
+            f'clean_first_step: residual gradients survive the clear '
+            f'(model {_n_after} params norm {_norm_after}; '
+            f'ema {_ema_n_after} params norm {_ema_norm_after}); '
+            f'refusing to start training')
     import hashlib as _h
     def _mh(_m):
         _d = _h.sha256()
@@ -267,21 +283,60 @@ if getattr(args, 'clean_first_step', False):
             _d.update(_k.encode())
             _d.update(_v.detach().cpu().to(_t.float64).numpy().tobytes())
         return _d.hexdigest()[:16]
+    # First REAL training batch identity, drawn from a throwaway loader with the
+    # same seed so the recorded identity matches what training will see without
+    # perturbing the trainer's own dataloader stream.
+    _first_batch = {}
+    try:
+        _g = _t.Generator()
+        _g.manual_seed(int(args.dataloader_seed))
+        _probe_loader = _t.utils.data.DataLoader(
+            dataset, batch_size=args.batch_size, num_workers=0, shuffle=True,
+            pin_memory=False, generator=_g)
+        _fb = next(iter(_probe_loader))
+        _fx = _fb.trajectories if hasattr(_fb, 'trajectories') else _fb[0]
+        _first_batch = {
+            'shape': list(_fx.shape),
+            'sum': float(_fx.double().sum()),
+            'sha16': _h.sha256(
+                _fx.detach().cpu().to(_t.float64).numpy().tobytes()).hexdigest()[:16],
+        }
+    except Exception as _e:                      # never block training on this
+        _first_batch = {'error': str(_e)}
+
     _fsm = {
+        'run_id': args.savepath.rstrip('/').split('/')[-1],
+        'arm': 'B' if bool(getattr(args, 'mask_terminal_action', False)) else 'A',
+        'finetune_seed': int(args.seed),
         'sanity_check_executed': True,
         'gradient_clear_location': 'train.py after sanity backward and after '
                                    'warm-start load, before first training step',
+        # model side
         'n_params_with_grad_before_clear': _n_before,
         'total_grad_norm_before_clear': _norm_before,
         'n_params_with_grad_after_clear': _n_after,
         'total_grad_norm_after_clear': _norm_after,
+        # EMA side -- verified, not assumed
+        'ema_n_params_with_grad_before_clear': _ema_n_before,
+        'ema_total_grad_norm_before_clear': _ema_norm_before,
+        'ema_n_params_with_grad_after_clear': _ema_n_after,
+        'ema_total_grad_norm_after_clear': _ema_norm_after,
+        # these are measured AFTER the warm-start load, so they double as the
+        # "no stale gradient survives the canonical load" check
+        'measured_after_warm_start_load': True,
         'canonical_model_hash_after_warm_start': _mh(trainer.model),
         'canonical_ema_hash_after_warm_start': _mh(trainer.ema_model),
+        'first_training_batch': _first_batch,
         'warm_start_checkpoint': getattr(args, 'warm_start_checkpoint', None),
         'mask_terminal_action': bool(getattr(args, 'mask_terminal_action', False)),
         'lambda_action': float(getattr(args, 'lambda_action', 1.0)),
         'denominator_ignores_terminal_mask': bool(
             getattr(args, 'denominator_ignores_terminal_mask', False)),
+        'action_weight': float(args.action_weight),
+        'step_start_ema': int(getattr(args, 'step_start_ema', 2000)),
+        'learning_rate': float(args.learning_rate),
+        'lr_warmup_steps': int(getattr(args, 'lr_warmup_steps', 0)),
+        'n_train_steps': int(args.n_train_steps),
         'dataloader_seed': getattr(args, 'dataloader_seed', None),
         'seed': int(args.seed),
     }
