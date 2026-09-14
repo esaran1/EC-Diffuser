@@ -33,6 +33,12 @@ LOG = os.path.join(HERE, "orchestrator.log")
 P2 = os.path.join(ROOT, "experiments/policy_improvement/phase2")
 SUB_T = "3C_dlp_adalnpint_randcolor_H5_T4_seed{}"
 
+# Compute gates. Both stages are implemented and verified; they are switched
+# off because the authorized 3.60 GPU-h cap cannot cover them. Flip to True only
+# with a fresh allocation.
+RUN_STAGE_E = False
+RUN_STAGE_D = False
+
 ENV = ("cd {root} && export PYTHONPATH={root}:{root}/diffuser && "
        "export LD_LIBRARY_PATH=/home/jren313/miniconda3/envs/ecdiffuser-linux/lib:"
        "${{LD_LIBRARY_PATH-}} && export CUDA_VISIBLE_DEVICES=0 && ").format(root=ROOT)
@@ -185,6 +191,70 @@ def stage_c():
     return True
 
 
+# ---------------------------------------------------------------- stage E ---
+def stage_e():
+    """Clean-first-step falsification of the trainer confound.
+
+    PREDECLARED before running: seeds 42 and 43, chosen for complementary
+    historical outcomes (legacy B-A = +2.92 pp and +0.00 pp respectively). This
+    is a falsification design, not a population estimate -- one historically
+    positive seed and one historically null seed. Seed choice was fixed in
+    advance and does not depend on any corrected result.
+
+    Each clean pair differs from its historical counterpart in EXACTLY one way:
+    the random-init sanity gradient is cleared before the first optimizer step.
+    """
+    plan = [(42, "Bclean"), (42, "Aclean"),      # balanced order, as Stage C
+            (43, "Aclean"), (43, "Bclean")]
+    for seed, arm in plan:
+        sub = SUB_T.format(seed)
+        cfg = "config.pandapush_lossft_arm{}_seed{}".format(arm, seed)
+        d_arm = os.path.join(ROOT, "data/panda_push/lossft_arm{}".format(arm), sub)
+        tag = "lossft_clean_{}{}".format(arm[0], seed)
+
+        if not os.path.exists(os.path.join(d_arm, "RUN_COMPLETE.json")):
+            rc = gpu("stageE:train:{}{}".format(arm, seed),
+                     "WANDB_MODE=offline {py} diffuser/scripts/train.py "
+                     "--config {cfg} --num_entity 3 --rand_color --seed {seed} "
+                     "> linux_logs/clean_{arm}{seed}.txt 2>&1".format(
+                         py=PY, cfg=cfg, seed=seed, arm=arm))
+            log("stage E: {}{} training rc={}".format(arm, seed, rc))
+            if rc != 0:
+                return False
+            man = os.path.join(d_arm, "FIRST_STEP_GRADIENT_MANIFEST.json")
+            if not os.path.exists(man):
+                log("stage E: {}{} MISSING first-step manifest".format(arm, seed))
+                return False
+            m = json.load(open(man))
+            if m["n_params_with_grad_after_clear"] != 0 or \
+                    m["total_grad_norm_after_clear"] != 0.0:
+                log("stage E: {}{} residual sanity gradient survived".format(arm, seed))
+                return False
+            log("stage E: {}{} cleared {} grads (norm {:.6e})".format(
+                arm, seed, m["n_params_with_grad_before_clear"],
+                m["total_grad_norm_before_clear"]))
+
+        for attempt in range(1, 4):
+            if eval_is_valid(tag):
+                log("stage E: {} already complete and VALID".format(tag))
+                break
+            quarantine_invalid(tag)
+            rc = gpu("stageE:eval:{}".format(tag),
+                     "WANDB_MODE=disabled WANDB_SILENT=true {py} "
+                     "experiments/policy_improvement/phase2_diagnostics.py "
+                     "--loadpath lossft_arm{arm}/{sub} --epoch final --tag {tag} "
+                     "> linux_logs/{tag}.txt 2>&1".format(
+                         py=PY, arm=arm, sub=sub, tag=tag))
+            log("stage E: {} attempt {} rc={} valid={}".format(
+                tag, attempt, rc, eval_is_valid(tag)))
+            if rc != 0:
+                return False
+        if not eval_is_valid(tag):
+            log("stage E: {} not VALID after 3 attempts".format(tag))
+            return False
+    return True
+
+
 # ---------------------------------------------------------------- stage D ---
 def stage_d():
     """Mechanism diagnostics, registered priority order.
@@ -234,8 +304,31 @@ def main():
         log("STOP: stage C did not complete cleanly")
         return 1
 
-    if not stage_d():
-        log("stage D incomplete (non-fatal); continuing to reporting")
+    # Stage E outranks Stage D in the compute priority, but it does NOT fit the
+    # authorized cap. Measured spend at this point is ~3.00 of 3.60 GPU-h
+    # (stage B' alone cost 1.42), leaving ~0.60 after Stage C completes ~0.38 of
+    # it. One clean A/B pair costs ~0.65 even with control-only evaluation, and
+    # the registered two-pair design costs ~1.29. Dropping the optional Stage-D
+    # diagnostics (per the priority rule) does not close that gap.
+    #
+    # The directive is explicit: do not exceed the cap; return with the result
+    # and recommend the run. Stage E is implemented, configured, verified and
+    # committed so it can start immediately on a fresh allocation.
+    if RUN_STAGE_E:
+        if not stage_e():
+            log("STOP: stage E (clean-first-step falsification) did not complete")
+            return 1
+    else:
+        log("stage E NOT RUN: would exceed the 3.60 GPU-h cap "
+            "(~0.60 remaining, >=0.65 needed for one pair). Implemented and "
+            "ready; recommended as the single next experiment.")
+
+    if RUN_STAGE_D:
+        if not stage_d():
+            log("stage D incomplete (non-fatal); continuing to reporting")
+    else:
+        log("stage D action-distribution NOT RUN: dropped first under the "
+            "registered compute priority to protect the cap.")
 
     log("=== ORCHESTRATOR COMPLETE ===")
     return 0

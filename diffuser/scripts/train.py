@@ -228,6 +228,69 @@ if getattr(args, 'warm_start_checkpoint', None):
 # the compute was spent. This asserts that the objective the trainer ACTUALLY
 # constructed matches the parsed config, and aborts before any training if not.
 # It never warns and continues.
+# ---------------------------------------------------------------------------
+# STAGE E: clean-first-step protocol (opt-in, default OFF = legacy behaviour).
+#
+# The sanity forward/backward above (L156-159) runs BEFORE the warm-start load
+# and leaves `.grad` populated from a RANDOM-INIT network on a single example.
+# Trainer.train() clears gradients only AFTER the first optimizer step, so
+# step 1 of every legacy fine-tune applies g_sanity + g_batch1 + g_batch2. That
+# residual is objective-dependent (measured: rel. to arm A, B 2.25e-2,
+# C 2.50e-1, D 9.50e-1), so it is a potential confound for the A-vs-B contrast,
+# not merely an engineering blemish.
+#
+# With --clean_first_step, gradients are cleared here: after the sanity check and
+# after the warm-start load, immediately before training. Nothing else changes.
+# Legacy runs are untouched so completed arms stay comparable.
+if getattr(args, 'clean_first_step', False):
+    import torch as _t
+    _n_before = sum(1 for p in trainer.model.parameters() if p.grad is not None)
+    _norm_before = float(sum(float(p.grad.detach().double().pow(2).sum())
+                             for p in trainer.model.parameters()
+                             if p.grad is not None) ** 0.5)
+    trainer.optimizer.zero_grad(set_to_none=True)
+    trainer.model.zero_grad(set_to_none=True)
+    trainer.ema_model.zero_grad(set_to_none=True)
+    _n_after = sum(1 for p in trainer.model.parameters() if p.grad is not None)
+    _norm_after = float(sum(float(p.grad.detach().double().pow(2).sum())
+                            for p in trainer.model.parameters()
+                            if p.grad is not None) ** 0.5) if _n_after else 0.0
+    # FAIL LOUD: no residual sanity gradient may survive into step 1.
+    if _n_after != 0 or _norm_after != 0.0:
+        raise RuntimeError(
+            f'clean_first_step: {_n_after} params still carry gradients '
+            f'(norm {_norm_after}); refusing to start training')
+    import hashlib as _h
+    def _mh(_m):
+        _d = _h.sha256()
+        for _k, _v in sorted(_m.state_dict().items()):
+            _d.update(_k.encode())
+            _d.update(_v.detach().cpu().to(_t.float64).numpy().tobytes())
+        return _d.hexdigest()[:16]
+    _fsm = {
+        'sanity_check_executed': True,
+        'gradient_clear_location': 'train.py after sanity backward and after '
+                                   'warm-start load, before first training step',
+        'n_params_with_grad_before_clear': _n_before,
+        'total_grad_norm_before_clear': _norm_before,
+        'n_params_with_grad_after_clear': _n_after,
+        'total_grad_norm_after_clear': _norm_after,
+        'canonical_model_hash_after_warm_start': _mh(trainer.model),
+        'canonical_ema_hash_after_warm_start': _mh(trainer.ema_model),
+        'warm_start_checkpoint': getattr(args, 'warm_start_checkpoint', None),
+        'mask_terminal_action': bool(getattr(args, 'mask_terminal_action', False)),
+        'lambda_action': float(getattr(args, 'lambda_action', 1.0)),
+        'denominator_ignores_terminal_mask': bool(
+            getattr(args, 'denominator_ignores_terminal_mask', False)),
+        'dataloader_seed': getattr(args, 'dataloader_seed', None),
+        'seed': int(args.seed),
+    }
+    with open(os.path.join(args.savepath, 'FIRST_STEP_GRADIENT_MANIFEST.json'), 'w') as fh:
+        json.dump(_fsm, fh, indent=2, sort_keys=True)
+    print(f'[ clean_first_step ] cleared {_n_before} grads (norm '
+          f'{_norm_before:.6e}) -> {_n_after} remaining; manifest written',
+          flush=True)
+
 from diffuser.utils.objective_guard import assert_objective
 _expected_objective = {
     'mask_terminal_action': bool(getattr(args, 'mask_terminal_action', False)),

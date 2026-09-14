@@ -1,0 +1,297 @@
+{
+ "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+ "epoch": "final",
+ "control": {
+  "E0": {
+   "success": 0.6979166666666666,
+   "n": 96,
+   "seconds": 208.75984406471252,
+   "status": "INVALID_CONTENDED_DURING",
+   "pre_snapshot": {
+    "timestamp": 1789392231.2307184,
+    "iso": "2026-09-14T09:23:51",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2615, 16376, 30"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1482359,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2508
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1789392439.9658275,
+    "iso": "2026-09-14T09:27:19",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12030, 16376, 64"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1482359,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2514
+     },
+     {
+      "pid": 1482773,
+      "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+      "used_mib": 9369
+     }
+    ]
+   },
+   "foreign_during": [
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369
+    }
+   ],
+   "midset_max_foreign_mib": 9369,
+   "midset_events": [
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 1558,
+     "iso": "09:24:57"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 3382,
+     "iso": "09:25:02"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 4384,
+     "iso": "09:25:07"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 4384,
+     "iso": "09:25:12"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9001,
+     "iso": "09:25:17"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:22"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:28"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:33"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:38"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:43"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:48"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:53"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:25:58"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:03"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:08"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:13"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:18"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:24"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:29"
+    },
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369,
+     "iso": "09:26:34"
+    }
+   ],
+   "midset_event_count": 28,
+   "start_iso": "2026-09-14T09:23:51",
+   "end_iso": "2026-09-14T09:27:20"
+  },
+  "E1s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1789392440.1203094,
+    "iso": "2026-09-14T09:27:20",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12030, 16376, 64"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1482359,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2514
+     },
+     {
+      "pid": 1482773,
+      "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+      "used_mib": 9369
+     }
+    ]
+   }
+  },
+  "E2s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1789392440.2494903,
+    "iso": "2026-09-14T09:27:20",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12030, 16376, 54"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1482359,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2514
+     },
+     {
+      "pid": 1482773,
+      "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+      "used_mib": 9369
+     }
+    ]
+   }
+  },
+  "E3s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1789392440.3921006,
+    "iso": "2026-09-14T09:27:20",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12030, 16376, 54"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1482359,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2514
+     },
+     {
+      "pid": 1482773,
+      "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+      "used_mib": 9369
+     }
+    ]
+   }
+  },
+  "E4s": {
+   "status": "ABORTED_CONTENDED",
+   "foreign": [
+    {
+     "pid": 1482773,
+     "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+     "used_mib": 9369
+    }
+   ],
+   "pre_snapshot": {
+    "timestamp": 1789392440.54666,
+    "iso": "2026-09-14T09:27:20",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 12030, 16376, 54"
+    ],
+    "compute_apps": [
+     {
+      "pid": 1482359,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2514
+     },
+     {
+      "pid": 1482773,
+      "name": "/home/jren313/miniconda3/envs/env_isaaclab/bin/python",
+      "used_mib": 9369
+     }
+    ]
+   }
+  }
+ },
+ "n_valid_sets": 0,
+ "control_mean": null,
+ "control_sd": null
+}
