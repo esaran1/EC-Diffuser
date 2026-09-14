@@ -72,15 +72,31 @@ the same training length.
 
 ## 3. Why the scientific results are NOT affected
 
-Every scientific arm — A, B, C, D, all four B′ replicates — runs through
-`train.py` and therefore receives the **identical** pre-training test-pass
-gradient. It is a shared, constant feature of the protocol, not a differential
-between arms. The paired A-vs-B and A-vs-B′ contrasts are unaffected.
+> **CORRECTION (audited).** An earlier version of this section claimed every arm
+> receives the *identical* test-pass gradient — "a shared constant, not a
+> differential." **That was wrong.** The sanity check calls the arm's **own**
+> configured wrapper, so `g_test` is objective-dependent: relative to A it
+> differs by 2.25e-02 (B), 2.50e-01 (C), 9.50e-01 (D), 2.22e-02 (B′). Full
+> measurements in `SANITY_GRADIENT_AUDIT.md`.
 
-It is, separately, a small blemish in the pipeline worth recording: step 1 of
-every fine-tune includes a stray gradient from `dataset[0]`. It does not
-invalidate anything here because it is common to all arms, and it is **not**
-fixed now — changing it would alter the pinned training path mid-program.
+The correct statement:
+
+> Every scientific arm went through the same production-path pre-training
+> backward quirk, but the residual sanity-check gradient was objective-specific.
+> It therefore forms part of the actual registered training trajectory rather
+> than a common additive gradient.
+
+This still does not invalidate A/B/C/D/B′: every scientific run used the same
+production entry point, the intervention is *supposed* to change the objective,
+paired runs within a seed differ only through their registered objective (the
+sanity gradient included, since it derives from that same objective), and all
+replication arms behaved identically in this respect.
+
+It remains a real blemish worth recording: step 1 of every fine-tune includes a
+one-off gradient computed on an **untrained** network (the sanity check runs at
+L156, *before* the warm-start load at L198) from a **single** example, with
+‖g_test‖ ≈ 5.2e-01 against a typical training-gradient EMA of 1.84e-02. It is
+**not** fixed now — changing it would alter the pinned training path mid-program.
 
 ## 4. The denominator question is answered anyway — by the four-seed B′ branch
 
