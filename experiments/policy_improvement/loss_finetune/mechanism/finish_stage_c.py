@@ -69,8 +69,41 @@ def quarantine(tag):
                                           os.path.basename(dest)))
 
 
+OLD_CAP_GPU_H = 3.60
+PRE_LEASE_CHARGES = 0.1200      # contention event + pre-lease probe attempts
+EVAL_COST_EST = 0.2225          # measured mean for one five-set control
+
+
+def old_spent_gpu_h():
+    """GPU-h charged to the OLD allocation, from its own log. No borrowing."""
+    import re
+    from datetime import datetime as dt
+    acq, tot = {}, 0.0
+    for line in open(LOG):
+        m = re.search(r"\[([0-9T:\-]+)\].*lease acquired \(stage ([^,]+),", line)
+        if m:
+            acq[m.group(2)] = dt.fromisoformat(m.group(1))
+        m = re.search(r"\[([0-9T:\-]+)\].*lease released \(stage ([^)]+)\)", line)
+        if m and m.group(2) in acq:
+            tot += (dt.fromisoformat(m.group(1)) - acq.pop(m.group(2))).total_seconds() / 3600
+    return tot + PRE_LEASE_CHARGES
+
+
+def budget_ok(what):
+    s = old_spent_gpu_h()
+    if s + EVAL_COST_EST > OLD_CAP_GPU_H:
+        log("STOP: {} needs ~{:.4f} GPU-h but OLD ledger is at {:.4f} of the "
+            "{:.2f} cap. Preserving the contaminated attempt and stopping rather "
+            "than spending past the cap to recover it.".format(
+                what, EVAL_COST_EST, s, OLD_CAP_GPU_H))
+        return False
+    return True
+
+
 def main():
     log("START (old allocation close-out). foreign GPU MiB: {}".format(foreign_mib()))
+    log("OLD ledger at start: {:.4f} of {:.2f}".format(
+        old_spent_gpu_h(), OLD_CAP_GPU_H))
     for seed, arm in REMAINING:
         tag = "lossft_rep2_{}{}".format(arm, seed)
         for attempt in range(1, 4):
@@ -78,6 +111,8 @@ def main():
                 log("{} complete and VALID".format(tag))
                 break
             quarantine(tag)
+            if not budget_ok("{} attempt {}".format(tag, attempt)):
+                return 2
             rc = run_guarded(
                 "stageC-close:{}".format(tag),
                 ENV + ("WANDB_MODE=disabled WANDB_SILENT=true {py} "
