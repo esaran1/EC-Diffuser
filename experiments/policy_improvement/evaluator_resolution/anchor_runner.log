@@ -2,3 +2,5 @@
 [2026-09-16T11:41:16] anchor manifest written: canonical=861dc34434474455, cleanA42=49bbc3f5a041d32f
 [2026-09-16T11:41:16] already spent in THIS program: 0.0000 GPU-h
 [2026-09-16T11:41:16] foreign GPU MiB at start: 0
+[2026-09-16T11:43:59] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T11:43:59] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R1, pid 2309661); launching
