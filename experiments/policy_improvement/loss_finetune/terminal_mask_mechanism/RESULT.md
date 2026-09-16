@@ -1,5 +1,7 @@
 # Terminal-mask investigation — final result
 
+*Final commit: `19c6809`. Figures: `mechanism/figures/` (regenerate with `mechanism/make_figures.py`).*
+
 ## 1. Executive summary
 
 **The terminal-mask improvement did not survive its own controls. The honest
