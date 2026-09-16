@@ -1,0 +1,68 @@
+# Tal update — what is action denoising buying us?
+
+**Status: IN PROGRESS.** Slides marked ⏳ await empirical results.
+
+---
+
+## Slide 1 — Three audits changed the plan before we spent any GPU
+
+**UWM is arXiv:2504.02792 (RSS 2025).** Reading the paper *and* the code changed
+three things:
+
+| what we assumed | what UWM actually does |
+|---|---|
+| times sampled with some diagonal mass | **plain product measure, NO diagonal mass** — our inherited code defaulted to 50% diagonal |
+| our flow convention carries over | **UWM is DDPM with t=0 CLEAN** — the opposite of ours; corner semantics invert |
+| interior paths are the obvious extension | **UWM trains the interior but never traverses it** — all four endpoints ride axis edges |
+
+> **The interior of the 2D time square is unclaimed.** UWM's four inference
+> modes each pin one modality's time at a corner and sweep the other. The only
+> diagonal sampler in their repo is undocumented, visualization-only code. That
+> gap is exactly what we registered as our Stage E.
+
+**Script.** Before touching the GPU we read UWM properly — paper, appendix and
+released code at a pinned commit. Three things came back that we would have got
+wrong otherwise. Their training distribution has no deliberate diagonal mass at
+all; the code is two independent randint calls, and our inherited implementation
+defaulted to half the batch on the diagonal. Their time convention is inverted
+from ours — they're DDPM where t=0 means clean, we're flow matching where t=0
+means noise — so every corner semantic flips. And the thing we thought was the
+obvious extension turns out to be genuinely unclaimed: they train the whole
+two-dimensional time square but they only ever sample along its edges. That's
+the gap we registered.
+
+---
+
+## Slide 2 — Two findings that closed stages without spending their budget ⏳
+
+**Stage F (harder task) is BLOCKED, structurally.** Every trained checkpoint in
+the repo is the 3-cube random-color task. Creating a baseline for any other task
+costs **~33 GPU-h** — 3.3× the entire program cap — and a cheap 20k screen is
+already known to give 0/96.
+
+The honest reframing: our canonical task is *already* 3 objects at ~79%, neither
+saturated nor floored. **The binding limit isn't task difficulty, it's evaluator
+resolution** — RC95 ±4.30 pp. A 1–2 pp architectural effect is unresolvable on
+*any* task at this budget.
+
+**Stage H (latent action) failed its own predeclared criterion.** We fixed in
+advance: authorize a 2-D bottleneck only if top-2 PCA ≥ 99% of action variance.
+**Measured 75.7%** — spectrum nearly flat (0.445/0.312/0.243), dimensions nearly
+uncorrelated. So we did not invent a lossy bottleneck to have something to run.
+
+**Script.** Two stages closed on evidence rather than on GPU time. The
+harder-task stage is blocked for a structural reason: we have no pretrained
+policy for any task except the one we're on, and training one costs thirty-three
+GPU-hours against a ten-hour cap. Worth saying plainly though — the task isn't
+the bottleneck. We're already on three cubes at seventy-nine percent, and the
+real limit is that our evaluator can't resolve anything under about three points
+no matter which task we run it on. The latent-action stage failed a criterion we
+wrote down before looking: we needed the top two principal components to explain
+ninety-nine percent of action variance to justify compressing, and they explain
+seventy-six. The action space is genuinely three-dimensional. So we didn't build
+a bottleneck just to have an arm to report.
+
+---
+
+## Slide 3 — The pilot, and what it can and cannot tell us ⏳
+
