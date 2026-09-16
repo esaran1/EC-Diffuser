@@ -1,2 +1,6 @@
 [2026-09-16T18:43:28] === STAGE-E OFFLINE DIAGNOSTICS (no training) ===
 [2026-09-16T18:43:28] foreign GPU MiB: 0
+[2026-09-16T18:46:10] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T18:46:10] [gpu_lease] lease acquired (stage diag:stageE, pid 32673); launching
+[2026-09-16T18:47:02] [gpu_lease] lease released (stage diag:stageE)
+[2026-09-16T18:47:02] diagnostics rc=0

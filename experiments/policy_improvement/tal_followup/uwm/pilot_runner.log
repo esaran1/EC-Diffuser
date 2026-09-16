@@ -19,3 +19,8 @@
 [2026-09-16T18:42:28]   ctl final sha256 = 6bb31652c5323f7769d73943
 [2026-09-16T18:42:28] arms diverged from each other and from canonical: OK
 [2026-09-16T18:42:28] === PILOT COMPLETE: 0.6517 GPU-h ===
+[2026-09-16T18:48:35] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-16T18:48:35] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-16T18:48:35] foreign GPU MiB at start: 0
+[2026-09-16T18:48:35] already spent in THIS program: 0.6517 GPU-h
+[2026-09-16T18:48:35] --- training arm uwm (p_diag=0.0) ---

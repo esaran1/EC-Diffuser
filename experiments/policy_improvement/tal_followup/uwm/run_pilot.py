@@ -34,12 +34,24 @@ CAP_GPU_H = 10.00              # program-wide fresh cap
 TRAIN_COST_EST = 0.42          # per arm, 5k steps (historical 2k ~0.167)
 RESERVED_DOWNSTREAM = 1.50     # closed-loop gate + offline diagnostics
 
-ARMS = {
-    "uwm": {"config": "config.pandapush_uwm_uwm_seed42", "p_diag": 0.0,
-            "prefix": "uwm_uwm"},
-    "ctl": {"config": "config.pandapush_uwm_ctl_seed42", "p_diag": 1.0,
-            "prefix": "uwm_ctl"},
-}
+import os as _os
+_EXT = _os.environ.get("UWM_EXT") == "1"
+if _EXT:
+    # Section-23 authorized extension 5000 -> 10000. BOTH arms are extended so
+    # the matched control keeps the identical optimizer budget (section 22).
+    ARMS = {
+        "uwm": {"config": "config.pandapush_uwm_uwm_seed42_ext", "p_diag": 0.0,
+                "prefix": "uwm_uwm_ext"},
+        "ctl": {"config": "config.pandapush_uwm_ctl_seed42_ext", "p_diag": 1.0,
+                "prefix": "uwm_ctl_ext"},
+    }
+else:
+    ARMS = {
+        "uwm": {"config": "config.pandapush_uwm_uwm_seed42", "p_diag": 0.0,
+                "prefix": "uwm_uwm"},
+        "ctl": {"config": "config.pandapush_uwm_ctl_seed42", "p_diag": 1.0,
+                "prefix": "uwm_ctl"},
+    }
 RUNDIR = "3C_dlp_adalnpint_randcolor_H5_T4_seed42"
 CANON = ("data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/"
          "state_400000.pt")
@@ -162,6 +174,16 @@ def main():
         log("FATAL: an arm is byte-identical to the canonical source -- no "
             "training occurred.")
         return 3
+    if _EXT:
+        for a in ("uwm", "ctl"):
+            parent = os.path.join(ROOT, "data/panda_push",
+                                  ARMS[a]["prefix"].replace("_ext", ""),
+                                  RUNDIR, "state_final.pt")
+            if os.path.exists(parent) and sha256_of(parent) == sh[a]:
+                log("FATAL: extended arm {} is byte-identical to its 5k "
+                    "parent -- no additional training occurred.".format(a))
+                return 3
+        log("extended arms differ from their 5k parents: OK")
     log("arms diverged from each other and from canonical: OK")
 
     manifest = {
@@ -176,7 +198,8 @@ def main():
                                       capture_output=True, text=True).stdout.strip(),
         "gpu_h_spent": spent_gpu_h(),
     }
-    with open(os.path.join(HERE, "PILOT_MANIFEST.json"), "w") as fh:
+    mname = "PILOT_MANIFEST_EXT.json" if _EXT else "PILOT_MANIFEST.json"
+    with open(os.path.join(HERE, mname), "w") as fh:
         json.dump(manifest, fh, indent=2, sort_keys=True)
     log("=== PILOT COMPLETE: {:.4f} GPU-h ===".format(spent_gpu_h()))
     return 0

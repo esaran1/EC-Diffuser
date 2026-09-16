@@ -1,0 +1,94 @@
+{
+  "ctl": {
+    "p_diag": 1.0,
+    "param_drift_l2": 12.238535031156287,
+    "paths": {
+      "P0_diagonal": {
+        "action_absmax": 1.0143243074417114,
+        "action_err_all": 0.015908652916550636,
+        "action_err_step0": 0.011791190132498741,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.18896952271461487
+      },
+      "P1_state_leads": {
+        "action_absmax": 1.780576467514038,
+        "action_err_all": 0.21876733005046844,
+        "action_err_step0": 0.21182116866111755,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.20916210114955902
+      },
+      "P2_action_leads": {
+        "action_absmax": 1.0356688499450684,
+        "action_err_all": 0.11041883379220963,
+        "action_err_step0": 0.10763117671012878,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.3112681806087494
+      },
+      "P3_state_first": {
+        "action_absmax": 1.3902020454406738,
+        "action_err_all": 0.3536311686038971,
+        "action_err_step0": 0.4199826121330261,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.21095430850982666
+      },
+      "P4_action_first": {
+        "action_absmax": 1.0447115898132324,
+        "action_err_all": 0.14127500355243683,
+        "action_err_step0": 0.13816839456558228,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.3361699879169464
+      }
+    }
+  },
+  "uwm": {
+    "p_diag": 0.0,
+    "param_drift_l2": 16.220660658233314,
+    "paths": {
+      "P0_diagonal": {
+        "action_absmax": 1.0664098262786865,
+        "action_err_all": 0.028470197692513466,
+        "action_err_step0": 0.015961622819304466,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.1896737813949585
+      },
+      "P1_state_leads": {
+        "action_absmax": 1.5118446350097656,
+        "action_err_all": 0.12932033836841583,
+        "action_err_step0": 0.11691144108772278,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.19080081582069397
+      },
+      "P2_action_leads": {
+        "action_absmax": 1.1639578342437744,
+        "action_err_all": 0.0684853121638298,
+        "action_err_step0": 0.05496307462453842,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.20579314231872559
+      },
+      "P3_state_first": {
+        "action_absmax": 1.7442069053649902,
+        "action_err_all": 0.23463213443756104,
+        "action_err_step0": 0.2508034408092499,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.1714615672826767
+      },
+      "P4_action_first": {
+        "action_absmax": 1.1093107461929321,
+        "action_err_all": 0.08702895045280457,
+        "action_err_step0": 0.07344632595777512,
+        "finite": true,
+        "model_calls": 4,
+        "state_err": 0.2139347493648529
+      }
+    }
+  }
+}
