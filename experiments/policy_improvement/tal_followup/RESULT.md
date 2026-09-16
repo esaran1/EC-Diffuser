@@ -128,7 +128,89 @@ bytes** — the check whose absence let the historical kwargs defect pass silent
 
 ---
 
-## 7. Stage E — the 2D field and inference paths ⏳
+## 7. Stage E — the 2D field and inference paths
+
+### 7.1 The adaptation verdict: ADAPTED, on both predeclared criteria
+
+Criterion registered in `uwm/ADAPTATION_CRITERION.md` **before** the data was
+read. Measured on the identical 5×5 grid with identical replay states, noise and
+conditioning for both arms:
+
+| metric (action block) | UWM (`p_diag=0`) | CTL (`p_diag=1`) |
+|---|--:|--:|
+| off-diagonal / diagonal error ratio | **1.558** | 3.003 |
+| corr(\|t_s − t_a\|, error), off-diagonal | **+0.356** | +0.692 |
+| *(state block)* off/diag ratio | **1.145** | 1.673 |
+| *(state block)* corr(dist, err) | **+0.268** | +0.654 |
+
+The control — which by construction never saw an off-diagonal time — reproduces
+the closed warm-start branch's **non-adaptation signature** (corr ≈ +0.69; that
+branch measured |corr| ≈ 1.0 on a related quantity). The UWM arm roughly halves
+it on both blocks.
+
+**Semantic corners** (our convention, t=1 clean):
+
+| regime | corner | CTL | UWM | improvement |
+|---|---|--:|--:|--:|
+| inverse model (state clean, action noisy) | (1.0, 0.0) | 1.5941 | **0.2475** | **6.4×** |
+| forward dynamics (action clean, state noisy) | (0.0, 1.0) | 1.0833 | **0.2737** | **4.0×** |
+
+> The off-diagonal OOD confound that invalidated the previous branch is removed
+> **by training**, not assumed away. This is the precondition that makes a field
+> study meaningful, and it is now satisfied.
+
+### 7.2 Adaptation happens LATE — and this matters beyond this experiment
+
+| step | off/diag | corr(dist, err) | corner (1,0) |
+|--:|--:|--:|--:|
+| 500 | 2.715 | +0.6985 | 1.4077 |
+| 1000 | 2.502 | +0.7053 | 1.2990 |
+| 2000 | 2.240 | +0.6947 | 0.9023 |
+| **5000** | **1.558** | **+0.3564** | **0.2475** |
+| *CTL* | *3.003* | *+0.6920* | *1.5941* |
+
+Through step 2000 the correlation sits at **+0.695 / +0.705 / +0.695** —
+statistically indistinguishable from the never-adapted control's **+0.692**. On
+that metric the model had learned essentially **nothing** about off-diagonal
+structure by 2000. It collapses to +0.356 only between 2000 and 5000.
+
+> **Had this been run at the 2000-step budget the prior loss program used, the
+> conclusion would have been "off-diagonal training does not help" — and it would
+> have been wrong.** Adaptation is late and nonlinear.
+
+§23 therefore authorized **one** extension to 10000 steps, applied to **both**
+arms so the matched control keeps an identical optimizer budget
+(`uwm/EXTENSION_DECISION.md`).
+
+### 7.3 The result that cuts AGAINST the interesting hypothesis
+
+**On both arms, the diagonal path P0 is the best path for predicting the executed
+action**, at equal model calls (NFE=4 for every path):
+
+| path | UWM act@0 | CTL act@0 | UWM − CTL |
+|---|--:|--:|--:|
+| **P0 diagonal** | **0.0160** | **0.0118** | +0.0042 |
+| P1 state-leads | 0.1169 | 0.2118 | −0.0949 |
+| P2 action-leads | 0.0550 | 0.1076 | −0.0527 |
+| P3 state-first axis | 0.2508 | 0.4200 | −0.1692 |
+| P4 action-first axis | 0.0734 | 0.1382 | −0.0647 |
+
+Two readings, both required:
+
+1. **The UWM arm beats the matched control on every non-diagonal path**
+   (−0.053 to −0.169). That is the adaptation showing up as usable behaviour.
+2. **But the non-diagonal paths are 3–16× worse than the diagonal on the same
+   model**, and the UWM arm is marginally *worse* on the diagonal itself
+   (+0.0042). The best absolute action prediction available anywhere in this
+   experiment is the plain diagonal on the control.
+
+> **Offline, "state-leading inference improves action prediction" is NOT
+> supported.** Independent-time *training* buys a large improvement in
+> off-diagonal *robustness*; it does not buy a better operating point than the
+> diagonal.
+
+Per §48 these are offline metrics. They narrow the closed-loop candidate set;
+they do not support a control claim.
 
 ---
 
