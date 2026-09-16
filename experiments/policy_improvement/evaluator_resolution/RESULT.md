@@ -675,7 +675,8 @@ the answer is what produced the last program's vanishing effects.
 
 ## 30. Final commit
 
-This result is recorded at commit **`435d3b1`** ("evaluator-resolution: measure
+This result is recorded at commit **`4596515`** (numerical-consistency audit;
+scientific content first recorded at `435d3b1`) ("evaluator-resolution: measure
 PandaPush repeatability, complete program"). The evaluations themselves ran
 under `08d77ab`.
 
