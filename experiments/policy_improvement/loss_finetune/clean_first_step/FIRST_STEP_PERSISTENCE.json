@@ -1,0 +1,67 @@
+{
+  "42": {
+    "1000": {
+      "legacy_A_vs_B_param_rel_rms": 0.0005295575581758214
+    },
+    "1500": {
+      "legacy_A_vs_B_param_rel_rms": 0.0008410199082852937
+    },
+    "500": {
+      "legacy_A_vs_B_param_rel_rms": 0.00027174177728651313
+    },
+    "final": {
+      "legacy_A_vs_B_param_rel_rms": 0.0012595177650885287
+    }
+  },
+  "43": {
+    "1000": {
+      "legacy_A_vs_B_param_rel_rms": 0.0008422874993887303
+    },
+    "1500": {
+      "legacy_A_vs_B_param_rel_rms": 0.0010297528505627694
+    },
+    "500": {
+      "legacy_A_vs_B_param_rel_rms": 0.0002927396502356871
+    },
+    "early10": {
+      "legacy_A_vs_B_param_rel_rms": 2.3444084190065515e-06
+    },
+    "final": {
+      "legacy_A_vs_B_param_rel_rms": 0.0013512316720600505
+    }
+  },
+  "44": {
+    "1000": {
+      "legacy_A_vs_B_param_rel_rms": 0.000709350511489735
+    },
+    "1500": {
+      "legacy_A_vs_B_param_rel_rms": 0.001031105787306522
+    },
+    "500": {
+      "legacy_A_vs_B_param_rel_rms": 0.00030817135792546286
+    },
+    "early10": {
+      "legacy_A_vs_B_param_rel_rms": 2.020288502100864e-06
+    },
+    "final": {
+      "legacy_A_vs_B_param_rel_rms": 0.0014031519359374365
+    }
+  },
+  "45": {
+    "1000": {
+      "legacy_A_vs_B_param_rel_rms": 0.0006572067698233703
+    },
+    "1500": {
+      "legacy_A_vs_B_param_rel_rms": 0.0009252703076774407
+    },
+    "500": {
+      "legacy_A_vs_B_param_rel_rms": 0.00042179218664164646
+    },
+    "early10": {
+      "legacy_A_vs_B_param_rel_rms": 1.9215228520576483e-06
+    },
+    "final": {
+      "legacy_A_vs_B_param_rel_rms": 0.0011665296035674145
+    }
+  }
+}

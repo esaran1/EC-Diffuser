@@ -1,0 +1,124 @@
+[2026-09-13T21:23:52] === ORCHESTRATOR START (single GPU path) commit ca798e6 ===
+[2026-09-13T21:23:52] foreign GPU MiB at start: 10122
+[2026-09-13T21:55:06] [gpu_lease] clean streak broken at 4 (foreign 3382 MiB)
+[2026-09-13T23:52:35] [gpu_lease] clean streak broken at 1 (foreign 5390 MiB)
+[2026-09-14T00:22:56] [gpu_lease] clean streak broken at 1 (foreign 6764 MiB)
+[2026-09-14T00:33:15] [gpu_lease] clean streak broken at 1 (foreign 8778 MiB)
+[2026-09-14T00:43:34] [gpu_lease] clean streak broken at 1 (foreign 10122 MiB)
+[2026-09-14T00:53:53] [gpu_lease] clean streak broken at 1 (foreign 6764 MiB)
+[2026-09-14T05:36:06] [gpu_lease] clean streak broken at 6 (foreign 8606 MiB)
+[2026-09-14T05:50:49] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T05:50:49] [gpu_lease] lease acquired (stage stageB:pandapush_lossft_armB_seed42, pid 1205373); launching
+[2026-09-14T05:52:58] [gpu_lease] lease released (stage stageB:pandapush_lossft_armB_seed42)
+[2026-09-14T05:52:58] stage B: pandapush_lossft_armB_seed42 exited rc=0
+[2026-09-14T05:55:40] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T05:55:40] [gpu_lease] lease acquired (stage stageB:pandapush_lossft_armBprime_seed42, pid 1205373); launching
+[2026-09-14T05:57:47] [gpu_lease] lease released (stage stageB:pandapush_lossft_armBprime_seed42)
+[2026-09-14T05:57:47] stage B: pandapush_lossft_armBprime_seed42 exited rc=0
+[2026-09-14T05:58:03] denominator gate: DENOMINATOR-NOT-NEGLIGIBLE | {"ALL_PASS": false, "R_output<0.05": false, "R_param<0.05": false, "R_t0<0.05": false, "no_clipping": true}
+[2026-09-14T05:58:03] denominator NON-NEGLIGIBLE -> running the four-seed B' branch FIRST
+[2026-09-14T06:00:46] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T06:00:46] [gpu_lease] lease acquired (stage stageB':train:seed42, pid 1205373); launching
+[2026-09-14T06:08:45] [gpu_lease] lease released (stage stageB':train:seed42)
+[2026-09-14T06:08:45] stage B' seed42 training rc=0
+[2026-09-14T06:11:28] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T06:11:28] [gpu_lease] lease acquired (stage stageB':eval:seed42, pid 1205373); launching
+[2026-09-14T06:24:55] [gpu_lease] lease released (stage stageB':eval:seed42)
+[2026-09-14T06:24:55] stage B' seed42 diagnostics rc=0
+[2026-09-14T06:27:37] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T06:27:37] [gpu_lease] lease acquired (stage stageB':train:seed43, pid 1205373); launching
+[2026-09-14T06:35:37] [gpu_lease] lease released (stage stageB':train:seed43)
+[2026-09-14T06:35:37] stage B' seed43 training rc=0
+[2026-09-14T06:38:19] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T06:38:19] [gpu_lease] lease acquired (stage stageB':eval:seed43, pid 1205373); launching
+[2026-09-14T06:51:51] [gpu_lease] lease released (stage stageB':eval:seed43)
+[2026-09-14T06:51:51] stage B' seed43 diagnostics rc=0
+[2026-09-14T06:54:33] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T06:54:33] [gpu_lease] lease acquired (stage stageB':train:seed44, pid 1205373); launching
+[2026-09-14T07:02:33] [gpu_lease] lease released (stage stageB':train:seed44)
+[2026-09-14T07:02:33] stage B' seed44 training rc=0
+[2026-09-14T07:05:15] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T07:05:15] [gpu_lease] lease acquired (stage stageB':eval:seed44, pid 1205373); launching
+[2026-09-14T07:18:35] [gpu_lease] lease released (stage stageB':eval:seed44)
+[2026-09-14T07:18:35] stage B' seed44 diagnostics rc=0
+[2026-09-14T07:21:18] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T07:21:18] [gpu_lease] lease acquired (stage stageB':train:seed45, pid 1205373); launching
+[2026-09-14T07:29:17] [gpu_lease] lease released (stage stageB':train:seed45)
+[2026-09-14T07:29:17] stage B' seed45 training rc=0
+[2026-09-14T07:32:00] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T07:32:00] [gpu_lease] lease acquired (stage stageB':eval:seed45, pid 1205373); launching
+[2026-09-14T07:45:00] [gpu_lease] lease released (stage stageB':eval:seed45)
+[2026-09-14T07:45:00] stage B' seed45 diagnostics rc=0
+[2026-09-14T07:47:42] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T07:47:42] [gpu_lease] lease acquired (stage stageC:lossft_rep2_A42, pid 1205373); launching
+[2026-09-14T08:01:03] [gpu_lease] lease released (stage stageC:lossft_rep2_A42)
+[2026-09-14T08:01:03] stage C: lossft_rep2_A42 rc=0
+[2026-09-14T08:03:45] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T08:03:45] [gpu_lease] lease acquired (stage stageC:lossft_rep2_B42, pid 1205373); launching
+[2026-09-14T08:17:11] [gpu_lease] lease released (stage stageC:lossft_rep2_B42)
+[2026-09-14T08:17:11] stage C: lossft_rep2_B42 rc=0
+[2026-09-14T08:19:54] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T08:19:54] [gpu_lease] lease acquired (stage stageC:lossft_rep2_B43, pid 1205373); launching
+[2026-09-14T08:33:04] [gpu_lease] lease released (stage stageC:lossft_rep2_B43)
+[2026-09-14T08:33:04] stage C: lossft_rep2_B43 rc=0
+[2026-09-14T08:35:47] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T08:35:47] [gpu_lease] lease acquired (stage stageC:lossft_rep2_A43, pid 1205373); launching
+[2026-09-14T08:48:52] [gpu_lease] lease released (stage stageC:lossft_rep2_A43)
+[2026-09-14T08:48:52] stage C: lossft_rep2_A43 rc=0
+[2026-09-14T08:51:35] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T08:51:35] [gpu_lease] lease acquired (stage stageC:lossft_rep2_A44, pid 1205373); launching
+[2026-09-14T09:04:56] [gpu_lease] lease released (stage stageC:lossft_rep2_A44)
+[2026-09-14T09:04:56] stage C: lossft_rep2_A44 rc=0
+[2026-09-14T09:07:38] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T09:07:38] [gpu_lease] lease acquired (stage stageC:lossft_rep2_B44, pid 1205373); launching
+[2026-09-14T09:20:59] [gpu_lease] lease released (stage stageC:lossft_rep2_B44)
+[2026-09-14T09:20:59] stage C: lossft_rep2_B44 rc=0
+[2026-09-14T09:23:42] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T09:23:42] [gpu_lease] lease acquired (stage stageC:lossft_rep2_B45, pid 1205373); launching
+[2026-09-14T09:27:21] [gpu_lease] lease released (stage stageC:lossft_rep2_B45)
+[2026-09-14T09:27:21] stage C: lossft_rep2_B45 rc=0
+[2026-09-14T10:38:41] === ORCHESTRATOR START (single GPU path) commit 62aa7e5 ===
+[2026-09-14T10:38:41] foreign GPU MiB at start: 9369
+[2026-09-14T10:38:41] stage B: pandapush_lossft_armB_seed42 already complete
+[2026-09-14T10:38:41] stage B: pandapush_lossft_armBprime_seed42 already complete
+[2026-09-14T10:39:06] denominator gate: DENOMINATOR-NOT-NEGLIGIBLE | {"ALL_PASS": false, "R_output<0.05": false, "R_param<0.05": false, "R_t0<0.05": false, "no_clipping": true}
+[2026-09-14T10:39:06] denominator NON-NEGLIGIBLE -> running the four-seed B' branch FIRST
+[2026-09-14T10:39:06] stage C: lossft_rep2_A42 already complete and VALID
+[2026-09-14T10:39:06] stage C: lossft_rep2_B42 already complete and VALID
+[2026-09-14T10:39:06] stage C: lossft_rep2_B43 already complete and VALID
+[2026-09-14T10:39:06] stage C: lossft_rep2_A43 already complete and VALID
+[2026-09-14T10:39:06] stage C: lossft_rep2_A44 already complete and VALID
+[2026-09-14T10:39:06] stage C: lossft_rep2_B44 already complete and VALID
+[2026-09-14T10:49:25] [gpu_lease] clean streak broken at 1 (foreign 4384 MiB)
+[2026-09-14T10:50:53] === ORCHESTRATOR START (single GPU path) commit 63438a1 ===
+[2026-09-14T10:50:53] foreign GPU MiB at start: 9369
+[2026-09-14T10:50:53] stage B: pandapush_lossft_armB_seed42 already complete
+[2026-09-14T10:50:53] stage B: pandapush_lossft_armBprime_seed42 already complete
+[2026-09-14T10:51:14] denominator gate: DENOMINATOR-NOT-NEGLIGIBLE | {"ALL_PASS": false, "R_output<0.05": false, "R_param<0.05": false, "R_t0<0.05": false, "no_clipping": true}
+[2026-09-14T10:51:14] denominator NON-NEGLIGIBLE -> running the four-seed B' branch FIRST
+[2026-09-14T11:32:12] [gpu_lease] clean streak broken at 3 (foreign 4384 MiB)
+[2026-09-14T11:52:31] [gpu_lease] clean streak broken at 1 (foreign 4384 MiB)
+[2026-09-14T16:14:38] [gpu_lease] GPU stable-clean for 180s
+[2026-09-14T16:14:38] [gpu_lease] lease acquired (stage stageB':train:seed42, pid 1534626); launching
+[2026-09-14T16:22:38] [gpu_lease] lease released (stage stageB':train:seed42)
+[2026-09-14T16:22:38] stage B' seed42 training rc=0
+[2026-09-14T16:24:44] [gpu_lease] clean streak broken at 7 (foreign 6544 MiB)
+[2026-09-14T16:56:44] [finish_stage_c] START (old allocation close-out). foreign GPU MiB: 9371
+[2026-09-14T17:06:03] [finish_stage_c] [gpu_lease] clean streak broken at 1 (foreign 4512 MiB)
+[2026-09-14T17:44:25] [finish_stage_c] [gpu_lease] clean streak broken at 1 (foreign 4384 MiB)
+[2026-09-14T17:59:37] [finish_stage_c] START (old allocation close-out). foreign GPU MiB: 9371
+[2026-09-14T17:59:37] [finish_stage_c] OLD ledger at start: 3.1356 of 3.60
+[2026-09-14T19:44:04] [finish_stage_c] [gpu_lease] clean streak broken at 1 (foreign 4384 MiB)
+[2026-09-14T22:30:37] [finish_stage_c] [gpu_lease] clean streak broken at 1 (foreign 4384 MiB)
+[2026-09-15T01:13:28] [finish_stage_c] [gpu_lease] clean streak broken at 2 (foreign 3382 MiB)
+[2026-09-15T01:36:12] [finish_stage_c] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T01:36:12] [finish_stage_c] [gpu_lease] lease acquired (stage stageC-close:lossft_rep2_B45, pid 1646089); launching
+[2026-09-15T01:49:40] [finish_stage_c] [gpu_lease] lease released (stage stageC-close:lossft_rep2_B45)
+[2026-09-15T01:49:40] [finish_stage_c] lossft_rep2_B45 attempt 1 rc=0 valid=True
+[2026-09-15T01:49:40] [finish_stage_c] lossft_rep2_B45 complete and VALID
+[2026-09-15T01:52:23] [finish_stage_c] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T01:52:23] [finish_stage_c] [gpu_lease] lease acquired (stage stageC-close:lossft_rep2_A45, pid 1646089); launching
+[2026-09-15T02:06:04] [finish_stage_c] [gpu_lease] lease released (stage stageC-close:lossft_rep2_A45)
+[2026-09-15T02:06:04] [finish_stage_c] lossft_rep2_A45 attempt 1 rc=0 valid=True
+[2026-09-15T02:06:04] [finish_stage_c] lossft_rep2_A45 complete and VALID
+[2026-09-15T02:06:04] [finish_stage_c] STAGE C COMPLETE -- old allocation closed

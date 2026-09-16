@@ -1,0 +1,49 @@
+{
+  "gate": {
+    "ALL_PASS": false,
+    "R_output<0.05": false,
+    "R_param<0.05": false,
+    "R_t0<0.05": false,
+    "no_clipping": true
+  },
+  "notes": [],
+  "steps": {
+    "10": {
+      "abs_param_diff_Bprime_vs_B": 5.175481123507442e-06,
+      "abs_param_diff_Bprime_vs_B_ema": 0.0,
+      "param_norm_B": 366.3704557506269,
+      "rel_rms_Bprime_vs_B": 1.4126360470043405e-08,
+      "step": 10
+    },
+    "100": {
+      "abs_param_diff_Bprime_vs_B": 0.004998370716713249,
+      "abs_param_diff_Bprime_vs_B_ema": 3.3441507197171226e-05,
+      "param_norm_B": 366.3700752188699,
+      "rel_rms_Bprime_vs_B": 1.3642955729195995e-05,
+      "step": 100
+    },
+    "250": {
+      "abs_param_diff_Bprime_vs_B": 0.03800812919516315,
+      "abs_param_diff_Bprime_vs_B_ema": 0.0013647454332273376,
+      "param_norm_B": 366.3701221314848,
+      "rel_rms_Bprime_vs_B": 0.00010374243667588866,
+      "step": 250
+    },
+    "500": {
+      "R_output": 0.8333023744112519,
+      "R_param": 0.917357726000309,
+      "R_t0": 0.7403471073330852,
+      "abs_output_diff_B_vs_A": 0.265943796451447,
+      "abs_output_diff_Bprime_vs_B": 0.22161159704293346,
+      "abs_param_diff_B_vs_A": 0.09955885771647892,
+      "abs_param_diff_Bprime_vs_B": 0.09133108731797741,
+      "abs_param_diff_Bprime_vs_B_ema": 0.007399917112358241,
+      "abs_t0_diff_B_vs_A": 0.0357904044650918,
+      "abs_t0_diff_Bprime_vs_B": 0.026497322416011854,
+      "param_norm_B": 366.37225913839814,
+      "rel_rms_Bprime_vs_B": 0.00024928494185875804,
+      "step": 500
+    }
+  },
+  "verdict": "DENOMINATOR-NOT-NEGLIGIBLE"
+}

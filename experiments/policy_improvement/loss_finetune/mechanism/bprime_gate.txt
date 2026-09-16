@@ -1,0 +1,24 @@
+[ utils/colab ] Warning: not importing colab dependencies
+[ utils/setup ] Reading config: config.pandapush_lossft_armB_seed42:3C_dlp_randcolor
+[ utils/setup ] Found extras: ['--device', 'cpu']
+[ utils/setup ] Overriding config | device : cuda:0 --> cpu
+[ utils/setup ] Setting seed: 42
+[ utils/setup ] Setting exp_name to: lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42
+[ utils/setup ] Saved args to data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42/args.json
+[ utils/config ] Imported diffuser.models:AdaLNPINTDenoiser
+[ utils/config ] Imported diffuser.models:ConditionalFlowMatching
+particle transformer # parameters: 57480704
+step   10: |B'-B|=5.1755e-06  |B-A|=nan  R_param=n/a  R_output=n/a  R_t0=n/a
+step  100: |B'-B|=4.9984e-03  |B-A|=nan  R_param=n/a  R_output=n/a  R_t0=n/a
+step  250: |B'-B|=3.8008e-02  |B-A|=nan  R_param=n/a  R_output=n/a  R_t0=n/a
+step  500: |B'-B|=9.1331e-02  |B-A|=9.9559e-02  R_param=0.9174  R_output=0.8333  R_t0=0.7403
+
+PREDECLARED GATE AT STEP 500:
+  R_param<0.05       False
+  R_output<0.05      False
+  R_t0<0.05          False
+  no_clipping        True
+  ALL_PASS           False
+
+  VERDICT: DENOMINATOR-NOT-NEGLIGIBLE
+written experiments/policy_improvement/loss_finetune/mechanism/BPRIME_PROBE_DIVERGENCE.json

@@ -1,0 +1,3 @@
+[2026-09-13T19:07:16-04:00] STAGE B probe start, commit 53746bc
+[2026-09-13T19:59:36-04:00] clean streak broken at 1 (foreign 3382 MiB)
+[2026-09-13T21:10:15-04:00] clean streak broken at 2 (foreign 10154 MiB)

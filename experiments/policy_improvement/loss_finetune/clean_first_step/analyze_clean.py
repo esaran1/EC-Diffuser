@@ -171,7 +171,7 @@ def main():
 
     out = "experiments/policy_improvement/loss_finetune/clean_first_step/CLEAN_RESULTS.json"
     with open(out, "w") as fh:
-        json.dump(rows, fh, indent=2, sort_keys=True, default=str)
+        json.dump({str(k): v for k, v in rows.items()}, fh, indent=2, sort_keys=True, default=str)
     print("\nwritten", out)
 
 

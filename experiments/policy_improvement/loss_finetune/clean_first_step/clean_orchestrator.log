@@ -1,0 +1,94 @@
+[2026-09-15T02:06:21-04:00] old allocation closed: Stage C COMPLETE -> starting CLEAN program
+[2026-09-15T02:06:21] === CLEAN-FIRST-STEP PROGRAM START (cap 2.90 GPU-h) commit 1d84ecd ===
+[2026-09-15T02:06:21] already spent in THIS program: 0.0000 GPU-h
+[2026-09-15T02:06:21] foreign GPU MiB at start: 0
+[2026-09-15T02:09:04] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T02:09:04] [gpu_lease] lease acquired (stage clean:train:A42, pid 1653219); launching
+[2026-09-15T02:09:23] [gpu_lease] lease released (stage clean:train:A42)
+[2026-09-15T02:09:36] === CLEAN-FIRST-STEP PROGRAM START (cap 2.90 GPU-h) commit 1d84ecd ===
+[2026-09-15T02:09:36] already spent in THIS program: 0.0053 GPU-h
+[2026-09-15T02:09:36] foreign GPU MiB at start: 7294
+[2026-09-15T02:11:00] === CLEAN-FIRST-STEP PROGRAM START (cap 2.90 GPU-h) commit 1d84ecd ===
+[2026-09-15T02:11:00] already spent in THIS program: 0.0053 GPU-h
+[2026-09-15T02:11:00] foreign GPU MiB at start: 0
+[2026-09-15T02:13:42] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T02:13:42] [gpu_lease] lease acquired (stage clean:train:A42, pid 1786415); launching
+[2026-09-15T02:21:43] [gpu_lease] lease released (stage clean:train:A42)
+[2026-09-15T02:21:43] clean A42 training rc=0
+[2026-09-15T02:21:43] clean A42: cleared 269 grads (norm 6.689201e-01); residual now 0
+[2026-09-15T02:24:25] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T02:24:25] [gpu_lease] lease acquired (stage clean:eval:A42, pid 1786415); launching
+[2026-09-15T02:37:58] [gpu_lease] lease released (stage clean:eval:A42)
+[2026-09-15T02:37:58] clean lossft_clean_A42 attempt 1 rc=0 valid=True
+[2026-09-15T02:37:58] clean lossft_clean_A42 evaluation complete and VALID
+[2026-09-15T02:40:40] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T02:40:40] [gpu_lease] lease acquired (stage clean:train:B42, pid 1786415); launching
+[2026-09-15T02:48:40] [gpu_lease] lease released (stage clean:train:B42)
+[2026-09-15T02:48:40] clean B42 training rc=0
+[2026-09-15T02:48:40] clean B42: cleared 269 grads (norm 6.696065e-01); residual now 0
+[2026-09-15T02:51:23] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T02:51:23] [gpu_lease] lease acquired (stage clean:eval:B42, pid 1786415); launching
+[2026-09-15T03:04:44] [gpu_lease] lease released (stage clean:eval:B42)
+[2026-09-15T03:04:44] clean lossft_clean_B42 attempt 1 rc=0 valid=True
+[2026-09-15T03:04:44] clean lossft_clean_B42 evaluation complete and VALID
+[2026-09-15T03:07:26] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T03:07:26] [gpu_lease] lease acquired (stage clean:train:B43, pid 1786415); launching
+[2026-09-15T03:15:27] [gpu_lease] lease released (stage clean:train:B43)
+[2026-09-15T03:15:27] clean B43 training rc=0
+[2026-09-15T03:15:27] clean B43: cleared 269 grads (norm 5.945228e-01); residual now 0
+[2026-09-15T03:18:09] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T03:18:09] [gpu_lease] lease acquired (stage clean:eval:B43, pid 1786415); launching
+[2026-09-15T03:31:47] [gpu_lease] lease released (stage clean:eval:B43)
+[2026-09-15T03:31:47] clean lossft_clean_B43 attempt 1 rc=0 valid=True
+[2026-09-15T03:31:47] clean lossft_clean_B43 evaluation complete and VALID
+[2026-09-15T03:34:30] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T03:34:30] [gpu_lease] lease acquired (stage clean:train:A43, pid 1786415); launching
+[2026-09-15T03:42:30] [gpu_lease] lease released (stage clean:train:A43)
+[2026-09-15T03:42:30] clean A43 training rc=0
+[2026-09-15T03:42:30] clean A43: cleared 269 grads (norm 5.934755e-01); residual now 0
+[2026-09-15T03:45:12] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T03:45:12] [gpu_lease] lease acquired (stage clean:eval:A43, pid 1786415); launching
+[2026-09-15T03:58:34] [gpu_lease] lease released (stage clean:eval:A43)
+[2026-09-15T03:58:34] clean lossft_clean_A43 attempt 1 rc=0 valid=True
+[2026-09-15T03:58:34] clean lossft_clean_A43 evaluation complete and VALID
+[2026-09-15T04:01:17] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T04:01:17] [gpu_lease] lease acquired (stage clean:train:A44, pid 1786415); launching
+[2026-09-15T04:09:16] [gpu_lease] lease released (stage clean:train:A44)
+[2026-09-15T04:09:16] clean A44 training rc=0
+[2026-09-15T04:09:16] clean A44: cleared 269 grads (norm 6.178866e-01); residual now 0
+[2026-09-15T04:11:59] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T04:11:59] [gpu_lease] lease acquired (stage clean:eval:A44, pid 1786415); launching
+[2026-09-15T04:25:20] [gpu_lease] lease released (stage clean:eval:A44)
+[2026-09-15T04:25:20] clean lossft_clean_A44 attempt 1 rc=0 valid=True
+[2026-09-15T04:25:20] clean lossft_clean_A44 evaluation complete and VALID
+[2026-09-15T04:28:03] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T04:28:03] [gpu_lease] lease acquired (stage clean:train:B44, pid 1786415); launching
+[2026-09-15T04:36:02] [gpu_lease] lease released (stage clean:train:B44)
+[2026-09-15T04:36:02] clean B44 training rc=0
+[2026-09-15T04:36:02] clean B44: cleared 269 grads (norm 6.195235e-01); residual now 0
+[2026-09-15T04:38:45] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T04:38:45] [gpu_lease] lease acquired (stage clean:eval:B44, pid 1786415); launching
+[2026-09-15T04:52:17] [gpu_lease] lease released (stage clean:eval:B44)
+[2026-09-15T04:52:17] clean lossft_clean_B44 attempt 1 rc=0 valid=True
+[2026-09-15T04:52:17] clean lossft_clean_B44 evaluation complete and VALID
+[2026-09-15T04:55:00] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T04:55:00] [gpu_lease] lease acquired (stage clean:train:B45, pid 1786415); launching
+[2026-09-15T05:03:00] [gpu_lease] lease released (stage clean:train:B45)
+[2026-09-15T05:03:00] clean B45 training rc=0
+[2026-09-15T05:03:00] clean B45: cleared 269 grads (norm 5.370323e-01); residual now 0
+[2026-09-15T05:05:43] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T05:05:43] [gpu_lease] lease acquired (stage clean:eval:B45, pid 1786415); launching
+[2026-09-15T05:19:05] [gpu_lease] lease released (stage clean:eval:B45)
+[2026-09-15T05:19:05] clean lossft_clean_B45 attempt 1 rc=0 valid=True
+[2026-09-15T05:19:05] clean lossft_clean_B45 evaluation complete and VALID
+[2026-09-15T05:21:47] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T05:21:48] [gpu_lease] lease acquired (stage clean:train:A45, pid 1786415); launching
+[2026-09-15T05:29:47] [gpu_lease] lease released (stage clean:train:A45)
+[2026-09-15T05:29:47] clean A45 training rc=0
+[2026-09-15T05:29:47] clean A45: cleared 269 grads (norm 5.379699e-01); residual now 0
+[2026-09-15T05:32:29] [gpu_lease] GPU stable-clean for 180s
+[2026-09-15T05:32:30] [gpu_lease] lease acquired (stage clean:eval:A45, pid 1786415); launching
+[2026-09-15T05:45:56] [gpu_lease] lease released (stage clean:eval:A45)
+[2026-09-15T05:45:56] clean lossft_clean_A45 attempt 1 rc=0 valid=True
+[2026-09-15T05:45:56] clean lossft_clean_A45 evaluation complete and VALID
+[2026-09-15T05:45:56] === CLEAN PROGRAM COMPLETE: 2.8647 GPU-h of 2.90 ===

@@ -103,11 +103,12 @@ def fig4():
     ax.set_yscale("log")
     ax.set_xlabel("optimizer step")
     ax.set_ylabel("L2 parameter distance\n(trainable params, buffers excluded)")
-    ax.set_title("Fig 4. Denominator-only vs masking divergence", fontsize=10)
+    ax.set_title("APPENDIX (VOID PROBE -- not a scientific result)\n"
+                 "Denominator-only vs masking divergence", fontsize=9, color="0.3")
     ax.grid(alpha=0.3, which="both")
     ax.legend(fontsize=7)
     fig.tight_layout()
-    fig.savefig(os.path.join(FIG, "fig4_bprime_divergence.png"), dpi=180)
+    fig.savefig(os.path.join(FIG, "APPENDIX_VOID_probe_divergence.png"), dpi=180)
     plt.close(fig)
     print("fig4 written")
 
@@ -242,3 +243,80 @@ if __name__ == "__main__":
 
     fig1(); fig2(avg); fig3(per_set); fig4(); fig5(); fig6(); fig7()
     print("figures in", FIG)
+
+
+# ---------------------------------------------------------------- clean ----
+CLEAN = {42: {"A": 0.8146, "B": 0.7917}, 43: {"A": 0.7958, "B": 0.8042},
+         44: {"A": 0.7562, "B": 0.8042}, 45: {"A": 0.7604, "B": 0.7854}}
+LEG_R2 = {42: 0.0042, 43: -0.0062, 44: 0.0167, 45: 0.0010}
+LEG_ORIG = {42: 0.0292, 43: 0.0000, 44: 0.0396, 45: 0.0208}
+BPRIME = {42: (0.7750, 0.8042, 0.7937), 43: (0.7729, 0.7729, 0.7896),
+          44: (0.7500, 0.7896, 0.7792), 45: (0.7833, 0.8042, 0.7917)}
+
+
+def fig_clean():
+    fig, ax = plt.subplots(figsize=(4.2, 4.0))
+    _paired_panel(ax, CLEAN, "Fig 4. Paired A vs B, CLEAN first-step protocol",
+                  "4 paired seeds; random-init sanity gradient cleared before\n"
+                  "step 1. 1 simulator realization each. Axis not truncated.")
+    fig.tight_layout()
+    fig.savefig(os.path.join(FIG, "fig4_clean_paired.png"), dpi=180)
+    plt.close(fig)
+    print("fig4_clean written")
+
+
+def fig_legacy_vs_clean():
+    fig, ax = plt.subplots(figsize=(6.4, 3.8))
+    x = np.arange(len(SEEDS))
+    w = 0.26
+    o = [100 * LEG_ORIG[s] for s in SEEDS]
+    r = [100 * LEG_R2[s] for s in SEEDS]
+    c = [100 * (CLEAN[s]["B"] - CLEAN[s]["A"]) for s in SEEDS]
+    ax.bar(x - w, o, w, label="legacy, 1 realization")
+    ax.bar(x, r, w, label="legacy, physics-averaged R=2")
+    ax.bar(x + w, c, w, label="CLEAN first-step, 1 realization")
+    ax.axhline(0, color="k", lw=0.9)
+    ax.axhspan(-1.87, 1.87, color="0.85", zorder=0)
+    ax.set_ylim(-3.2, 6.3)
+    ax.text(-0.45, -2.95, "grey band = same-policy evaluator spread "
+            "(descriptive, not a significance threshold)",
+            fontsize=6.5, color="0.35", va="bottom", ha="left")
+    ax.set_xticks(x)
+    ax.set_xticklabels(["seed {}".format(s) for s in SEEDS])
+    ax.set_ylabel("B − A macro success (pp)")
+    ax.set_title("Fig 5. Treatment effect by protocol and evaluation round\n"
+                 "(5 sets x n=96 per macro)", fontsize=10)
+    ax.grid(alpha=0.3, axis="y")
+    ax.legend(fontsize=7)
+    fig.tight_layout()
+    fig.savefig(os.path.join(FIG, "fig5_legacy_vs_clean.png"), dpi=180)
+    plt.close(fig)
+    print("fig5_legacy_vs_clean written")
+
+
+def fig_bprime():
+    fig, ax = plt.subplots(figsize=(5.4, 3.6))
+    x = np.arange(len(SEEDS))
+    w = 0.26
+    for i, (lab, idx) in enumerate((("A (supervised)", 0), ("B (masked)", 1),
+                                    ("B' (masked, A denominator)", 2))):
+        ax.bar(x + (i - 1) * w, [BPRIME[s][idx] for s in SEEDS], w, label=lab)
+    ax.set_xticks(x)
+    ax.set_xticklabels(["seed {}".format(s) for s in SEEDS])
+    ax.set_ylim(0.70, 0.83)
+    ax.set_ylabel("macro success rate")
+    ax.set_title("Fig 3. Denominator control (legacy protocol)\n"
+                 "5 sets x n=96 each. NOTE: y-axis truncated at 0.70.",
+                 fontsize=9)
+    ax.grid(alpha=0.3, axis="y")
+    ax.legend(fontsize=7)
+    fig.tight_layout()
+    fig.savefig(os.path.join(FIG, "fig3_bprime_denominator.png"), dpi=180)
+    plt.close(fig)
+    print("fig3_bprime written")
+
+
+if __name__ == "__main__":
+    fig_clean()
+    fig_legacy_vs_clean()
+    fig_bprime()
