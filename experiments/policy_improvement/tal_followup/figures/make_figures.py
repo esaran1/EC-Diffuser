@@ -162,8 +162,78 @@ def fig_training():
     print("wrote", os.path.basename(p))
 
 
+def fig_adaptation():
+    """FIGURE 4: adaptation over training -- the late-adaptation finding."""
+    steps, ratios, corrs = [], [], []
+    for tag, st in (("field_uwm_500.json", 500), ("field_uwm_1000.json", 1000),
+                    ("field_uwm_2000.json", 2000), ("field_uwm.json", 5000)):
+        d = load(os.path.join(UWM, tag))
+        if not d:
+            continue
+        grid, c = d["grid"], d["cells"]
+        M = np.array([[c["{:.2f}_{:.2f}".format(a, b)]["a_err"] for b in grid]
+                      for a in grid])
+        dia = np.array([c["{:.2f}_{:.2f}".format(t, t)]["a_err"] for t in grid])
+        off = M[~np.eye(len(grid), dtype=bool)]
+        dd, vv = [], []
+        for a in grid:
+            for b in grid:
+                if a == b:
+                    continue
+                dd.append(abs(a - b))
+                vv.append(c["{:.2f}_{:.2f}".format(a, b)]["a_err"])
+        steps.append(st)
+        ratios.append(off.mean() / dia.mean())
+        corrs.append(float(np.corrcoef(dd, vv)[0, 1]))
+    if len(steps) < 2:
+        print("fig4 skipped (need intermediate field json)")
+        return
+    dc = load(os.path.join(UWM, "field_ctl.json"))
+    ctl_ratio = ctl_corr = None
+    if dc:
+        grid, c = dc["grid"], dc["cells"]
+        M = np.array([[c["{:.2f}_{:.2f}".format(a, b)]["a_err"] for b in grid]
+                      for a in grid])
+        dia = np.array([c["{:.2f}_{:.2f}".format(t, t)]["a_err"] for t in grid])
+        ctl_ratio = M[~np.eye(len(grid), dtype=bool)].mean() / dia.mean()
+        dd, vv = [], []
+        for a in grid:
+            for b in grid:
+                if a == b:
+                    continue
+                dd.append(abs(a - b))
+                vv.append(c["{:.2f}_{:.2f}".format(a, b)]["a_err"])
+        ctl_corr = float(np.corrcoef(dd, vv)[0, 1])
+
+    fig, axes = plt.subplots(1, 2, figsize=(10.4, 4.2))
+    for ax, ys, ctl, lab in ((axes[0], ratios, ctl_ratio, "off-diagonal / diagonal error"),
+                             (axes[1], corrs, ctl_corr, "corr(|t_s - t_a|, error)")):
+        ax.plot(steps, ys, "-o", color=C1, lw=2, ms=7, label="UWM (p_diag=0)")
+        if ctl is not None:
+            ax.axhline(ctl, color=C2, ls="--", lw=1.8,
+                       label="control (never saw off-diagonal)")
+        ax.set_xlabel("training step")
+        ax.set_ylabel(lab)
+        ax.grid(alpha=0.25)
+        despine(ax)
+        ax.legend(fontsize=9, frameon=False)
+    axes[1].annotate("indistinguishable from\nthe control through 2000",
+                     xy=(2000, corrs[2] if len(corrs) > 2 else corrs[-1]),
+                     xytext=(2300, 0.55), fontsize=9, color=MUTED,
+                     arrowprops=dict(arrowstyle="-", color=MUTED, lw=1))
+    fig.suptitle("Fig 4. Adaptation to off-diagonal times happens LATE\n"
+                 "stopping at 2000 steps would have concluded it does not work",
+                 fontsize=12, y=1.05)
+    fig.tight_layout()
+    p2 = os.path.join(HERE, "fig4_adaptation.png")
+    fig.savefig(p2, dpi=190, bbox_inches="tight")
+    plt.close(fig)
+    print("wrote", os.path.basename(p2))
+
+
 if __name__ == "__main__":
     fig_training()
+    fig_adaptation()
     fig_paths()
     fig_field_heatmaps()
     print("figures in", HERE)
