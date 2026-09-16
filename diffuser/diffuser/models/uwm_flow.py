@@ -128,3 +128,100 @@ class UWMConditionalFlowMatching(ConditionalFlowMatching):
                                 "t_s": t_s, "t_a": t_a, "target": target,
                                 "prediction": prediction, "mask": mask}
         return loss, info
+
+    # ------------------------------------------------ path-aware sampling
+    # The inherited conditional_sample integrates a SINGLE scalar time, which
+    # corresponds exactly to the diagonal path P0. That is correct for the
+    # matched control and for diagonal evaluation of the UWM arm, but a
+    # non-diagonal path needs the chain-rule-correct update (section 25).
+    #
+    # `inference_path` selects the schedule. It defaults to None, which keeps
+    # the inherited (diagonal) behaviour byte-for-byte, so nothing changes
+    # unless a path is explicitly requested.
+    inference_path = None
+
+    def set_inference_path(self, path):
+        """Select a registered path name, or None for the inherited diagonal."""
+        self.inference_path = path
+        return self
+
+    @torch.no_grad()
+    def conditional_sample(self, cond, horizon=None, sort_by_value=True,
+                           return_attention=False, n_steps=None,
+                           return_chain=False, return_diffusion=None,
+                           verbose=True, **sample_kwargs):
+        path = getattr(self, "inference_path", None)
+        if path is None or path == "P0_diagonal":
+            # exact inherited behaviour; P0 is analytically the same update
+            return super().conditional_sample(
+                cond, horizon=horizon, sort_by_value=sort_by_value,
+                return_attention=return_attention, n_steps=n_steps,
+                return_chain=return_chain, return_diffusion=return_diffusion,
+                verbose=verbose, **sample_kwargs)
+
+        from .diffusion import Sample
+        if return_attention:
+            raise ValueError("UWMConditionalFlowMatching does not return attention maps")
+        active_horizon = self.horizon if horizon is None else horizon
+        first_value = next(iter(cond.values()))
+        batch_size = first_value.shape[0]
+        device, dtype = first_value.device, first_value.dtype
+        self._validate_conditioning(cond, batch_size, active_horizon, device,
+                                    dtype, True)
+        steps = self._resolve_solver_steps(n_steps)
+        ad = self.action_dim
+
+        x = torch.randn((batch_size, active_horizon, self.transition_dim),
+                        device=device, dtype=dtype)
+        self._apply_conditioning(x, cond)
+        mask = self._make_conditioning_mask(x, cond).to(dtype)
+        chain = [x.clone()] if return_chain else None
+
+        pts = _schedule_points(path, steps)
+        for k in range(steps):
+            ts0, ta0 = pts[k]
+            ts1, ta1 = pts[k + 1]
+            t_s = x.new_full((batch_size,), ts0)
+            t_a = x.new_full((batch_size,), ta0)
+            v = self._call_two_time_model(x, cond, t_s, t_a) * mask
+            # chain rule: each block advances by ITS OWN time increment
+            x[..., :ad] = x[..., :ad] + (ta1 - ta0) * v[..., :ad]
+            x[..., ad:] = x[..., ad:] + (ts1 - ts0) * v[..., ad:]
+            self._apply_conditioning(x, cond)
+            if return_chain:
+                chain.append(x.clone())
+
+        values = x.new_zeros(batch_size)
+        chain_tensor = torch.stack(chain, dim=1) if return_chain else None
+        return Sample(x, values, chain_tensor)
+
+
+# --- registered inference paths (mirrors tal_followup/uwm/two_time_sampler.py) ---
+def _p0(u):
+    return u, u
+
+
+def _p1(u):
+    return 1.0 - (1.0 - u) ** 2, u ** 2
+
+
+def _p2(u):
+    return u ** 2, 1.0 - (1.0 - u) ** 2
+
+
+def _p3(u):
+    return min(2.0 * u, 1.0), max(2.0 * u - 1.0, 0.0)
+
+
+def _p4(u):
+    return max(2.0 * u - 1.0, 0.0), min(2.0 * u, 1.0)
+
+
+INFERENCE_PATHS = {"P0_diagonal": _p0, "P1_state_leads": _p1,
+                   "P2_action_leads": _p2, "P3_state_first": _p3,
+                   "P4_action_first": _p4}
+
+
+def _schedule_points(path, steps):
+    f = INFERENCE_PATHS[path] if isinstance(path, str) else path
+    return [f(k / float(steps)) for k in range(steps + 1)]
