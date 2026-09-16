@@ -1,0 +1,20 @@
+{
+  "arms": {
+    "ctl": {
+      "config": "config.pandapush_uwm_ctl_seed42",
+      "dir": "data/panda_push/uwm_ctl/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "final_sha256": "6bb31652c5323f7769d739430884bdb7239ce963ec8049bd568b8f570b5cd02f",
+      "p_diag": 1.0
+    },
+    "uwm": {
+      "config": "config.pandapush_uwm_uwm_seed42",
+      "dir": "data/panda_push/uwm_uwm/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "final_sha256": "a4f24d23c5350c4b01fb7ee475e0307aa890adc129e37ee86f915f8e6856f64a",
+      "p_diag": 0.0
+    }
+  },
+  "canonical_sha256": "861dc34434474455a25dc3a15ea4e1754066202df538364cf41114b42f4fcc3b",
+  "code_commit": "d8cdbc62150254a9aa84df4ba4f4026e2665c373",
+  "generated": "2026-09-16T18:42:28",
+  "gpu_h_spent": 0.6516666666666666
+}
