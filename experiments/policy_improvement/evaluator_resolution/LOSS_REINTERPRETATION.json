@@ -1,0 +1,57 @@
+{
+  "RC_pp": 4.300766512215304,
+  "caveat": "Descriptive re-expression only. Does not revive any loss result and imposes no retroactive significance test.",
+  "conservative_s_w_pp": 1.5515822270854378,
+  "effects": [
+    {
+      "R_needed_power80": 8,
+      "effect": "terminal mask, legacy, R=1, 4-seed mean",
+      "note": "original headline; later shown substantially single-realization",
+      "ratio_to_se_r1": 1.020841282020336,
+      "size_pp": 2.24
+    },
+    {
+      "R_needed_power80": 249,
+      "effect": "terminal mask, legacy, R=2 physics-averaged",
+      "note": "same policies, one extra realization averaged in",
+      "ratio_to_se_r1": 0.1777357589231835,
+      "size_pp": 0.39
+    },
+    {
+      "R_needed_power80": 18,
+      "effect": "terminal mask, clean first-step, 4-seed mean",
+      "note": "corrected trainer; SD 2.98 pp across seeds, one seed reversed",
+      "ratio_to_se_r1": 0.6653697641739689,
+      "size_pp": 1.46
+    },
+    {
+      "R_needed_power80": 12,
+      "effect": "denominator control B'-A, legacy",
+      "note": "masked numerator with A's denominator",
+      "ratio_to_se_r1": 0.8294335416415229,
+      "size_pp": 1.82
+    },
+    {
+      "R_needed_power80": 215,
+      "effect": "B' - B, legacy",
+      "note": "denominator-only contrast",
+      "ratio_to_se_r1": 0.19140774037881297,
+      "size_pp": -0.42
+    },
+    {
+      "R_needed_power80": 11,
+      "effect": "lambda_action=2 vs masked lambda=1 (C-B)",
+      "note": "action weighting",
+      "ratio_to_se_r1": 0.8567775045527819,
+      "size_pp": -1.88
+    },
+    {
+      "R_needed_power80": 14,
+      "effect": "lambda_action=5 vs masked lambda=1 (D-B)",
+      "note": "action weighting",
+      "ratio_to_se_r1": 0.7610736343633754,
+      "size_pp": -1.67
+    }
+  ],
+  "se_r1_pp": 2.194268628681278
+}

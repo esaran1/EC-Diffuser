@@ -4,3 +4,50 @@
 [2026-09-16T11:41:16] foreign GPU MiB at start: 0
 [2026-09-16T11:43:59] [gpu_lease] GPU stable-clean for 180s
 [2026-09-16T11:43:59] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R1, pid 2309661); launching
+[2026-09-16T11:57:31] [gpu_lease] lease released (stage evalres:evalres_canonical_R1)
+[2026-09-16T11:57:31] evalres_canonical_R1 attempt 1 rc=0 valid=True
+[2026-09-16T12:00:14] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T12:00:14] [gpu_lease] lease acquired (stage evalres:evalres_cleanA42_R1, pid 2309661); launching
+[2026-09-16T12:13:34] [gpu_lease] lease released (stage evalres:evalres_cleanA42_R1)
+[2026-09-16T12:13:34] evalres_cleanA42_R1 attempt 1 rc=0 valid=True
+[2026-09-16T12:16:16] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T12:16:16] [gpu_lease] lease acquired (stage evalres:evalres_cleanA42_R2, pid 2309661); launching
+[2026-09-16T12:29:41] [gpu_lease] lease released (stage evalres:evalres_cleanA42_R2)
+[2026-09-16T12:29:41] evalres_cleanA42_R2 attempt 1 rc=0 valid=True
+[2026-09-16T12:32:24] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T12:32:24] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R2, pid 2309661); launching
+[2026-09-16T12:45:29] [gpu_lease] lease released (stage evalres:evalres_canonical_R2)
+[2026-09-16T12:45:29] evalres_canonical_R2 attempt 1 rc=0 valid=True
+[2026-09-16T12:48:12] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T12:48:12] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R3, pid 2309661); launching
+[2026-09-16T13:01:06] [gpu_lease] lease released (stage evalres:evalres_canonical_R3)
+[2026-09-16T13:01:06] evalres_canonical_R3 attempt 1 rc=0 valid=True
+[2026-09-16T13:03:49] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T13:03:49] [gpu_lease] lease acquired (stage evalres:evalres_cleanA42_R3, pid 2309661); launching
+[2026-09-16T13:17:04] [gpu_lease] lease released (stage evalres:evalres_cleanA42_R3)
+[2026-09-16T13:17:04] evalres_cleanA42_R3 attempt 1 rc=0 valid=True
+[2026-09-16T13:19:47] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T13:19:47] [gpu_lease] lease acquired (stage evalres:evalres_cleanA42_R4, pid 2309661); launching
+[2026-09-16T13:33:08] [gpu_lease] lease released (stage evalres:evalres_cleanA42_R4)
+[2026-09-16T13:33:08] evalres_cleanA42_R4 attempt 1 rc=0 valid=True
+[2026-09-16T13:35:50] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T13:35:50] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R4, pid 2309661); launching
+[2026-09-16T13:49:00] [gpu_lease] lease released (stage evalres:evalres_canonical_R4)
+[2026-09-16T13:49:00] evalres_canonical_R4 attempt 1 rc=0 valid=True
+[2026-09-16T13:51:43] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T13:51:43] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R5, pid 2309661); launching
+[2026-09-16T14:04:58] [gpu_lease] lease released (stage evalres:evalres_canonical_R5)
+[2026-09-16T14:04:58] evalres_canonical_R5 attempt 1 rc=0 valid=True
+[2026-09-16T14:07:41] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T14:07:41] [gpu_lease] lease acquired (stage evalres:evalres_cleanA42_R5, pid 2309661); launching
+[2026-09-16T14:21:06] [gpu_lease] lease released (stage evalres:evalres_cleanA42_R5)
+[2026-09-16T14:21:06] evalres_cleanA42_R5 attempt 1 rc=0 valid=True
+[2026-09-16T14:23:49] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T14:23:49] [gpu_lease] lease acquired (stage evalres:evalres_cleanA42_R6, pid 2309661); launching
+[2026-09-16T14:37:04] [gpu_lease] lease released (stage evalres:evalres_cleanA42_R6)
+[2026-09-16T14:37:04] evalres_cleanA42_R6 attempt 1 rc=0 valid=True
+[2026-09-16T14:39:46] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T14:39:47] [gpu_lease] lease acquired (stage evalres:evalres_canonical_R6, pid 2309661); launching
+[2026-09-16T14:53:06] [gpu_lease] lease released (stage evalres:evalres_canonical_R6)
+[2026-09-16T14:53:06] evalres_canonical_R6 attempt 1 rc=0 valid=True
+[2026-09-16T14:53:06] === ANCHOR STUDY COMPLETE: 2.6544 GPU-h of 3.00 ===
