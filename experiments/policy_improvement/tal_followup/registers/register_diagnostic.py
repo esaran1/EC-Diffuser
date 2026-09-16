@@ -35,38 +35,44 @@ sys.path.insert(0, ".")
 T_GRID = [0.0, 0.25, 0.5, 0.75, 1.0]
 
 
-def dip_like_bimodality(x, bins=60):
-    """Cheap bimodality evidence: largest interior valley of the histogram.
+def bimodality(x, bins=60, min_secondary_frac=0.01):
+    """Evidence for a SUBSTANTIAL secondary high-norm mode.
 
-    Returns (score, detail). score ~ 0 means unimodal. The paper's threshold was
-    read off a VISIBLE valley, so we report the valley depth relative to the
-    smaller surrounding peak rather than applying a percentile.
+    Darcet et al.'s signature is ~2% of tokens at ~10x the main-mode norm,
+    read off a VISIBLE valley. An earlier version of this function scored any
+    nonzero far bin as a second peak, which in a long right tail always yields
+    depth 1.0 -- a sparse-tail artifact, not bimodality. It is fixed here to
+    require the secondary mode to hold at least `min_secondary_frac` of the
+    mass before it counts at all.
+
+    Returns (depth, detail). depth == 0 means no qualifying secondary mode.
     """
     h, edges = np.histogram(x, bins=bins)
-    if h.sum() == 0:
+    total = h.sum()
+    if total == 0:
         return 0.0, {}
-    # find the global peak, then the best secondary peak separated by a valley
     i_max = int(np.argmax(h))
+    floor = max(1, int(min_secondary_frac * total))
     best = (0.0, None, None)
     for j in range(len(h)):
-        if abs(j - i_max) < 3:
-            continue
+        if abs(j - i_max) < 3 or h[j] < floor:
+            continue                      # secondary mode must be substantial
         lo, hi = sorted((i_max, j))
         valley = h[lo:hi + 1].min()
         peak2 = h[j]
-        if peak2 <= 0:
-            continue
         depth = (min(h[i_max], peak2) - valley) / float(min(h[i_max], peak2))
         if depth > best[0]:
             best = (depth, j, valley)
     depth, j, valley = best
     return float(depth), {
-        "peak1_bin": i_max, "peak2_bin": j,
+        "peak1_bin": i_max, "peak1_count": int(h[i_max]),
         "peak1_edge": float(edges[i_max]),
+        "peak2_bin": j, "peak2_count": int(h[j]) if j is not None else None,
         "peak2_edge": float(edges[j]) if j is not None else None,
         "valley_count": int(valley) if valley is not None else None,
-        "peak1_count": int(h[i_max]),
-        "peak2_count": int(h[j]) if j is not None else None,
+        "secondary_mass_floor": floor, "n": int(total),
+        "max_over_mean": float(x.max() / max(x.mean(), 1e-9)),
+        "p99_over_mean": float(np.percentile(x, 99) / max(x.mean(), 1e-9)),
     }
 
 
@@ -156,7 +162,7 @@ def main():
         rec = {}
         for pop in ("action", "particles"):
             v = nm[pop]
-            depth, detail = dip_like_bimodality(v)
+            depth, detail = bimodality(v)
             rec[pop] = {"n": int(v.size), "mean": float(v.mean()),
                         "sd": float(v.std()), "p99": float(np.percentile(v, 99)),
                         "max": float(v.max()), "bimodality_depth": depth,
