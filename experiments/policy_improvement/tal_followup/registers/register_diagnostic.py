@@ -119,10 +119,12 @@ def main():
     ap.add_argument("--device", default="cuda:0")
     a = ap.parse_args()
 
-    import diffuser.utils as utils
-    ds = utils.Config.load(os.path.join(a.savepath, "dataset_config.pkl"))()
-    mcfg = utils.Config.load(os.path.join(a.savepath, "model_config.pkl"))
-    dcfg = utils.Config.load(os.path.join(a.savepath, "diffusion_config.pkl"))
+    from diffuser.utils.serialization import load_config
+    ds_cfg = load_config(a.savepath, "dataset_config.pkl")
+    ds_cfg._dict["dataset_path"] = "ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl"
+    ds = ds_cfg(seed=42)
+    mcfg = load_config(a.savepath, "model_config.pkl")
+    dcfg = load_config(a.savepath, "diffusion_config.pkl")
     diffusion = dcfg(mcfg())
     ck = torch.load(os.path.join(a.savepath, "state_{}.pt".format(a.epoch)),
                     map_location="cpu")

@@ -28,11 +28,12 @@ GRID = [0.0, 0.25, 0.5, 0.75, 1.0]
 
 def load_arm(savepath, epoch="final", device="cuda:0"):
     """Load a trained arm through the production construction path."""
-    import diffuser.utils as utils
-    ds_cfg = utils.Config.load(os.path.join(savepath, "dataset_config.pkl"))
-    dataset = ds_cfg()
-    model_cfg = utils.Config.load(os.path.join(savepath, "model_config.pkl"))
-    diff_cfg = utils.Config.load(os.path.join(savepath, "diffusion_config.pkl"))
+    from diffuser.utils.serialization import load_config
+    ds_cfg = load_config(savepath, "dataset_config.pkl")
+    ds_cfg._dict["dataset_path"] = "ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl"
+    dataset = ds_cfg(seed=42)
+    model_cfg = load_config(savepath, "model_config.pkl")
+    diff_cfg = load_config(savepath, "diffusion_config.pkl")
     model = model_cfg()
     diffusion = diff_cfg(model)
     ck = torch.load(os.path.join(savepath, "state_{}.pt".format(epoch)),
