@@ -9,3 +9,5 @@
 [2026-09-16T18:20:11] arm uwm rc=0
 [2026-09-16T18:20:11] arm uwm complete, sha=a4f24d23c5350c4b
 [2026-09-16T18:20:11] --- training arm ctl (p_diag=1.0) ---
+[2026-09-16T18:22:54] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T18:22:54] [gpu_lease] lease acquired (stage uwm:ctl, pid 26376); launching
