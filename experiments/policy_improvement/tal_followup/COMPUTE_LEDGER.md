@@ -9,8 +9,13 @@ charged here. CPU work and idle waiting do not count.
 | B — architecture audit (zero GPU) | 0 | 0 | 0 | 0 | 0 | **0.000** |
 | C — direct-action recovery (zero GPU) | 0 | 0 | 0 | 0 | 0 | **0.000** |
 | D — two-time impl + diagonal gate (CPU) | 0 | 0 | 0 | 0 | 0 | **0.000** |
-| **SPENT TO DATE** | | | | | | **0.000** |
-| **REMAINING** | | | | | | **10.000** |
+| D — UWM pilot training (2 arms, 5k steps, 1 seed) | in progress | 0 | 0 | 0 | 0 | **live** |
+| **SPENT TO DATE** | | | | | | **see pilot_runner.log** |
+
+Live accounting is computed from lease acquire/release pairs in
+`uwm/pilot_runner.log`, `uwm/closed_loop.log` and `uwm/qaction_runner.log` by
+`run_closed_loop.py:program_spent()`, which sums TRAINING and EVALUATION
+together against the single 10.0 cap.
 
 ## Measured unit costs (from the completed evaluator-resolution program)
 
