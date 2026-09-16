@@ -14,4 +14,6 @@ from .fast_generation import (
 )
 from .pint import AdaLNPINTDenoiser, IntervalAdaLNPINTDenoiser
 from .twotime_pint import TwoTimePINTDenoiser
+from .query_action_pint import QueryActionPINTDenoiser
+from .query_action_flow import QueryActionFlowMatching
 from .uwm_flow import UWMConditionalFlowMatching

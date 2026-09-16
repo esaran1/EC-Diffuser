@@ -3,3 +3,5 @@
 [2026-09-16T17:57:55] foreign GPU MiB at start: 0
 [2026-09-16T17:57:55] already spent in THIS program: 0.0000 GPU-h
 [2026-09-16T17:57:55] --- training arm uwm (p_diag=0.0) ---
+[2026-09-16T18:00:38] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T18:00:38] [gpu_lease] lease acquired (stage uwm:uwm, pid 26376); launching
