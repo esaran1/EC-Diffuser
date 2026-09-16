@@ -61,3 +61,31 @@ Fits with room for the 3-seed confirmation (+3.958 → 7.613) if the pilot
 warrants it.
 
 **This is the ONE extension §23 permits. No further extension is authorized.**
+
+---
+
+## Provenance note: the "step" field of an extended checkpoint
+
+The extension warm-starts from its own 5k checkpoint and the trainer restarts
+its step counter, so `state_final.pt` of the extended arm records
+**`step = 5000`**, not 10000.
+
+| arm | dir | internal `step` | **cumulative training** |
+|---|---|--:|--:|
+| uwm (5k) | `uwm_uwm/` | 5000 | 5,000 |
+| uwm (ext) | `uwm_uwm_ext/` | **5000** | **10,000** |
+| ctl (5k) | `uwm_ctl/` | 5000 | 5,000 |
+| ctl (ext) | `uwm_ctl_ext/` | **5000** | **10,000** |
+
+This is recorded because the checkpoint-name/step mismatch has bitten this
+project before (the canonical file is named `state_400000.pt` but its internal
+step is 499000). **Read the directory, not the step field, to know the
+cumulative budget.** Both arms are extended identically, so the comparison
+remains matched either way.
+
+Extension arm hashes:
+
+| arm | 5k parent | extended |
+|---|---|---|
+| uwm | `a4f24d23c5350c4b` | `bc2027e4d112ac7f` |
+| ctl | `6bb31652c5323f77` | *(pending)* |
