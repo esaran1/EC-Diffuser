@@ -36,8 +36,14 @@ scenario sets, same 96 episodes, same NFE=4, same seeds.
 | | value | what it answers |
 |---|--:|---|
 | **A. largest observed repeat shift** | **3.75 pp** | an extreme of a finite sample |
-| **B. within-checkpoint SD** | **1.40 pp** | typical realization-to-realization spread |
-| **C. 95% repeatability coefficient** | **±4.30 pp** | how far two *single* evaluations of one unchanged policy can differ |
+| **B. within-checkpoint SD** | **1.40 pp** pooled | typical realization-to-realization spread |
+| **C. 95% repeatability coefficient** | **±3.88 pp** pooled / **±4.30 pp** conservative | how far two *single* evaluations of one unchanged policy can differ |
+
+Two SDs are in play: **pooled 1.40 pp** (both anchors, descriptive) and
+**conservative 1.55 pp** (the noisier anchor alone). RC95 = 1.96·√2·s gives
+±3.88 pp from pooled and ±4.30 pp from conservative. **All planning below uses
+the conservative 1.55 pp**, so recommendations hold up if a future checkpoint
+behaves like the worse of the two.
 
 **Withdrawn:** "the evaluator noise floor is 3.75 pp." That was a maximum
 reported as a standard deviation — wrong in kind, not just degree.
@@ -54,7 +60,8 @@ reported as a standard deviation — wrong in kind, not just degree.
 > numbers kept separate. The typical spread is 1.4 points. The figure that
 > actually governs a single-evaluation comparison is the repeatability
 > coefficient: two single evaluations of the *same unchanged policy* can
-> legitimately differ by 4.3 points. The cleanest demonstration is the
+> legitimately differ by 3.9 points on the pooled estimate, or 4.3 on the
+> conservative one we plan against. The cleanest demonstration is the
 > pseudo-treatment test — we split one checkpoint's own six runs into a fake
 > "baseline" and fake "treatment", where the true effect is exactly zero by
 > construction. Half those splits show an effect of a point or more, and the
@@ -78,14 +85,21 @@ reported as a standard deviation — wrong in kind, not just degree.
 
 | target | R per policy | GPU-h per A/B |
 |---|--:|--:|
-| detect 1 pp | 38 | **16.9** |
-| detect 2 pp | 10 | 4.5 |
-| detect 3 pp | 5 | 2.2 |
-| **recommended default R=3** | 3 | **1.3** (±2.48 pp) |
+| detect 1 pp (80% power) | 38 | **16.81** |
+| detect 2 pp (80% power) | 10 | 4.42 |
+| detect 3 pp (80% power) | 5 | 2.21 |
+| **routine default R=3** *(precision, not power)* | 3 | **1.33** (±2.48 pp) |
 
-**Recommended next step (one, not run):** add episode-level success logging and
-re-run both anchors at R=3, to decompose the 1.4 pp into per-episode instability
-versus realization-level effects. ~1.3 GPU-h.
+**R=3 is a precision tier, not a detection tier.** It gives a ±2.48 pp interval;
+it does *not* give 80% power at 2.48 pp. Effects below ~3 pp should be treated as
+below routine resolution unless extra repeats are budgeted.
+
+**Recommended next step (one, not run):** add *passive* episode-level success
+logging and re-run both anchors at R=3 (~1.33 GPU-h), to determine whether the
+~1.4 pp is driven mainly by a small set of nominally identical episodes flipping
+— which would tell us whether more episodes buys resolution more cheaply than
+more realizations. The logger must first be shown not to alter RNG consumption,
+simulator stepping, action calls, episode ordering, or aggregate results.
 
 > **Script.** Here is what that does to the loss program. Every effect we
 > reported sits at or below the resolution of a single evaluation — the ratio
@@ -94,10 +108,13 @@ versus realization-level effects. ~1.3 GPU-h.
 > experiments were under-powered by about an order of magnitude in evaluation
 > budget, which is the honest explanation for why the effect shrank to 0.39
 > points the moment we averaged in a second realization. Resolving a one-point
-> effect costs 17 GPU-hours per comparison, so small-effect policy research on
-> this benchmark is not practical at current cost. I recommend R=3 as the
-> routine default — that is 1.3 GPU-hours for roughly two-and-a-half-point
-> precision — and treating anything under three points as below resolution. The
+> effect costs about 17 GPU-hours per comparison, so small-effect policy research
+> on this benchmark is not practical at current cost. I recommend R=3 as the
+> routine default — 1.3 GPU-hours for a plus-or-minus two-and-a-half-point
+> interval. But be precise about what that buys: it is a precision tier, not a
+> detection tier. Eighty percent power at three points still needs five repeats,
+> and at two points, ten. Anything under roughly three points should be treated
+> as below routine resolution unless we budget the extra repeats. The
 > single next experiment I would run is cheap: add episode-level logging and
 > repeat both anchors three times, to find out whether the 1.4 points comes from
 > a handful of borderline episodes flipping or is spread across all of them. If

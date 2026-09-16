@@ -14,7 +14,20 @@ conflated:
 |---|--:|---|
 | **A. largest observed repeat shift** | **3.75 pp** | an extreme of a finite sample — **not** an SD |
 | **B. within-checkpoint SD (s_w)** | **1.399 pp** pooled; 1.227 canonical, 1.552 cleanA42 | typical realization-to-realization spread |
-| **C. 95% repeatability coefficient** | **±4.30 pp** | how far two *single* evaluations of one unchanged policy can differ |
+| **C. 95% repeatability coefficient** | **±3.88 pp** pooled / **±4.30 pp** conservative | how far two *single* evaluations of one unchanged policy can differ |
+
+**Which SD generates which number.** Two variance estimates are in play and must
+not be mixed:
+
+- **pooled s_w = 1.399 pp** — the descriptive estimate, pooled over both anchors
+  (dof 10). It generates the **pooled RC95 = 1.96·√2·1.399 = ±3.88 pp**.
+- **conservative s_w = 1.552 pp** — the *noisier anchor* (cleanA42) alone. It
+  generates the **conservative RC95 = 1.96·√2·1.552 = ±4.30 pp** and **every
+  planning table in §16–§22**.
+
+All planning deliberately uses the noisier anchor, so recommendations stay valid
+if a future checkpoint behaves like the worse-behaved of the two rather than like
+the average. ±4.30 pp is **not** derived from pooled s_w = 1.399.
 
 The prior program's shorthand — "the evaluator noise floor is 3.75 pp" — was
 wrong in kind, not just degree: it reported a maximum as a standard deviation.
@@ -27,8 +40,8 @@ that actually governs single-evaluation comparisons.
 - Splitting one checkpoint's own six realizations 3-vs-3 — where the true effect
   is exactly **zero** — produces apparent "treatment effects" up to **2.64 pp**,
   and ≥1 pp half the time.
-- Resolving a 1 pp true difference needs **R ≈ 38 per policy (~16.9 GPU-h per
-  A/B pair)**. Resolving 2 pp needs R ≈ 10 (~4.5 GPU-h).
+- Resolving a 1 pp true difference needs **R ≈ 38 per policy (~16.81 GPU-h per
+  A/B pair)**. Resolving 2 pp needs R ≈ 10 (~4.42 GPU-h).
 
 ### Classifications
 
@@ -253,9 +266,20 @@ s_w² = Σ_g Σ_r (y_gr − ȳ_g)² / Σ_g (n_g − 1)
 | canonical s_w | 1.227 pp |
 | cleanA42 s_w | 1.552 pp |
 | **pooled s_w** | **1.399 pp** (dof 10) |
+| pooled RC95 = 1.96·√2·1.399 | **±3.88 pp** |
+| conservative RC95 = 1.96·√2·1.552 | **±4.30 pp** |
 | variance ratio | 1.60 |
 | heteroscedastic (ratio > 3)? | no |
-| **conservative s_w for planning** | **1.552 pp** |
+| **conservative s_w for planning** | **1.552 pp** (= cleanA42, the noisier anchor) |
+
+**The four estimates, and what each drives:**
+
+| estimate | value | used for |
+|---|--:|---|
+| canonical anchor SD | 1.227 pp | descriptive only |
+| cleanA42 anchor SD | 1.552 pp | **= the conservative planning SD** |
+| **pooled within-checkpoint SD** | **1.399 pp** | descriptive headline; pooled RC95 ±3.88 pp |
+| **conservative planning SD** | **1.552 pp** | conservative RC95 ±4.30 pp; §16–§22 tables |
 
 Cross-checks:
 - Pooling around a *grand* mean would give 1.341 pp — inflated by the
@@ -311,8 +335,11 @@ program reported.
 
 ## 16. Uncertainty vs R
 
-Conservative s_w = 1.552 pp. Assumes independent evaluator realizations between
-the two policies (see §17 caveat).
+**All rows below use the conservative s_w = 1.552 pp (the noisier anchor,
+cleanA42), not the pooled 1.399 pp.** Assumes independent evaluator realizations
+between the two policies (see §17 caveat). For reference, the pooled-SD
+equivalents are ~10% tighter: at R=3 the half-width is ±2.24 pp pooled versus
+±2.48 pp conservative.
 
 | R | SE(mean) | SE(B−A) | 95% half-width | GPU-h per A/B |
 |--:|--:|--:|--:|--:|
@@ -324,31 +351,38 @@ the two policies (see §17 caveat).
 | 6 | 0.633 | 0.896 | 1.756 | 2.670 |
 
 This quantifies exactly how much the loss program's R=2 averaging helped: it cut
-the half-width from 4.30 to 3.04 pp — still far wider than the +0.39 pp effect it
+the half-width from 4.30 to 3.04 pp (conservative s_w throughout) — still far wider than the +0.39 pp effect it
 was used to evaluate.
 
 ---
 
 ## 17–18. Planning
 
-**Precision-based** (the more useful table):
+**Precision-based** (conservative s_w = 1.552 pp):
 
 | target 95% half-width on B−A | R per policy | GPU-h per A/B |
 |---|--:|--:|
-| ≤0.5 pp | 75 | 33.4 |
-| ≤1.0 pp | 19 | 8.5 |
-| ≤1.5 pp | 9 | 4.0 |
-| ≤2.0 pp | 5 | 2.2 |
+| ≤0.5 pp | 74 | 32.74 |
+| ≤1.0 pp | 19 | 8.41 |
+| ≤1.5 pp | 9 | 3.98 |
+| ≤2.0 pp | 5 | 2.21 |
 
 **Power-based** (α=0.05, power=0.80, approximation
 R ≥ 2·((1.96+0.84)·s_w/δ)²):
 
+Conservative s_w = 1.552 pp; R rounded **up** to whole realizations.
+
 | true effect δ | R per policy | GPU-h per A/B |
 |---|--:|--:|
-| 1 pp | 38 | 16.9 |
-| 2 pp | 10 | 4.5 |
-| 3 pp | 5 | 2.2 |
-| 4 pp | 3 | 1.3 |
+| 1 pp | 38 | 16.81 |
+| 2 pp | 10 | 4.42 |
+| 2.24 pp *(= the R=3 half-width)* | 8 | 3.54 |
+| 3 pp | 5 | 2.21 |
+| 4 pp | 3 | 1.33 |
+
+**Precision and power are different questions.** R=3 gives a ±2.48 pp *confidence
+interval*; it does **not** give 80% power to detect a 2.48 pp effect. Detecting a
+3 pp effect at 80% power needs R=5, and a 2 pp effect needs R=10.
 
 Phrasing matters here. Not "R=4 detects a 2 pp effect", but:
 
@@ -372,7 +406,23 @@ Measured cost this study: **2.6544 GPU-h / 12 evaluations = 0.2212 GPU-h per
 five-set evaluation.** The cost column above uses that measured figure, not an
 estimate.
 
-For context: one A/B comparison at R=19 (1 pp precision) costs 8.5 GPU-h — more
+Arithmetic, shown explicitly:
+
+```
+GPU-h per A/B pair = R x 2 policies x 0.2212 GPU-h per five-set evaluation
+
+  R=3  (routine default)   3 x 2 x 0.2212 =  1.33 GPU-h
+  R=5  (80% power, 3 pp)   5 x 2 x 0.2212 =  2.21 GPU-h
+  R=10 (80% power, 2 pp)  10 x 2 x 0.2212 =  4.42 GPU-h
+  R=19 (1 pp precision)   19 x 2 x 0.2212 =  8.41 GPU-h
+  R=38 (80% power, 1 pp)  38 x 2 x 0.2212 = 16.81 GPU-h
+```
+
+Note: an earlier draft quoted **16.9** GPU-h for the R=38 row. That used the
+*pre-registered* cost estimate of 0.2225 GPU-h/eval (38x2x0.2225 = 16.91). All
+cost figures now use the **measured** 0.2212 GPU-h/eval, giving 16.81.
+
+For context: one A/B comparison at R=19 (1 pp precision) costs 8.41 GPU-h — more
 than the entire loss program's corrected rerun plus replication combined.
 
 ---
@@ -413,25 +463,36 @@ resolution.**
 | reporting | preserve all R per-realization results; average within checkpoint |
 | per-set | report all five sets separately; never drop or reweight |
 | training comparisons | paired fine-tune seeds, but do **not** assume evaluator pairing |
-| uncertainty | report SE(B−A) ≈ s_w·√(2/R) with s_w = 1.55 pp, and the 95% half-width |
-| precision at R=3 | half-width **±2.48 pp**, cost **1.34 GPU-h** per A/B pair |
+| uncertainty | report SE(B−A) ≈ s_w·√(2/R) with the conservative s_w = 1.552 pp, and the 95% half-width |
+| precision at R=3 | half-width **±2.48 pp** conservative (**±2.24 pp** pooled), cost **1.33 GPU-h** per A/B pair |
+
+> Using the noisier anchor for conservative planning, R=3 gives an approximate
+> 95% B−A half-width of **±2.48 pp**. Using the pooled variance instead it is
+> **±2.24 pp**. The conservative figure is the one recommended for planning.
 
 Why R=3 rather than the R=19 that 1 pp precision demands: this is a cost-aware
-choice, as directed. R=3 triples confidence over R=1 for 1.3 GPU-h, which is
-affordable for routine screening. R=19 costs 8.5 GPU-h per comparison — justified
+choice, as directed. R=3 narrows the interval from ±4.30 to ±2.48 pp for 1.33 GPU-h, which is
+affordable for routine screening. R=19 costs 8.41 GPU-h per comparison — justified
 only for a final confirmatory result, never for exploration.
 
-The honest corollary: **at R=3 this benchmark screens for ~3 pp effects.**
-Anything smaller needs a confirmatory budget most of this project's experiments
-never had.
+**The honest corollary, stated carefully.** R=3 is a practical default that
+substantially improves precision at manageable cost, but it is **not** sufficient
+to make 1–3 pp effects automatically confirmatory. Effects below roughly 3 pp
+should generally be treated as below practical routine resolution unless
+additional repeats are budgeted.
+
+Concretely, at R=3 a 3 pp observed difference has a 95% interval of roughly
+[0.5, 5.5] pp — consistent with a real effect, but not confirmation of one, and
+80% power at 3 pp requires R=5. R=3 is a **screening** tier: it is for deciding
+what deserves a confirmatory run, not for declaring results.
 
 ---
 
 ## 22. Is the benchmark fit for small-effect research?
 
 **No, not at practical cost.** Resolving 1–2 pp requires R=19–38 per policy
-(8.5–16.9 GPU-h per single A/B comparison) on the RTX 4080. Multiply by four
-training seeds and a realistic experiment costs 34–68 GPU-h of *evaluation alone*.
+(8.41–16.81 GPU-h per single A/B comparison) on the RTX 4080. Multiply by four
+training seeds and a realistic experiment costs 34–67 GPU-h of *evaluation alone*.
 
 The benchmark is well suited to effects ≥3 pp. For smaller effects it is
 expensive and poorly resolved under the current protocol. No redesign is proposed
@@ -515,7 +576,9 @@ Zero wasted GPU time in this program.
 **ESTABLISHED**
 - Within-checkpoint evaluator SD: **1.399 pp pooled** (1.227 canonical, 1.552
   cleanA42), from 6 realizations of each of two byte-identical checkpoints.
-- 95% repeatability coefficient for two single evaluations: **±4.30 pp**.
+- 95% repeatability coefficient for two single evaluations: **±3.88 pp** from
+  pooled s_w, **±4.30 pp** from the conservative (noisier-anchor) s_w. Planning
+  uses the conservative figure.
 - Same-policy pairs differ by ≥2 pp **40%** of the time (descriptive; bootstrap
   interval [0.067, 0.567]).
 - Zero-effect 3-vs-3 splits produce apparent effects up to **2.64 pp**.
@@ -536,8 +599,8 @@ Zero wasted GPU time in this program.
 
 **WITHDRAWN**
 - **"3.75 pp is the evaluator SD / noise floor."** It was the largest observed
-  same-checkpoint macro shift in a finite sample. The SD is ~1.4 pp; the 95%
-  repeatability coefficient is ±4.30 pp. Notably, both new anchors independently
+  same-checkpoint macro shift in a finite sample. The SD is ~1.4 pp pooled; the 95%
+  repeatability coefficient is ±3.88 pp pooled / ±4.30 pp conservative. Notably, both new anchors independently
   produced a 3.75 pp range, confirming it as a typical *extreme* for six draws —
   which is exactly why it must not be reported as an SD.
 
@@ -566,7 +629,8 @@ measured variance model, verified estimators, and cost-aware planning tables.
 
 **R1-SMALL-EFFECT-EVALUATION: INADEQUATE** — for policy differences in the 1–4 pp
 regime, a single evaluation per policy has SE(B−A) = 2.19 pp and a 95%
-half-width of 4.30 pp. This is a statement about measurement resolution, not
+half-width of 4.30 pp (conservative s_w; ±3.88 pp on the pooled estimate). This
+is a statement about measurement resolution, not
 about policy quality.
 
 ---
@@ -576,6 +640,24 @@ about policy quality.
 **Add episode-level success logging to the evaluator and re-run the two anchors
 at R=3 each, to decompose macro variance into per-episode instability versus
 realization-level effects.**
+
+**Purpose, stated precisely:** determine whether the ~1.4 pp realization
+variability is driven mainly by a small set of nominally identical episodes
+flipping outcomes, which would inform whether increasing episode count can
+improve resolution more cheaply than repeated full evaluator realizations.
+
+**Precondition — the logger must be demonstrated passive before it is used.**
+Prior to any scientific run it must be shown not to alter:
+
+- RNG consumption (identical draw counts and ordering)
+- simulator stepping
+- action calls
+- episode ordering
+- aggregate evaluator behaviour (macro and per-set results byte-identical to an
+  unlogged run of the same checkpoint)
+
+The last item is the decisive test: a logged and an unlogged evaluation of one
+frozen checkpoint must agree exactly, not merely closely.
 
 Rationale: the single highest-value unknown is *where* the 1.4 pp comes from. If
 a small set of borderline episodes flips, the fix is cheap — more episodes, or
