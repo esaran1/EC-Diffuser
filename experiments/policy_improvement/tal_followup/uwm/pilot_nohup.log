@@ -1,0 +1,5 @@
+[2026-09-16T17:57:55] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-16T17:57:55] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-16T17:57:55] foreign GPU MiB at start: 0
+[2026-09-16T17:57:55] already spent in THIS program: 0.0000 GPU-h
+[2026-09-16T17:57:55] --- training arm uwm (p_diag=0.0) ---
