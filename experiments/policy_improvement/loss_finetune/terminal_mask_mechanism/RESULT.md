@@ -269,6 +269,26 @@ metric** — pooling it manufactures a 6.4× artifact.
 
 ---
 
+## 12b. First-step contamination persistence — NOT COMPLETED
+
+Registered as a secondary analysis (section 27): compare `A_clean` vs `A_legacy`
+and `B_clean` vs `B_legacy` at each shared checkpoint, to measure how long the
+single contaminated Adam update leaves a measurable trace.
+
+**Not completed.** The comparison loads ~40 checkpoints of ~1 GB each and runs
+CPU forward passes; two attempts ran past 29 minutes without producing output and
+were stopped rather than spend further effort on a secondary diagnostic (the
+directive explicitly says not to burn material effort reconstructing this). The
+script `clean_first_step/first_step_persistence.py` is committed and its
+checkpoint-path resolution was verified; it can be re-run on a larger-memory
+machine or adapted to stream parameters rather than hold them.
+
+This affects no conclusion. The primary causal question is answered by the clean
+four-seed control, and the contamination's existence and complete removal are
+already established directly from the gradient manifests (section 8).
+
+---
+
 ## 13. Mechanism
 
 **MECHANISM-UNRESOLVED**, and with no behavioral effect to explain, the question
