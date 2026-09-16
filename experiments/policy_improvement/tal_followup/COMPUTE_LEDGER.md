@@ -17,7 +17,34 @@ Live accounting is computed from lease acquire/release pairs in
 `run_closed_loop.py:program_spent()`, which sums TRAINING and EVALUATION
 together against the single 10.0 cap.
 
-## Measured unit costs (from the completed evaluator-resolution program)
+## Measured unit costs
+
+| unit | cost | source |
+|---|--:|---|
+| **5000-step training arm** | **0.326 GPU-h** | **measured, this program (arm 1: 19.5 min)** |
+| one five-set R=1 evaluation | 0.2212 GPU-h | measured, evaluator-resolution program |
+| one R=3 evaluation | 0.664 GPU-h | derived |
+| one R=3 A/B pair | 1.327 GPU-h | derived |
+
+Arm 1 came in at 0.326 GPU-h against a 0.42 estimate, so the projection below
+uses the measured figure.
+
+## Projection with Stage F blocked
+
+| stage | GPU-h | cumulative |
+|---|--:|--:|
+| pilot, 2 arms | 0.652 | 0.652 |
+| Stage E offline diagnostics (one lease) | 0.150 | 0.802 |
+| closed-loop R=3: control + best UWM path | 1.327 | 2.129 |
+| Stage C direct-action training | 0.326 | 2.455 |
+| closed-loop R=3: direct-action | 0.664 | **3.119** |
+| Stage F harder task | **BLOCKED** (~33 GPU-h needed) | — |
+
+**Projected total 3.119 of 10.0; headroom 6.881.** Affordable with that
+headroom, in priority order: 3-seed confirmation (3.958), register pilot
+(0.990), latent-action pilot (0.990).
+
+## Superseded estimate
 
 | unit | cost |
 |---|--:|
