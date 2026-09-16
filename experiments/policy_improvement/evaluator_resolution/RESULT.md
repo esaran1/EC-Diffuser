@@ -588,3 +588,13 @@ calls, no ordering or stepping changes).
 
 This is deliberately *not* "go test another policy idea": doing so before knowing
 the answer is what produced the last program's vanishing effects.
+
+---
+
+## 30. Final commit
+
+This result is recorded at commit **`435d3b1`** ("evaluator-resolution: measure
+PandaPush repeatability, complete program"). The evaluations themselves ran
+under `08d77ab`.
+
+**PROGRAM CLOSED.**
