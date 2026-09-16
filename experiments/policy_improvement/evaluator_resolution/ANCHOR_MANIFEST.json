@@ -1,0 +1,36 @@
+{
+  "anchors": {
+    "canonical": {
+      "checkpoint_step": 499000,
+      "epoch_arg": "400000",
+      "loadpath": "flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "path": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+      "selection_rationale": "stable pre-fine-tuning reference",
+      "sha256": "861dc34434474455a25dc3a15ea4e1754066202df538364cf41114b42f4fcc3b"
+    },
+    "cleanA42": {
+      "checkpoint_step": 2000,
+      "epoch_arg": "final",
+      "loadpath": "lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "path": "data/panda_push/lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "selection_rationale": "predeclared clean baseline from the corrected protocol",
+      "sha256": "49bbc3f5a041d32f4916b74c3aea1446087a88a3201673e4934044ed0227321c"
+    }
+  },
+  "code_commit": "08d77abaefa03cdd6b09f19d0f0c6bc187cdca10",
+  "episodes_per_set": 96,
+  "evaluator_script": "experiments/policy_improvement/phase2_diagnostics.py",
+  "generated": "2026-09-16T11:41:14",
+  "nfe": 4,
+  "policy_noise_seed_constant": 20260902,
+  "scenario_seeds": {
+    "E0": 20260820,
+    "E1s": 20261820,
+    "E2s": 20262820,
+    "E3s": 20263820,
+    "E4s": 20264820
+  },
+  "solver": "fixed-step forward Euler (ConditionalFlowMatching)",
+  "success_criterion": "max_obj_dist <= 0.04",
+  "weights_evaluated": "EMA"
+}

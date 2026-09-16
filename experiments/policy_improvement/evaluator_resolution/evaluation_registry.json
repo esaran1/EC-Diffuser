@@ -1,0 +1,1929 @@
+{
+  "bucket_counts": {
+    "INVALID_CONTENDED": 1,
+    "INVALID_OTHER": 4,
+    "UNKNOWN_EXCLUDED": 1,
+    "VALID_CURRENT_PROTOCOL": 34
+  },
+  "episode_level_data_available": false,
+  "n_records": 40,
+  "records": [
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_15000.pt",
+      "checkpoint_sha256": "a2ccb67c3cdb1beaaabb80d23a6310f3ad205e7e9eaf510177d98c15a1fbcb1d",
+      "episode_level_data": false,
+      "epoch": "15000",
+      "evaluation_valid": false,
+      "family": "unknown",
+      "file": "armA15k_diagnostics.json",
+      "loadpath": "phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.0,
+      "macro_sd_across_sets": 0.0,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/armA15k_diagnostics.json",
+      "per_set": {
+        "E0": 0.0,
+        "E1s": 0.0,
+        "E2s": 0.0,
+        "E3s": 0.0,
+        "E4s": 0.0
+      },
+      "per_set_foreign_mib": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "armA15k",
+      "timestamp_iso": "2026-09-05T15:58:07",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "499124810d5dc20954298a8cca9cc31aa3ae6eeb970f3b2089a5e8832b46386d",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": false,
+      "family": "unknown",
+      "file": "armA20k_diagnostics.json",
+      "loadpath": "phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.0,
+      "macro_sd_across_sets": 0.0,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/armA20k_diagnostics.json",
+      "per_set": {
+        "E0": 0.0,
+        "E1s": 0.0,
+        "E2s": 0.0,
+        "E3s": 0.0,
+        "E4s": 0.0
+      },
+      "per_set_foreign_mib": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "armA20k",
+      "timestamp_iso": "2026-09-09T20:16:56",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "INVALID_OTHER",
+      "checkpoint_path": "data/panda_push/phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "499124810d5dc20954298a8cca9cc31aa3ae6eeb970f3b2089a5e8832b46386d",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": false,
+      "family": "unknown",
+      "file": "armA20k_diagnostics_SUSPECT_E3sE4s.json",
+      "loadpath": "phase3_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.0,
+      "macro_sd_across_sets": 0.0,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/armA20k_diagnostics_SUSPECT_E3sE4s.json",
+      "per_set": {
+        "E0": 0.0,
+        "E1s": 0.0,
+        "E2s": 0.0,
+        "E3s": 0.0,
+        "E4s": 0.0
+      },
+      "per_set_foreign_mib": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "armA20k",
+      "timestamp_iso": "2026-09-09T20:16:56",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+      "checkpoint_sha256": "861dc34434474455a25dc3a15ea4e1754066202df538364cf41114b42f4fcc3b",
+      "episode_level_data": false,
+      "epoch": "400000",
+      "evaluation_valid": true,
+      "family": "canonical",
+      "file": "canonical_anchor_diagnostics.json",
+      "loadpath": "flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7708333333333334,
+      "macro_sd_across_sets": 0.0337538578042076,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/canonical_anchor_diagnostics.json",
+      "per_set": {
+        "E0": 0.75,
+        "E1s": 0.75,
+        "E2s": 0.8125,
+        "E3s": 0.7395833333333334,
+        "E4s": 0.8020833333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "canonical_anchor",
+      "timestamp_iso": "2026-09-10T20:08:22",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "965e7e32fe19cf01eb1b817e43831d9e270d30604c955de35568eb4236374bbd",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_A_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.775,
+      "macro_sd_across_sets": 0.05965758776365145,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_A_diagnostics.json",
+      "per_set": {
+        "E0": 0.6875,
+        "E1s": 0.8229166666666666,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7395833333333334,
+        "E4s": 0.8020833333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_A",
+      "timestamp_iso": "2026-09-10T22:28:06",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "d902ede7a73bb1a0fe2ec2c3e6f03986c4e85236bfbc5a0e3596286d7c7f590b",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_B_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.8041666666666668,
+      "macro_sd_across_sets": 0.032442523963328,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_B_diagnostics.json",
+      "per_set": {
+        "E0": 0.75,
+        "E1s": 0.8333333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.8020833333333334,
+        "E4s": 0.8125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_B",
+      "timestamp_iso": "2026-09-13T11:31:59",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "INVALID_OTHER",
+      "checkpoint_path": "data/panda_push/lossft_armB_INVALID_kwargs_bug/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "965e7e32fe19cf01eb1b817e43831d9e270d30604c955de35568eb4236374bbd",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_B_diagnostics_INVALID_kwargs_bug.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.79375,
+      "macro_sd_across_sets": 0.02795084971874737,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_B_diagnostics_INVALID_kwargs_bug.json",
+      "per_set": {
+        "E0": 0.75,
+        "E1s": 0.8125,
+        "E2s": 0.8125,
+        "E3s": 0.8125,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_B",
+      "timestamp_iso": "2026-09-11T21:42:33",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armC/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "dde609e413ea7ae017f25f4963e796ddaed2d14434a2be041e51deb4c1f28459",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_C",
+      "file": "lossft_C_diagnostics.json",
+      "loadpath": "lossft_armC/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7854166666666667,
+      "macro_sd_across_sets": 0.04693283469195335,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_C_diagnostics.json",
+      "per_set": {
+        "E0": 0.7083333333333334,
+        "E1s": 0.78125,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7916666666666666,
+        "E4s": 0.8229166666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_C",
+      "timestamp_iso": "2026-09-13T11:57:24",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "INVALID_OTHER",
+      "checkpoint_path": "data/panda_push/lossft_armC_INVALID_kwargs_bug/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "965e7e32fe19cf01eb1b817e43831d9e270d30604c955de35568eb4236374bbd",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_C",
+      "file": "lossft_C_diagnostics_INVALID_kwargs_bug.json",
+      "loadpath": "lossft_armC/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7791666666666668,
+      "macro_sd_across_sets": 0.046234043794108635,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_C_diagnostics_INVALID_kwargs_bug.json",
+      "per_set": {
+        "E0": 0.7083333333333334,
+        "E1s": 0.78125,
+        "E2s": 0.8333333333333334,
+        "E3s": 0.8020833333333334,
+        "E4s": 0.7708333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_C",
+      "timestamp_iso": "2026-09-11T22:03:29",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armD/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "0a70d93a7eba9bcf3349328ad8a8f40cca9b930809f9c3dd1a3012c56c2400a9",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_D",
+      "file": "lossft_D_diagnostics.json",
+      "loadpath": "lossft_armD/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7875,
+      "macro_sd_across_sets": 0.05239490141649704,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_D_diagnostics.json",
+      "per_set": {
+        "E0": 0.7083333333333334,
+        "E1s": 0.7604166666666666,
+        "E2s": 0.8333333333333334,
+        "E3s": 0.8229166666666666,
+        "E4s": 0.8125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_D",
+      "timestamp_iso": "2026-09-13T12:22:55",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "INVALID_OTHER",
+      "checkpoint_path": "data/panda_push/lossft_armD_INVALID_kwargs_bug/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "965e7e32fe19cf01eb1b817e43831d9e270d30604c955de35568eb4236374bbd",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_D",
+      "file": "lossft_D_diagnostics_INVALID_kwargs_bug.json",
+      "loadpath": "lossft_armD/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7833333333333334,
+      "macro_sd_across_sets": 0.047961935138422215,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_D_diagnostics_INVALID_kwargs_bug.json",
+      "per_set": {
+        "E0": 0.7395833333333334,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7395833333333334,
+        "E4s": 0.84375
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_D",
+      "timestamp_iso": "2026-09-11T22:24:15",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "f482ae9d219b462893aa804be64c2631fd363cf7e24b4b93a534b7805f6497ac",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "bprime",
+      "file": "lossft_bprime_42_diagnostics.json",
+      "loadpath": "lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.79375,
+      "macro_sd_across_sets": 0.032442523963328,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_bprime_42_diagnostics.json",
+      "per_set": {
+        "E0": 0.7604166666666666,
+        "E1s": 0.78125,
+        "E2s": 0.7708333333333334,
+        "E3s": 0.8229166666666666,
+        "E4s": 0.8333333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_bprime_42",
+      "timestamp_iso": "2026-09-14T06:11:42",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": null,
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "bprime",
+      "file": "lossft_bprime_43_diagnostics.json",
+      "loadpath": "lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.7895833333333333,
+      "macro_sd_across_sets": 0.04681709386300883,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_bprime_43_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.75,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.8333333333333334,
+        "E4s": 0.8125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_bprime_43",
+      "timestamp_iso": "2026-09-14T06:38:33",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": null,
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "bprime",
+      "file": "lossft_bprime_44_diagnostics.json",
+      "loadpath": "lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.7791666666666666,
+      "macro_sd_across_sets": 0.03407380673707526,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_bprime_44_diagnostics.json",
+      "per_set": {
+        "E0": 0.78125,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7916666666666666,
+        "E4s": 0.7291666666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_bprime_44",
+      "timestamp_iso": "2026-09-14T07:05:29",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": null,
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "bprime",
+      "file": "lossft_bprime_45_diagnostics.json",
+      "loadpath": "lossft_armBprime/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.7916666666666666,
+      "macro_sd_across_sets": 0.040343576522993925,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_bprime_45_diagnostics.json",
+      "per_set": {
+        "E0": 0.75,
+        "E1s": 0.78125,
+        "E2s": 0.84375,
+        "E3s": 0.7604166666666666,
+        "E4s": 0.8229166666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_bprime_45",
+      "timestamp_iso": "2026-09-14T07:32:13",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "49bbc3f5a041d32f4916b74c3aea1446087a88a3201673e4934044ed0227321c",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_A",
+      "file": "lossft_clean_A42_diagnostics.json",
+      "loadpath": "lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.8145833333333334,
+      "macro_sd_across_sets": 0.02593729082914318,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_A42_diagnostics.json",
+      "per_set": {
+        "E0": 0.78125,
+        "E1s": 0.8125,
+        "E2s": 0.8125,
+        "E3s": 0.8125,
+        "E4s": 0.8541666666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_A42",
+      "timestamp_iso": "2026-09-15T02:24:39",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": "474e90ce3f2b28c3b8a6a8a41ee7d36acd09c93ca7631ad94be7c467b1a1cf85",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_A",
+      "file": "lossft_clean_A43_diagnostics.json",
+      "loadpath": "lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.7958333333333334,
+      "macro_sd_across_sets": 0.023980967569211094,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_A43_diagnostics.json",
+      "per_set": {
+        "E0": 0.7708333333333334,
+        "E1s": 0.8020833333333334,
+        "E2s": 0.8125,
+        "E3s": 0.7708333333333334,
+        "E4s": 0.8229166666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_A43",
+      "timestamp_iso": "2026-09-15T03:45:26",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": "b09d17af6a22c6bc275256dc5ce7f918283a70cbc5771d28b9b1fa1f8a57ecd2",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_A",
+      "file": "lossft_clean_A44_diagnostics.json",
+      "loadpath": "lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.75625,
+      "macro_sd_across_sets": 0.02508665537248398,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_A44_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.7708333333333334,
+        "E3s": 0.7291666666666666,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_A44",
+      "timestamp_iso": "2026-09-15T04:12:13",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "d4b736816fc2f5da3da08bbcd6e1b71264bcc3aec29ec0655d9d4a83382fa47b",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_A",
+      "file": "lossft_clean_A45_diagnostics.json",
+      "loadpath": "lossft_armAclean/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.7604166666666667,
+      "macro_sd_across_sets": 0.020833333333333356,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_A45_diagnostics.json",
+      "per_set": {
+        "E0": 0.7708333333333334,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.7291666666666666,
+        "E3s": 0.75,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_A45",
+      "timestamp_iso": "2026-09-15T05:32:43",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "ee845c4d482b8badcaf1cbc46ef69ba2a2d4b481cdf7131e0ce910e4a76c8106",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_B",
+      "file": "lossft_clean_B42_diagnostics.json",
+      "loadpath": "lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7916666666666666,
+      "macro_sd_across_sets": 0.02209708691207961,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_B42_diagnostics.json",
+      "per_set": {
+        "E0": 0.7916666666666666,
+        "E1s": 0.7916666666666666,
+        "E2s": 0.7604166666666666,
+        "E3s": 0.7916666666666666,
+        "E4s": 0.8229166666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_B42",
+      "timestamp_iso": "2026-09-15T02:51:37",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": "f63059d825950d4357f1d7c2a0255bc12530f26252dab4bcc07f76dec8d0d56f",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_B",
+      "file": "lossft_clean_B43_diagnostics.json",
+      "loadpath": "lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.8041666666666666,
+      "macro_sd_across_sets": 0.026962873136551657,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_B43_diagnostics.json",
+      "per_set": {
+        "E0": 0.7604166666666666,
+        "E1s": 0.8125,
+        "E2s": 0.8125,
+        "E3s": 0.8020833333333334,
+        "E4s": 0.8333333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_B43",
+      "timestamp_iso": "2026-09-15T03:18:23",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": "d618afff13948dcbaf395868aa1161353a9a3488f914a1ea1b3482b0f0e20e76",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_B",
+      "file": "lossft_clean_B44_diagnostics.json",
+      "loadpath": "lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.8041666666666666,
+      "macro_sd_across_sets": 0.03563048203434808,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_B44_diagnostics.json",
+      "per_set": {
+        "E0": 0.7604166666666666,
+        "E1s": 0.8229166666666666,
+        "E2s": 0.7708333333333334,
+        "E3s": 0.8333333333333334,
+        "E4s": 0.8333333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_B44",
+      "timestamp_iso": "2026-09-15T04:38:59",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "7103eb0fc3a6ba68ca6e40651e8d21846161155fed897254eda264a56d7c8fc2",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "clean_B",
+      "file": "lossft_clean_B45_diagnostics.json",
+      "loadpath": "lossft_armBclean/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.7854166666666667,
+      "macro_sd_across_sets": 0.03653266232656289,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_clean_B45_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.8229166666666666,
+        "E2s": 0.7708333333333334,
+        "E3s": 0.8020833333333334,
+        "E4s": 0.8020833333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_clean_B45",
+      "timestamp_iso": "2026-09-15T05:05:57",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": "ac60728bc460b1605dbaad1c6d4999fea52ab85b461dd70012956db6b3cbae2b",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_r1_A_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.7729166666666666,
+      "macro_sd_across_sets": 0.03407380673707527,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_r1_A_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7604166666666666,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_r1_A",
+      "timestamp_iso": "2026-09-13T14:47:03",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": "ccda226afcce56a35c29c3440f736f713c3f6c0042d63d157b0fff86bb17e321",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_r1_B_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.7729166666666666,
+      "macro_sd_across_sets": 0.0315953143502148,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_r1_B_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.8125,
+        "E2s": 0.7604166666666666,
+        "E3s": 0.7708333333333334,
+        "E4s": 0.7916666666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_r1_B",
+      "timestamp_iso": "2026-09-13T14:20:28",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": "f6fe245f6464ba41348d65a7bfd5eca3d6a9fec5ce6cc89499c49f1ea6aa8668",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_r2_A_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.75,
+      "macro_sd_across_sets": 0.04166666666666669,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_r2_A_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.6979166666666666,
+        "E2s": 0.8020833333333334,
+        "E3s": 0.7395833333333334,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_r2_A",
+      "timestamp_iso": "2026-09-13T15:13:59",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": "c62219be3e58dc700a6c17477bd893ae1ff4dfe682039c79b50ecc81378a7423",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_r2_B_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.7895833333333334,
+      "macro_sd_across_sets": 0.018633899812498234,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_r2_B_diagnostics.json",
+      "per_set": {
+        "E0": 0.7916666666666666,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.8020833333333334,
+        "E3s": 0.7708333333333334,
+        "E4s": 0.8125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_r2_B",
+      "timestamp_iso": "2026-09-13T15:40:45",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "8dd043174ee9b50f9cd8a9a01bc3f55aa9e8914ee98624ad4f765646853f258f",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_r3_A_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.7833333333333333,
+      "macro_sd_across_sets": 0.023753654689565362,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_r3_A_diagnostics.json",
+      "per_set": {
+        "E0": 0.7604166666666666,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.78125,
+        "E3s": 0.8229166666666666,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_r3_A",
+      "timestamp_iso": "2026-09-13T16:34:23",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "72d5520ec8bed7f2c5edf3f6c2607ca3886ed8c0a476c5a5060966dabd36eba0",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_r3_B_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.8041666666666668,
+      "macro_sd_across_sets": 0.04739297152532217,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_r3_B_diagnostics.json",
+      "per_set": {
+        "E0": 0.7395833333333334,
+        "E1s": 0.8333333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7708333333333334,
+        "E4s": 0.8541666666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_r3_B",
+      "timestamp_iso": "2026-09-13T16:07:48",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "965e7e32fe19cf01eb1b817e43831d9e270d30604c955de35568eb4236374bbd",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_rep2_A42_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7958333333333334,
+      "macro_sd_across_sets": 0.04973890160963885,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_A42_diagnostics.json",
+      "per_set": {
+        "E0": 0.71875,
+        "E1s": 0.84375,
+        "E2s": 0.8020833333333334,
+        "E3s": 0.78125,
+        "E4s": 0.8333333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_A42",
+      "timestamp_iso": "2026-09-14T07:47:51",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": "ac60728bc460b1605dbaad1c6d4999fea52ab85b461dd70012956db6b3cbae2b",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_rep2_A43_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.7854166666666667,
+      "macro_sd_across_sets": 0.023980967569211108,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_A43_diagnostics.json",
+      "per_set": {
+        "E0": 0.7604166666666666,
+        "E1s": 0.7916666666666666,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.78125,
+        "E4s": 0.7708333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_A43",
+      "timestamp_iso": "2026-09-14T08:35:55",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": "f6fe245f6464ba41348d65a7bfd5eca3d6a9fec5ce6cc89499c49f1ea6aa8668",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_rep2_A44_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.7874999999999999,
+      "macro_sd_across_sets": 0.05920113432659509,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_A44_diagnostics.json",
+      "per_set": {
+        "E0": 0.6979166666666666,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.8229166666666666,
+        "E3s": 0.7916666666666666,
+        "E4s": 0.8541666666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_A44",
+      "timestamp_iso": "2026-09-14T08:51:43",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "8dd043174ee9b50f9cd8a9a01bc3f55aa9e8914ee98624ad4f765646853f258f",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_A",
+      "file": "lossft_rep2_A45_diagnostics.json",
+      "loadpath": "lossft_armA/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.7895833333333334,
+      "macro_sd_across_sets": 0.024869450804819428,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_A45_diagnostics.json",
+      "per_set": {
+        "E0": 0.8125,
+        "E1s": 0.75,
+        "E2s": 0.8020833333333334,
+        "E3s": 0.78125,
+        "E4s": 0.8020833333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_A45",
+      "timestamp_iso": "2026-09-15T01:52:31",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": "d902ede7a73bb1a0fe2ec2c3e6f03986c4e85236bfbc5a0e3596286d7c7f590b",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_rep2_B42_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.7750000000000001,
+      "macro_sd_across_sets": 0.01892281471310933,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_B42_diagnostics.json",
+      "per_set": {
+        "E0": 0.75,
+        "E1s": 0.7708333333333334,
+        "E2s": 0.78125,
+        "E3s": 0.8020833333333334,
+        "E4s": 0.7708333333333334
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_B42",
+      "timestamp_iso": "2026-09-14T08:03:54",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43/state_final.pt",
+      "checkpoint_sha256": "ccda226afcce56a35c29c3440f736f713c3f6c0042d63d157b0fff86bb17e321",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_rep2_B43_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed43",
+      "macro": 0.7729166666666666,
+      "macro_sd_across_sets": 0.04796193513842226,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_B43_diagnostics.json",
+      "per_set": {
+        "E0": 0.6979166666666666,
+        "E1s": 0.7604166666666666,
+        "E2s": 0.8020833333333334,
+        "E3s": 0.78125,
+        "E4s": 0.8229166666666666
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_B43",
+      "timestamp_iso": "2026-09-14T08:20:03",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed44/state_final.pt",
+      "checkpoint_sha256": "c62219be3e58dc700a6c17477bd893ae1ff4dfe682039c79b50ecc81378a7423",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_rep2_B44_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed44",
+      "macro": 0.78125,
+      "macro_sd_across_sets": 0.04540519732854869,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_B44_diagnostics.json",
+      "per_set": {
+        "E0": 0.7291666666666666,
+        "E1s": 0.7916666666666666,
+        "E2s": 0.8333333333333334,
+        "E3s": 0.7395833333333334,
+        "E4s": 0.8125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_B44",
+      "timestamp_iso": "2026-09-14T09:07:47",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "72d5520ec8bed7f2c5edf3f6c2607ca3886ed8c0a476c5a5060966dabd36eba0",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": true,
+      "family": "legacy_B",
+      "file": "lossft_rep2_B45_diagnostics.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": 0.7708333333333333,
+      "macro_sd_across_sets": 0.020833333333333315,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_B45_diagnostics.json",
+      "per_set": {
+        "E0": 0.7604166666666666,
+        "E1s": 0.7395833333333334,
+        "E2s": 0.7916666666666666,
+        "E3s": 0.78125,
+        "E4s": 0.78125
+      },
+      "per_set_foreign_mib": {
+        "E0": 0,
+        "E1s": 0,
+        "E2s": 0,
+        "E3s": 0,
+        "E4s": 0
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "lossft_rep2_B45",
+      "timestamp_iso": "2026-09-15T01:36:23",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "INVALID_CONTENDED",
+      "checkpoint_path": "data/panda_push/lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45/state_final.pt",
+      "checkpoint_sha256": "72d5520ec8bed7f2c5edf3f6c2607ca3886ed8c0a476c5a5060966dabd36eba0",
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": false,
+      "family": "legacy_B",
+      "file": "lossft_rep2_B45_diagnostics_INVALID_contended.json",
+      "loadpath": "lossft_armB/3C_dlp_adalnpint_randcolor_H5_T4_seed45",
+      "macro": null,
+      "macro_sd_across_sets": null,
+      "n_valid_sets": 0,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/lossft_rep2_B45_diagnostics_INVALID_contended.json",
+      "per_set": {
+        "E0": 0.6979166666666666,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_foreign_mib": {
+        "E0": 9369,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_status": {
+        "E0": "INVALID_CONTENDED_DURING",
+        "E1s": "ABORTED_CONTENDED",
+        "E2s": "ABORTED_CONTENDED",
+        "E3s": "ABORTED_CONTENDED",
+        "E4s": "ABORTED_CONTENDED"
+      },
+      "tag": "lossft_rep2_B45",
+      "timestamp_iso": "2026-09-14T09:23:51",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "VALID_CURRENT_PROTOCOL",
+      "checkpoint_path": "data/panda_push/imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_18981.pt",
+      "checkpoint_sha256": "7c33182ac73d5cb4813b7b64cabae12cc59f3414f9b4563868f47c8bd551cdf0",
+      "episode_level_data": false,
+      "epoch": "18981",
+      "evaluation_valid": false,
+      "family": "unknown",
+      "file": "phase2_20k_diagnostics.json",
+      "loadpath": "imf_viability/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": 0.0,
+      "macro_sd_across_sets": 0.0,
+      "n_valid_sets": 5,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/phase2_20k_diagnostics.json",
+      "per_set": {
+        "E0": 0.0,
+        "E1s": 0.0,
+        "E2s": 0.0,
+        "E3s": 0.0,
+        "E4s": 0.0
+      },
+      "per_set_foreign_mib": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_n": {
+        "E0": 96,
+        "E1s": 96,
+        "E2s": 96,
+        "E3s": 96,
+        "E4s": 96
+      },
+      "per_set_status": {
+        "E0": "VALID",
+        "E1s": "VALID",
+        "E2s": "VALID",
+        "E3s": "VALID",
+        "E4s": "VALID"
+      },
+      "tag": "phase2_20k",
+      "timestamp_iso": "2026-09-05T14:03:24",
+      "weights": "EMA"
+    },
+    {
+      "bucket": "UNKNOWN_EXCLUDED",
+      "checkpoint_path": "data/panda_push/lossft_pilot/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_final.pt",
+      "checkpoint_sha256": null,
+      "episode_level_data": false,
+      "epoch": "final",
+      "evaluation_valid": false,
+      "family": "unknown",
+      "file": "pilot_diagnostics.json",
+      "loadpath": "lossft_pilot/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+      "macro": null,
+      "macro_sd_across_sets": null,
+      "n_valid_sets": null,
+      "nfe": 4,
+      "path": "experiments/policy_improvement/phase2/pilot_diagnostics.json",
+      "per_set": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_foreign_mib": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_n": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "per_set_status": {
+        "E0": null,
+        "E1s": null,
+        "E2s": null,
+        "E3s": null,
+        "E4s": null
+      },
+      "tag": "pilot",
+      "timestamp_iso": null,
+      "weights": "EMA"
+    }
+  ],
+  "same_checkpoint_repeat_groups": {
+    "72d5520ec8bed7f2": [
+      "lossft_r3_B",
+      "lossft_rep2_B45"
+    ],
+    "8dd043174ee9b50f": [
+      "lossft_r3_A",
+      "lossft_rep2_A45"
+    ],
+    "965e7e32fe19cf01": [
+      "lossft_A",
+      "lossft_B",
+      "lossft_C",
+      "lossft_D",
+      "lossft_rep2_A42"
+    ],
+    "ac60728bc460b160": [
+      "lossft_r1_A",
+      "lossft_rep2_A43"
+    ],
+    "c62219be3e58dc70": [
+      "lossft_r2_B",
+      "lossft_rep2_B44"
+    ],
+    "ccda226afcce56a3": [
+      "lossft_r1_B",
+      "lossft_rep2_B43"
+    ],
+    "d902ede7a73bb1a0": [
+      "lossft_B",
+      "lossft_rep2_B42"
+    ],
+    "f6fe245f6464ba41": [
+      "lossft_r2_A",
+      "lossft_rep2_A44"
+    ]
+  }
+}
