@@ -109,6 +109,9 @@ def main():
     ap.add_argument("--only-sets", nargs="*", default=None,
                     help="restrict control eval to these set ids")
     ap.add_argument("--skip-offline", action="store_true")
+    ap.add_argument("--inference_path", default=None,
+                    help="registered two-time path name (UWM models only). "
+                         "Default None keeps the production diagonal sampler.")
     ap.add_argument("--merge", action="store_true",
                     help="merge control results into existing json")
     cli = ap.parse_args()
@@ -120,6 +123,21 @@ def main():
                                override_dataset_path="ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl")
     dev = args.device; norm = exp.dataset.normalizer
     res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch)}
+    # Two-time path selection. Only UWM wrappers implement set_inference_path;
+    # for every other model this is a no-op and the production sampler is used.
+    if cli.inference_path:
+        applied = []
+        for _m in (exp.diffusion, exp.ema):
+            if hasattr(_m, "set_inference_path"):
+                _m.set_inference_path(cli.inference_path)
+                applied.append(type(_m).__name__)
+        if not applied:
+            raise SystemExit(
+                "--inference_path given but model {} does not support it".format(
+                    type(exp.ema).__name__))
+        res["inference_path"] = cli.inference_path
+        print("[ inference_path ] {} applied to {}".format(
+            cli.inference_path, applied), flush=True)
 
     for tag, m in ((("LIVE", exp.diffusion), ("EMA", exp.ema))
                    if not cli.skip_offline else ()):

@@ -1,0 +1,8 @@
+{
+ "pid": 26376,
+ "stage": "uwm:uwm",
+ "host": "MEL05962D.me.gatech.edu",
+ "acquired_at": 1789596038.5977805,
+ "acquired_iso": "2026-09-16T18:00:38",
+ "command": "experiments/policy_improvement/tal_followup/uwm/run_pilot.py"
+}
