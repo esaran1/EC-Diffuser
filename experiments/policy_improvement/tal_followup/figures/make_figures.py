@@ -217,10 +217,12 @@ def fig_adaptation():
         ax.grid(alpha=0.25)
         despine(ax)
         ax.legend(fontsize=9, frameon=False)
-    axes[1].annotate("indistinguishable from\nthe control through 2000",
-                     xy=(2000, corrs[2] if len(corrs) > 2 else corrs[-1]),
-                     xytext=(2300, 0.55), fontsize=9, color=MUTED,
-                     arrowprops=dict(arrowstyle="-", color=MUTED, lw=1))
+    if len(corrs) > 2:
+        axes[1].annotate("indistinguishable from the\ncontrol through step 2000",
+                         xy=(1500, corrs[1]), xytext=(2600, corrs[1] - 0.02),
+                         fontsize=9.5, color=MUTED, ha="left", va="top",
+                         arrowprops=dict(arrowstyle="-", color=MUTED, lw=1,
+                                         connectionstyle="arc3,rad=0.2"))
     fig.suptitle("Fig 4. Adaptation to off-diagonal times happens LATE\n"
                  "stopping at 2000 steps would have concluded it does not work",
                  fontsize=12, y=1.05)
