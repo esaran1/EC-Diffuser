@@ -13,3 +13,5 @@ from .fast_generation import (
     ShortcutModel,
 )
 from .pint import AdaLNPINTDenoiser, IntervalAdaLNPINTDenoiser
+from .twotime_pint import TwoTimePINTDenoiser
+from .uwm_flow import UWMConditionalFlowMatching

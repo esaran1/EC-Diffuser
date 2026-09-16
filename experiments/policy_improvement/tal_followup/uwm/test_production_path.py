@@ -70,11 +70,9 @@ def main():
 
     print("\n=== 6. WRAPPER ACCEPTS THE PRODUCED KWARGS ===")
     import torch  # noqa: E402
-    sys.path.insert(0, "experiments/policy_improvement/two_time_flow")
-    sys.path.insert(0, "experiments/policy_improvement/tal_followup/uwm")
     from diffuser.models.pint import AdaLNPINTDenoiser      # noqa: E402
-    from twotime_denoiser import TwoTimePINTDenoiser        # noqa: E402
-    from uwm_flow import UWMConditionalFlowMatching         # noqa: E402
+    from diffuser.models.twotime_pint import TwoTimePINTDenoiser  # noqa: E402
+    from diffuser.models.uwm_flow import UWMConditionalFlowMatching  # noqa: E402
 
     torch.manual_seed(0)
     m = TwoTimePINTDenoiser(features_dim=10, action_dim=3, hidden_dim=32,

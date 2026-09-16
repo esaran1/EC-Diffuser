@@ -10,12 +10,10 @@ import sys
 import torch
 
 sys.path.insert(0, "diffuser")
-sys.path.insert(0, "experiments/policy_improvement/two_time_flow")
-sys.path.insert(0, "experiments/policy_improvement/tal_followup/uwm")
 from diffuser.models.pint import AdaLNPINTDenoiser                 # noqa: E402
 from diffuser.models.flow_matching import ConditionalFlowMatching  # noqa: E402
-from twotime_denoiser import TwoTimePINTDenoiser                   # noqa: E402
-from uwm_flow import UWMConditionalFlowMatching                    # noqa: E402
+from diffuser.models.twotime_pint import TwoTimePINTDenoiser       # noqa: E402
+from diffuser.models.uwm_flow import UWMConditionalFlowMatching    # noqa: E402
 
 AD, OD, H = 3, 480, 5
 TD = AD + OD
