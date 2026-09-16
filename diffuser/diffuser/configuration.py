@@ -23,8 +23,12 @@ def diffusion_wrapper_kwargs(args, observation_dim, action_dim):
     # whitelist, so anything omitted silently falls back to the wrapper's
     # constructor default. Omitting them made every loss arm train arm A's
     # objective and produce byte-identical checkpoints.
+    # Two-time / UWM knobs (tal_followup program). Same whitelist hazard: if
+    # p_diag were omitted here, a "faithful UWM" arm would silently train with
+    # the wrapper default and be indistinguishable from the control.
     for _k in ("mask_terminal_action", "lambda_action",
-               "denominator_ignores_terminal_mask"):
+               "denominator_ignores_terminal_mask",
+               "p_diag", "adaln_state_weight"):
         if hasattr(args, _k):
             kwargs[_k] = getattr(args, _k)
     return kwargs
