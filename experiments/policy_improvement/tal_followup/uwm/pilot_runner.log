@@ -30,3 +30,11 @@
 [2026-09-16T19:11:11] arm uwm rc=0
 [2026-09-16T19:11:11] arm uwm complete, sha=bc2027e4d112ac7f
 [2026-09-16T19:11:11] --- training arm ctl (p_diag=1.0) ---
+[2026-09-16T19:13:54] [gpu_lease] GPU stable-clean for 180s
+[2026-09-16T19:13:54] [gpu_lease] lease acquired (stage uwm:ctl, pid 34570); launching
+[2026-09-18T16:58:03] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T16:58:04] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T16:58:04] foreign GPU MiB at start: 0
+[2026-09-18T16:58:04] already spent in THIS program: 0.9833 GPU-h
+[2026-09-18T16:58:04] uwm already complete
+[2026-09-18T16:58:04] --- training arm ctl (p_diag=1.0) ---

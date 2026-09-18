@@ -89,3 +89,23 @@ Extension arm hashes:
 |---|---|---|
 | uwm | `a4f24d23c5350c4b` | `bc2027e4d112ac7f` |
 | ctl | `6bb31652c5323f77` | *(pending)* |
+
+---
+
+## Interruption on 2026-09-16 19:14 — recorded, not hidden
+
+The control arm's extension was killed ~step 200 when the driving session
+ended. Consequences, all recorded:
+
+| item | value |
+|---|--:|
+| GPU time consumed before the kill | **0.0033 GPU-h** |
+| classification | **WASTED / INVALID** — partial run, no usable checkpoint |
+| artifacts | `state_0.pt`, `state_early10.pt` only; **deleted and rerun from scratch** |
+| stale lease | held by dead PID 34570; removed **after** verifying the PID was dead, per the lease's documented stale policy (a live-PID lock is never broken) |
+
+The UWM arm's extension had already completed cleanly (`bc2027e4d112ac7f`)
+before the interruption, so only the control arm is rerun. Both arms still
+receive identical optimizer budgets, so the matched comparison is preserved.
+
+**Program total including the waste: 1.0011 of 10.0 GPU-h.**
