@@ -64,5 +64,60 @@ a bottleneck just to have an arm to report.
 
 ---
 
-## Slide 3 — The pilot, and what it can and cannot tell us ⏳
+## Slide 3 — Independent-time training works; state-leading inference does not
+
+**Two arms differing in exactly one value** (`p_diag`): same class, same
+denoiser, same parameters, same canonical warm-start bytes, same optimizer and
+data stream. Verified at runtime — the UWM arm logged `frac_diag = 0.0000`, the
+control `1.0000`.
+
+### It adapts, decisively
+
+| action block | UWM | control |
+|---|--:|--:|
+| off-diagonal / diagonal error | **1.558** | 3.003 |
+| corr(distance from diagonal, error) | **+0.356** | +0.692 |
+| **inverse-model corner** (state clean, action noisy) | **0.2475** | 1.5941 → **6.4× better** |
+| forward-dynamics corner | **0.2737** | 1.0833 → **4.0× better** |
+
+The control — which never saw an off-diagonal time — reproduces the old warm-start
+branch's failure signature. The trained model roughly halves it.
+
+### But the diagonal is still the best path
+
+| path (UWM arm, equal model calls) | action error @ step 0 |
+|---|--:|
+| **P0 diagonal** | **0.0160** |
+| P2 action-leads | 0.0550 |
+| P1 state-leads | 0.1169 |
+| P3 state-first axis | 0.2508 |
+
+> Independent-time **training** buys off-diagonal **robustness**. It does not buy
+> a better **operating point**. Offline, state-leading inference is not
+> supported.
+
+### The finding I'd flag hardest
+
+Through step 2000 the adaptation metric was **indistinguishable from the
+never-adapted control** (+0.695 vs +0.692). It only moved between 2000 and 5000.
+
+**At the 2,000-step budget we used in the loss program, we would have concluded
+this does not work.**
+
+**Script.** Two arms, one difference: whether the state and action diffusion
+times are sampled independently or tied. Everything else identical, verified in
+the training logs. The independent-time arm genuinely adapts — the corner where
+the state is clean and the action is noisy, which is the inverse-model regime,
+improves six-point-four times over the control. That's the regime Tal was asking
+about, and it's real. But here's the part that argues against the exciting
+version of the story: on both arms, the plain diagonal is still the best path to
+actually generate an action. The non-diagonal paths are three to sixteen times
+worse at equal compute. So independent-time training buys robustness across the
+time square, not a better place to stand in it. And the thing I'd flag hardest:
+through two thousand steps this experiment looked like a failure — the adaptation
+metric was sitting right on top of the control. It only separated between two and
+five thousand. At the budget we used for the loss experiments, we'd have called
+this dead. Closed-loop control numbers aren't in yet, so none of this is a
+performance claim — and a foreign job is currently on the GPU, so the last arm is
+waiting rather than competing with someone else's work.
 
