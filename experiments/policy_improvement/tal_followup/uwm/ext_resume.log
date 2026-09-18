@@ -6,3 +6,6 @@
 [2026-09-18T16:58:04] --- training arm ctl (p_diag=1.0) ---
 [2026-09-18T17:00:46] [gpu_lease] GPU stable-clean for 180s
 [2026-09-18T17:00:46] [gpu_lease] lease acquired (stage uwm:ctl, pid 46210); launching
+[2026-09-18T17:10:03] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T17:10:03] arm ctl rc=0
+[2026-09-18T17:10:03] arm ctl produced no final checkpoint -- NOT complete
