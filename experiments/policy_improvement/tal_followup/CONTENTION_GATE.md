@@ -77,3 +77,40 @@ When the GPU is clean, the registered order is:
 
 The lease's stable-clean protocol (10 probes × 18 s) already enforces waiting for
 a genuinely idle GPU, so the resumption is safe to arm and leave.
+
+---
+
+## Resume-validity audit — RESTART, do not resume
+
+`state_contention_2261.pt` was audited against the seven components a valid
+mid-extension resume requires:
+
+| component | status | evidence |
+|---|---|---|
+| model | **restored** | 282 entries |
+| EMA | **restored** | 282 entries |
+| optimizer moments | **restored** | 269 param states with `exp_avg`, `exp_avg_sq`, `step` |
+| LR scheduler / warmup | **restored** | warmup is a *pure function of `self.step`* (`training.py:238-241`), not a stateful object — restoring `step` restores the schedule exactly |
+| local step | **restored** | 2261 |
+| RNG states | **restored** | `torch_cpu`, `torch_cuda_all`, `numpy`, `python`, `dataloader_generator` |
+| **dataloader position** | **NOT RESTORED** | see below |
+
+**The dataloader position is not exactly recoverable.** Torch's `RandomSampler`
+draws a fresh per-epoch base seed via
+`torch.empty((), dtype=int64).random_(generator=g)` and derives the permutation
+from it internally. That seed cannot be reconstructed from the generator state.
+
+The codebase documents this itself (`diffuser/utils/training.py`):
+
+> "That per-epoch seed is NOT recoverable from the generator state, so restoring
+> the generator does not reproduce the in-flight epoch's order... we do **NOT**
+> claim bit-exact continuation of the data order."
+
+**Decision: 6 of 7 is not enough.** Resuming would give the control arm a
+different data trajectory from the treatment arm, defeating the matched control.
+The control extension **restarts from the same 5k parent**. The 0.1547 GPU-h is
+accepted as waste.
+
+The partial run is **preserved, not deleted**, at
+`data/panda_push/uwm_ctl_ext_PARTIAL_contended/` with a `WHY_PARTIAL.txt`
+recording why it is invalid as a scientific arm.
