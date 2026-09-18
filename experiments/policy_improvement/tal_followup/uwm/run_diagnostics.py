@@ -21,8 +21,14 @@ RUNDIR = "3C_dlp_adalnpint_randcolor_H5_T4_seed42"
 CANON = ("data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/"
          "state_400000.pt")
 
-ARMS = {"uwm": "data/panda_push/uwm_uwm/" + RUNDIR,
-        "ctl": "data/panda_push/uwm_ctl/" + RUNDIR}
+import os as _os
+_EXT = _os.environ.get("UWM_EXT") == "1"
+if _EXT:
+    ARMS = {"uwm_ext": "data/panda_push/uwm_uwm_ext/" + RUNDIR,
+            "ctl_ext": "data/panda_push/uwm_ctl_ext/" + RUNDIR}
+else:
+    ARMS = {"uwm": "data/panda_push/uwm_uwm/" + RUNDIR,
+            "ctl": "data/panda_push/uwm_ctl/" + RUNDIR}
 
 ENV = ("cd {root} && export PYTHONPATH={root}:{root}/diffuser && "
        "export LD_LIBRARY_PATH=/home/jren313/miniconda3/envs/ecdiffuser-linux/lib:"
@@ -54,18 +60,19 @@ def main():
                     "--out {d}/replay_{arm}.json --n_batch 64 --steps 4 "
                     "--canonical {canon}"
                     .format(py=PY, d=D, sp=sp, arm=arm, canon=CANON))
-    # adaptation-over-training: field at intermediate checkpoints of the UWM arm
-    for ep in ("500", "1000", "2000"):
-        cmds.append("{py} {d}/field_diagnostics.py --savepath {sp} "
-                    "--epoch {ep} --out {d}/field_uwm_{ep}.json --n_batch 32"
-                    .format(py=PY, d=D, sp=ARMS["uwm"], ep=ep))
-    # registers diagnostic on the canonical-derived control (diagonal model)
-    cmds.append("{py} {d}/../registers/register_diagnostic.py --savepath {sp} "
-                "--epoch final --out {d}/../registers/register_ctl.json "
-                "--n_batch 32".format(py=PY, d=D, sp=ARMS["ctl"]))
+    if not _EXT:
+        # adaptation-over-training: field at intermediate UWM checkpoints
+        for ep in ("500", "1000", "2000"):
+            cmds.append("{py} {d}/field_diagnostics.py --savepath {sp} "
+                        "--epoch {ep} --out {d}/field_uwm_{ep}.json --n_batch 32"
+                        .format(py=PY, d=D, sp=ARMS["uwm"], ep=ep))
+        # registers diagnostic on the diagonal control
+        cmds.append("{py} {d}/../registers/register_diagnostic.py --savepath {sp} "
+                    "--epoch final --out {d}/../registers/register_ctl.json "
+                    "--n_batch 32".format(py=PY, d=D, sp=ARMS["ctl"]))
 
     script = " && ".join(cmds)
-    rc = run_guarded("diag:stageE",
+    rc = run_guarded("diag:stageE_ext" if _EXT else "diag:stageE",
                      ENV + "(" + script + ") > linux_logs/tf_diagnostics.txt 2>&1",
                      log=log)
     log("diagnostics rc={}".format(rc))

@@ -38,3 +38,5 @@
 [2026-09-18T16:58:04] already spent in THIS program: 0.9833 GPU-h
 [2026-09-18T16:58:04] uwm already complete
 [2026-09-18T16:58:04] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:00:46] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:00:46] [gpu_lease] lease acquired (stage uwm:ctl, pid 46210); launching
