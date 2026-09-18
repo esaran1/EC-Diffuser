@@ -29,6 +29,31 @@ together against the single 10.0 cap.
 Arm 1 came in at 0.326 GPU-h against a 0.42 estimate, so the projection below
 uses the measured figure.
 
+## Actual spend to date (measured from lease acquire/release pairs)
+
+| item | GPU-h | class |
+|---|--:|---|
+| pilot arm uwm (5k) | 0.3258 | valid training |
+| pilot arm ctl (5k) | 0.3258 | valid training |
+| Stage-E diagnostics (all arms, one lease) | 0.0144 | valid diagnostics |
+| extension arm uwm (5k→10k) | 0.3317 | valid training |
+| **extension arm ctl — killed by session death** | **0.0033** | **WASTED / INVALID** |
+| extension arm ctl (rerun) | *in progress* | valid training |
+| **TOTAL SPENT** | **1.0011** | of 10.0 |
+| **REMAINING** | **8.9989** | |
+
+The 0.0033 GPU-h is recorded as waste, not absorbed silently. Its partial
+artifacts were deleted and the arm rerun from scratch rather than resumed
+mid-stream.
+
+## Stages closed WITHOUT spending their budget
+
+| stage | status | budget freed |
+|---|---|--:|
+| F — harder multi-object task | **BLOCKED** (~33 GPU-h needed, 3.3× the cap) | — |
+| G — register implementation pilot | **NOT JUSTIFIED** (no artifact found) | ~0.99 |
+| H — action-latent bottleneck | **NOT AUTHORIZED** by its own criterion (75.7% vs ≥99%) | ~0.99 |
+
 ## Projection with Stage F blocked
 
 | stage | GPU-h | cumulative |
