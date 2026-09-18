@@ -1,14 +1,80 @@
 # Tal-followup program — result
 
-**Status: IN PROGRESS.** Sections marked ⏳ are awaiting empirical results and
-will be filled from committed artifacts. Nothing below is written ahead of its
-data.
+**Status: PARTIAL — blocked on GPU contention from a foreign user job.**
+Sections marked ⏳ await GPU work that cannot currently run. Nothing below is
+written ahead of its data.
+
+**What is complete and matched:** the 5,000-step pilot pair (UWM vs matched
+diagonal control) and its full Stage-E analysis. Every finding in §7 rests on
+that intact pair.
+
+**What is blocked:** the §23 extension to 10,000 steps completed for the
+treatment arm but was stopped at step 2261/5000 for the control when a foreign
+GPU job appeared. The matched 10k comparison is therefore unavailable —
+reporting a 10k treatment against a 5k control would confound "trained
+off-diagonal" with "trained longer". Details and resumption rule in
+`CONTENTION_GATE.md`.
 
 Central question (Tal): **what is action denoising actually buying us?**
 
 ---
 
-## 1. Executive summary ⏳
+## 1. Executive summary
+
+**Tal's question — what is action denoising buying us? — is not yet answered at
+the control level, but three registered stages resolved on evidence and one
+produced a decisive mechanistic result.**
+
+### The headline finding
+
+Training EC-Diffuser on **independent state/action diffusion times** (faithful
+UWM, `p_diag = 0.0`) genuinely adapts the model to the off-diagonal regime,
+against a matched diagonal control that differs in **exactly one value**:
+
+| metric (action block) | UWM | matched control |
+|---|--:|--:|
+| off-diagonal / diagonal error | **1.558** | 3.003 |
+| corr(\|t_s − t_a\|, error) | **+0.356** | +0.692 |
+| inverse-model corner (state clean, action noisy) | **0.2475** | 1.5941 (**6.4×**) |
+| forward-dynamics corner | **0.2737** | 1.0833 (**4.0×**) |
+
+The control reproduces the closed warm-start branch's non-adaptation signature;
+the UWM arm roughly halves it. **The out-of-distribution-time confound that
+invalidated that branch is removed by training, not assumed away.**
+
+### The finding that cuts against the interesting hypothesis
+
+**On both arms, the plain diagonal is the best inference path** for predicting
+the executed action, at equal model calls. The UWM arm beats the control on
+every non-diagonal path, but non-diagonal paths are 3–16× worse than the
+diagonal on the same model.
+
+> Offline, **"state-leading inference improves action prediction" is NOT
+> supported.** Independent-time *training* buys off-diagonal *robustness*; it
+> does not buy a better operating point.
+
+### The methodological finding that may outlast both
+
+`corr(dist, err)` sat at **+0.695 / +0.705 / +0.695** through step 2000 —
+indistinguishable from the never-adapted control's **+0.692** — and only
+collapsed to +0.356 between 2000 and 5000.
+
+> At the 2,000-step budget the prior loss program used, this experiment would
+> have concluded that off-diagonal training does not work. **Adaptation is late
+> and nonlinear.**
+
+### Stages closed on evidence, without spending their budget
+
+| stage | outcome |
+|---|---|
+| F — harder multi-object task | **BLOCKED**: no pretrained policy exists for any other task; creating one costs ~33 GPU-h vs a 10.0 cap |
+| G — register implementation | **NOT JUSTIFIED**: no artifact found (max/mean ≤ 2.53 vs Darcet's ~10×) |
+| H — action-latent bottleneck | **NOT AUTHORIZED** by its own predeclared criterion (75.7% vs required ≥99%) |
+
+### Not yet answered
+
+The **closed-loop** comparison — the only thing that can support a control claim
+(§48) — has not run. Nothing here is a performance claim.
 
 ---
 
