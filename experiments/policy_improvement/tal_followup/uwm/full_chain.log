@@ -1,0 +1,48 @@
+[2026-09-18T17:24:52] === FULL CHAIN ARMED; waiting for a clean GPU (foreign jobs never touched) ===
+[2026-09-18T17:24:52] GPU clear; proceeding (lease re-verifies stable-clean)
+[2026-09-18T17:24:52] --- step 1: control extension 5k->10k (restart from 5k parent) ---
+[2026-09-18T17:24:52] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T17:24:52] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T17:24:52] foreign GPU MiB at start: 0
+[2026-09-18T17:24:52] already spent in THIS program: 1.1381 GPU-h
+[2026-09-18T17:24:52] uwm already complete
+[2026-09-18T17:24:52] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:27:34] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:27:34] [gpu_lease] lease acquired (stage uwm:ctl, pid 78713); launching
+[2026-09-18T17:30:50] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T17:30:50] arm ctl rc=0
+[2026-09-18T17:30:50] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-18T17:30:50] control extension rc=1
+[2026-09-18T17:30:50] HARD STOP at step 1
+[2026-09-18T17:31:48] === FULL CHAIN ARMED; waiting for a clean GPU (foreign jobs never touched) ===
+[2026-09-18T17:35:49] GPU clear; proceeding (lease re-verifies stable-clean)
+[2026-09-18T17:35:49] --- step 1: control extension 5k->10k (restart from 5k parent) ---
+[2026-09-18T17:35:49] control extension attempt 1
+[2026-09-18T17:35:49] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T17:35:49] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T17:35:49] foreign GPU MiB at start: 0
+[2026-09-18T17:35:49] already spent in THIS program: 1.1925 GPU-h
+[2026-09-18T17:35:49] uwm already complete
+[2026-09-18T17:35:49] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:38:32] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:38:32] [gpu_lease] lease acquired (stage uwm:ctl, pid 90649); launching
+[2026-09-18T17:49:50] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T17:49:50] arm ctl rc=0
+[2026-09-18T17:49:50] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-18T17:49:50] control extension attempt 1 rc=1
+[2026-09-18T17:49:50] attempt 1 did not finish (likely foreign contention); waiting for a clean GPU
+[2026-09-18T17:54:50] quarantined partial attempt -> _contended_attempts/ctl_ext_175450
+[2026-09-18T17:54:50] control extension attempt 2
+[2026-09-18T17:54:50] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T17:54:51] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T17:54:51] foreign GPU MiB at start: 0
+[2026-09-18T17:54:51] already spent in THIS program: 1.3808 GPU-h
+[2026-09-18T17:54:51] uwm already complete
+[2026-09-18T17:54:51] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:57:33] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:57:33] [gpu_lease] lease acquired (stage uwm:ctl, pid 135874); launching
+[2026-09-18T18:00:49] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T18:00:49] arm ctl rc=0
+[2026-09-18T18:00:49] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-18T18:00:49] control extension attempt 2 rc=1
+[2026-09-18T18:00:49] attempt 2 did not finish (likely foreign contention); waiting for a clean GPU

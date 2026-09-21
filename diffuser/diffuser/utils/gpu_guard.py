@@ -10,14 +10,41 @@ import subprocess
 import time
 
 
-def _query(fields, extra=None):
+class MonitoringUnavailable(RuntimeError):
+    """nvidia-smi could not be queried, so contention cannot be ruled out.
+
+    Raised rather than returning an empty list: an empty list is
+    indistinguishable from "no foreign jobs", which would make this guard
+    fail OPEN exactly when it is blind. Observed for real on 2026-09-21, when
+    a driver/library version mismatch made nvidia-smi exit 18 while CUDA
+    compute still worked.
+    """
+
+
+def _query(fields, extra=None, strict=False):
     cmd = ["nvidia-smi", f"--query-{'compute-apps' if extra else 'gpu'}={fields}",
            "--format=csv,noheader,nounits"]
     try:
         out = subprocess.check_output(cmd, stderr=subprocess.DEVNULL, timeout=20)
-        return [l.strip() for l in out.decode().splitlines() if l.strip()]
-    except Exception:
+        text = out.decode()
+    except Exception as exc:
+        if strict:
+            raise MonitoringUnavailable(str(exc))
         return []
+    if "NVML" in text or "Failed" in text:
+        if strict:
+            raise MonitoringUnavailable(text.strip().splitlines()[0])
+        return []
+    return [l.strip() for l in text.splitlines() if l.strip()]
+
+
+def monitoring_ok():
+    """True only if nvidia-smi can actually be queried right now."""
+    try:
+        _query("index,name", strict=True)
+        return True
+    except MonitoringUnavailable:
+        return False
 
 
 def compute_apps():
@@ -45,7 +72,18 @@ def snapshot():
 
 
 def require_uncontended(min_free_mib_threshold=1000, allow_pids=()):
-    """Raise unless the GPU is free of foreign compute processes at launch."""
+    """Raise unless the GPU is VERIFIABLY free of foreign compute processes.
+
+    "Verifiably" is load-bearing: if nvidia-smi cannot be queried, an empty
+    compute-app list means "we are blind", not "the GPU is free". Launching
+    then could silently overlap a foreign user's job, which is exactly what
+    this guard exists to prevent. Fail closed.
+    """
+    if not monitoring_ok():
+        raise MonitoringUnavailable(
+            "nvidia-smi cannot be queried (driver/library mismatch?), so GPU "
+            "contention cannot be ruled out. Refusing to launch: a blind guard "
+            "must fail closed, never open.")
     snap = snapshot()
     mine = set(allow_pids) | {os.getpid()}
     foreign = [a for a in snap["compute_apps"]

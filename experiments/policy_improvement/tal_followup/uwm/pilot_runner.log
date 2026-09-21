@@ -43,3 +43,36 @@
 [2026-09-18T17:10:03] [gpu_lease] lease released (stage uwm:ctl)
 [2026-09-18T17:10:03] arm ctl rc=0
 [2026-09-18T17:10:03] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-18T17:24:52] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T17:24:52] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T17:24:52] foreign GPU MiB at start: 0
+[2026-09-18T17:24:52] already spent in THIS program: 1.1381 GPU-h
+[2026-09-18T17:24:52] uwm already complete
+[2026-09-18T17:24:52] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:27:34] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:27:34] [gpu_lease] lease acquired (stage uwm:ctl, pid 78713); launching
+[2026-09-18T17:30:50] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T17:30:50] arm ctl rc=0
+[2026-09-18T17:30:50] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-18T17:35:49] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T17:35:49] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T17:35:49] foreign GPU MiB at start: 0
+[2026-09-18T17:35:49] already spent in THIS program: 1.1925 GPU-h
+[2026-09-18T17:35:49] uwm already complete
+[2026-09-18T17:35:49] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:38:32] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:38:32] [gpu_lease] lease acquired (stage uwm:ctl, pid 90649); launching
+[2026-09-18T17:49:50] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T17:49:50] arm ctl rc=0
+[2026-09-18T17:49:50] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-18T17:54:50] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-18T17:54:51] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-18T17:54:51] foreign GPU MiB at start: 0
+[2026-09-18T17:54:51] already spent in THIS program: 1.3808 GPU-h
+[2026-09-18T17:54:51] uwm already complete
+[2026-09-18T17:54:51] --- training arm ctl (p_diag=1.0) ---
+[2026-09-18T17:57:33] [gpu_lease] GPU stable-clean for 180s
+[2026-09-18T17:57:33] [gpu_lease] lease acquired (stage uwm:ctl, pid 135874); launching
+[2026-09-18T18:00:49] [gpu_lease] lease released (stage uwm:ctl)
+[2026-09-18T18:00:49] arm ctl rc=0
+[2026-09-18T18:00:49] arm ctl produced no final checkpoint -- NOT complete
