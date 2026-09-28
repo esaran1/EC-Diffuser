@@ -76,3 +76,10 @@
 [2026-09-18T18:00:49] [gpu_lease] lease released (stage uwm:ctl)
 [2026-09-18T18:00:49] arm ctl rc=0
 [2026-09-18T18:00:49] arm ctl produced no final checkpoint -- NOT complete
+[2026-09-21T16:39:18] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-21T16:39:18] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-21T16:39:18] foreign GPU MiB at start: 0
+[2026-09-21T16:39:18] already spent in THIS program: 1.4353 GPU-h
+[2026-09-21T16:39:18] uwm already complete
+[2026-09-21T16:39:18] --- training arm ctl (p_diag=1.0) ---
+[2026-09-21T16:41:07] [gpu_lease] clean streak broken at 6 (foreign 5876 MiB)

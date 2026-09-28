@@ -48,12 +48,24 @@ FOREIGN_MIB_THRESHOLD = 1000
 def foreign_mib(exclude_pids=()):
     """Total GPU memory held by compute apps that are not ours."""
     try:
-        out = subprocess.run(
+        proc = subprocess.run(
             ["nvidia-smi", "--query-compute-apps=pid,used_memory",
              "--format=csv,noheader,nounits"],
-            capture_output=True, text=True, timeout=30).stdout
+            capture_output=True, text=True, timeout=30)
     except Exception:
         return -1                      # unknown: treat as dirty, never as clean
+    # nvidia-smi does NOT raise on failure: it exits nonzero and prints the
+    # error to STDOUT (e.g. "Failed to initialize NVML: Driver/library version
+    # mismatch", exit 18). subprocess.run does not raise on a nonzero exit, so
+    # the except branch above never fired and the parse loop simply found no
+    # rows -- returning 0, i.e. "clean GPU", while monitoring was in fact
+    # BLIND. That is a fail-OPEN hole in a guard whose whole purpose is to
+    # fail closed. Check the return code and the payload explicitly.
+    if proc.returncode != 0:
+        return -1                      # monitoring unavailable -> treat as dirty
+    out = proc.stdout
+    if "NVML" in out or "Failed" in out:
+        return -1                      # error text on stdout -> treat as dirty
     total = 0
     for line in out.strip().splitlines():
         if not line.strip():

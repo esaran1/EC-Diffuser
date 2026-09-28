@@ -77,21 +77,22 @@ def sha256_of(path):
 
 
 def spent_gpu_h():
-    """GPU-h charged to THIS program only, from its own log."""
-    import re
-    from datetime import datetime as dt
-    if not os.path.exists(LOG):
+    """Cumulative program spend across ALL runner logs (valid, wasted,
+    partial and contended alike). Delegates to program_spend so the 10 GPU-h
+    cap is enforced against the true total and never resets on restart."""
+    try:
+        from program_spend import spent
+        return spent()
+    except Exception:
+        # fail conservative: if the shared counter is unavailable, fall back to
+        # the recorded floor rather than reporting a smaller number
+        f = os.path.join(HERE, "SPEND_FLOOR.txt")
+        if os.path.exists(f):
+            try:
+                return float(open(f).read().strip())
+            except ValueError:
+                pass
         return 0.0
-    acq, tot = {}, 0.0
-    for line in open(LOG):
-        m = re.search(r"\[([0-9T:\-]+)\].*lease acquired \(stage ([^,]+),", line)
-        if m:
-            acq[m.group(2)] = dt.fromisoformat(m.group(1))
-        m = re.search(r"\[([0-9T:\-]+)\].*lease released \(stage ([^)]+)\)", line)
-        if m and m.group(2) in acq:
-            tot += (dt.fromisoformat(m.group(1))
-                    - acq.pop(m.group(2))).total_seconds() / 3600
-    return tot
 
 
 def arm_dir(arm):

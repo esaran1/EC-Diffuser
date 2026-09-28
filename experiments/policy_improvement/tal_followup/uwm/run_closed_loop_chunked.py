@@ -46,24 +46,18 @@ def log(msg):
 
 
 def program_spent():
-    import re
-    from datetime import datetime as dt
-    total = 0.0
-    for name in ("pilot_runner.log", "closed_loop.log", "diagnostics.log",
-                 "full_chain.log"):
-        p = os.path.join(HERE, name)
-        if not os.path.exists(p):
-            continue
-        acq = {}
-        for line in open(p):
-            m = re.search(r"\[([0-9T:\-]+)\].*lease acquired \(stage ([^,]+),", line)
-            if m:
-                acq[m.group(2)] = dt.fromisoformat(m.group(1))
-            m = re.search(r"\[([0-9T:\-]+)\].*lease released \(stage ([^)]+)\)", line)
-            if m and m.group(2) in acq:
-                total += (dt.fromisoformat(m.group(1))
-                          - acq.pop(m.group(2))).total_seconds() / 3600
-    return total
+    """Cumulative program spend across ALL runner logs. See program_spend.py."""
+    try:
+        from program_spend import spent
+        return spent()
+    except Exception:
+        f = os.path.join(HERE, "SPEND_FLOOR.txt")
+        if os.path.exists(f):
+            try:
+                return float(open(f).read().strip())
+            except ValueError:
+                pass
+        return 0.0
 
 
 def set_status(tag, s):

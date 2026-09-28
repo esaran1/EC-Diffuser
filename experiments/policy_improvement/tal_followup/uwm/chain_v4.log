@@ -1,0 +1,11 @@
+[2026-09-21T16:39:16] === CHAIN V4: verifying monitoring before ANY GPU work ===
+[2026-09-21T16:39:18] monitoring VERIFIED: nvidia-smi rc=0, monitoring_ok, foreign_mib real
+[2026-09-21T16:39:18] --- step 2: control extension 5k->10k (restart from valid 5k parent) ---
+[2026-09-21T16:39:18] control 10k attempt 1
+[2026-09-21T16:39:18] === UWM PILOT (program cap 10.00 GPU-h) ===
+[2026-09-21T16:39:18] canonical source sha256 = 861dc34434474455a25dc3a1
+[2026-09-21T16:39:18] foreign GPU MiB at start: 0
+[2026-09-21T16:39:18] already spent in THIS program: 1.4353 GPU-h
+[2026-09-21T16:39:18] uwm already complete
+[2026-09-21T16:39:18] --- training arm ctl (p_diag=1.0) ---
+[2026-09-21T16:41:07] [gpu_lease] clean streak broken at 6 (foreign 5876 MiB)

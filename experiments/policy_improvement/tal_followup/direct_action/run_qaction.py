@@ -50,24 +50,20 @@ def sha256_of(path):
 
 
 def program_spent():
-    import re
-    from datetime import datetime as dt
-    total = 0.0
-    for p in (os.path.join(UWM, "pilot_runner.log"),
-              os.path.join(UWM, "closed_loop.log"),
-              os.path.join(UWM, "diagnostics.log"), LOG):
-        if not os.path.exists(p):
-            continue
-        acq = {}
-        for line in open(p):
-            m = re.search(r"\[([0-9T:\-]+)\].*lease acquired \(stage ([^,]+),", line)
-            if m:
-                acq[m.group(2)] = dt.fromisoformat(m.group(1))
-            m = re.search(r"\[([0-9T:\-]+)\].*lease released \(stage ([^)]+)\)", line)
-            if m and m.group(2) in acq:
-                total += (dt.fromisoformat(m.group(1))
-                          - acq.pop(m.group(2))).total_seconds() / 3600
-    return total
+    """Cumulative program spend across ALL runner logs. See uwm/program_spend.py."""
+    try:
+        import sys as _s
+        _s.path.insert(0, UWM)
+        from program_spend import spent
+        return spent()
+    except Exception:
+        f = os.path.join(UWM, "SPEND_FLOOR.txt")
+        if os.path.exists(f):
+            try:
+                return float(open(f).read().strip())
+            except ValueError:
+                pass
+        return 0.0
 
 
 def main():
