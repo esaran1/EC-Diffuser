@@ -122,7 +122,7 @@ def main():
             ENV + ("WANDB_MODE=disabled WANDB_SILENT=true {py} "
                    "experiments/policy_improvement/phase2_diagnostics.py "
                    "--loadpath {lp} --epoch {ep} --tag {tag} --skip-offline "
-                   "--only-sets {s} --merge "
+                   "--only-sets {s} --merge --trace "
                    "> linux_logs/{tag}_{s}.txt 2>&1").format(
                        py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s),
             log=log)

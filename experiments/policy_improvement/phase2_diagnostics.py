@@ -72,8 +72,33 @@ def replay_error(diff, ds, dev, nfe=4, n_batches=12):
     return float(np.mean(ae)), float(np.mean(se))
 
 
-def control(diff, env, args, ep, dev, norm):
-    """Closed-loop on one frozen scenario set. success = max_obj_dist <= 0.04."""
+def summarize_trace(tr, thresh):
+    d = np.concatenate(tr["d"]); m = np.concatenate(tr["amag"])
+    hit = d <= thresh; reached = hit.any(1)
+    first = np.where(reached, hit.argmax(1), -1)
+    out = {"n": int(len(d)), "final_success": float((d[:, -1] <= thresh).mean()),
+           "reached_any": float(reached.mean()), "final_d_mean": float(d[:, -1].mean())}
+    if reached.any():
+        r = np.where(reached)[0]
+        post_m = [m[i, first[i]:].mean() for i in r]
+        pre_m = [m[i, :first[i]].mean() for i in r if first[i] > 0]
+        drift = [d[i, first[i]:].max() for i in r]
+        out.update({
+            "lost_after_reach": float((d[r, -1] > thresh).mean()),
+            "steps_to_first_reach": float(first[r].mean()),
+            "post_reach_action_mag": float(np.mean(post_m)),
+            "pre_reach_action_mag": float(np.mean(pre_m)) if pre_m else None,
+            "post_reach_max_d_mean": float(np.mean(drift)),
+        })
+    return out, d, m
+
+
+def control(diff, env, args, ep, dev, norm, trace=None):
+    """Closed-loop on one frozen scenario set. success = max_obj_dist <= 0.04.
+
+    trace (optional dict): per-step max object-goal distance and executed
+    action norm, read passively from the already-refreshed obs buffer. No RNG
+    is consumed and no simulation input changes, so the rollout is unaffected."""
     keys = ep["keys"]; nE = env.num_envs; n_ep = len(ep["init"]); succ = []
     for bs in range(0, n_ep, nE):
         idx = list(range(bs, min(bs + nE, n_ep))); na = len(idx)
@@ -81,6 +106,7 @@ def control(diff, env, args, ep, dev, norm):
         torch.manual_seed(NOISE_SEED + bs)
         obs = env.reset(set_init_states=array_to_state_dict(ep["init"][idx], keys, dev),
                         set_goal_states=array_to_state_dict(ep["goal"][idx], keys, dev))
+        _D, _M = [], []
         for _ in range(env.horizon):
             o = np.asarray(obs["achieved_goal"]).reshape(nE, -1)
             g = np.asarray(obs["desired_goal"]).reshape(nE, -1)
@@ -93,6 +119,14 @@ def control(diff, env, args, ep, dev, norm):
             xs = s.trajectories if hasattr(s, "trajectories") else s
             a = norm.unnormalize(xs[:, 0, :diff.action_dim].cpu().numpy(), "actions")
             obs, _, _, infos = env.step(torch.as_tensor(a, device=dev, dtype=torch.float32))
+            if trace is not None:
+                _st = entity_positions(env)
+                _D.append(np.linalg.norm(_st[:, 1:, :2] - np.asarray(ep["goal"][idx]),
+                                         axis=-1).max(axis=1))
+                _M.append(np.linalg.norm(a, axis=-1))
+        if trace is not None:
+            trace.setdefault("d", []).append(np.stack(_D, 1)[:na])
+            trace.setdefault("amag", []).append(np.stack(_M, 1)[:na])
         st = entity_positions(env)
         gp = np.asarray(ep["goal"][idx])
         d = np.linalg.norm(st[:, 1:, :2] - gp, axis=-1).max(axis=1)
@@ -109,6 +143,9 @@ def main():
     ap.add_argument("--only-sets", nargs="*", default=None,
                     help="restrict control eval to these set ids")
     ap.add_argument("--skip-offline", action="store_true")
+    ap.add_argument("--trace", action="store_true",
+                    help="record per-step object-goal distance and action norm "
+                         "(passive); adds a stopping/near-goal summary per set")
     ap.add_argument("--inference_path", default=None,
                     help="registered two-time path name (UWM models only). "
                          "Default None keeps the production diagonal sampler.")
@@ -212,6 +249,10 @@ def main():
             def _poll():
                 while not _mon["stop"]:
                     try:
+                        if not gpu_guard.monitoring_ok():
+                            # blind mid-set: cannot rule out contention -> invalid
+                            _mon["events"].append({"monitoring_lost": True,
+                                                   "iso": time.strftime("%H:%M:%S")})
                         for app in gpu_guard.compute_apps():
                             pid_, nm_, mib_ = app
                             if pid_ != me and mib_ >= 1000:
@@ -222,7 +263,8 @@ def main():
                         pass
                     time.sleep(5)
             _th = threading.Thread(target=_poll, daemon=True); _th.start()
-            sr, n = control(exp.ema, env, args, ep, dev, norm)
+            _tr = {} if cli.trace else None
+            sr, n = control(exp.ema, env, args, ep, dev, norm, trace=_tr)
             _mon["stop"] = True; _th.join(timeout=8)
             post = gpu_guard.snapshot()
             foreign_post = [a for a in post["compute_apps"]
@@ -238,6 +280,10 @@ def main():
                 start_iso=time.strftime("%Y-%m-%dT%H:%M:%S",
                                         time.localtime(t0)),
                 end_iso=time.strftime("%Y-%m-%dT%H:%M:%S"))
+            if _tr is not None:
+                _summ, _d, _m = summarize_trace(_tr, SUCCESS_THRESH)
+                res["control"][name]["trace"] = _summ
+                np.savez_compressed(f"{OUT}/{cli.tag}_{name}_trace.npz", d=_d, amag=_m)
             flag = "" if not bad else f"  !! CONTENDED (mid-set events={len(mid)}, max {_mon['max_foreign_mib']} MiB) - INVALID"
             print(f"control {name}: success={sr:.4f} (n={n}, {time.time()-t0:.0f}s)"
                   f"{flag}", flush=True)
