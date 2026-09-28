@@ -143,6 +143,10 @@ def main():
     ap.add_argument("--only-sets", nargs="*", default=None,
                     help="restrict control eval to these set ids")
     ap.add_argument("--skip-offline", action="store_true")
+    ap.add_argument("--num_entity", type=int, default=3,
+                    help="cubes in the environment. 3 = the trained task (default, "
+                         "unchanged); >3 = EC-Diffuser generalization to more cubes, "
+                         "using scenario sets generated for that cube count")
     ap.add_argument("--trace", action="store_true",
                     help="record per-step object-goal distance and action norm "
                          "(passive); adds a stopping/near-goal summary per set")
@@ -154,12 +158,16 @@ def main():
     cli = ap.parse_args()
     os.makedirs(OUT, exist_ok=True)
     args = Args(); utils.set_global_device(args.device)
+    args.num_entity = cli.num_entity
+    if cli.num_entity != 3:
+        global SETS
+        SETS = [(n, "c{}_{}".format(cli.num_entity, f)) for n, f in SETS]
     env = setup_isaac_env(args); env.horizon = args.max_episode_length
     exp = utils.load_diffusion("data", args.dataset, cli.loadpath, epoch=cli.epoch,
                                seed=args.seed, is_diffusion=True,
                                override_dataset_path="ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl")
     dev = args.device; norm = exp.dataset.normalizer
-    res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch)}
+    res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch), "num_entity": cli.num_entity}
     # Two-time path selection. Only UWM wrappers implement set_inference_path;
     # for every other model this is a no-op and the production sampler is used.
     if cli.inference_path:

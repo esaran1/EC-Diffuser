@@ -80,6 +80,8 @@ def main():
     ap.add_argument("--jobs", required=True, help="name:loadpath[:epoch]")
     ap.add_argument("--R", type=int, default=3)
     ap.add_argument("--max_attempts", type=int, default=40)
+    ap.add_argument("--num_entity", type=int, default=3)
+    ap.add_argument("--sets", default="E0,E1s,E2s,E3s,E4s")
     a = ap.parse_args()
 
     jobs = []
@@ -94,6 +96,8 @@ def main():
 
     # interleave models within each (realization, set) so no model sits
     # entirely earlier or later in wall-clock time
+    global SETS
+    SETS = tuple(a.sets.split(","))
     work = []
     for r in range(1, a.R + 1):
         for s in SETS:
@@ -122,9 +126,9 @@ def main():
             ENV + ("WANDB_MODE=disabled WANDB_SILENT=true {py} "
                    "experiments/policy_improvement/phase2_diagnostics.py "
                    "--loadpath {lp} --epoch {ep} --tag {tag} --skip-offline "
-                   "--only-sets {s} --merge --trace "
+                   "--only-sets {s} --merge --trace --num_entity {ne} "
                    "> linux_logs/{tag}_{s}.txt 2>&1").format(
-                       py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s),
+                       py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s, ne=a.num_entity),
             log=log)
         st = set_status(tag, s)
         log("  rc={} status={}".format(rc, st))
