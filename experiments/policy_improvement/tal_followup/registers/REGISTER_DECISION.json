@@ -1,0 +1,10 @@
+{
+ "model": "canonical EMA 861dc34434474455, 16 real replay windows, t in {0.1,0.5,0.9}",
+ "token_norms": {"max_over_mean_max": 2.53, "p99_over_mean_max": 2.03, "per_particle_max_over_median_max": 1.134,
+                 "darcet_outliers_reference": "~10x main-mode norm"},
+ "attention_received_share_over_uniform": {"max_particle_max": 1.51, "max_particle_median": 1.21,
+                 "action_token_range": [0.10, 4.78], "action_token_peak_layer": 3},
+ "normalized_attention_entropy": {"min": 0.307, "median": 0.632},
+ "verdict": "NO register-type pathology: no particle is a norm outlier or attention sink; the action token's layer-3 hub role is its designed aggregation function, not a hijacked low-information token.",
+ "decision": "registers not implemented; GPU budget kept for higher-priority questions"
+}
