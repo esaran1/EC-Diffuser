@@ -30,6 +30,9 @@ class QueryActionPINTDenoiser(AdaLNPINTDenoiser):
         True  -> a single shared query broadcast over the horizon
     """
 
+    # parameters absent from a canonical AdaLNPINTDenoiser checkpoint
+    warm_start_new_params = ("action_query",)
+
     def __init__(self, *args, tie_across_horizon=False, **kwargs):
         super().__init__(*args, **kwargs)
         self.tie_across_horizon = bool(tie_across_horizon)

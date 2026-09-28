@@ -174,6 +174,9 @@ savepath_folder_name = args.savepath.split('/')[-1]
 wandb_run.name = savepath_folder_name
 
 n_epochs = int(args.n_train_steps // args.n_steps_per_epoch)
+# Exact resume from a contention full-state checkpoint in THIS savepath.
+# Set EC_RESUME_FROM=<label>, e.g. contention_2261 (state_contention_2261.pt).
+_RESUME = os.environ.get('EC_RESUME_FROM') or None
 
 # --- optional GPU contention guard (infrastructure only) --------------------
 # Enabled with --require_uncontended_gpu; refuses to start on a shared GPU and
@@ -199,8 +202,19 @@ if getattr(args, 'warm_start_checkpoint', None):
     import torch   # after isaacgym has been imported by eval_utils
     _wpath = args.warm_start_checkpoint
     _wdata = torch.load(_wpath, map_location=args.device)
-    trainer.model.load_state_dict(_wdata['model'])
-    trainer.ema_model.load_state_dict(_wdata['ema'])
+    # Strict except for parameters the architecture itself declares as NEW
+    # (e.g. a direct-action query token absent from the canonical checkpoint).
+    # Any other missing or unexpected key is a hard error.
+    _new = {'model.' + n for n in
+            getattr(trainer.model.model, 'warm_start_new_params', ())}
+    for _wk, _wm in (('model', trainer.model), ('ema', trainer.ema_model)):
+        _miss, _unexp = _wm.load_state_dict(_wdata[_wk], strict=False)
+        _bad = [k for k in _miss if k not in _new] + list(_unexp)
+        if _bad:
+            raise RuntimeError(f'warm start {_wk}: unexpected key mismatch {_bad[:8]}')
+        if _miss:
+            print(f'[ warm_start ] {_wk}: new params kept at init: {sorted(_miss)}',
+                  flush=True)
     # `loss_weight_matrix` is a registered BUFFER, so the canonical checkpoint
     # carries its own lambda=1 copy and the load above silently overwrites the
     # correctly lambda-scaled matrix built by the constructor. The scalar
@@ -340,7 +354,9 @@ if getattr(args, 'clean_first_step', False):
         'dataloader_seed': getattr(args, 'dataloader_seed', None),
         'seed': int(args.seed),
     }
-    with open(os.path.join(args.savepath, 'FIRST_STEP_GRADIENT_MANIFEST.json'), 'w') as fh:
+    _fsm_name = ('FIRST_STEP_GRADIENT_MANIFEST.json' if not _RESUME
+                 else 'FIRST_STEP_GRADIENT_MANIFEST_resume_{}.json'.format(_RESUME))
+    with open(os.path.join(args.savepath, _fsm_name), 'w') as fh:
         json.dump(_fsm, fh, indent=2, sort_keys=True)
     print(f'[ clean_first_step ] cleared {_n_before} grads (norm '
           f'{_norm_before:.6e}) -> {_n_after} remaining; manifest written',
@@ -398,7 +414,7 @@ print(f'[ run_lock ] acquired {_run_lock.path} pid={os.getpid()}', flush=True)
 # canonical matrix is caught after ~10 steps instead of after 2,000. Written for
 # every warm-start run; the cross-arm comparison is done by the runner.
 _EARLY_STEPS = 10
-if getattr(args, 'warm_start_checkpoint', None):
+if getattr(args, 'warm_start_checkpoint', None) and not _RESUME:
     trainer.train(n_train_steps=_EARLY_STEPS)
     trainer.save(f'early{_EARLY_STEPS}')
     _early_manifest = {
@@ -422,6 +438,45 @@ if getattr(args, 'warm_start_checkpoint', None):
         manifest_path=os.path.join(args.savepath,
                                    f'RUNTIME_OBJECTIVE_MANIFEST_after{_EARLY_STEPS}.json'),
         cond_timesteps=_cond_timesteps, probe_batch=int(args.batch_size))
+
+if _RESUME:
+    # Everything above that consumes RNG (sanity pass, objective probes) has
+    # already run; the full-state restore below is the LAST thing before
+    # training continues, so the restored RNG/optimizer/data stream is exactly
+    # the interrupted run's.
+    _lwm_before = float(trainer.model.loss_weight_matrix.sum().item())
+    trainer.load(_RESUME)
+    _lwm_after = float(trainer.model.loss_weight_matrix.sum().item())
+    if _lwm_before != _lwm_after:
+        raise RuntimeError(f'resume changed loss_weight_matrix sum '
+                           f'{_lwm_before} -> {_lwm_after}')
+    _gae = int(trainer.gradient_accumulate_every)
+    _saved_step = int(trainer.step)
+    _completed = trainer.batches_drawn // _gae
+    # contention saves happen after step s's update, before the increment
+    if trainer.batches_drawn % _gae or _completed != _saved_step + 1:
+        raise RuntimeError(f'resume bookkeeping mismatch: batches_drawn '
+                           f'{trainer.batches_drawn}, gae {_gae}, step {_saved_step}')
+    trainer.step = _completed
+    for _p in trainer.model.parameters():
+        _p.grad = None
+    _rm = {'resumed_from': _RESUME, 'completed_steps': _completed,
+           'batches_drawn': trainer.batches_drawn,
+           'exact': getattr(trainer, 'resumed_exact', None)}
+    with open(os.path.join(args.savepath, f'RESUME_{_RESUME}.json'), 'w') as fh:
+        json.dump(_rm, fh, indent=2, sort_keys=True)
+    print(f'[ resume ] {_rm}', flush=True)
+    while trainer.step < args.n_train_steps:
+        _chunk = min(args.n_steps_per_epoch - trainer.step % args.n_steps_per_epoch,
+                     args.n_train_steps - trainer.step)
+        trainer.train(n_train_steps=_chunk)
+        if getattr(trainer, 'contention_event', None) is not None:
+            with open(os.path.join(args.savepath, 'contention_event.json'), 'w') as fh:
+                json.dump(trainer.contention_event, fh, indent=1)
+            print('[ gpu_guard ] contention detected; full-state checkpoint '
+                  'written, stopping cleanly.', flush=True)
+            break
+    n_epochs = 0   # skip the fresh-run loop below
 
 for i in range(n_epochs):
     print(f'Epoch {i} / {n_epochs} | {args.savepath}')

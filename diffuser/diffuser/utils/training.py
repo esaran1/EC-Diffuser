@@ -19,6 +19,72 @@ def cycle(dl):
         for data in dl:
             yield data
 
+
+class ResumableRandomSampler(torch.utils.data.RandomSampler):
+    """RandomSampler whose FIRST epoch can start at a sample offset.
+
+    Draws from the generator in exactly the same order as RandomSampler (the
+    permutation is drawn lazily on the first index request, after the
+    DataLoader iterator has drawn its base seed), so a resumed stream is
+    identical to an uninterrupted one. Only the first epoch is offset.
+    """
+
+    def __init__(self, data_source, generator, skip_first_samples=0):
+        super().__init__(data_source, generator=generator)
+        self._skip = int(skip_first_samples)
+
+    def __iter__(self):
+        skip, self._skip = self._skip, 0
+        it = super().__iter__()
+        for _ in range(skip):
+            next(it)
+        yield from it
+
+
+def reconstruct_dataloader_generator(seed, n_items, batch_size, batches_drawn,
+                                     saved_state=None):
+    """Exact dataloader-generator state at the START of the in-flight epoch.
+
+    torch 2.1.2 with a supplied generator consumes, per epoch and in order:
+      1. the DataLoader iterator's base seed  (dataloader.py: random_(generator=g))
+      2. RandomSampler's permutation           (sampler.py:164, used)
+      3. a second RandomSampler permutation    (sampler.py:165, `[:n % n]`, discarded)
+    The generator is dedicated to this DataLoader, so its state after E full
+    epochs is a pure function of (seed, E). Returns (generator_at_epoch_start,
+    batches_into_epoch). If `saved_state` is given, verifies that replaying the
+    in-flight epoch reproduces the state the interrupted run recorded, and
+    raises if it does not: an unverifiable resume is refused, not guessed.
+    """
+    per_epoch = math.ceil(n_items / batch_size)
+    epochs, into = divmod(int(batches_drawn), per_epoch)
+    g = torch.Generator()
+    g.manual_seed(int(seed))
+    for _ in range(epochs):
+        torch.empty((), dtype=torch.int64).random_(generator=g)
+        torch.randperm(n_items, generator=g)
+        torch.randperm(n_items, generator=g)
+    epoch_start = g.get_state().clone()
+    if saved_state is not None:
+        saved = saved_state.cpu() if hasattr(saved_state, "cpu") else saved_state
+        probe = torch.Generator()
+        probe.set_state(epoch_start)
+        candidates = []
+        if into == 0:
+            candidates.append(probe.get_state().clone())
+        torch.empty((), dtype=torch.int64).random_(generator=probe)
+        torch.randperm(n_items, generator=probe)
+        candidates.append(probe.get_state().clone())
+        torch.randperm(n_items, generator=probe)
+        candidates.append(probe.get_state().clone())
+        if not any(torch.equal(c, saved) for c in candidates):
+            raise RuntimeError(
+                "exact-resume check FAILED: replaying dataloader seed {} for {} "
+                "batches does not reproduce the recorded generator state. "
+                "Refusing to resume with an unverified data stream.".format(
+                    seed, batches_drawn))
+    g.set_state(epoch_start)
+    return g, into
+
 class EMA():
     '''
         empirical moving average
@@ -296,8 +362,14 @@ class Trainer(object):
 
             # --- contention guard (infrastructure only; no tensor work) ---
             monitor = getattr(self, 'contention_monitor', None)
+            _force = os.environ.get('EC_TEST_FORCE_CONTENTION_STEP')
+            if _force is not None and self.step == int(_force):
+                monitor = monitor or type('M', (), {'check': lambda _s: None})()
+                _forced = {'forced_test_interrupt': True, 'step': self.step}
+            else:
+                _forced = None
             if monitor is not None:
-                event = monitor.check()
+                event = _forced or monitor.check()
                 if event is not None:
                     self.save(f'contention_{self.step}')
                     self.contention_event = event
@@ -403,29 +475,29 @@ class Trainer(object):
             if rng.get('python') is not None:
                 random.setstate(rng['python'])
             gen_state = rng.get('dataloader_generator')
-            if (gen_state is not None
-                    and getattr(self, 'dataloader_generator', None) is not None):
-                self.dataloader_generator.set_state(
-                    gen_state.cpu() if hasattr(gen_state, 'cpu') else gen_state)
-                # the infinite cycle() holds a live iterator bound to the old
-                # generator state; rebuild it so the restored state takes effect
+            if getattr(self, 'dataloader_generator', None) is not None:
+                # EXACT resume of the data stream. The generator is replayed
+                # from dataloader_seed to the start of the in-flight epoch and
+                # the already-consumed batches of that epoch are skipped, so
+                # the resumed batch sequence is identical to an uninterrupted
+                # run. Verified against the recorded generator state; a
+                # mismatch raises rather than resuming on a different stream.
+                drawn = int(data.get('batches_drawn', 0))
+                gen, into = reconstruct_dataloader_generator(
+                    self.dataloader_seed, len(self.dataset), self.batch_size,
+                    drawn, saved_state=gen_state)
+                self.dataloader_generator = gen
                 self.dataloader = cycle(torch.utils.data.DataLoader(
                     self.dataset, batch_size=self.batch_size, num_workers=1,
-                    shuffle=True, pin_memory=True,
-                    generator=self.dataloader_generator,
+                    sampler=ResumableRandomSampler(
+                        self.dataset, generator=gen,
+                        skip_first_samples=into * self.batch_size),
+                    pin_memory=True, generator=gen,
                 ))
-                # NOTE on exactness: torch's RandomSampler draws a fresh
-                # base_seed via `torch.empty((), dtype=int64).random_(generator=g)`
-                # when each epoch's iterator is created, and derives the
-                # permutation from it internally. That per-epoch seed is NOT
-                # recoverable from the generator state, so restoring the
-                # generator does not reproduce the in-flight epoch's order.
-                # Everything else (model, EMA, optimizer moments, step, RNG)
-                # restores bit-exactly - verified by validate_resume.py.
-                # We therefore restore the generator (so future epochs follow
-                # the same stream) and record how many batches were drawn, but
-                # we do NOT claim bit-exact continuation of the data order.
-                self.batches_drawn = data.get('batches_drawn', 0)
+                self.batches_drawn = drawn
+                self.resumed_exact = {'batches_drawn': drawn,
+                                      'batches_into_epoch': into,
+                                      'generator_verified': gen_state is not None}
 
     #-----------------------------------------------------------------------------#
     #--------------------------------- rendering ---------------------------------#

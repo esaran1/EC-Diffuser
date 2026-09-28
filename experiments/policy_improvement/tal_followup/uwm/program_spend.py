@@ -16,12 +16,20 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FLOOR = os.path.join(HERE, "SPEND_FLOOR.txt")
 
 
+ROOT = os.path.dirname(HERE)      # tal_followup/: scan every runner log below it
+
+
+def _logs():
+    for dp, _dn, fs in os.walk(ROOT):
+        for f in sorted(fs):
+            if f.endswith(".log"):
+                yield os.path.relpath(os.path.join(dp, f), ROOT)
+
+
 def _pairs():
     opens, pairs = {}, {}
-    for f in sorted(os.listdir(HERE)):
-        if not f.endswith(".log"):
-            continue
-        for line in open(os.path.join(HERE, f), errors="ignore"):
+    for f in _logs():
+        for line in open(os.path.join(ROOT, f), errors="ignore"):
             m = re.search(r"\[([0-9T:\-]+)\].*lease acquired \(stage ([^,]+),", line)
             if m:
                 opens[(f, m.group(2))] = m.group(1)
