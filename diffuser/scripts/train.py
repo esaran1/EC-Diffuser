@@ -35,6 +35,10 @@ dataset_config = utils.Config(
     max_path_length=args.max_path_length,
     overfit=args.overfit,
     single_view=(args.input_type == 'dlp' and not args.multiview),
+    # forwarded ONLY when configured (latent-action arm); otherwise absent, so
+    # every existing dataset config is byte-for-byte unchanged
+    **({'action_vae_path': args.action_vae_path}
+       if getattr(args, 'action_vae_path', None) else {}),
 )
 
 

@@ -75,6 +75,13 @@ def main():
                                             ">> linux_logs/train_{t}.txt 2>&1").format(
                                                 py=PY, c=a.config, t=a.tag), log=log)
         log("attempt {} rc={} final={}".format(attempt, rc, os.path.exists(final)))
+        if rc in (3, 4, 5):
+            # run_guarded never launched the command (stable-clean wait timed
+            # out, lease held by a live project process, or a foreign job raced
+            # in after acquisition). Not a training failure: wait and retry.
+            log("lease-level rc={} (command not run); retrying".format(rc))
+            time.sleep(120)
+            continue
         if rc != 0:
             # contention stops exit 0; nonzero is a real error (e.g. the exact-
             # resume verification refusing). Never loop on it.

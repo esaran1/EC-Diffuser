@@ -218,7 +218,10 @@ def wait_stable_clean(probes=10, interval=18, max_wait_s=None, log=print):
 
 
 def run_guarded(stage, command, probes=10, interval=18, max_wait_s=None,
-                force=False, log=print):
+                force=True, log=print):
+    # force=True only ever breaks a lock whose holder PID is DEAD (a hard-killed
+    # run); a live lock is never broken. Without it, one hard kill leaves a
+    # stale lease that makes every later launch fail with LeaseBusy.
     """stable-clean -> acquire lease -> RE-CHECK cleanliness -> run one GPU job.
 
     The re-check after acquisition is what closes the TOCTOU race: a foreign job

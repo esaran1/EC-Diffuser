@@ -17,3 +17,5 @@ from .twotime_pint import TwoTimePINTDenoiser
 from .query_action_pint import QueryActionPINTDenoiser
 from .query_action_flow import QueryActionFlowMatching
 from .uwm_flow import UWMConditionalFlowMatching
+
+from .latent_action import LatentActionFlowMatching

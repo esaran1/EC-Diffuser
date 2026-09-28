@@ -166,3 +166,37 @@ class GoalDataset(SequenceDataset):
             0: observations[0].copy(),
             self.horizon - 1: observations[-1].copy(),
         }
+
+class LatentActionGoalDataset(GoalDataset):
+    """GoalDataset whose action channel is a FROZEN learned latent.
+
+    Real actions and the constructed terminal stop target are both mapped
+    through the same frozen encoder, so the stop semantics are preserved in
+    latent space. Precomputed once; __getitem__ stays deterministic.
+    """
+
+    def __init__(self, *args, action_vae_path=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        import torch
+        from diffuser.models.latent_action import FrozenActionCodec
+        if action_vae_path is None:
+            raise ValueError("action_vae_path is required")
+        codec = FrozenActionCodec(action_vae_path)
+        self.action_vae_sha16 = codec.sha16
+        na = self.fields.normed_actions
+        flat = torch.as_tensor(na.reshape(-1, na.shape[-1]), dtype=torch.float32)
+        z = torch.cat([codec.encode(c) for c in flat.split(65536)]).numpy()
+        self.fields.normed_actions = z.reshape(na.shape).astype(na.dtype)
+        raw_term = self.normalizer.normalize(
+            np.zeros((1, self.action_dim), dtype=na.dtype), 'actions')
+        self._latent_terminal = codec.encode(
+            torch.as_tensor(raw_term, dtype=torch.float32)).numpy().astype(na.dtype)
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+        path_ind, start, end = self.indices[idx]
+        n_real = min(end, self.fields.path_lengths[path_ind]) - 1 - start
+        traj = batch.trajectories.copy()
+        # rows >= n_real hold the constructed terminal (and its padding copies)
+        traj[n_real:, :self.action_dim] = self._latent_terminal
+        return Batch(traj, batch.conditions)

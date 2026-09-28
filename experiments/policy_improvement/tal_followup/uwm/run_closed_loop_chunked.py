@@ -92,10 +92,12 @@ def main():
         .format(a.R, len(jobs)))
     log("program spent: {:.4f} GPU-h".format(program_spent()))
 
+    # interleave models within each (realization, set) so no model sits
+    # entirely earlier or later in wall-clock time
     work = []
-    for j in jobs:
-        for r in range(1, a.R + 1):
-            for s in SETS:
+    for r in range(1, a.R + 1):
+        for s in SETS:
+            for j in jobs:
                 work.append((j, r, s))
 
     attempts = 0

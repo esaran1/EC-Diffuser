@@ -59,6 +59,10 @@ def measure(diffusion, x1, cond, steps, device, n_latency=5):
     x1c = x1.clone()
     diffusion._apply_conditioning(x1c, cond)
     mask = diffusion._make_conditioning_mask(x1c, cond)
+    if getattr(diffusion, "action_space", "raw") == "latent":
+        # samples come back decoded to normalized raw actions; put the targets
+        # in the same space so every arm is scored on physical actions
+        x1c = diffusion.decode_actions(x1c)
 
     # --- sampling, with latency ---
     torch.cuda.synchronize() if device.startswith("cuda") else None
