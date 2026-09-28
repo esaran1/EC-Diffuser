@@ -107,6 +107,12 @@ def control(diff, env, args, ep, dev, norm, trace=None):
         obs = env.reset(set_init_states=array_to_state_dict(ep["init"][idx], keys, dev),
                         set_goal_states=array_to_state_dict(ep["goal"][idx], keys, dev))
         _D, _M = [], []
+        prev = None
+        if getattr(diff, "uses_prev_action", False):
+            # cold start: nothing executed yet -> the normalized at-rest action
+            prev = torch.as_tensor(np.repeat(norm.normalize(
+                np.zeros((1, diff.action_dim), dtype=np.float32), "actions"), nE, 0),
+                device=dev, dtype=torch.float32)
         for _ in range(env.horizon):
             o = np.asarray(obs["achieved_goal"]).reshape(nE, -1)
             g = np.asarray(obs["desired_goal"]).reshape(nE, -1)
@@ -115,8 +121,11 @@ def control(diff, env, args, ep, dev, norm, trace=None):
             with torch.no_grad():
                 kw = dict(verbose=False)
                 if hasattr(diff, "n_solver_steps"): kw["n_steps"] = 4
+                if prev is not None: kw["prev_action"] = prev
                 s = diff.conditional_sample(c, **kw)
             xs = s.trajectories if hasattr(s, "trajectories") else s
+            if prev is not None:
+                prev = xs[:, 0, :diff.action_dim].detach().clone()
             a = norm.unnormalize(xs[:, 0, :diff.action_dim].cpu().numpy(), "actions")
             obs, _, _, infos = env.step(torch.as_tensor(a, device=dev, dtype=torch.float32))
             if trace is not None:

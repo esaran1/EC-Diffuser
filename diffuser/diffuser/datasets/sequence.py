@@ -200,3 +200,27 @@ class LatentActionGoalDataset(GoalDataset):
         # rows >= n_real hold the constructed terminal (and its padding copies)
         traj[n_real:, :self.action_dim] = self._latent_terminal
         return Batch(traj, batch.conditions)
+
+
+PrevBatch = namedtuple('PrevBatch', 'trajectories conditions prev_action')
+
+
+class PrevActionGoalDataset(GoalDataset):
+    """GoalDataset plus the previously EXECUTED action for each window.
+
+    prev = normed_actions[path, start-1]; at start 0 (episode start, nothing
+    executed yet) it is the normalized ZERO action, i.e. the robot at rest --
+    the same cold-start convention the closed-loop evaluator uses.
+    """
+
+    def __getitem__(self, idx):
+        batch = super().__getitem__(idx)
+        path_ind, start, end = self.indices[idx]
+        if start > 0:
+            prev = self.fields.normed_actions[path_ind, start - 1]
+        else:
+            prev = self.normalizer.normalize(
+                np.zeros((1, self.action_dim), dtype=self.fields.normed_actions.dtype),
+                'actions')[0]
+        return PrevBatch(batch.trajectories, batch.conditions,
+                         np.asarray(prev, dtype=batch.trajectories.dtype))

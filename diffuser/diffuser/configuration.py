@@ -28,7 +28,8 @@ def diffusion_wrapper_kwargs(args, observation_dim, action_dim):
     # the wrapper default and be indistinguishable from the control.
     for _k in ("mask_terminal_action", "lambda_action",
                "denominator_ignores_terminal_mask",
-               "p_diag", "adaln_state_weight", "action_vae_path"):
+               "p_diag", "adaln_state_weight", "action_vae_path",
+               "prev_action_sigma"):
         if hasattr(args, _k):
             kwargs[_k] = getattr(args, _k)
     return kwargs
