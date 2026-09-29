@@ -27,7 +27,7 @@ PYEOF
   done; return 9; }
 
 log "=== CHAIN V6 queued; waiting for chain v5 to finish ==="
-while systemctl --user is-active --quiet ecd-chain-v5; do sleep 120; done
+while systemctl --user is-active --quiet ecd-chain-v5b; do sleep 120; done
 log "chain v5 finished: $(tail -1 $TF/chain_v5.log)"
 gate
 
