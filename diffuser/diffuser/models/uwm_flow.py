@@ -222,6 +222,21 @@ INFERENCE_PATHS = {"P0_diagonal": _p0, "P1_state_leads": _p1,
                    "P4_action_first": _p4}
 
 
+def _lead(alpha):
+    lam = 0.5 * float(alpha)
+
+    def f(u):
+        if lam == 0.0:
+            return u, u
+        return (min(max(u / (1.0 - lam), 0.0), 1.0),
+                min(max((u - lam) / (1.0 - lam), 0.0), 1.0))
+    return f
+
+
+for _a in (0.0, 0.25, 0.5, 0.75, 1.0):
+    INFERENCE_PATHS["lead%.2f" % _a] = _lead(_a)
+
+
 def _schedule_points(path, steps):
     f = INFERENCE_PATHS[path] if isinstance(path, str) else path
     return [f(k / float(steps)) for k in range(steps + 1)]

@@ -42,14 +42,19 @@ def load(savepath, epoch, device, which="ema"):
 def batch_from(dataset, n, seed, device):
     rng = np.random.RandomState(seed)
     idx = rng.choice(len(dataset), size=n, replace=False)
-    xs, conds = [], {}
+    xs, conds, prev = [], {}, []
     for i in idx:
         b = dataset[int(i)]
         xs.append(torch.as_tensor(b.trajectories))
         for k, v in b.conditions.items():
             conds.setdefault(k, []).append(torch.as_tensor(v))
-    return (torch.stack(xs).float().to(device),
-            {k: torch.stack(v).float().to(device) for k, v in conds.items()})
+        if hasattr(b, "prev_action"):
+            prev.append(torch.as_tensor(b.prev_action))
+    out = (torch.stack(xs).float().to(device),
+           {k: torch.stack(v).float().to(device) for k, v in conds.items()})
+    global _PREV
+    _PREV = torch.stack(prev).float().to(device) if prev else None
+    return out
 
 
 @torch.no_grad()
@@ -67,14 +72,15 @@ def measure(diffusion, x1, cond, steps, device, n_latency=5):
     # --- sampling, with latency ---
     torch.cuda.synchronize() if device.startswith("cuda") else None
     t0 = time.time()
-    s = diffusion.conditional_sample(cond, n_steps=steps)
+    kw = {"prev_action": _PREV} if getattr(diffusion, "uses_prev_action", False) else {}
+    s = diffusion.conditional_sample(cond, n_steps=steps, **kw)
     torch.cuda.synchronize() if device.startswith("cuda") else None
     t_first = time.time() - t0
     lat = []
     for _ in range(n_latency):
         torch.cuda.synchronize() if device.startswith("cuda") else None
         a = time.time()
-        diffusion.conditional_sample(cond, n_steps=steps)
+        diffusion.conditional_sample(cond, n_steps=steps, **kw)
         torch.cuda.synchronize() if device.startswith("cuda") else None
         lat.append(time.time() - a)
     out = s.trajectories

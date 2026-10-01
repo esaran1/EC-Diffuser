@@ -88,7 +88,8 @@ def main():
     for spec in a.jobs.split(","):
         parts = spec.split(":")
         jobs.append({"name": parts[0], "loadpath": parts[1],
-                     "epoch": parts[2] if len(parts) > 2 else "final"})
+                     "epoch": parts[2] if len(parts) > 2 else "final",
+                     "path": parts[3] if len(parts) > 3 else None})
 
     log("=== CHUNKED CLOSED-LOOP R={} ({} models, one E set per lease) ==="
         .format(a.R, len(jobs)))
@@ -126,9 +127,10 @@ def main():
             ENV + ("WANDB_MODE=disabled WANDB_SILENT=true {py} "
                    "experiments/policy_improvement/phase2_diagnostics.py "
                    "--loadpath {lp} --epoch {ep} --tag {tag} --skip-offline "
-                   "--only-sets {s} --merge --trace --num_entity {ne} "
+                   "--only-sets {s} --merge --trace --num_entity {ne}{ip} "
                    "> linux_logs/{tag}_{s}.txt 2>&1").format(
-                       py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s, ne=a.num_entity),
+                       py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s, ne=a.num_entity,
+                       ip=(" --inference_path " + j["path"]) if j.get("path") else ""),
             log=log)
         st = set_status(tag, s)
         log("  rc={} status={}".format(rc, st))

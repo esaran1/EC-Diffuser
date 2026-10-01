@@ -29,6 +29,22 @@ def p4_action_first(u):
     return max(2.0 * u - 1.0, 0.0), min(2.0 * u, 1.0)
 
 
+def lead_path(alpha):
+    """State leads action by lambda = alpha/2. alpha=0 -> diagonal,
+    alpha=1 -> state-first (state fully generated, then action)."""
+    lam = 0.5 * float(alpha)
+
+    def f(u):
+        if lam == 0.0:
+            return u, u
+        ts = min(max(u / (1.0 - lam), 0.0), 1.0)
+        ta = min(max((u - lam) / (1.0 - lam), 0.0), 1.0)
+        return ts, ta
+    return f
+
+
+LEAD_ALPHAS = (0.0, 0.25, 0.5, 0.75, 1.0)
+
 PATHS = {
     "P0_diagonal": p0_diagonal,
     "P1_state_leads": p1_state_leads,
@@ -36,6 +52,8 @@ PATHS = {
     "P3_state_first": p3_state_first,
     "P4_action_first": p4_action_first,
 }
+for _a in LEAD_ALPHAS:
+    PATHS["lead%.2f" % _a] = lead_path(_a)
 
 
 def schedule_points(path, steps):
