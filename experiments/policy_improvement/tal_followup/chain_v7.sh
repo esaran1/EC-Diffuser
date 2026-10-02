@@ -15,7 +15,7 @@ sys.exit(run_guarded(sys.argv[1], sys.argv[2], log=log))
 PYEOF
 rc=$?; [ $rc -eq 3 ] || [ $rc -eq 4 ] || [ $rc -eq 5 ] || return $rc; sleep 120; done; return 9; }
 log "=== CHAIN V7 queued behind the primary closed loop ==="
-while systemctl --user is-active --quiet ecd-primary; do sleep 60; done
+: # ordering handled by chain_master.sh
 log "--- 3: sweet-spot closed loop: UWM10k, path lead0.25 (same checkpoint, 4 calls) ---"
 $PY $TF/uwm/run_closed_loop_chunked.py --R 3 --max_attempts 60 \
    --jobs "uwm10k_lead025:uwm_uwm_ext/$RUN:final:lead0.25" >> $LOG 2>&1; log "sweet-spot CL rc=$?"
