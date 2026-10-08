@@ -1,0 +1,266 @@
+{
+ "loadpath": "uwm_uwm_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+ "epoch": "final",
+ "num_entity": 3,
+ "inference_path": "lead0.25",
+ "control": {
+  "E0": {
+   "success": 0.75,
+   "n": 96,
+   "seconds": 134.43044352531433,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1790969989.461647,
+    "iso": "2026-10-02T15:39:49",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2669, 16376, 26"
+    ],
+    "compute_apps": [
+     {
+      "pid": 329252,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2496
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1790970123.8870356,
+    "iso": "2026-10-02T15:42:03",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2671, 16376, 0"
+    ],
+    "compute_apps": [
+     {
+      "pid": 329252,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2498
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-02T15:39:49",
+   "end_iso": "2026-10-02T15:42:04",
+   "trace": {
+    "n": 96,
+    "final_success": 0.75,
+    "reached_any": 0.78125,
+    "final_d_mean": 0.06318622827529907,
+    "lost_after_reach": 0.04,
+    "steps_to_first_reach": 27.066666666666666,
+    "post_reach_action_mag": 0.07154354453086853,
+    "pre_reach_action_mag": 0.6912754774093628,
+    "post_reach_max_d_mean": 0.030429614707827568
+   }
+  },
+  "E1s": {
+   "success": 0.8125,
+   "n": 96,
+   "seconds": 134.46388268470764,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1790970293.822487,
+    "iso": "2026-10-02T15:44:53",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2669, 16376, 42"
+    ],
+    "compute_apps": [
+     {
+      "pid": 332037,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2496
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1790970428.2878697,
+    "iso": "2026-10-02T15:47:08",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2671, 16376, 0"
+    ],
+    "compute_apps": [
+     {
+      "pid": 332037,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2498
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-02T15:44:53",
+   "end_iso": "2026-10-02T15:47:08",
+   "trace": {
+    "n": 96,
+    "final_success": 0.8125,
+    "reached_any": 0.8125,
+    "final_d_mean": 0.05482267215847969,
+    "lost_after_reach": 0.0,
+    "steps_to_first_reach": 26.833333333333332,
+    "post_reach_action_mag": 0.07353117316961288,
+    "pre_reach_action_mag": 0.6910544633865356,
+    "post_reach_max_d_mean": 0.031496141105890274
+   }
+  },
+  "E2s": {
+   "success": 0.8125,
+   "n": 96,
+   "seconds": 134.53764963150024,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1790970598.1660697,
+    "iso": "2026-10-02T15:49:58",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2669, 16376, 57"
+    ],
+    "compute_apps": [
+     {
+      "pid": 334809,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2496
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1790970732.7189171,
+    "iso": "2026-10-02T15:52:12",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2671, 16376, 0"
+    ],
+    "compute_apps": [
+     {
+      "pid": 334809,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2498
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-02T15:49:58",
+   "end_iso": "2026-10-02T15:52:12",
+   "trace": {
+    "n": 96,
+    "final_success": 0.8125,
+    "reached_any": 0.8229166666666666,
+    "final_d_mean": 0.059211473912000656,
+    "lost_after_reach": 0.012658227848101266,
+    "steps_to_first_reach": 25.620253164556964,
+    "post_reach_action_mag": 0.0781424418091774,
+    "pre_reach_action_mag": 0.682392954826355,
+    "post_reach_max_d_mean": 0.040199022740125656
+   }
+  },
+  "E3s": {
+   "success": 0.7916666666666666,
+   "n": 96,
+   "seconds": 134.26954889297485,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1790970902.485195,
+    "iso": "2026-10-02T15:55:02",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2670, 16376, 17"
+    ],
+    "compute_apps": [
+     {
+      "pid": 337595,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2496
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1790971036.7758715,
+    "iso": "2026-10-02T15:57:16",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2672, 16376, 0"
+    ],
+    "compute_apps": [
+     {
+      "pid": 337595,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2498
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-02T15:55:02",
+   "end_iso": "2026-10-02T15:57:16",
+   "trace": {
+    "n": 96,
+    "final_success": 0.7916666666666666,
+    "reached_any": 0.7916666666666666,
+    "final_d_mean": 0.06614664196968079,
+    "lost_after_reach": 0.0,
+    "steps_to_first_reach": 24.5,
+    "post_reach_action_mag": 0.0740005224943161,
+    "pre_reach_action_mag": 0.7118012309074402,
+    "post_reach_max_d_mean": 0.03043181076645851
+   }
+  },
+  "E4s": {
+   "success": 0.8020833333333334,
+   "n": 96,
+   "seconds": 134.40263843536377,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1790971206.4584162,
+    "iso": "2026-10-02T16:00:06",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2670, 16376, 18"
+    ],
+    "compute_apps": [
+     {
+      "pid": 343854,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2496
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1790971340.8618731,
+    "iso": "2026-10-02T16:02:20",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 2672, 16376, 0"
+    ],
+    "compute_apps": [
+     {
+      "pid": 343854,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 2498
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-02T16:00:06",
+   "end_iso": "2026-10-02T16:02:21",
+   "trace": {
+    "n": 96,
+    "final_success": 0.8020833333333334,
+    "reached_any": 0.8125,
+    "final_d_mean": 0.05780712142586708,
+    "lost_after_reach": 0.01282051282051282,
+    "steps_to_first_reach": 26.487179487179485,
+    "post_reach_action_mag": 0.07869629561901093,
+    "pre_reach_action_mag": 0.711983323097229,
+    "post_reach_max_d_mean": 0.032964110374450684
+   }
+  }
+ },
+ "n_valid_sets": 5,
+ "control_mean": 0.79375,
+ "control_sd": 0.025937290829143193
+}

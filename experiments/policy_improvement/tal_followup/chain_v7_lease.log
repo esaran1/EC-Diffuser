@@ -1,0 +1,9 @@
+[2026-10-02T16:49:29] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T16:49:29] [gpu_lease] lease acquired (stage qaction:metrics, pid 371007); launching
+[2026-10-02T16:49:49] [gpu_lease] lease released (stage qaction:metrics)
+[2026-10-08T16:24:50] [gpu_lease] GPU stable-clean for 180s
+[2026-10-08T16:24:50] [gpu_lease] lease acquired (stage qaction:metrics, pid 17335); launching
+[2026-10-08T16:25:13] [gpu_lease] lease released (stage qaction:metrics)
+[2026-10-08T17:12:22] [gpu_lease] GPU stable-clean for 180s
+[2026-10-08T17:12:22] [gpu_lease] lease acquired (stage prevact:metrics, pid 51154); launching
+[2026-10-08T17:12:32] [gpu_lease] lease released (stage prevact:metrics)

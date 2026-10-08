@@ -1,0 +1,68 @@
+{
+  "checkpoint_step": 5000,
+  "ema": {
+    "action_absmax": 1.0197464227676392,
+    "action_err_all": 0.018741874024271965,
+    "action_err_per_step": [
+      0.011618423275649548,
+      0.019425097852945328,
+      0.024376673623919487,
+      0.03774680197238922,
+      0.0005423685070127249
+    ],
+    "action_err_step0": 0.011618423275649548,
+    "action_mag_far_goal": 0.7780941128730774,
+    "action_mag_near_goal": 0.7359272241592407,
+    "batch": 64,
+    "finite": true,
+    "latency_s_mean": 0.3133076667785645,
+    "latency_s_sd": 9.72635131743362e-05,
+    "model_calls": 4,
+    "nearGoal_corr_pred": 0.015107929961918048,
+    "nearGoal_corr_target": 0.03363283521168709,
+    "state_err": 0.18802134692668915,
+    "state_err_per_step": [
+      null,
+      0.19120006263256073,
+      0.18708287179470062,
+      0.18578116595745087,
+      null
+    ],
+    "terminal_action_mag_pred": 0.7060739994049072,
+    "terminal_action_mag_target": 0.7060304880142212
+  },
+  "epoch": "final",
+  "model": {
+    "action_absmax": 1.0063530206680298,
+    "action_err_all": 0.01970476470887661,
+    "action_err_per_step": [
+      0.01238441001623869,
+      0.020156141370534897,
+      0.023929983377456665,
+      0.041304994374513626,
+      0.0007482970831915736
+    ],
+    "action_err_step0": 0.01238441001623869,
+    "action_mag_far_goal": 0.7789261341094971,
+    "action_mag_near_goal": 0.7370373010635376,
+    "batch": 64,
+    "finite": true,
+    "latency_s_mean": 0.31274919509887694,
+    "latency_s_sd": 0.000188406465211755,
+    "model_calls": 4,
+    "nearGoal_corr_pred": 0.00941725798478996,
+    "nearGoal_corr_target": 0.03363283521168709,
+    "state_err": 0.18995514512062073,
+    "state_err_per_step": [
+      null,
+      0.19117619097232819,
+      0.18681445717811584,
+      0.19187477231025696,
+      null
+    ],
+    "terminal_action_mag_pred": 0.7063641548156738,
+    "terminal_action_mag_target": 0.7060304880142212
+  },
+  "savepath": "data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+  "steps": 4
+}

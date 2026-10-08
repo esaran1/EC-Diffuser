@@ -16,3 +16,408 @@
 [2026-09-18T18:23:00] [gpu_lease] lease released (stage cl:tf_uwm5k_R1:E2s)
 [2026-09-18T18:23:00]   rc=0 status=VALID
 [2026-09-18T18:23:00] [4/40] tf_uwm5k_R1 set E3s  (27 sets left)
+[2026-09-28T17:23:12] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-09-28T17:23:12] program spent: 1.9500 GPU-h
+[2026-09-28T17:23:12] [1/80] tf_uwm10k_R1 set E0  (30 sets left)
+[2026-09-28T17:25:54] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:25:54] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E0, pid 114850); launching
+[2026-09-28T17:28:15] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E0)
+[2026-09-28T17:28:15]   rc=0 status=VALID
+[2026-09-28T17:28:15] [2/80] tf_ctl10k_R1 set E0  (29 sets left)
+[2026-09-28T17:30:58] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:30:58] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E0, pid 114850); launching
+[2026-09-28T17:33:24] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E0)
+[2026-09-28T17:33:24]   rc=0 status=VALID
+[2026-09-28T17:33:24] [3/80] tf_uwm10k_R1 set E1s  (28 sets left)
+[2026-09-28T17:36:07] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:36:07] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E1s, pid 114850); launching
+[2026-09-28T17:38:33] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E1s)
+[2026-09-28T17:38:33]   rc=0 status=VALID
+[2026-09-28T17:38:33] [4/80] tf_ctl10k_R1 set E1s  (27 sets left)
+[2026-09-28T17:41:16] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:41:16] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E1s, pid 114850); launching
+[2026-09-28T17:43:37] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E1s)
+[2026-09-28T17:43:37]   rc=0 status=VALID
+[2026-09-28T17:43:37] [5/80] tf_uwm10k_R1 set E2s  (26 sets left)
+[2026-09-28T17:46:19] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:46:19] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E2s, pid 114850); launching
+[2026-09-28T17:48:41] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E2s)
+[2026-09-28T17:48:41]   rc=0 status=VALID
+[2026-09-28T17:48:41] [6/80] tf_ctl10k_R1 set E2s  (25 sets left)
+[2026-09-29T16:13:34] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-09-29T16:13:34] program spent: 2.1489 GPU-h
+[2026-09-29T16:13:34] [1/80] tf_ctl10k_R1 set E2s  (25 sets left)
+[2026-09-29T16:16:17] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T16:16:17] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E2s, pid 109800); launching
+[2026-09-29T16:18:40] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E2s)
+[2026-09-29T16:18:40]   rc=0 status=VALID
+[2026-09-29T16:18:40] [2/80] tf_uwm10k_R1 set E3s  (24 sets left)
+[2026-09-29T16:21:23] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T16:21:23] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E3s, pid 109800); launching
+[2026-09-29T16:23:40] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E3s)
+[2026-09-29T16:23:40]   rc=0 status=INVALID_CONTENDED_DURING
+[2026-09-29T16:23:40]   set E3s not VALID (contention?); will retry after a clean GPU
+[2026-09-29T16:23:40] [3/80] tf_uwm10k_R1 set E3s  (24 sets left)
+[2026-09-29T16:24:16] [gpu_lease] clean streak broken at 2 (foreign 5892 MiB)
+[2026-09-29T16:32:59] [gpu_lease] clean streak broken at 9 (foreign 5876 MiB)
+[2026-09-29T16:40:41] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T16:40:41] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E3s, pid 109800); launching
+[2026-09-29T16:43:03] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E3s)
+[2026-09-29T16:43:03]   rc=0 status=VALID
+[2026-09-29T16:43:03] [4/80] tf_ctl10k_R1 set E3s  (23 sets left)
+[2026-09-29T16:45:45] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T16:45:46] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E3s, pid 109800); launching
+[2026-09-29T16:48:07] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E3s)
+[2026-09-29T16:48:07]   rc=0 status=VALID
+[2026-09-29T16:48:07] [5/80] tf_uwm10k_R1 set E4s  (22 sets left)
+[2026-09-29T16:50:49] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T16:50:49] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E4s, pid 109800); launching
+[2026-09-29T16:53:05] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E4s)
+[2026-09-29T16:53:05]   rc=0 status=VALID
+[2026-09-29T16:53:05] [6/80] tf_ctl10k_R1 set E4s  (21 sets left)
+[2026-09-29T16:55:48] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T16:55:48] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E4s, pid 109800); launching
+[2026-09-29T16:58:04] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E4s)
+[2026-09-29T16:58:04]   rc=0 status=VALID
+[2026-09-29T16:58:04] [7/80] tf_uwm10k_R2 set E0  (20 sets left)
+[2026-09-29T17:00:47] [gpu_lease] GPU stable-clean for 180s
+[2026-09-29T17:00:47] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R2:E0, pid 109800); launching
+[2026-09-29T17:03:03] [gpu_lease] lease released (stage cl:tf_uwm10k_R2:E0)
+[2026-09-29T17:03:03]   rc=0 status=VALID
+[2026-09-29T17:03:03] [8/80] tf_ctl10k_R2 set E0  (19 sets left)
+[2026-09-30T16:15:48] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-09-30T16:15:48] program spent: 2.4186 GPU-h
+[2026-09-30T16:15:48] [1/80] tf_ctl10k_R2 set E0  (19 sets left)
+[2026-09-30T16:18:31] [gpu_lease] GPU stable-clean for 180s
+[2026-09-30T16:18:31] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E0, pid 31098); launching
+[2026-09-30T16:18:50] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E0)
+[2026-09-30T21:42:06] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-09-30T21:42:06] program spent: 2.4239 GPU-h
+[2026-09-30T21:42:06] [1/120] tf_ctl10k_R2 set E0  (19 sets left)
+[2026-09-30T22:11:51] [gpu_lease] GPU stable-clean for 180s
+[2026-09-30T22:11:51] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E0, pid 85847); launching
+[2026-09-30T22:14:49] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E0)
+[2026-09-30T22:14:49]   rc=0 status=VALID
+[2026-09-30T22:14:49] [2/120] tf_uwm10k_R2 set E1s  (18 sets left)
+[2026-09-30T22:17:32] [gpu_lease] GPU stable-clean for 180s
+[2026-09-30T22:17:32] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R2:E1s, pid 85847); launching
+[2026-09-30T22:20:29] [gpu_lease] lease released (stage cl:tf_uwm10k_R2:E1s)
+[2026-09-30T22:20:29]   rc=0 status=VALID
+[2026-09-30T22:20:29] [3/120] tf_ctl10k_R2 set E1s  (17 sets left)
+[2026-09-30T22:23:12] [gpu_lease] GPU stable-clean for 180s
+[2026-09-30T22:23:12] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E1s, pid 85847); launching
+[2026-09-30T22:25:57] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E1s)
+[2026-09-30T22:25:57]   rc=0 status=INVALID_CONTENDED_DURING
+[2026-09-30T22:25:57]   set E1s not VALID (contention?); will retry after a clean GPU
+[2026-09-30T22:28:57] [4/120] tf_ctl10k_R2 set E1s  (17 sets left)
+[2026-09-30T22:30:27] [gpu_lease] clean streak broken at 5 (foreign 5876 MiB)
+[2026-09-30T22:41:04] [gpu_lease] clean streak broken at 2 (foreign 5876 MiB)
+[2026-09-30T22:46:23] [gpu_lease] clean streak broken at 1 (foreign 5876 MiB)
+[2026-10-01T20:13:47] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-10-01T20:13:47] program spent: 2.5683 GPU-h
+[2026-10-01T20:13:47] [1/120] tf_ctl10k_R2 set E1s  (17 sets left)
+[2026-10-02T12:09:13] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-10-02T12:09:13] program spent: 2.5683 GPU-h
+[2026-10-02T12:09:13] [1/120] tf_ctl10k_R2 set E1s  (17 sets left)
+[2026-10-02T12:23:32] [gpu_lease] clean streak broken at 1 (foreign 5876 MiB)
+[2026-10-02T12:32:09] [gpu_lease] clean streak broken at 2 (foreign 5876 MiB)
+[2026-10-02T12:42:52] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T12:42:52] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E1s, pid 108882); launching
+[2026-10-02T12:45:11] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E1s)
+[2026-10-02T12:45:11]   rc=0 status=VALID
+[2026-10-02T12:45:11] [2/120] tf_uwm10k_R2 set E2s  (16 sets left)
+[2026-10-02T12:47:53] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T12:47:53] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R2:E2s, pid 108882); launching
+[2026-10-02T12:50:05] [gpu_lease] lease released (stage cl:tf_uwm10k_R2:E2s)
+[2026-10-02T12:50:05]   rc=0 status=VALID
+[2026-10-02T12:50:05] [3/120] tf_ctl10k_R2 set E2s  (15 sets left)
+[2026-10-02T12:52:47] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T12:52:47] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E2s, pid 108882); launching
+[2026-10-02T12:54:58] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E2s)
+[2026-10-02T12:54:58]   rc=0 status=VALID
+[2026-10-02T12:54:58] [4/120] tf_uwm10k_R2 set E3s  (14 sets left)
+[2026-10-02T12:57:40] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T12:57:40] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R2:E3s, pid 108882); launching
+[2026-10-02T12:59:51] [gpu_lease] lease released (stage cl:tf_uwm10k_R2:E3s)
+[2026-10-02T12:59:51]   rc=0 status=VALID
+[2026-10-02T12:59:51] [5/120] tf_ctl10k_R2 set E3s  (13 sets left)
+[2026-10-02T13:00:45] [gpu_lease] clean streak broken at 3 (foreign 5876 MiB)
+[2026-10-02T13:05:04] [gpu_lease] clean streak broken at 1 (foreign 13684 MiB)
+[2026-10-02T13:16:23] [gpu_lease] clean streak broken at 1 (foreign 5876 MiB)
+[2026-10-02T13:22:06] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T13:22:06] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E3s, pid 108882); launching
+[2026-10-02T13:24:27] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E3s)
+[2026-10-02T13:24:27]   rc=0 status=INVALID_CONTENDED_DURING
+[2026-10-02T13:24:27]   set E3s not VALID (contention?); will retry after a clean GPU
+[2026-10-02T13:24:27] [6/120] tf_ctl10k_R2 set E3s  (13 sets left)
+[2026-10-02T13:25:03] [gpu_lease] clean streak broken at 2 (foreign 5892 MiB)
+[2026-10-02T13:32:10] [gpu_lease] clean streak broken at 7 (foreign 5876 MiB)
+[2026-10-02T13:35:40] [gpu_lease] clean streak broken at 5 (foreign 5876 MiB)
+[2026-10-02T13:43:23] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T13:43:23] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E3s, pid 108882); launching
+[2026-10-02T13:45:45] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E3s)
+[2026-10-02T13:45:45]   rc=0 status=VALID
+[2026-10-02T13:45:45] [7/120] tf_uwm10k_R2 set E4s  (12 sets left)
+[2026-10-02T13:48:27] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T13:48:27] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R2:E4s, pid 108882); launching
+[2026-10-02T13:50:54] [gpu_lease] lease released (stage cl:tf_uwm10k_R2:E4s)
+[2026-10-02T13:50:54]   rc=0 status=VALID
+[2026-10-02T13:50:54] [8/120] tf_ctl10k_R2 set E4s  (11 sets left)
+[2026-10-02T13:53:37] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T13:53:37] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R2:E4s, pid 108882); launching
+[2026-10-02T13:56:04] [gpu_lease] lease released (stage cl:tf_ctl10k_R2:E4s)
+[2026-10-02T13:56:04]   rc=0 status=VALID
+[2026-10-02T13:56:04] [9/120] tf_uwm10k_R3 set E0  (10 sets left)
+[2026-10-02T13:58:46] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T13:58:46] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R3:E0, pid 108882); launching
+[2026-10-02T14:01:08] [gpu_lease] lease released (stage cl:tf_uwm10k_R3:E0)
+[2026-10-02T14:01:08]   rc=0 status=VALID
+[2026-10-02T14:01:08] [10/120] tf_ctl10k_R3 set E0  (9 sets left)
+[2026-10-02T14:03:51] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:03:51] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R3:E0, pid 108882); launching
+[2026-10-02T14:06:13] [gpu_lease] lease released (stage cl:tf_ctl10k_R3:E0)
+[2026-10-02T14:06:13]   rc=0 status=VALID
+[2026-10-02T14:06:13] [11/120] tf_uwm10k_R3 set E1s  (8 sets left)
+[2026-10-02T14:08:55] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:08:55] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R3:E1s, pid 108882); launching
+[2026-10-02T14:11:07] [gpu_lease] lease released (stage cl:tf_uwm10k_R3:E1s)
+[2026-10-02T14:11:07]   rc=0 status=VALID
+[2026-10-02T14:11:07] [12/120] tf_ctl10k_R3 set E1s  (7 sets left)
+[2026-10-02T14:13:49] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:13:49] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R3:E1s, pid 108882); launching
+[2026-10-02T14:16:01] [gpu_lease] lease released (stage cl:tf_ctl10k_R3:E1s)
+[2026-10-02T14:16:01]   rc=0 status=VALID
+[2026-10-02T14:16:01] [13/120] tf_uwm10k_R3 set E2s  (6 sets left)
+[2026-10-02T14:18:43] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:18:43] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R3:E2s, pid 108882); launching
+[2026-10-02T14:20:55] [gpu_lease] lease released (stage cl:tf_uwm10k_R3:E2s)
+[2026-10-02T14:20:55]   rc=0 status=VALID
+[2026-10-02T14:20:55] [14/120] tf_ctl10k_R3 set E2s  (5 sets left)
+[2026-10-02T14:23:37] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:23:37] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R3:E2s, pid 108882); launching
+[2026-10-02T14:25:43] [gpu_lease] lease released (stage cl:tf_ctl10k_R3:E2s)
+[2026-10-02T14:25:43]   rc=0 status=VALID
+[2026-10-02T14:25:43] [15/120] tf_uwm10k_R3 set E3s  (4 sets left)
+[2026-10-02T14:28:26] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:28:26] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R3:E3s, pid 108882); launching
+[2026-10-02T14:30:37] [gpu_lease] lease released (stage cl:tf_uwm10k_R3:E3s)
+[2026-10-02T14:30:37]   rc=0 status=VALID
+[2026-10-02T14:30:37] [16/120] tf_ctl10k_R3 set E3s  (3 sets left)
+[2026-10-02T14:33:20] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:33:20] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R3:E3s, pid 108882); launching
+[2026-10-02T14:35:42] [gpu_lease] lease released (stage cl:tf_ctl10k_R3:E3s)
+[2026-10-02T14:35:42]   rc=0 status=VALID
+[2026-10-02T14:35:42] [17/120] tf_uwm10k_R3 set E4s  (2 sets left)
+[2026-10-02T14:38:24] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:38:24] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R3:E4s, pid 108882); launching
+[2026-10-02T14:40:46] [gpu_lease] lease released (stage cl:tf_uwm10k_R3:E4s)
+[2026-10-02T14:40:46]   rc=0 status=VALID
+[2026-10-02T14:40:46] [18/120] tf_ctl10k_R3 set E4s  (1 sets left)
+[2026-10-02T14:43:29] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:43:29] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R3:E4s, pid 108882); launching
+[2026-10-02T14:45:56] [gpu_lease] lease released (stage cl:tf_ctl10k_R3:E4s)
+[2026-10-02T14:45:56]   rc=0 status=VALID
+[2026-10-02T14:45:56] ALL SETS VALID for every model/realization
+[2026-10-02T14:45:56] tf_uwm10k_R1: n_valid_sets=5 control_mean=0.7958333333333333
+[2026-10-02T14:45:56] tf_uwm10k_R2: n_valid_sets=5 control_mean=0.79375
+[2026-10-02T14:45:56] tf_uwm10k_R3: n_valid_sets=5 control_mean=0.78125
+[2026-10-02T14:45:56] tf_ctl10k_R1: n_valid_sets=5 control_mean=0.80625
+[2026-10-02T14:45:56] tf_ctl10k_R2: n_valid_sets=5 control_mean=0.8041666666666668
+[2026-10-02T14:45:56] tf_ctl10k_R3: n_valid_sets=5 control_mean=0.8041666666666666
+[2026-10-02T14:45:56] === CHUNKED CLOSED-LOOP DONE: 3.2567 GPU-h ===
+[2026-10-02T14:46:15] === CHUNKED CLOSED-LOOP R=3 (1 models, one E set per lease) ===
+[2026-10-02T14:46:15] program spent: 3.2567 GPU-h
+[2026-10-02T14:46:15] [1/60] tf_uwm10k_lead025_R1 set E0  (15 sets left)
+[2026-10-02T14:48:58] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:48:58] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R1:E0, pid 282119); launching
+[2026-10-02T14:51:25] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R1:E0)
+[2026-10-02T14:51:25]   rc=0 status=VALID
+[2026-10-02T14:51:25] [2/60] tf_uwm10k_lead025_R1 set E1s  (14 sets left)
+[2026-10-02T14:54:07] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:54:07] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R1:E1s, pid 282119); launching
+[2026-10-02T14:56:24] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R1:E1s)
+[2026-10-02T14:56:24]   rc=0 status=VALID
+[2026-10-02T14:56:24] [3/60] tf_uwm10k_lead025_R1 set E2s  (13 sets left)
+[2026-10-02T14:59:07] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T14:59:07] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R1:E2s, pid 282119); launching
+[2026-10-02T15:01:30] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R1:E2s)
+[2026-10-02T15:01:30]   rc=0 status=VALID
+[2026-10-02T15:01:30] [4/60] tf_uwm10k_lead025_R1 set E3s  (12 sets left)
+[2026-10-02T15:04:12] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:04:12] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R1:E3s, pid 282119); launching
+[2026-10-02T15:06:34] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R1:E3s)
+[2026-10-02T15:06:34]   rc=0 status=VALID
+[2026-10-02T15:06:34] [5/60] tf_uwm10k_lead025_R1 set E4s  (11 sets left)
+[2026-10-02T15:09:17] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:09:17] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R1:E4s, pid 282119); launching
+[2026-10-02T15:11:39] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R1:E4s)
+[2026-10-02T15:11:39]   rc=0 status=VALID
+[2026-10-02T15:11:39] [6/60] tf_uwm10k_lead025_R2 set E0  (10 sets left)
+[2026-10-02T15:14:21] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:14:21] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R2:E0, pid 282119); launching
+[2026-10-02T15:16:43] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R2:E0)
+[2026-10-02T15:16:43]   rc=0 status=VALID
+[2026-10-02T15:16:43] [7/60] tf_uwm10k_lead025_R2 set E1s  (9 sets left)
+[2026-10-02T15:19:26] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:19:26] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R2:E1s, pid 282119); launching
+[2026-10-02T15:21:47] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R2:E1s)
+[2026-10-02T15:21:47]   rc=0 status=VALID
+[2026-10-02T15:21:47] [8/60] tf_uwm10k_lead025_R2 set E2s  (8 sets left)
+[2026-10-02T15:24:30] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:24:30] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R2:E2s, pid 282119); launching
+[2026-10-02T15:26:52] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R2:E2s)
+[2026-10-02T15:26:52]   rc=0 status=VALID
+[2026-10-02T15:26:52] [9/60] tf_uwm10k_lead025_R2 set E3s  (7 sets left)
+[2026-10-02T15:29:34] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:29:34] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R2:E3s, pid 282119); launching
+[2026-10-02T15:31:56] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R2:E3s)
+[2026-10-02T15:31:56]   rc=0 status=VALID
+[2026-10-02T15:31:56] [10/60] tf_uwm10k_lead025_R2 set E4s  (6 sets left)
+[2026-10-02T15:34:38] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:34:38] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R2:E4s, pid 282119); launching
+[2026-10-02T15:37:00] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R2:E4s)
+[2026-10-02T15:37:00]   rc=0 status=VALID
+[2026-10-02T15:37:00] [11/60] tf_uwm10k_lead025_R3 set E0  (5 sets left)
+[2026-10-02T15:39:43] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:39:43] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R3:E0, pid 282119); launching
+[2026-10-02T15:42:04] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R3:E0)
+[2026-10-02T15:42:04]   rc=0 status=VALID
+[2026-10-02T15:42:04] [12/60] tf_uwm10k_lead025_R3 set E1s  (4 sets left)
+[2026-10-02T15:44:47] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:44:47] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R3:E1s, pid 282119); launching
+[2026-10-02T15:47:09] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R3:E1s)
+[2026-10-02T15:47:09]   rc=0 status=VALID
+[2026-10-02T15:47:09] [13/60] tf_uwm10k_lead025_R3 set E2s  (3 sets left)
+[2026-10-02T15:49:51] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:49:51] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R3:E2s, pid 282119); launching
+[2026-10-02T15:52:13] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R3:E2s)
+[2026-10-02T15:52:13]   rc=0 status=VALID
+[2026-10-02T15:52:13] [14/60] tf_uwm10k_lead025_R3 set E3s  (2 sets left)
+[2026-10-02T15:54:56] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T15:54:56] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R3:E3s, pid 282119); launching
+[2026-10-02T15:57:17] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R3:E3s)
+[2026-10-02T15:57:17]   rc=0 status=VALID
+[2026-10-02T15:57:17] [15/60] tf_uwm10k_lead025_R3 set E4s  (1 sets left)
+[2026-10-02T16:00:00] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T16:00:00] [gpu_lease] lease acquired (stage cl:tf_uwm10k_lead025_R3:E4s, pid 282119); launching
+[2026-10-02T16:02:21] [gpu_lease] lease released (stage cl:tf_uwm10k_lead025_R3:E4s)
+[2026-10-02T16:02:21]   rc=0 status=VALID
+[2026-10-02T16:02:21] ALL SETS VALID for every model/realization
+[2026-10-02T16:02:21] tf_uwm10k_lead025_R1: n_valid_sets=5 control_mean=0.7583333333333334
+[2026-10-02T16:02:21] tf_uwm10k_lead025_R2: n_valid_sets=5 control_mean=0.7645833333333334
+[2026-10-02T16:02:21] tf_uwm10k_lead025_R3: n_valid_sets=5 control_mean=0.79375
+[2026-10-02T16:02:21] === CHUNKED CLOSED-LOOP DONE: 3.8475 GPU-h ===
+[2026-10-02T16:49:50] === CHUNKED CLOSED-LOOP R=3 (1 models, one E set per lease) ===
+[2026-10-02T16:49:50] program spent: 4.5033 GPU-h
+[2026-10-02T16:49:50] [1/60] tf_qaction10k_R1 set E0  (15 sets left)
+[2026-10-02T16:52:32] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T16:52:32] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R1:E0, pid 372753); launching
+[2026-10-02T16:54:43] [gpu_lease] lease released (stage cl:tf_qaction10k_R1:E0)
+[2026-10-02T16:54:43]   rc=0 status=VALID
+[2026-10-02T16:54:43] [2/60] tf_qaction10k_R1 set E1s  (14 sets left)
+[2026-10-02T16:57:26] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T16:57:26] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R1:E1s, pid 372753); launching
+[2026-10-02T16:59:37] [gpu_lease] lease released (stage cl:tf_qaction10k_R1:E1s)
+[2026-10-02T16:59:37]   rc=0 status=VALID
+[2026-10-02T16:59:37] [3/60] tf_qaction10k_R1 set E2s  (13 sets left)
+[2026-10-02T17:02:19] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:02:19] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R1:E2s, pid 372753); launching
+[2026-10-02T17:04:41] [gpu_lease] lease released (stage cl:tf_qaction10k_R1:E2s)
+[2026-10-02T17:04:41]   rc=0 status=VALID
+[2026-10-02T17:04:41] [4/60] tf_qaction10k_R1 set E3s  (12 sets left)
+[2026-10-02T17:07:24] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:07:24] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R1:E3s, pid 372753); launching
+[2026-10-02T17:09:47] [gpu_lease] lease released (stage cl:tf_qaction10k_R1:E3s)
+[2026-10-02T17:09:47]   rc=0 status=VALID
+[2026-10-02T17:09:47] [5/60] tf_qaction10k_R1 set E4s  (11 sets left)
+[2026-10-02T17:12:29] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:12:29] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R1:E4s, pid 372753); launching
+[2026-10-02T17:14:56] [gpu_lease] lease released (stage cl:tf_qaction10k_R1:E4s)
+[2026-10-02T17:14:56]   rc=0 status=VALID
+[2026-10-02T17:14:56] [6/60] tf_qaction10k_R2 set E0  (10 sets left)
+[2026-10-02T17:17:39] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:17:39] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R2:E0, pid 372753); launching
+[2026-10-02T17:20:01] [gpu_lease] lease released (stage cl:tf_qaction10k_R2:E0)
+[2026-10-02T17:20:01]   rc=0 status=VALID
+[2026-10-02T17:20:01] [7/60] tf_qaction10k_R2 set E1s  (9 sets left)
+[2026-10-02T17:22:43] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:22:43] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R2:E1s, pid 372753); launching
+[2026-10-02T17:25:05] [gpu_lease] lease released (stage cl:tf_qaction10k_R2:E1s)
+[2026-10-02T17:25:05]   rc=0 status=VALID
+[2026-10-02T17:25:05] [8/60] tf_qaction10k_R2 set E2s  (8 sets left)
+[2026-10-02T17:27:47] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:27:47] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R2:E2s, pid 372753); launching
+[2026-10-02T17:29:59] [gpu_lease] lease released (stage cl:tf_qaction10k_R2:E2s)
+[2026-10-02T17:29:59]   rc=0 status=VALID
+[2026-10-02T17:29:59] [9/60] tf_qaction10k_R2 set E3s  (7 sets left)
+[2026-10-02T17:32:41] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:32:41] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R2:E3s, pid 372753); launching
+[2026-10-02T17:34:53] [gpu_lease] lease released (stage cl:tf_qaction10k_R2:E3s)
+[2026-10-02T17:34:53]   rc=0 status=VALID
+[2026-10-02T17:34:53] [10/60] tf_qaction10k_R2 set E4s  (6 sets left)
+[2026-10-02T17:37:35] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:37:35] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R2:E4s, pid 372753); launching
+[2026-10-02T17:39:57] [gpu_lease] lease released (stage cl:tf_qaction10k_R2:E4s)
+[2026-10-02T17:39:57]   rc=0 status=VALID
+[2026-10-02T17:39:57] [11/60] tf_qaction10k_R3 set E0  (5 sets left)
+[2026-10-02T17:42:40] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:42:40] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R3:E0, pid 372753); launching
+[2026-10-02T17:45:07] [gpu_lease] lease released (stage cl:tf_qaction10k_R3:E0)
+[2026-10-02T17:45:07]   rc=0 status=VALID
+[2026-10-02T17:45:07] [12/60] tf_qaction10k_R3 set E1s  (4 sets left)
+[2026-10-02T17:47:49] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:47:49] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R3:E1s, pid 372753); launching
+[2026-10-02T17:50:11] [gpu_lease] lease released (stage cl:tf_qaction10k_R3:E1s)
+[2026-10-02T17:50:11]   rc=0 status=VALID
+[2026-10-02T17:50:11] [13/60] tf_qaction10k_R3 set E2s  (3 sets left)
+[2026-10-02T17:52:53] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:52:54] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R3:E2s, pid 372753); launching
+[2026-10-02T17:55:10] [gpu_lease] lease released (stage cl:tf_qaction10k_R3:E2s)
+[2026-10-02T17:55:10]   rc=0 status=VALID
+[2026-10-02T17:55:10] [14/60] tf_qaction10k_R3 set E3s  (2 sets left)
+[2026-10-02T17:57:53] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T17:57:53] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R3:E3s, pid 372753); launching
+[2026-10-02T18:00:15] [gpu_lease] lease released (stage cl:tf_qaction10k_R3:E3s)
+[2026-10-02T18:00:15]   rc=0 status=VALID
+[2026-10-02T18:00:15] [15/60] tf_qaction10k_R3 set E4s  (1 sets left)
+[2026-10-02T18:02:57] [gpu_lease] GPU stable-clean for 180s
+[2026-10-02T18:02:57] [gpu_lease] lease acquired (stage cl:tf_qaction10k_R3:E4s, pid 372753); launching
+[2026-10-02T18:07:33] [gpu_lease] lease released (stage cl:tf_qaction10k_R3:E4s)
+[2026-10-02T18:07:33]   rc=0 status=VALID
+[2026-10-02T18:07:33] ALL SETS VALID for every model/realization
+[2026-10-02T18:07:33] tf_qaction10k_R1: n_valid_sets=5 control_mean=0.7479166666666666
+[2026-10-02T18:07:33] tf_qaction10k_R2: n_valid_sets=5 control_mean=0.7729166666666666
+[2026-10-02T18:07:33] tf_qaction10k_R3: n_valid_sets=5 control_mean=0.75625
+[2026-10-02T18:07:33] === CHUNKED CLOSED-LOOP DONE: 5.1219 GPU-h ===
+[2026-10-08T16:22:07] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-10-08T16:22:07] program spent: 5.4178 GPU-h
+[2026-10-08T16:22:07] ALL SETS VALID for every model/realization
+[2026-10-08T16:22:07] tf_uwm10k_R1: n_valid_sets=5 control_mean=0.7958333333333333
+[2026-10-08T16:22:07] tf_uwm10k_R2: n_valid_sets=5 control_mean=0.79375
+[2026-10-08T16:22:07] tf_uwm10k_R3: n_valid_sets=5 control_mean=0.78125
+[2026-10-08T16:22:07] tf_ctl10k_R1: n_valid_sets=5 control_mean=0.80625
+[2026-10-08T16:22:07] tf_ctl10k_R2: n_valid_sets=5 control_mean=0.8041666666666668
+[2026-10-08T16:22:07] tf_ctl10k_R3: n_valid_sets=5 control_mean=0.8041666666666666
+[2026-10-08T16:22:07] === CHUNKED CLOSED-LOOP DONE: 5.4178 GPU-h ===
+[2026-10-08T16:22:07] === CHUNKED CLOSED-LOOP R=3 (1 models, one E set per lease) ===
+[2026-10-08T16:22:07] program spent: 5.4178 GPU-h
+[2026-10-08T16:22:07] ALL SETS VALID for every model/realization
+[2026-10-08T16:22:07] tf_uwm10k_lead025_R1: n_valid_sets=5 control_mean=0.7583333333333334
+[2026-10-08T16:22:07] tf_uwm10k_lead025_R2: n_valid_sets=5 control_mean=0.7645833333333334
+[2026-10-08T16:22:07] tf_uwm10k_lead025_R3: n_valid_sets=5 control_mean=0.79375
+[2026-10-08T16:22:07] === CHUNKED CLOSED-LOOP DONE: 5.4178 GPU-h ===
+[2026-10-08T16:25:13] === CHUNKED CLOSED-LOOP R=3 (1 models, one E set per lease) ===
+[2026-10-08T16:25:13] program spent: 5.4242 GPU-h
+[2026-10-08T16:25:13] ALL SETS VALID for every model/realization
+[2026-10-08T16:25:13] tf_qaction10k_R1: n_valid_sets=5 control_mean=0.7479166666666666
+[2026-10-08T16:25:13] tf_qaction10k_R2: n_valid_sets=5 control_mean=0.7729166666666666
+[2026-10-08T16:25:13] tf_qaction10k_R3: n_valid_sets=5 control_mean=0.75625
+[2026-10-08T16:25:13] === CHUNKED CLOSED-LOOP DONE: 5.4242 GPU-h ===
+[2026-10-08T17:12:32] === CHUNKED CLOSED-LOOP R=3 (1 models, one E set per lease) ===
+[2026-10-08T17:12:32] program spent: 6.0775 GPU-h
+[2026-10-08T17:12:32] [1/60] tf_prevact10k_R1 set E0  (15 sets left)
+[2026-10-08T17:15:14] [gpu_lease] GPU stable-clean for 180s
+[2026-10-08T17:15:15] [gpu_lease] lease acquired (stage cl:tf_prevact10k_R1:E0, pid 53880); launching
+[2026-10-08T17:17:36] [gpu_lease] lease released (stage cl:tf_prevact10k_R1:E0)
+[2026-10-08T17:17:36]   rc=0 status=VALID
+[2026-10-08T17:17:36] [2/60] tf_prevact10k_R1 set E1s  (14 sets left)

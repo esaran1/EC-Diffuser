@@ -1,0 +1,91 @@
+[2026-09-28T16:57:18] === CHAIN V5: monitoring verified ===
+[2026-09-28T16:57:18] --- 1: control 10k (exact-resume runner) ---
+[2026-09-28T16:57:18] attempt 1: fresh run
+[2026-09-28T17:00:01] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:00:01] [gpu_lease] lease acquired (stage train:ctl10k:1, pid 81528); launching
+[2026-09-28T17:19:50] [gpu_lease] lease released (stage train:ctl10k:1)
+[2026-09-28T17:19:50] attempt 1 rc=0 final=True
+[2026-09-28T17:19:50] ctl10k COMPLETE
+[2026-09-28T17:19:50] --- 2: 10k pair integrity ---
+[integrity] sha {'uwm10k': 'bc2027e4d112ac7f', 'ctl10k': '9ee497d66982b9fd', 'uwm5k': 'a4f24d23c5350c4b', 'ctl5k': '6bb31652c5323f77'}
+[integrity] uwm10k p_diag=0.0 ds=20260917 ws=uwm_uwm
+[integrity] ctl10k p_diag=1.0 ds=20260917 ws=uwm_ctl
+[integrity] config diff ['p_diag', 'prefix', 'warm_start_checkpoint']
+[integrity] PASS
+[2026-09-28T17:19:53] --- 3: extended diagnostics ---
+[2026-09-28T17:19:55] === STAGE-E OFFLINE DIAGNOSTICS (no training) ===
+[2026-09-28T17:19:55] foreign GPU MiB: 0
+[2026-09-28T17:22:38] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:22:38] [gpu_lease] lease acquired (stage diag:stageE_ext, pid 112206); launching
+[2026-09-28T17:23:10] [gpu_lease] lease released (stage diag:stageE_ext)
+[2026-09-28T17:23:10] diagnostics rc=0
+[2026-09-28T17:23:10] ext diag rc=0
+====================================================================================
+ACTION BLOCK — full grid (the REGISTERED criterion)
+====================================================================================
+  arm             diag       off  off/diag       corr  corner(1,0)
+  uwm 5k        0.2088    0.3254     1.558    +0.3564       0.2475
+  uwm 10k       0.2033    0.2536     1.248    +0.3054       0.2189
+  ctl 5k        0.1885    0.5660     3.003    +0.6920       1.5941
+  ctl 10k       0.1866    0.5777     3.097    +0.6830       1.6546
+
+====================================================================================
+ACTION BLOCK — excluding the degenerate t_action=1.0 column
+====================================================================================
+  arm             diag       off  off/diag       corr
+  uwm 5k        0.0555    0.2036     3.667    +0.4352
+  uwm 10k       0.0457    0.1134     2.484    +0.2648
+  ctl 5k        0.0347    0.4756    13.703    +0.7908
+  ctl 10k       0.0329    0.4849    14.722    +0.7861
+
+====================================================================================
+DID THE EXTENSION CHANGE THE VERDICT?
+====================================================================================
+
+  [full grid]
+    UWM off/diag  1.558 -> 1.248   (-19.9%)
+    CTL off/diag  3.003 -> 3.097   (+3.1%)
+    gap (CTL/UWM) 1.93x -> 2.48x
+    UWM corr      +0.3564 -> +0.3054
+    CTL corr      +0.6920 -> +0.6830
+
+  [excl. degenerate]
+    UWM off/diag  3.667 -> 2.484   (-32.3%)
+    CTL off/diag  13.703 -> 14.722   (+7.4%)
+    gap (CTL/UWM) 3.74x -> 5.93x
+    UWM corr      +0.4352 -> +0.2648
+    CTL corr      +0.7908 -> +0.7861
+
+  The control is the guard: if BOTH arms improve similarly, the
+  change is 'trained longer', not 'trained off-diagonal'.
+
+wrote COMPARE_5K_10K.json
+[2026-09-28T17:23:10] --- 4: PRIMARY closed loop R=3: uwm10k vs ctl10k, diagonal, 4 calls ---
+[2026-09-28T17:23:12] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-09-28T17:23:12] program spent: 1.9500 GPU-h
+[2026-09-28T17:23:12] [1/80] tf_uwm10k_R1 set E0  (30 sets left)
+[2026-09-28T17:25:54] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:25:54] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E0, pid 114850); launching
+[2026-09-28T17:28:15] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E0)
+[2026-09-28T17:28:15]   rc=0 status=VALID
+[2026-09-28T17:28:15] [2/80] tf_ctl10k_R1 set E0  (29 sets left)
+[2026-09-28T17:30:58] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:30:58] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E0, pid 114850); launching
+[2026-09-28T17:33:24] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E0)
+[2026-09-28T17:33:24]   rc=0 status=VALID
+[2026-09-28T17:33:24] [3/80] tf_uwm10k_R1 set E1s  (28 sets left)
+[2026-09-28T17:36:07] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:36:07] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E1s, pid 114850); launching
+[2026-09-28T17:38:33] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E1s)
+[2026-09-28T17:38:33]   rc=0 status=VALID
+[2026-09-28T17:38:33] [4/80] tf_ctl10k_R1 set E1s  (27 sets left)
+[2026-09-28T17:41:16] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:41:16] [gpu_lease] lease acquired (stage cl:tf_ctl10k_R1:E1s, pid 114850); launching
+[2026-09-28T17:43:37] [gpu_lease] lease released (stage cl:tf_ctl10k_R1:E1s)
+[2026-09-28T17:43:37]   rc=0 status=VALID
+[2026-09-28T17:43:37] [5/80] tf_uwm10k_R1 set E2s  (26 sets left)
+[2026-09-28T17:46:19] [gpu_lease] GPU stable-clean for 180s
+[2026-09-28T17:46:19] [gpu_lease] lease acquired (stage cl:tf_uwm10k_R1:E2s, pid 114850); launching
+[2026-09-28T17:48:41] [gpu_lease] lease released (stage cl:tf_uwm10k_R1:E2s)
+[2026-09-28T17:48:41]   rc=0 status=VALID
+[2026-09-28T17:48:41] [6/80] tf_ctl10k_R1 set E2s  (25 sets left)

@@ -1,0 +1,189 @@
+[ utils/colab ] Warning: not importing colab dependencies
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl/3C_dlp_adalnpint_randcolor_H5_T4_seed42/dataset_config.pkl
+
+[utils/config ] Config: <class 'diffuser.datasets.sequence.GoalDataset'>
+    action_only: False
+    dataset_name: panda_push
+    dataset_path: ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+    horizon: 5
+    max_path_length: 100
+    normalizer: SafeLimitsNormalizer
+    obs_only: False
+    overfit: False
+    particle_normalizer: ParticleLimitsNormalizer
+    preprocess_fns: []
+    single_view: False
+    use_padding: True
+
+[ datasets/buffer ] Loaded 2000 episodes from ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+[ datasets/buffer ] Finalized replay buffer | 2000 episodes
+[ datasets/buffer ] Found 1950 successful episodes
+goals X shape:  (2000, 48, 10)
+The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+[ utils/normalization ] Skipping state_observations | <class 'diffuser.datasets.normalization.SafeLimitsNormalizer'>
+The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+[ utils/normalization ] Skipping state_goals | <class 'diffuser.datasets.normalization.SafeLimitsNormalizer'>
+
+                    [ utils/normalization ] Constant data in dimension 0 | max = min = 0.0
+[ datasets/sequence ] Dataset fields: [ datasets/buffer ] Fields:
+    info_goal_success_frac: (2000,)
+    info_goals_reached: (2000,)
+    goals: (2000, 100, 48, 10)
+    observations: (2000, 100, 48, 10)
+    state_observations: (2000, 100, 4, 6)
+    state_goals: (2000, 100, 4, 6)
+    actions: (2000, 100, 3)
+    rewards: (2000, 100, 1)
+    terminals: (2000, 100, 1)
+    normed_observations: (2000, 100, 480)
+    normed_actions: (2000, 100, 3)
+    normed_goals: (2000, 100, 480)
+[ datasets/sequence ] Dataset normalizer: observations: [ Normalizer ] dim: 10
+    -: [ -1.34  -1.31  -2.36  -1.8   -2.24 -11.58 -11.45  -5.57 -13.74   0.92]
+    +: [ 0.8   1.08 -0.46 -0.54  3.21 13.26 11.91  8.59  9.92  1.  ]
+]
+actions: [ Normalizer ] dim: 3
+    -: [-1.   -1.   -0.36]
+    +: [1.   1.   0.06]
+]
+rewards: [ Normalizer ] dim: 1
+    -: [-2.76]
+    +: [-0.01]
+]
+terminals: [ Normalizer ] dim: 1
+    -: [-1.]
+    +: [1.]
+]
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_uwm_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.twotime_pint.TwoTimePINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_uwm_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.uwm_flow.UWMConditionalFlowMatching'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    adaln_state_weight: 0.5
+    clip_denoised: False
+    horizon: 5
+    lambda_action: 1.0
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    mask_terminal_action: False
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    p_diag: 0.0
+    predict_epsilon: False
+    time_scale: 1000.0
+
+particle transformer # parameters: 57480704
+uwm10k NFE4 alpha 0.00  act@0 0.0220 act_all 0.0296 state 0.1885
+uwm10k NFE4 alpha 0.25  act@0 0.0312 act_all 0.0368 state 0.1906
+uwm10k NFE4 alpha 0.50  act@0 0.1271 act_all 0.1282 state 0.1793
+uwm10k NFE4 alpha 0.75  act@0 0.1415 act_all 0.1407 state 0.1836
+uwm10k NFE4 alpha 1.00  act@0 0.1828 act_all 0.1714 state 0.1646
+uwm10k NFE4 oracle-state inverse act@0 0.1740
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.twotime_pint.TwoTimePINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.uwm_flow.UWMConditionalFlowMatching'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    adaln_state_weight: 0.5
+    clip_denoised: False
+    horizon: 5
+    lambda_action: 1.0
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    mask_terminal_action: False
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    p_diag: 1.0
+    predict_epsilon: False
+    time_scale: 1000.0
+
+particle transformer # parameters: 57480704
+ctl10k NFE4 alpha 0.00  act@0 0.0139 act_all 0.0245 state 0.1885
+ctl10k NFE4 alpha 0.25  act@0 0.0665 act_all 0.0738 state 0.1937
+ctl10k NFE4 alpha 0.50  act@0 0.1677 act_all 0.1620 state 0.2032
+ctl10k NFE4 alpha 0.75  act@0 0.1940 act_all 0.1879 state 0.2188
+ctl10k NFE4 alpha 1.00  act@0 0.4243 act_all 0.3557 state 0.2118
+ctl10k NFE4 oracle-state inverse act@0 0.1677
+uwm10k NFE8 alpha 0.00  act@0 0.0302 act_all 0.0355 state 0.2002
+uwm10k NFE8 alpha 0.25  act@0 0.0686 act_all 0.0744 state 0.1987
+uwm10k NFE8 alpha 0.50  act@0 0.1190 act_all 0.1235 state 0.1963
+uwm10k NFE8 alpha 0.75  act@0 0.1595 act_all 0.1623 state 0.1929
+uwm10k NFE8 alpha 1.00  act@0 0.1820 act_all 0.1805 state 0.1879
+uwm10k NFE8 oracle-state inverse act@0 0.1787
+ctl10k NFE8 alpha 0.00  act@0 0.0213 act_all 0.0290 state 0.2001
+ctl10k NFE8 alpha 0.25  act@0 0.0759 act_all 0.0853 state 0.2016
+ctl10k NFE8 alpha 0.50  act@0 0.1598 act_all 0.1443 state 0.2125
+ctl10k NFE8 alpha 0.75  act@0 0.2767 act_all 0.2321 state 0.2297
+ctl10k NFE8 alpha 1.00  act@0 0.3801 act_all 0.3088 state 0.2349
+ctl10k NFE8 oracle-state inverse act@0 0.1182
+
+uwm10k
+  NFE 4   alpha  act@0    act_all  state    state/diag  per-step state
+          0.00   0.0220   0.0296   0.1885   1.000       0.189 0.188 0.188
+          0.25   0.0312   0.0368   0.1906   1.011       0.192 0.190 0.191
+          0.50   0.1271   0.1282   0.1793   0.952       0.180 0.179 0.179
+          0.75   0.1415   0.1407   0.1836   0.974       0.185 0.183 0.183
+          1.00   0.1828   0.1714   0.1646   0.873       0.165 0.164 0.165
+          oracle-state (fully inverse, NOT deployable) act@0 0.1740
+  NFE 8   alpha  act@0    act_all  state    state/diag  per-step state
+          0.00   0.0302   0.0355   0.2002   1.000       0.201 0.200 0.200
+          0.25   0.0686   0.0744   0.1987   0.993       0.199 0.198 0.199
+          0.50   0.1190   0.1235   0.1963   0.981       0.197 0.196 0.196
+          0.75   0.1595   0.1623   0.1929   0.964       0.194 0.192 0.193
+          1.00   0.1820   0.1805   0.1879   0.939       0.189 0.188 0.187
+          oracle-state (fully inverse, NOT deployable) act@0 0.1787
+
+ctl10k
+  NFE 4   alpha  act@0    act_all  state    state/diag  per-step state
+          0.00   0.0139   0.0245   0.1885   1.000       0.189 0.188 0.188
+          0.25   0.0665   0.0738   0.1937   1.027       0.195 0.193 0.193
+          0.50   0.1677   0.1620   0.2032   1.078       0.204 0.203 0.203
+          0.75   0.1940   0.1879   0.2188   1.161       0.220 0.219 0.218
+          1.00   0.4243   0.3557   0.2118   1.123       0.212 0.212 0.211
+          oracle-state (fully inverse, NOT deployable) act@0 0.1677
+  NFE 8   alpha  act@0    act_all  state    state/diag  per-step state
+          0.00   0.0213   0.0290   0.2001   1.000       0.201 0.199 0.200
+          0.25   0.0759   0.0853   0.2016   1.007       0.202 0.201 0.201
+          0.50   0.1598   0.1443   0.2125   1.062       0.213 0.212 0.212
+          0.75   0.2767   0.2321   0.2297   1.148       0.230 0.230 0.229
+          1.00   0.3801   0.3088   0.2349   1.174       0.236 0.235 0.234
+          oracle-state (fully inverse, NOT deployable) act@0 0.1182
+
+SELECTION: {'eligible_sorted': [0.25, 0.5, 0.75], 'chosen_for_closed_loop': [0.25], 'flag': None, 'diag_act0': 0.022028174251317978, 'diag_state': 0.18848086396853128}
