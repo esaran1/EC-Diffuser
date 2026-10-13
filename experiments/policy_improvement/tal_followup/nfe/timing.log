@@ -1,0 +1,13 @@
+[2026-10-13T18:11:07] [gpu_lease] GPU stable-clean for 180s
+[2026-10-13T18:11:08] [gpu_lease] lease acquired (stage nfe:timing, pid 511726); launching
+ctl10k 4 0.1196 s/sample
+ctl10k 10 0.2734 s/sample
+ctl10k 25 0.6893 s/sample
+ctl10k 50 1.5537 s/sample
+ctl10k 100 3.1568 s/sample
+qaction10k 4 0.1273 s/sample
+qaction10k 10 0.3206 s/sample
+qaction10k 25 0.7744 s/sample
+qaction10k 50 1.3461 s/sample
+qaction10k 100 2.8313 s/sample
+[2026-10-13T18:12:30] [gpu_lease] lease released (stage nfe:timing)

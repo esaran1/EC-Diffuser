@@ -30,7 +30,7 @@ PY = "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python"
 LOG = os.path.join(HERE, "closed_loop.log")
 P2 = os.path.join(ROOT, "experiments/policy_improvement/phase2")
 SETS = ("E0", "E1s", "E2s", "E3s", "E4s")
-CAP = 10.00
+CAP = 15.00
 SET_COST = 0.2212 / 5.0
 
 ENV = ("cd {root} && export PYTHONPATH={root}:{root}/diffuser && "
@@ -81,6 +81,8 @@ def main():
     ap.add_argument("--R", type=int, default=3)
     ap.add_argument("--max_attempts", type=int, default=40)
     ap.add_argument("--num_entity", type=int, default=3)
+    ap.add_argument("--num_envs", type=int, default=None)
+    ap.add_argument("--nfe", type=int, default=4)
     ap.add_argument("--sets", default="E0,E1s,E2s,E3s,E4s")
     a = ap.parse_args()
 
@@ -127,10 +129,11 @@ def main():
             ENV + ("WANDB_MODE=disabled WANDB_SILENT=true {py} "
                    "experiments/policy_improvement/phase2_diagnostics.py "
                    "--loadpath {lp} --epoch {ep} --tag {tag} --skip-offline "
-                   "--only-sets {s} --merge --trace --num_entity {ne}{ip} "
+                   "--only-sets {s} --merge --trace --num_entity {ne}{ip}{xe} "
                    "> linux_logs/{tag}_{s}.txt 2>&1").format(
                        py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s, ne=a.num_entity,
-                       ip=(" --inference_path " + j["path"]) if j.get("path") else ""),
+                       ip=(" --inference_path " + j["path"]) if j.get("path") else "",
+                       xe=(" --nfe {}".format(a.nfe)) + ((" --num_envs {}".format(a.num_envs)) if a.num_envs else "")),
             log=log)
         st = set_status(tag, s)
         log("  rc={} status={}".format(rc, st))

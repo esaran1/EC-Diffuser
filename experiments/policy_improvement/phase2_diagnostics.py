@@ -120,7 +120,7 @@ def control(diff, env, args, ep, dev, norm, trace=None):
                  args.horizon - 1: torch.as_tensor(norm.normalize(g, "observations"), device=dev, dtype=torch.float32)}
             with torch.no_grad():
                 kw = dict(verbose=False)
-                if hasattr(diff, "n_solver_steps"): kw["n_steps"] = 4
+                if hasattr(diff, "n_solver_steps"): kw["n_steps"] = getattr(args, "cl_nfe", 4)
                 if prev is not None: kw["prev_action"] = prev
                 s = diff.conditional_sample(c, **kw)
             xs = s.trajectories if hasattr(s, "trajectories") else s
@@ -152,6 +152,9 @@ def main():
     ap.add_argument("--only-sets", nargs="*", default=None,
                     help="restrict control eval to these set ids")
     ap.add_argument("--skip-offline", action="store_true")
+    ap.add_argument("--num_envs", type=int, default=None,
+                    help="parallel envs per batch (default: env config, 16)")
+    ap.add_argument("--nfe", type=int, default=4, help="sampler steps in closed loop")
     ap.add_argument("--num_entity", type=int, default=3,
                     help="cubes in the environment. 3 = the trained task (default, "
                          "unchanged); >3 = EC-Diffuser generalization to more cubes, "
@@ -168,6 +171,9 @@ def main():
     os.makedirs(OUT, exist_ok=True)
     args = Args(); utils.set_global_device(args.device)
     args.num_entity = cli.num_entity
+    args.cl_nfe = cli.nfe
+    if cli.num_envs:
+        args.num_envs = cli.num_envs
     if cli.num_entity != 3:
         global SETS
         SETS = [(n, "c{}_{}".format(cli.num_entity, f)) for n, f in SETS]
@@ -176,7 +182,8 @@ def main():
                                seed=args.seed, is_diffusion=True,
                                override_dataset_path="ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl")
     dev = args.device; norm = exp.dataset.normalizer
-    res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch), "num_entity": cli.num_entity}
+    res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch), "num_entity": cli.num_entity,
+           "nfe": cli.nfe, "num_envs": cli.num_envs or 16}
     # Two-time path selection. Only UWM wrappers implement set_inference_path;
     # for every other model this is a no-op and the production sampler is used.
     if cli.inference_path:

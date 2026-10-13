@@ -35,6 +35,8 @@ def setup_isaac_env(args):
         if args.push_t:
             isaac_env_cfg['env']['numColors'] = args.num_entity
             isaac_env_cfg['env']['numGoalObjects'] = args.num_entity
+    if getattr(args, 'num_envs', None):
+        isaac_env_cfg['env']['numEnvs'] = int(args.num_envs)
     if not args.multiview:
         config['Model']['numViews'] = 1
 
