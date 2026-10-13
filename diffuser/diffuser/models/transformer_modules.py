@@ -249,6 +249,12 @@ class CausalParticleAttention(nn.Module):
             attention_matrix = att
         att = self.attn_drop(att)
         y = att @ v  # (B, nh, N*T, key_value_N*key_value_T) x (B, nh, key_value_N*key_value_T, hs) -> (B, nh, N*T, hs)
+        if getattr(self, "xsa", False):
+            # Looped-DiT XSA (arXiv:2609.40305): z_i = sum_{j!=i} a_ij (I - vh_i vh_i^T) v_j.
+            # Off by default; only set on looped blocks.
+            y = y - att.diagonal(dim1=-2, dim2=-1).unsqueeze(-1) * v
+            vh = v / v.norm(dim=-1, keepdim=True).clamp_min(1e-6)
+            y = y - (y * vh).sum(-1, keepdim=True) * vh
         y = y.transpose(1, 2).contiguous().view(B, N * T, C)  # re-assemble all head outputs side by side
 
         # output projection

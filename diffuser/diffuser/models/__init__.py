@@ -20,3 +20,4 @@ from .uwm_flow import UWMConditionalFlowMatching
 
 from .latent_action import LatentActionFlowMatching
 from .prev_action_flow import PrevActionFlowMatching
+from .looped_pint import LoopedPINTDenoiser, LoopedFlowMatching

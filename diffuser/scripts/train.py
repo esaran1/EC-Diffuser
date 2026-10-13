@@ -75,6 +75,9 @@ model_config = utils.Config(
     max_particles=args.max_particles,
     multiview=args.multiview,
     device=args.device,
+    # looped-transformer knobs, forwarded ONLY when configured
+    **{k: getattr(args, k) for k in ('loop_start', 'loop_end', 'n_loops', 'loop_xsa')
+       if getattr(args, k, None) is not None},
 )
 
 diffusion_config = utils.Config(
