@@ -23,7 +23,7 @@ LOG = os.path.join(HERE, "closed_loop.log")
 P2 = os.path.join(ROOT, "experiments/policy_improvement/phase2")
 SETS = ("E0", "E1s", "E2s", "E3s", "E4s")
 
-CAP_GPU_H = 15.00
+CAP_GPU_H = 17.00
 EVAL_COST = 0.2212          # measured, one five-set evaluation
 
 ENV = ("cd {root} && export PYTHONPATH={root}:{root}/diffuser && "

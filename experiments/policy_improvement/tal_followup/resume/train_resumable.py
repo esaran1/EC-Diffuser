@@ -20,7 +20,7 @@ from program_spend import spent  # noqa: E402
 ROOT = "/home/jren313/EC-Diffuser-1"
 PY = "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python"
 RUN = "3C_dlp_adalnpint_randcolor_H5_T4_seed42"
-CAP = 15.0
+CAP = 17.0
 ENV = ("cd {r} && export PYTHONPATH={r}:{r}/diffuser && export LD_LIBRARY_PATH="
        "/home/jren313/miniconda3/envs/ecdiffuser-linux/lib:${{LD_LIBRARY_PATH-}} && "
        "export CUDA_VISIBLE_DEVICES=0 WANDB_MODE=offline && ").format(r=ROOT)

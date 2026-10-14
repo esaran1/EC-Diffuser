@@ -148,3 +148,15 @@
 [2026-10-08T16:22:07] tf_ctl10k_R3: n_valid_sets=5 control_mean=0.8041666666666666
 [2026-10-08T16:22:07] === CHUNKED CLOSED-LOOP DONE: 5.4178 GPU-h ===
 [2026-10-08T16:22:07] PRIMARY DONE rc=0
+[2026-10-13T09:35:28] primary closed loop (resume)
+[2026-10-13T09:35:28] === CHUNKED CLOSED-LOOP R=3 (2 models, one E set per lease) ===
+[2026-10-13T09:35:28] program spent: 6.2100 GPU-h
+[2026-10-13T09:35:28] ALL SETS VALID for every model/realization
+[2026-10-13T09:35:28] tf_uwm10k_R1: n_valid_sets=5 control_mean=0.7958333333333333
+[2026-10-13T09:35:28] tf_uwm10k_R2: n_valid_sets=5 control_mean=0.79375
+[2026-10-13T09:35:28] tf_uwm10k_R3: n_valid_sets=5 control_mean=0.78125
+[2026-10-13T09:35:28] tf_ctl10k_R1: n_valid_sets=5 control_mean=0.80625
+[2026-10-13T09:35:28] tf_ctl10k_R2: n_valid_sets=5 control_mean=0.8041666666666668
+[2026-10-13T09:35:28] tf_ctl10k_R3: n_valid_sets=5 control_mean=0.8041666666666666
+[2026-10-13T09:35:28] === CHUNKED CLOSED-LOOP DONE: 6.2100 GPU-h ===
+[2026-10-13T09:35:28] PRIMARY DONE rc=0

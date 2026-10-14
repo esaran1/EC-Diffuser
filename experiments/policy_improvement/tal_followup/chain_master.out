@@ -1,0 +1,19 @@
+[2026-10-08T16:22:07] === CHAIN V7 queued behind the primary closed loop ===
+[2026-10-08T16:22:07] --- 3: sweet-spot closed loop: UWM10k, path lead0.25 (same checkpoint, 4 calls) ---
+[2026-10-08T16:22:07] sweet-spot CL rc=0
+[2026-10-08T16:22:07] --- 4: direct action 5k -> 10k ---
+[2026-10-08T16:25:13] direct-action CL rc=0
+[2026-10-08T16:25:13] --- 5: action-to-action source (prev action) 5k -> 10k ---
+[2026-10-13T09:35:28] === CHAIN V7 queued behind the primary closed loop ===
+[2026-10-13T09:35:28] --- 3: sweet-spot closed loop: UWM10k, path lead0.25 (same checkpoint, 4 calls) ---
+[2026-10-13T09:35:29] sweet-spot CL rc=0
+[2026-10-13T09:35:29] --- 4: direct action 5k -> 10k ---
+[2026-10-13T09:38:34] direct-action CL rc=0
+[2026-10-13T09:38:34] --- 5: action-to-action source (prev action) 5k -> 10k ---
+[2026-10-13T10:53:17] prevact CL rc=0
+[2026-10-13T10:53:17] === CHAIN V7 FINISHED ===
+[2026-10-13T19:28:16] --- 1: validation, control 10k, batch 96, NFE 4, R=3 ---
+[2026-10-13T20:45:01] --- 1: validation, control 10k, batch 96, NFE 4, R=3 ---
+[2026-10-13T23:20:11] --- 2: batch-96 timing ---
+[2026-10-13T23:24:52] PROJECTION EXCEEDS 15 GPU-h -- stopping before launch
+[2026-10-13T23:24:52] === CHAIN NFE FINISHED ===

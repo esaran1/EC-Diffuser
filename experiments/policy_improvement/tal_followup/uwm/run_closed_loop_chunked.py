@@ -30,7 +30,7 @@ PY = "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python"
 LOG = os.path.join(HERE, "closed_loop.log")
 P2 = os.path.join(ROOT, "experiments/policy_improvement/phase2")
 SETS = ("E0", "E1s", "E2s", "E3s", "E4s")
-CAP = 15.00
+CAP = 17.00
 SET_COST = 0.2212 / 5.0
 
 ENV = ("cd {root} && export PYTHONPATH={root}:{root}/diffuser && "

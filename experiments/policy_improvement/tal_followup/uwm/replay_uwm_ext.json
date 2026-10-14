@@ -1,0 +1,93 @@
+{
+  "checkpoint_step": 5000,
+  "ema": {
+    "P0_diagonal": {
+      "action_absmax": 1.0548666715621948,
+      "action_err_all": 0.02560773491859436,
+      "action_err_step0": 0.014543174766004086,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.18926212191581726
+    },
+    "P1_state_leads": {
+      "action_absmax": 1.102353811264038,
+      "action_err_all": 0.049627408385276794,
+      "action_err_step0": 0.03376387804746628,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.19227434694766998
+    },
+    "P2_action_leads": {
+      "action_absmax": 1.0954205989837646,
+      "action_err_all": 0.031129775568842888,
+      "action_err_step0": 0.020035693421959877,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.17292413115501404
+    },
+    "P3_state_first": {
+      "action_absmax": 1.0911439657211304,
+      "action_err_all": 0.16327692568302155,
+      "action_err_step0": 0.16621330380439758,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.1640794575214386
+    },
+    "P4_action_first": {
+      "action_absmax": 1.0813648700714111,
+      "action_err_all": 0.031047044321894646,
+      "action_err_step0": 0.017422854900360107,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.17676354944705963
+    }
+  },
+  "epoch": "final",
+  "model": {
+    "P0_diagonal": {
+      "action_absmax": 1.0482561588287354,
+      "action_err_all": 0.025401443243026733,
+      "action_err_step0": 0.014858707785606384,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.18958047032356262
+    },
+    "P1_state_leads": {
+      "action_absmax": 1.0832360982894897,
+      "action_err_all": 0.044784046709537506,
+      "action_err_step0": 0.030625876039266586,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.19304129481315613
+    },
+    "P2_action_leads": {
+      "action_absmax": 1.0620675086975098,
+      "action_err_all": 0.027911052107810974,
+      "action_err_step0": 0.01942000351846218,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.17193956673145294
+    },
+    "P3_state_first": {
+      "action_absmax": 1.0793192386627197,
+      "action_err_all": 0.15381532907485962,
+      "action_err_step0": 0.16501814126968384,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.16406100988388062
+    },
+    "P4_action_first": {
+      "action_absmax": 1.062144160270691,
+      "action_err_all": 0.02784876897931099,
+      "action_err_step0": 0.015285729430615902,
+      "finite": true,
+      "model_calls": 4,
+      "state_err": 0.17433160543441772
+    }
+  },
+  "p_diag": 0.0,
+  "param_count": 60649640,
+  "param_drift_l2": 20.006291896176087,
+  "savepath": "data/panda_push/uwm_uwm_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+  "steps": 4
+}

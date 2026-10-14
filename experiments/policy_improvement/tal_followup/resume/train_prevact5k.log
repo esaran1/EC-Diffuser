@@ -9,3 +9,4 @@
 [2026-10-08T16:47:25] [gpu_lease] lease released (stage train:prevact5k:1)
 [2026-10-08T16:47:25] attempt 1 rc=0 final=True
 [2026-10-08T16:47:25] prevact5k COMPLETE
+[2026-10-13T09:38:34] prevact5k COMPLETE

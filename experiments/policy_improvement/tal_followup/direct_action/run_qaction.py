@@ -25,7 +25,7 @@ RUNDIR = "3C_dlp_adalnpint_randcolor_H5_T4_seed42"
 SAVE = os.path.join(ROOT, "data/panda_push/qaction", RUNDIR)
 CANON = os.path.join(ROOT, "data/panda_push/flow", RUNDIR, "state_400000.pt")
 
-CAP_GPU_H = 15.00
+CAP_GPU_H = 17.00
 TRAIN_COST = 0.33          # measured from the UWM pilot arms
 RESERVED = 0.70            # its own R=3 closed-loop evaluation
 

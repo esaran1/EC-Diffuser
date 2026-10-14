@@ -30,7 +30,7 @@ ROOT = "/home/jren313/EC-Diffuser-1"
 PY = "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python"
 LOG = os.path.join(HERE, "pilot_runner.log")
 
-CAP_GPU_H = 15.00              # program-wide fresh cap
+CAP_GPU_H = 17.00              # program-wide fresh cap
 TRAIN_COST_EST = 0.42          # per arm, 5k steps (historical 2k ~0.167)
 RESERVED_DOWNSTREAM = 1.50     # closed-loop gate + offline diagnostics
 
