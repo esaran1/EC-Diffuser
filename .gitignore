@@ -18,3 +18,7 @@ experiments/policy_improvement/launch_gate.log
 # Stage-B probe checkpoints: large .pt artifacts kept on disk for provenance
 # (including the INVALID_contended runs) but never committed.
 experiments/policy_improvement/loss_finetune/mechanism/probe_runs/
+
+# model checkpoints are never committed (GitHub 100 MB limit)
+experiments/**/state_*.pt
+experiments/policy_improvement/two_time_flow/stage1/ft_state.pt
