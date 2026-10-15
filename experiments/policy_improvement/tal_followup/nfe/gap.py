@@ -22,4 +22,18 @@ for lab,c,q in (("NFE4","ctl10k_b96","qaction10k_b96"),("NFE100","ctl10k_b96n100
 json.dump(out,open("experiments/policy_improvement/tal_followup/nfe/GAP_R%d.json"%R,"w"),indent=1)
 if len(sys.argv)>2:   # R1 stop rule: gap exploded (>=8 pp) and consistent across all 5 sets -> stop
     g=out["NFE100"]; exploded = g["gap"]>=8 and all(x>0 for x in g["gap_per_set"])
-    print("R1 rule: exploded=%s"%exploded); sys.exit(10 if exploded else 0)
+    print("R1 rule: exploded=%s"%exploded)
+    if exploded: sys.exit(10)
+    # budget gate before R2: measured per-set cost from the R1 NFE100 sets,
+    # plus one extra set for realistic contention waste
+    sys.path.insert(0,"experiments/policy_improvement/tal_followup/uwm")
+    from program_spend import spent
+    secs=[]
+    for n in ("ctl10k_b96n100","qaction10k_b96n100"):
+        c=json.load(open(P2%(n,1)))["control"]; secs+=[c[s_]["seconds"] for s_ in S]
+    per=float(np.mean(secs))/3600+0.01
+    proj=spent()+11*per
+    print("R2 budget: spent %.3f + 11 x %.3f (10 sets + 1 waste) = %.3f vs cap 17"%(spent(),per,proj))
+    if proj>17.0:
+        print("R2 would exceed the cap -- stopping"); sys.exit(10)
+    sys.exit(0)
