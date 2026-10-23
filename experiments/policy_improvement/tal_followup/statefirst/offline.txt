@@ -1,0 +1,149 @@
+[ utils/colab ] Warning: not importing colab dependencies
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl/3C_dlp_adalnpint_randcolor_H5_T4_seed42/dataset_config.pkl
+
+[utils/config ] Config: <class 'diffuser.datasets.sequence.GoalDataset'>
+    action_only: False
+    dataset_name: panda_push
+    dataset_path: ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+    horizon: 5
+    max_path_length: 100
+    normalizer: SafeLimitsNormalizer
+    obs_only: False
+    overfit: False
+    particle_normalizer: ParticleLimitsNormalizer
+    preprocess_fns: []
+    single_view: False
+    use_padding: True
+
+[ datasets/buffer ] Loaded 2000 episodes from ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl
+[ datasets/buffer ] Finalized replay buffer | 2000 episodes
+[ datasets/buffer ] Found 1950 successful episodes
+goals X shape:  (2000, 48, 10)
+The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+[ utils/normalization ] Skipping state_observations | <class 'diffuser.datasets.normalization.SafeLimitsNormalizer'>
+The truth value of an array with more than one element is ambiguous. Use a.any() or a.all()
+[ utils/normalization ] Skipping state_goals | <class 'diffuser.datasets.normalization.SafeLimitsNormalizer'>
+
+                    [ utils/normalization ] Constant data in dimension 0 | max = min = 0.0
+[ datasets/sequence ] Dataset fields: [ datasets/buffer ] Fields:
+    info_goal_success_frac: (2000,)
+    info_goals_reached: (2000,)
+    goals: (2000, 100, 48, 10)
+    observations: (2000, 100, 48, 10)
+    state_observations: (2000, 100, 4, 6)
+    state_goals: (2000, 100, 4, 6)
+    actions: (2000, 100, 3)
+    rewards: (2000, 100, 1)
+    terminals: (2000, 100, 1)
+    normed_observations: (2000, 100, 480)
+    normed_actions: (2000, 100, 3)
+    normed_goals: (2000, 100, 480)
+[ datasets/sequence ] Dataset normalizer: observations: [ Normalizer ] dim: 10
+    -: [ -1.34  -1.31  -2.36  -1.8   -2.24 -11.58 -11.45  -5.57 -13.74   0.92]
+    +: [ 0.8   1.08 -0.46 -0.54  3.21 13.26 11.91  8.59  9.92  1.  ]
+]
+actions: [ Normalizer ] dim: 3
+    -: [-1.   -1.   -0.36]
+    +: [1.   1.   0.06]
+]
+rewards: [ Normalizer ] dim: 1
+    -: [-2.76]
+    +: [-0.01]
+]
+terminals: [ Normalizer ] dim: 1
+    -: [-1.]
+    +: [1.]
+]
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_uwm_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.twotime_pint.TwoTimePINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_uwm_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.uwm_flow.UWMConditionalFlowMatching'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    adaln_state_weight: 0.5
+    clip_denoised: False
+    horizon: 5
+    lambda_action: 1.0
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    mask_terminal_action: False
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    p_diag: 0.0
+    predict_epsilon: False
+    time_scale: 1000.0
+
+particle transformer # parameters: 57480704
+[ utils/serialization ] Loaded config from data/panda_push/qaction_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.query_action_pint.QueryActionPINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/qaction_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.query_action_flow.QueryActionFlowMatching'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    clip_denoised: False
+    horizon: 5
+    lambda_action: 1.0
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    mask_terminal_action: False
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    predict_epsilon: False
+    time_scale: 1000.0
+
+particle transformer # parameters: 57480704
+UWM10k (act@0 / act_all / state):
+  joint4    0.0125  0.0301  0.1916
+  joint100  0.0230  0.0402  0.2100
+  S4_A4     0.1716  0.1663  0.1908
+  S100_A4   0.1557  0.1475  0.2096
+  S96_A4    0.1559  0.1476  0.2096
+  action-phase sweep act@0:     A1     A2     A4     A10    A25    A50
+    S4      0.2274 0.1642 0.1716 0.1821 0.1911 0.1960
+    S100    0.2199 0.1581 0.1557 0.1564 0.1638 0.1675
+    ORACLE  0.2129 0.1546 0.1511 0.1518 0.1592 0.1633
+  state-phase (S100) state err by action input: noise 0.2096  zeros 0.2094  other-noise 0.2096
+DIRECT ACTION:
+  native NFE4  {'act0': 0.015080606875320276, 'state_final': 0.19132183492183685}
+  native NFE100 {'act0': 0.04694665844241778, 'state_final': 0.21003780762354532}
+  trace100 (t, act@0): [(0.0, 0.01), (0.1, 0.0096), (0.25, 0.0094), (0.5, 0.0096), (0.75, 0.0142), (0.9, 0.0268), (0.95, 0.0327), (0.99, 0.0462)]
+  identical readout t=0.00  S4 0.0098  S100 0.0098  TRUE 0.0097
+  identical readout t=0.50  S4 0.0103  S100 0.0102  TRUE 0.0100
+  identical readout t=0.75  S4 0.0160  S100 0.0148  TRUE 0.0132
+  identical readout t=0.90  S4 0.0333  S100 0.0280  TRUE 0.0230
+  identical readout t=0.99  S4 0.0470  S100 0.0479  TRUE 0.0343

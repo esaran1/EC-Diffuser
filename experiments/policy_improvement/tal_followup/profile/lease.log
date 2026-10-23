@@ -1,0 +1,4 @@
+[2026-10-23T16:28:08] [gpu_lease] clean streak broken at 4 (foreign 3486 MiB)
+[2026-10-23T16:36:50] [gpu_lease] GPU stable-clean for 180s
+[2026-10-23T16:36:50] [gpu_lease] lease acquired (stage profile, pid 1893274); launching
+[2026-10-23T16:37:09] [gpu_lease] lease released (stage profile)

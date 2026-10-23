@@ -222,6 +222,16 @@ class CausalParticleAttention(nn.Module):
         q = self.query(query_input).view(B, N * T, self.n_head, C // self.n_head).transpose(1, 2)
         v = self.value(key_value_input).view(B, key_value_N * key_value_T, self.n_head, C // self.n_head).transpose(1, 2)
 
+        # Fused SDPA fast path (opt-in via self.use_sdpa; exact up to float
+        # rounding). Only for plain self-attention without bias/mask/XSA.
+        if (getattr(self, "use_sdpa", False) and not return_attention
+                and not self.positional_bias and not self.causal_att
+                and self.att_type == 'self' and not getattr(self, "xsa", False)):
+            y = F.scaled_dot_product_attention(
+                q, k, v, dropout_p=self.attn_drop.p if self.training else 0.0)
+            y = y.transpose(1, 2).contiguous().view(B, N * T, C)
+            return self.resid_drop(self.proj(y)).view(B, N, T, -1)
+
         # Scaled dot-product attention.
         att = (q @ k.transpose(-2, -1)) * (1.0 / math.sqrt(k.size(-1)))
         if self.positional_bias:

@@ -1,0 +1,86 @@
+STAGE:2026-10-23 16:36:56 1945530:1945530 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2026-10-23 16:36:56 1945530:1945530 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2026-10-23 16:36:56 1945530:1945530 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+STAGE:2026-10-23 16:37:07 1945530:1945530 ActivityProfilerController.cpp:312] Completed Stage: Warm Up
+STAGE:2026-10-23 16:37:08 1945530:1945530 ActivityProfilerController.cpp:318] Completed Stage: Collection
+STAGE:2026-10-23 16:37:08 1945530:1945530 ActivityProfilerController.cpp:322] Completed Stage: Post Processing
+[ utils/colab ] Warning: not importing colab dependencies
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.twotime_pint.TwoTimePINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.uwm_flow.UWMConditionalFlowMatching'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    adaln_state_weight: 0.5
+    clip_denoised: False
+    horizon: 5
+    lambda_action: 1.0
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    mask_terminal_action: False
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    p_diag: 1.0
+    predict_epsilon: False
+    time_scale: 1000.0
+
+particle transformer # parameters: 57480704
+
+batch 16: 19.87 ms/forward (wall, synced)
+   attn         8.50 ms   42.8%
+   mlp          8.32 ms   41.9%
+   adaln_ln     1.25 ms    6.3%
+   out_heads    0.29 ms    1.5%
+   in_proj      0.15 ms    0.8%
+   time_mlp     0.05 ms    0.2%
+   kernels (GPU time 19.32 ms):
+      8.021 ms  ampere_sgemm_128x64_tn
+      3.501 ms  ampere_sgemm_128x128_tn
+      1.622 ms  ampere_sgemm_128x128_nn
+      1.037 ms  void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFu
+      1.002 ms  void at::native::vectorized_elementwise_kernel<4, at::native::GeluCUDA
+      0.965 ms  void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_imp
+      0.671 ms  void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_imp
+      0.581 ms  ampere_sgemm_64x32_sliced1x4_tn
+      0.520 ms  void (anonymous namespace)::softmax_warp_forward<float, float, float, 
+      0.431 ms  void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunc
+      0.344 ms  void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_imp
+      0.323 ms  void at::native::(anonymous namespace)::vectorized_layer_norm_kernel<f
+
+batch 96: 125.10 ms/forward (wall, synced)
+   attn        54.48 ms   43.6%
+   mlp         46.61 ms   37.3%
+   adaln_ln     5.04 ms    4.0%
+   out_heads    1.76 ms    1.4%
+   in_proj      0.78 ms    0.6%
+   time_mlp     0.07 ms    0.1%
+   kernels (GPU time 124.72 ms):
+     38.996 ms  ampere_sgemm_128x128_tn
+     22.378 ms  ampere_sgemm_128x64_tn
+     11.670 ms  ampere_sgemm_128x128_nn
+      7.700 ms  void at::native::vectorized_elementwise_kernel<4, at::native::GeluCUDA
+      7.493 ms  void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_imp
+      7.471 ms  void at::native::vectorized_elementwise_kernel<4, at::native::AUnaryFu
+      7.204 ms  void (anonymous namespace)::softmax_warp_forward<float, float, float, 
+      6.536 ms  void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_imp
+      5.471 ms  void at::native::vectorized_elementwise_kernel<4, at::native::CUDAFunc
+      4.294 ms  void at::native::elementwise_kernel<128, 2, at::native::gpu_kernel_imp
+      3.443 ms  void at::native::(anonymous namespace)::vectorized_layer_norm_kernel<f
+      1.492 ms  ampere_sgemm_32x128_tn
