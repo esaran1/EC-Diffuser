@@ -195,6 +195,9 @@ class CausalParticleAttention(nn.Module):
         self.positional_bias = positional_bias
         self.max_particles = max_particles
         self.causal_att = causal_att
+        # Fused SDPA on by default: closed-loop success-equivalent (+1.8pp,
+        # 90% CI [-0.2,+3.8], 960 paired eps), 1.19x faster forward.
+        self.use_sdpa = True
         if self.positional_bias:
             self.rel_pos_bias = SimpleRelativePositionalBias(block_size, n_head, max_particles=max_particles)
         else:
@@ -222,7 +225,7 @@ class CausalParticleAttention(nn.Module):
         q = self.query(query_input).view(B, N * T, self.n_head, C // self.n_head).transpose(1, 2)
         v = self.value(key_value_input).view(B, key_value_N * key_value_T, self.n_head, C // self.n_head).transpose(1, 2)
 
-        # Fused SDPA fast path (opt-in via self.use_sdpa; exact up to float
+        # Fused SDPA fast path (self.use_sdpa, default True; exact up to float
         # rounding). Only for plain self-attention without bias/mask/XSA.
         if (getattr(self, "use_sdpa", False) and not return_attention
                 and not self.positional_bias and not self.causal_att

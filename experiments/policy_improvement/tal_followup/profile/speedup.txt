@@ -1,0 +1,64 @@
+[ utils/colab ] Warning: not importing colab dependencies
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/model_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.twotime_pint.TwoTimePINTDenoiser'>
+    action_dim: 3
+    block_size: 5
+    dropout: 0.0
+    features_dim: 10
+    hidden_dim: 512
+    max_particles: None
+    multiview: True
+    n_head: 8
+    n_layer: 12
+    positional_bias: False
+    projection_dim: 512
+
+[ utils/serialization ] Loaded config from data/panda_push/uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42/diffusion_config.pkl
+
+[utils/config ] Config: <class 'diffuser.models.uwm_flow.UWMConditionalFlowMatching'>
+    action_dim: 3
+    action_only: False
+    action_weight: 10
+    adaln_state_weight: 0.5
+    clip_denoised: False
+    horizon: 5
+    lambda_action: 1.0
+    loss_discount: 1
+    loss_type: l1
+    loss_weights: None
+    mask_terminal_action: False
+    n_timesteps: 4
+    obs_only: False
+    observation_dim: 480
+    p_diag: 1.0
+    predict_epsilon: False
+    time_scale: 1000.0
+
+particle transformer # parameters: 57480704
+/home/jren313/miniconda3/envs/ecdiffuser-linux/lib/python3.8/site-packages/torch/_inductor/compile_fx.py:135: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+  warnings.warn(
+/home/jren313/miniconda3/envs/ecdiffuser-linux/lib/python3.8/site-packages/torch/overrides.py:110: UserWarning: 'has_cuda' is deprecated, please use 'torch.backends.cuda.is_built()'
+  torch.has_cuda,
+/home/jren313/miniconda3/envs/ecdiffuser-linux/lib/python3.8/site-packages/torch/overrides.py:111: UserWarning: 'has_cudnn' is deprecated, please use 'torch.backends.cudnn.is_available()'
+  torch.has_cudnn,
+/home/jren313/miniconda3/envs/ecdiffuser-linux/lib/python3.8/site-packages/torch/overrides.py:117: UserWarning: 'has_mps' is deprecated, please use 'torch.backends.mps.is_built()'
+  torch.has_mps,
+/home/jren313/miniconda3/envs/ecdiffuser-linux/lib/python3.8/site-packages/torch/overrides.py:118: UserWarning: 'has_mkldnn' is deprecated, please use 'torch.backends.mkldnn.is_available()'
+  torch.has_mkldnn,
+
+batch 16   ms/forward   max|d| vs baseline (output scale ~1)
+   baseline             20.58   0.00e+00
+   sdpa                 18.70   7.15e-06
+   sdpa+tf32            12.83   3.60e-03
+   sdpa+bf16            8.82   6.84e-02
+   sdpa+fp16            8.80   1.03e-02
+   sdpa+compile(fp32)   17.80   8.11e-06
+
+batch 96   ms/forward   max|d| vs baseline (output scale ~1)
+   baseline             132.14   0.00e+00
+   sdpa                 111.36   7.90e-06
+   sdpa+tf32            82.57   7.95e-03
+   sdpa+bf16            51.78   8.51e-02
+   sdpa+fp16            51.06   1.80e-02
+   sdpa+compile(fp32)   95.99   1.03e-05

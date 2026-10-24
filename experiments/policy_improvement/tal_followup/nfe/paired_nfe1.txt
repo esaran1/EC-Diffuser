@@ -1,0 +1,4 @@
+qaction10k_b96n1     0.7375 vs ctl10k_b96       0.7792  d=-4.17pp  90%CI[-6.5,-1.9]  disc 71/111 McNemar p=0.004  TOST3pp=no
+qaction10k_b96n1     0.7375 vs qaction10k_b96   0.7271  d=+1.04pp  90%CI[-1.5,+3.5]  disc 114/104 McNemar p=0.542  TOST3pp=no
+ctl10k_b96n1         0.7510 vs ctl10k_b96       0.7792  d=-2.81pp  90%CI[-5.0,-0.6]  disc 72/99 McNemar p=0.046  TOST3pp=no
+qaction10k_b96n1     0.7375 vs ctl10k_b96n1     0.7510  d=-1.35pp  90%CI[-3.8,+1.0]  disc 92/105 McNemar p=0.393  TOST3pp=no

@@ -122,6 +122,21 @@ def control(diff, env, args, ep, dev, norm, trace=None):
                 kw = dict(verbose=False)
                 if hasattr(diff, "n_solver_steps"): kw["n_steps"] = getattr(args, "cl_nfe", 4)
                 if prev is not None: kw["prev_action"] = prev
+                _fast = getattr(args, "cl_fast", "none")
+                if _fast != "none":
+                    for _b in diff.model.particle_transformer.blocks:
+                        _b.attn.use_sdpa = True
+                if _fast == "sdpa_tf32":
+                    torch.backends.cuda.matmul.allow_tf32 = True
+                    torch.backends.cudnn.allow_tf32 = True
+                if _fast == "sdpa_fp16" and not getattr(diff.model, "_fp16_wrapped", False):
+                    # FP16 autocast inside the network only; solver state stays FP32.
+                    _orig_fwd = diff.model.forward
+                    def _fp16_fwd(*a, _f=_orig_fwd, **k):
+                        with torch.autocast("cuda", dtype=torch.float16):
+                            return _f(*a, **k).float()
+                    diff.model.forward = _fp16_fwd
+                    diff.model._fp16_wrapped = True
                 s = diff.conditional_sample(c, **kw)
             xs = s.trajectories if hasattr(s, "trajectories") else s
             if prev is not None:
@@ -155,6 +170,8 @@ def main():
     ap.add_argument("--num_envs", type=int, default=None,
                     help="parallel envs per batch (default: env config, 16)")
     ap.add_argument("--nfe", type=int, default=4, help="sampler steps in closed loop")
+    ap.add_argument("--fast", default="none", choices=["none", "sdpa", "sdpa_fp16", "sdpa_tf32"],
+                    help="inference optimization (default none = unchanged)")
     ap.add_argument("--num_entity", type=int, default=3,
                     help="cubes in the environment. 3 = the trained task (default, "
                          "unchanged); >3 = EC-Diffuser generalization to more cubes, "
@@ -172,6 +189,7 @@ def main():
     args = Args(); utils.set_global_device(args.device)
     args.num_entity = cli.num_entity
     args.cl_nfe = cli.nfe
+    args.cl_fast = cli.fast
     if cli.num_envs:
         args.num_envs = cli.num_envs
     if cli.num_entity != 3:
@@ -183,7 +201,7 @@ def main():
                                override_dataset_path="ecdiffuser-data/push_cubes/3C_randcolor/panda_push_replay_buffer_dlp.pkl")
     dev = args.device; norm = exp.dataset.normalizer
     res = {"loadpath": cli.loadpath, "epoch": str(exp.epoch), "num_entity": cli.num_entity,
-           "nfe": cli.nfe, "num_envs": cli.num_envs or 16}
+           "nfe": cli.nfe, "num_envs": cli.num_envs or 16, "fast": cli.fast}
     # Two-time path selection. Only UWM wrappers implement set_inference_path;
     # for every other model this is a no-op and the production sampler is used.
     if cli.inference_path:

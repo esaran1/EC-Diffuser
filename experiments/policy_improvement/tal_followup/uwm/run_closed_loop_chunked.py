@@ -83,6 +83,7 @@ def main():
     ap.add_argument("--num_entity", type=int, default=3)
     ap.add_argument("--num_envs", type=int, default=None)
     ap.add_argument("--nfe", type=int, default=4)
+    ap.add_argument("--fast", default="none")
     ap.add_argument("--sets", default="E0,E1s,E2s,E3s,E4s")
     a = ap.parse_args()
 
@@ -133,7 +134,7 @@ def main():
                    "> linux_logs/{tag}_{s}.txt 2>&1").format(
                        py=PY, lp=j["loadpath"], ep=j["epoch"], tag=tag, s=s, ne=a.num_entity,
                        ip=(" --inference_path " + j["path"]) if j.get("path") else "",
-                       xe=(" --nfe {}".format(a.nfe)) + ((" --num_envs {}".format(a.num_envs)) if a.num_envs else "")),
+                       xe=(" --nfe {} --fast {}".format(a.nfe, a.fast)) + ((" --num_envs {}".format(a.num_envs)) if a.num_envs else "")),
             log=log)
         st = set_status(tag, s)
         log("  rc={} status={}".format(rc, st))
