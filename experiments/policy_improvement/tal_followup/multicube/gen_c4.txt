@@ -1,0 +1,58 @@
+Importing module 'gym_38' (/home/jren313/software/isaacgym/python/isaacgym/_bindings/linux-x86_64/gym_38.so)
+Traceback (most recent call last):
+  File "experiments/policy_improvement/tal_followup/multicube/gen_sets.py", line 5, in <module>
+    import isaacgym  # noqa: F401
+  File "/home/jren313/software/isaacgym/python/isaacgym/__init__.py", line 5, in <module>
+    from isaacgym import gymapi
+  File "/home/jren313/software/isaacgym/python/isaacgym/gymapi.py", line 104, in <module>
+    _import_active_version()
+  File "/home/jren313/software/isaacgym/python/isaacgym/gymapi.py", line 63, in _import_active_version
+    module = importlib.import_module(package_path)
+  File "/home/jren313/miniconda3/envs/ecdiffuser-linux/lib/python3.8/importlib/__init__.py", line 127, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+ImportError: libpython3.8.so.1.0: cannot open shared object file: No such file or directory
+Importing module 'gym_38' (/home/jren313/software/isaacgym/python/isaacgym/_bindings/linux-x86_64/gym_38.so)
+Setting GYM_USD_PLUG_INFO_PATH to /home/jren313/software/isaacgym/python/isaacgym/_bindings/linux-x86_64/usd/plugInfo.json
+[ utils/colab ] Warning: not importing colab dependencies
+PyTorch version 2.1.2+cu121
+Device count 1
+/home/jren313/software/isaacgym/python/isaacgym/_bindings/src/gymtorch
+Using /home/jren313/.cache/torch_extensions/py38_cu121 as PyTorch extensions root...
+Emitting ninja build file /home/jren313/.cache/torch_extensions/py38_cu121/gymtorch/build.ninja...
+Building extension module gymtorch...
+Allowing ninja to set a default number of workers... (overridable by setting the environment variable MAX_JOBS=N)
+ninja: no work to do.
+[Warning] [carb.gym.plugin] useGpu is set, forcing single scene (0 subscenes)
+Not connected to PVD
++++ Using GPU PhysX
+Physics Engine: PhysX
+Physics Device: cuda:0
+GPU Pipeline: enabled
+Loading extension module gymtorch...
+Compute Device: 0
+Graphics Device: 0
+
+Loading pretrained DLP...
+DLP Config
+prior std: 1.0
+keypoints range: [-1, 1]
+total number of kp: 64 -> prior kp: 32
+number of kp from encoder: 24
+kp_activation: tanh
+learnable feature dim: 4
+bg learnable feature dim: 1
+object patch size: 32
+learn particles depth: True
+learn particles scale: True
+conv shape:  torch.Size([64, 4, 4])
+conv shape:  torch.Size([64, 8, 8])
+conv shape:  torch.Size([64, 8, 8])
+ObjDecCNN: fc to cnn num upsample: 2
+conv shape:  torch.Size([128, 32, 32])
+Loaded pretrained representation model from ecdiffuser-data/latent_rep_chkpts/dlp_push_6C/dlp_panda_push.pth
+
+E0 N=4 seed=20260820 -> experiments/isaacgym_episode_sets/c4_replicate0_n96.pkl sha ee79611baaed5363  init (96, 4, 2)
+E1s N=4 seed=20261820 -> experiments/isaacgym_episode_sets/c4_replicate1_n96.pkl sha 3099be5ea68ee1b3  init (96, 4, 2)
+E2s N=4 seed=20262820 -> experiments/isaacgym_episode_sets/c4_replicate2_n96.pkl sha e1759bcace362dd7  init (96, 4, 2)
+E3s N=4 seed=20263820 -> experiments/isaacgym_episode_sets/c4_replicate3_n96.pkl sha 285dde9d0f38ee20  init (96, 4, 2)
+E4s N=4 seed=20264820 -> experiments/isaacgym_episode_sets/c4_replicate4_n96.pkl sha ec2b9f0b4502a12d  init (96, 4, 2)
