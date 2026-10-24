@@ -1,0 +1,353 @@
+{
+ "loadpath": "uwm_ctl_ext/3C_dlp_adalnpint_randcolor_H5_T4_seed42",
+ "epoch": "final",
+ "num_entity": 4,
+ "nfe": 100,
+ "num_envs": 96,
+ "fast": "sdpa_fp16",
+ "control": {
+  "E0": {
+   "success": 0.5729166666666666,
+   "n": 96,
+   "seconds": 794.4862434864044,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1792825924.3158085,
+    "iso": "2026-10-24T03:12:04",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 4926, 16376, 98"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2551721,
+      "name": ".venv/bin/python",
+      "used_mib": 534
+     },
+     {
+      "pid": 2612780,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4059
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1792826718.773396,
+    "iso": "2026-10-24T03:25:18",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5383, 16376, 90"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2551721,
+      "name": ".venv/bin/python",
+      "used_mib": 534
+     },
+     {
+      "pid": 2612780,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4079
+     },
+     {
+      "pid": 2623659,
+      "name": "/home/jren313/miniconda3/envs/unitree-mjlab/bin/python",
+      "used_mib": 432
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-24T03:12:04",
+   "end_iso": "2026-10-24T03:25:18",
+   "trace": {
+    "n": 96,
+    "final_success": 0.5729166666666666,
+    "reached_any": 0.6145833333333334,
+    "final_d_mean": 0.12826083600521088,
+    "lost_after_reach": 0.06779661016949153,
+    "steps_to_first_reach": 41.49152542372882,
+    "post_reach_action_mag": 0.09552736580371857,
+    "pre_reach_action_mag": 0.6560366153717041,
+    "post_reach_max_d_mean": 0.042658403515815735
+   }
+  },
+  "E1s": {
+   "success": 0.53125,
+   "n": 96,
+   "seconds": 735.611930847168,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1792826893.0488431,
+    "iso": "2026-10-24T03:28:13",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 4947, 16376, 81"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2625253,
+      "name": ".venv/bin/python",
+      "used_mib": 548
+     },
+     {
+      "pid": 2625918,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4059
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1792827628.6717045,
+    "iso": "2026-10-24T03:40:28",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 4960, 16376, 0"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2625253,
+      "name": ".venv/bin/python",
+      "used_mib": 548
+     },
+     {
+      "pid": 2625918,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4079
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-24T03:28:13",
+   "end_iso": "2026-10-24T03:40:28",
+   "trace": {
+    "n": 96,
+    "final_success": 0.53125,
+    "reached_any": 0.5625,
+    "final_d_mean": 0.11567576974630356,
+    "lost_after_reach": 0.05555555555555555,
+    "steps_to_first_reach": 45.44444444444444,
+    "post_reach_action_mag": 0.10356569290161133,
+    "pre_reach_action_mag": 0.6348178386688232,
+    "post_reach_max_d_mean": 0.03805353492498398
+   }
+  },
+  "E2s": {
+   "success": 0.6145833333333334,
+   "n": 96,
+   "seconds": 767.1874516010284,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1792835174.974057,
+    "iso": "2026-10-24T05:46:14",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5256, 16376, 100"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2713015,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2713016,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2738830,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4059
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1792835942.146583,
+    "iso": "2026-10-24T05:59:02",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5269, 16376, 99"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2713015,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2713016,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2738830,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4079
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-24T05:46:15",
+   "end_iso": "2026-10-24T05:59:02",
+   "trace": {
+    "n": 96,
+    "final_success": 0.6145833333333334,
+    "reached_any": 0.625,
+    "final_d_mean": 0.09716393798589706,
+    "lost_after_reach": 0.016666666666666666,
+    "steps_to_first_reach": 42.05,
+    "post_reach_action_mag": 0.08775130659341812,
+    "pre_reach_action_mag": 0.6526729464530945,
+    "post_reach_max_d_mean": 0.035151053220033646
+   }
+  },
+  "E3s": {
+   "success": 0.59375,
+   "n": 96,
+   "seconds": 768.0763938426971,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1792836116.7888377,
+    "iso": "2026-10-24T06:01:56",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5257, 16376, 100"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2713015,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2713016,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2750376,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4059
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1792836884.8911934,
+    "iso": "2026-10-24T06:14:44",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5269, 16376, 99"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2713015,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2713016,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2750376,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4079
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-24T06:01:57",
+   "end_iso": "2026-10-24T06:14:45",
+   "trace": {
+    "n": 96,
+    "final_success": 0.59375,
+    "reached_any": 0.6458333333333334,
+    "final_d_mean": 0.10125044733285904,
+    "lost_after_reach": 0.08064516129032258,
+    "steps_to_first_reach": 39.435483870967744,
+    "post_reach_action_mag": 0.08752509951591492,
+    "pre_reach_action_mag": 0.650196373462677,
+    "post_reach_max_d_mean": 0.035435620695352554
+   }
+  },
+  "E4s": {
+   "success": 0.6979166666666666,
+   "n": 96,
+   "seconds": 766.1209630966187,
+   "status": "VALID",
+   "pre_snapshot": {
+    "timestamp": 1792837059.0829613,
+    "iso": "2026-10-24T06:17:39",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5256, 16376, 99"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2713015,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2713016,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2762052,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4059
+     }
+    ]
+   },
+   "post_snapshot": {
+    "timestamp": 1792837825.2141676,
+    "iso": "2026-10-24T06:30:25",
+    "gpu": [
+     "0, NVIDIA GeForce RTX 4080, 5269, 16376, 99"
+    ],
+    "compute_apps": [
+     {
+      "pid": 2713015,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2713016,
+      "name": ".venv/bin/python",
+      "used_mib": 426
+     },
+     {
+      "pid": 2762052,
+      "name": "/home/jren313/miniconda3/envs/ecdiffuser-linux/bin/python",
+      "used_mib": 4079
+     }
+    ]
+   },
+   "foreign_during": [],
+   "midset_max_foreign_mib": 0,
+   "midset_events": [],
+   "midset_event_count": 0,
+   "start_iso": "2026-10-24T06:17:39",
+   "end_iso": "2026-10-24T06:30:25",
+   "trace": {
+    "n": 96,
+    "final_success": 0.6979166666666666,
+    "reached_any": 0.71875,
+    "final_d_mean": 0.08360528945922852,
+    "lost_after_reach": 0.028985507246376812,
+    "steps_to_first_reach": 39.869565217391305,
+    "post_reach_action_mag": 0.08786976337432861,
+    "pre_reach_action_mag": 0.6717143058776855,
+    "post_reach_max_d_mean": 0.03579217940568924
+   }
+  }
+ },
+ "n_valid_sets": 5,
+ "control_mean": 0.6020833333333333,
+ "control_sd": 0.06180165405913052
+}

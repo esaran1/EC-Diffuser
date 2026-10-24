@@ -156,3 +156,67 @@
 [2026-10-24T03:05:53] tf_c4ctl10k_n100_R1: n_valid_sets=5 control_mean=0.5770833333333333
 [2026-10-24T03:05:53] === CHUNKED CLOSED-LOOP DONE: 15.4031 GPU-h ===
 [2026-10-24T03:05:53] === CHAIN C4 FINISHED ===
+[2026-10-24T03:09:12] --- c4 NFE100 R2 (final) ---
+[2026-10-24T03:09:12] === CHUNKED CLOSED-LOOP R=2 (1 models, one E set per lease) ===
+[2026-10-24T03:09:12] program spent: 15.4031 GPU-h
+[2026-10-24T03:09:12] [1/40] tf_c4ctl10k_n100_R2 set E0  (1 sets left)
+[2026-10-24T03:11:54] [gpu_lease] GPU stable-clean for 180s
+[2026-10-24T03:11:54] [gpu_lease] lease acquired (stage cl:tf_c4ctl10k_n100_R2:E0, pid 2609977); launching
+[2026-10-24T03:25:20] [gpu_lease] lease released (stage cl:tf_c4ctl10k_n100_R2:E0)
+[2026-10-24T03:25:20]   rc=0 status=VALID
+[2026-10-24T03:25:20] ALL SETS VALID for every model/realization
+[2026-10-24T03:25:20] tf_c4ctl10k_n100_R1: n_valid_sets=5 control_mean=0.5770833333333333
+[2026-10-24T03:25:20] tf_c4ctl10k_n100_R2: n_valid_sets=1 control_mean=None
+[2026-10-24T03:25:20] === CHUNKED CLOSED-LOOP DONE: 15.6269 GPU-h ===
+[2026-10-24T03:25:20] === CHUNKED CLOSED-LOOP R=2 (1 models, one E set per lease) ===
+[2026-10-24T03:25:20] program spent: 15.6269 GPU-h
+[2026-10-24T03:25:20] [1/40] tf_c4ctl10k_n100_R2 set E1s  (1 sets left)
+[2026-10-24T03:28:03] [gpu_lease] GPU stable-clean for 180s
+[2026-10-24T03:28:03] [gpu_lease] lease acquired (stage cl:tf_c4ctl10k_n100_R2:E1s, pid 2623917); launching
+[2026-10-24T03:40:30] [gpu_lease] lease released (stage cl:tf_c4ctl10k_n100_R2:E1s)
+[2026-10-24T03:40:30]   rc=0 status=VALID
+[2026-10-24T03:40:30] ALL SETS VALID for every model/realization
+[2026-10-24T03:40:30] tf_c4ctl10k_n100_R1: n_valid_sets=5 control_mean=0.5770833333333333
+[2026-10-24T03:40:30] tf_c4ctl10k_n100_R2: n_valid_sets=2 control_mean=0.5520833333333333
+[2026-10-24T03:40:30] === CHUNKED CLOSED-LOOP DONE: 15.8344 GPU-h ===
+[2026-10-24T03:40:30] === CHUNKED CLOSED-LOOP R=2 (1 models, one E set per lease) ===
+[2026-10-24T03:40:30] program spent: 15.8344 GPU-h
+[2026-10-24T03:40:30] [1/40] tf_c4ctl10k_n100_R2 set E2s  (1 sets left)
+[2026-10-24T03:43:12] [gpu_lease] GPU stable-clean for 180s
+[2026-10-24T03:43:12] [gpu_lease] lease acquired (stage cl:tf_c4ctl10k_n100_R2:E2s, pid 2634872); launching
+[2026-10-24T03:57:00] [gpu_lease] lease released (stage cl:tf_c4ctl10k_n100_R2:E2s)
+[2026-10-24T03:57:00]   rc=0 status=INVALID_CONTENDED_DURING
+[2026-10-24T03:57:00]   set E2s not VALID (contention?); will retry after a clean GPU
+[2026-10-24T04:28:02] [2/40] tf_c4ctl10k_n100_R2 set E2s  (1 sets left)
+[2026-10-24T04:29:15] [gpu_lease] clean streak broken at 4 (foreign 6938 MiB)
+[2026-10-24T05:46:03] [gpu_lease] GPU stable-clean for 180s
+[2026-10-24T05:46:03] [gpu_lease] lease acquired (stage cl:tf_c4ctl10k_n100_R2:E2s, pid 2634872); launching
+[2026-10-24T05:59:03] [gpu_lease] lease released (stage cl:tf_c4ctl10k_n100_R2:E2s)
+[2026-10-24T05:59:03]   rc=0 status=VALID
+[2026-10-24T05:59:03] ALL SETS VALID for every model/realization
+[2026-10-24T05:59:03] tf_c4ctl10k_n100_R1: n_valid_sets=5 control_mean=0.5770833333333333
+[2026-10-24T05:59:03] tf_c4ctl10k_n100_R2: n_valid_sets=3 control_mean=0.5729166666666666
+[2026-10-24T05:59:03] === CHUNKED CLOSED-LOOP DONE: 16.2811 GPU-h ===
+[2026-10-24T05:59:04] === CHUNKED CLOSED-LOOP R=2 (1 models, one E set per lease) ===
+[2026-10-24T05:59:04] program spent: 16.2811 GPU-h
+[2026-10-24T05:59:04] [1/40] tf_c4ctl10k_n100_R2 set E3s  (1 sets left)
+[2026-10-24T06:01:46] [gpu_lease] GPU stable-clean for 180s
+[2026-10-24T06:01:46] [gpu_lease] lease acquired (stage cl:tf_c4ctl10k_n100_R2:E3s, pid 2748255); launching
+[2026-10-24T06:14:46] [gpu_lease] lease released (stage cl:tf_c4ctl10k_n100_R2:E3s)
+[2026-10-24T06:14:46]   rc=0 status=VALID
+[2026-10-24T06:14:46] ALL SETS VALID for every model/realization
+[2026-10-24T06:14:46] tf_c4ctl10k_n100_R1: n_valid_sets=5 control_mean=0.5770833333333333
+[2026-10-24T06:14:46] tf_c4ctl10k_n100_R2: n_valid_sets=4 control_mean=0.578125
+[2026-10-24T06:14:46] === CHUNKED CLOSED-LOOP DONE: 16.4978 GPU-h ===
+[2026-10-24T06:14:46] === CHUNKED CLOSED-LOOP R=2 (1 models, one E set per lease) ===
+[2026-10-24T06:14:46] program spent: 16.4978 GPU-h
+[2026-10-24T06:14:46] [1/40] tf_c4ctl10k_n100_R2 set E4s  (1 sets left)
+[2026-10-24T06:17:29] [gpu_lease] GPU stable-clean for 180s
+[2026-10-24T06:17:29] [gpu_lease] lease acquired (stage cl:tf_c4ctl10k_n100_R2:E4s, pid 2760157); launching
+[2026-10-24T06:30:27] [gpu_lease] lease released (stage cl:tf_c4ctl10k_n100_R2:E4s)
+[2026-10-24T06:30:27]   rc=0 status=VALID
+[2026-10-24T06:30:27] ALL SETS VALID for every model/realization
+[2026-10-24T06:30:27] tf_c4ctl10k_n100_R1: n_valid_sets=5 control_mean=0.5770833333333333
+[2026-10-24T06:30:27] tf_c4ctl10k_n100_R2: n_valid_sets=5 control_mean=0.6020833333333333
+[2026-10-24T06:30:27] === CHUNKED CLOSED-LOOP DONE: 16.7139 GPU-h ===
+[2026-10-24T06:30:27] === CHAIN C4 R2 FINISHED ===

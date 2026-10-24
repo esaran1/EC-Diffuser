@@ -1,0 +1,8 @@
+c4ctl10k_n1 pooled 0.5333  R1 0.5521  R2 0.5146
+c4ctl10k_n4 pooled 0.5823  R1 0.5583  R2 0.6062
+c4ctl10k_n100 pooled 0.5896  R1 0.5771  R2 0.6021
+c4ctl10k_n4 - c4ctl10k_n1 ['R1', 'R2']: d=+4.90pp 90%CI[+2.0,+7.8] disc 173/126 McNemar p=0.008 n=960
+c4ctl10k_n100 - c4ctl10k_n4 ['R1', 'R2']: d=+0.73pp 90%CI[-2.3,+3.6] disc 146/139 McNemar p=0.722 n=960
+c4ctl10k_n100 - c4ctl10k_n4 ['R1']: d=+1.87pp 90%CI[-2.3,+6.0] disc 78/69 McNemar p=0.510 n=480
+c4ctl10k_n100 - c4ctl10k_n4 ['R2']: d=-0.42pp 90%CI[-4.4,+3.8] disc 68/70 McNemar p=0.932 n=480
+R2 sets {'E0': (0.573, 'VALID'), 'E1s': (0.531, 'VALID'), 'E2s': (0.615, 'VALID'), 'E3s': (0.594, 'VALID'), 'E4s': (0.698, 'VALID')}
