@@ -86,3 +86,27 @@
 [2026-10-14T21:15:32]   rc=0 status=VALID
 [2026-10-14T21:15:32] [5/80] tf_ctl10k_b96n100_R1 set E1s  (8 sets left)
 [2026-10-14T21:16:26] [gpu_lease] clean streak broken at 3 (foreign 5486 MiB)
+[2026-10-15T17:25:01] --- 0: direct action NFE4 batch96 R1-R2 ---
+[2026-10-15T17:25:01] === CHUNKED CLOSED-LOOP R=2 (1 models, one E set per lease) ===
+[2026-10-15T17:25:01] program spent: 9.5603 GPU-h
+[2026-10-15T17:25:01] ALL SETS VALID for every model/realization
+[2026-10-15T17:25:01] tf_qaction10k_b96_R1: n_valid_sets=5 control_mean=0.725
+[2026-10-15T17:25:01] tf_qaction10k_b96_R2: n_valid_sets=5 control_mean=0.7291666666666667
+[2026-10-15T17:25:01] === CHUNKED CLOSED-LOOP DONE: 9.5603 GPU-h ===
+[2026-10-15T17:25:01] --- 1: NFE100 R1 control + direct action ---
+[2026-10-15T17:25:01] === CHUNKED CLOSED-LOOP R=1 (2 models, one E set per lease) ===
+[2026-10-15T17:25:01] program spent: 9.5603 GPU-h
+[2026-10-15T17:25:01] [1/80] tf_ctl10k_b96n100_R1 set E1s  (8 sets left)
+[2026-10-15T17:27:44] [gpu_lease] GPU stable-clean for 180s
+[2026-10-15T17:27:44] [gpu_lease] lease acquired (stage cl:tf_ctl10k_b96n100_R1:E1s, pid 16267); launching
+[2026-10-15T17:49:29] [gpu_lease] lease released (stage cl:tf_ctl10k_b96n100_R1:E1s)
+[2026-10-15T17:49:29]   rc=0 status=VALID
+[2026-10-15T17:49:29] [2/80] tf_qaction10k_b96n100_R1 set E1s  (7 sets left)
+[2026-10-15T17:52:12] [gpu_lease] GPU stable-clean for 180s
+[2026-10-15T17:52:12] [gpu_lease] lease acquired (stage cl:tf_qaction10k_b96n100_R1:E1s, pid 16267); launching
+[2026-10-15T18:14:00] [gpu_lease] lease released (stage cl:tf_qaction10k_b96n100_R1:E1s)
+[2026-10-15T18:14:00]   rc=0 status=VALID
+[2026-10-15T18:14:00] [3/80] tf_ctl10k_b96n100_R1 set E2s  (6 sets left)
+[2026-10-15T18:16:42] [gpu_lease] GPU stable-clean for 180s
+[2026-10-15T18:16:42] [gpu_lease] lease acquired (stage cl:tf_ctl10k_b96n100_R1:E2s, pid 16267); launching
+[2026-10-15T18:24:52] [gpu_lease] lease released (stage cl:tf_ctl10k_b96n100_R1:E2s)
