@@ -1,0 +1,8 @@
+[
+ {"tag": "inv", "ckpt": "s42_400k", "loadpath": "canon/seed42", "epoch": "400000", "train_seed": 42,
+  "num_entity": 3, "num_envs": 96, "configs": "4:euler:fp16", "R": "1", "sets": "E0"},
+ {"tag": "inv", "ckpt": "s42_400k", "loadpath": "canon/seed42", "epoch": "400000", "train_seed": 42,
+  "num_entity": 3, "num_envs": 16, "configs": "4:euler:fp16", "R": "1", "sets": "E0"},
+ {"tag": "inv", "ckpt": "s42_400k", "loadpath": "canon/seed42", "epoch": "400000", "train_seed": 42,
+  "num_entity": 3, "num_envs": 1, "configs": "4:euler:fp16", "R": "1", "sets": "E0"}
+]

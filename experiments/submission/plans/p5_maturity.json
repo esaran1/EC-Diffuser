@@ -1,0 +1,38 @@
+[
+ {
+  "tag": "mature",
+  "ckpt": "s42_100k",
+  "loadpath": "canon/seed42",
+  "epoch": "100000",
+  "train_seed": 42,
+  "num_entity": 3,
+  "num_envs": 16,
+  "configs": "4:euler:fp16,1:euler:fp16",
+  "R": "1,2",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "mature",
+  "ckpt": "s42_200k",
+  "loadpath": "canon/seed42",
+  "epoch": "200000",
+  "train_seed": 42,
+  "num_entity": 3,
+  "num_envs": 16,
+  "configs": "4:euler:fp16,1:euler:fp16",
+  "R": "1,2",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "mature",
+  "ckpt": "s42_300k",
+  "loadpath": "canon/seed42",
+  "epoch": "300000",
+  "train_seed": 42,
+  "num_entity": 3,
+  "num_envs": 16,
+  "configs": "4:euler:fp16,1:euler:fp16",
+  "R": "1,2",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ }
+]

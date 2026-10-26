@@ -1,0 +1,170 @@
+{
+ "ckpt": "s42_400k",
+ "train_seed": 42,
+ "loadpath": "canon/seed42",
+ "epoch": "400000",
+ "ckpt_path": "/home/jren313/EC-Diffuser-1/data/panda_push/flow/3C_dlp_adalnpint_randcolor_H5_T4_seed42/state_400000.pt",
+ "ckpt_sha256": "861dc34434474455a25dc3a15ea4e1754066202df538364cf41114b42f4fcc3b",
+ "internal_step": 499000,
+ "weights": "ema",
+ "num_entity": 3,
+ "batch": 1,
+ "episode_length": 100,
+ "noise": "per_episode_v2",
+ "sdpa": true,
+ "unit": "s42_400k_c3_b1_euler4_fp16_R1_E0",
+ "set": "E0",
+ "set_file": "replicate0_n96.pkl",
+ "set_sha256": "35144910b1471b7b0d50d17da18b01db0b5e61e21d7e16e4ef1aa266ee80d511",
+ "realization": 1,
+ "nfe": 4,
+ "solver": "euler",
+ "calls_per_plan": 4,
+ "precision": "fp16",
+ "wall_s": 1988.791579246521,
+ "status": "INVALID_CONTENDED_DURING",
+ "midset_events": [
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 12580,
+   "iso": "18:30:19"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11508,
+   "iso": "18:30:24"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:30:29"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:30:34"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:30:40"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:30:45"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:30:50"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:30:55"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:00"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:06"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:11"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:16"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:21"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:27"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:32"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:37"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:42"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 11510,
+   "iso": "18:31:48"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 7482,
+   "iso": "18:31:53"
+  },
+  {
+   "pid": 3519379,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "mib": 7482,
+   "iso": "18:31:58"
+  }
+ ],
+ "midset_max_foreign_mib": 12580,
+ "foreign_post": [
+  {
+   "pid": 3540329,
+   "name": "/home/jren313/miniconda3/envs/dagr/bin/python",
+   "used_mib": 12546
+  }
+ ],
+ "foreign_small_pre": [
+  {
+   "pid": 3447966,
+   "name": ".venv/bin/python",
+   "used_mib": 542
+  }
+ ],
+ "n": 96,
+ "successes": 71,
+ "success": 0.7395833333333334,
+ "lat_ms_mean": 31.13420310730362,
+ "lat_ms_p50": 26.576147007290274,
+ "lat_ms_p95": 55.09155966283288,
+ "n_calls_timed": 9600
+}

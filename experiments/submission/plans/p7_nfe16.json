@@ -1,0 +1,74 @@
+[
+ {
+  "tag": "nfe16",
+  "ckpt": "s42_400k",
+  "loadpath": "canon/seed42",
+  "epoch": "400000",
+  "train_seed": 42,
+  "num_entity": 3,
+  "num_envs": 16,
+  "configs": "16:euler:fp16",
+  "R": "1",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "nfe16",
+  "ckpt": "s42_400k",
+  "loadpath": "canon/seed42",
+  "epoch": "400000",
+  "train_seed": 42,
+  "num_entity": 4,
+  "num_envs": 16,
+  "configs": "16:euler:fp16",
+  "R": "1",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "nfe16",
+  "ckpt": "s43_400k",
+  "loadpath": "canon/seed43",
+  "epoch": "400000",
+  "train_seed": 43,
+  "num_entity": 3,
+  "num_envs": 16,
+  "configs": "16:euler:fp16",
+  "R": "1",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "nfe16",
+  "ckpt": "s43_400k",
+  "loadpath": "canon/seed43",
+  "epoch": "400000",
+  "train_seed": 43,
+  "num_entity": 4,
+  "num_envs": 16,
+  "configs": "16:euler:fp16",
+  "R": "1",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "nfe16",
+  "ckpt": "s44_400k",
+  "loadpath": "canon/seed44",
+  "epoch": "400000",
+  "train_seed": 44,
+  "num_entity": 3,
+  "num_envs": 16,
+  "configs": "16:euler:fp16",
+  "R": "1",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ },
+ {
+  "tag": "nfe16",
+  "ckpt": "s44_400k",
+  "loadpath": "canon/seed44",
+  "epoch": "400000",
+  "train_seed": 44,
+  "num_entity": 4,
+  "num_envs": 16,
+  "configs": "16:euler:fp16",
+  "R": "1",
+  "sets": "E0,E1s,E2s,E3s,E4s"
+ }
+]

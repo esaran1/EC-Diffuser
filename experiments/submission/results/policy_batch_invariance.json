@@ -1,0 +1,82 @@
+{
+ "fp32_euler1_b16": {
+  "max_abs_action": 1.430511474609375e-06,
+  "max_abs_traj": 5.21540641784668e-06,
+  "action_scale": 0.28392213582992554
+ },
+ "fp32_euler1_b1": {
+  "max_abs_action": 1.6689300537109375e-06,
+  "max_abs_traj": 7.957220077514648e-06,
+  "action_scale": 0.28392213582992554
+ },
+ "fp32_euler4_b16": {
+  "max_abs_action": 1.3113021850585938e-06,
+  "max_abs_traj": 4.7072768211364746e-05,
+  "action_scale": 0.28374162316322327
+ },
+ "fp32_euler4_b1": {
+  "max_abs_action": 1.3113021850585938e-06,
+  "max_abs_traj": 4.182383418083191e-05,
+  "action_scale": 0.28374162316322327
+ },
+ "fp32_midpoint2_b16": {
+  "max_abs_action": 1.7881393432617188e-06,
+  "max_abs_traj": 7.364153861999512e-05,
+  "action_scale": 0.2847816050052643
+ },
+ "fp32_midpoint2_b1": {
+  "max_abs_action": 2.086162567138672e-06,
+  "max_abs_traj": 7.271766662597656e-05,
+  "action_scale": 0.2847816050052643
+ },
+ "fp32_rk41_b16": {
+  "max_abs_action": 5.7950615882873535e-05,
+  "max_abs_traj": 0.0001283884048461914,
+  "action_scale": 0.3507554829120636
+ },
+ "fp32_rk41_b1": {
+  "max_abs_action": 8.565187454223633e-05,
+  "max_abs_traj": 9.961426258087158e-05,
+  "action_scale": 0.3507554829120636
+ },
+ "fp16_euler1_b16": {
+  "max_abs_action": 0.00390625,
+  "max_abs_traj": 0.00390625,
+  "action_scale": 0.28385788202285767
+ },
+ "fp16_euler1_b1": {
+  "max_abs_action": 0.001953125,
+  "max_abs_traj": 0.00390625,
+  "action_scale": 0.28385788202285767
+ },
+ "fp16_euler4_b16": {
+  "max_abs_action": 0.001220703125,
+  "max_abs_traj": 0.0543212890625,
+  "action_scale": 0.28378960490226746
+ },
+ "fp16_euler4_b1": {
+  "max_abs_action": 0.0009765625,
+  "max_abs_traj": 0.0286712646484375,
+  "action_scale": 0.28378960490226746
+ },
+ "fp16_midpoint2_b16": {
+  "max_abs_action": 0.001953125,
+  "max_abs_traj": 0.1041259765625,
+  "action_scale": 0.2847939431667328
+ },
+ "fp16_midpoint2_b1": {
+  "max_abs_action": 0.0029296875,
+  "max_abs_traj": 0.081207275390625,
+  "action_scale": 0.2847939431667328
+ },
+ "fp16_rk41_b16": {
+  "max_abs_action": 0.03070068359375,
+  "max_abs_traj": 0.1659686267375946,
+  "action_scale": 0.35013920068740845
+ },
+ "fp16_rk41_b1": {
+  "max_abs_action": 0.025263547897338867,
+  "max_abs_traj": 0.08821612596511841,
+  "action_scale": 0.35013920068740845
+ }
+}

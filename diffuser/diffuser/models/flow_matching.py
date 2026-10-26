@@ -392,9 +392,15 @@ class ConditionalFlowMatching(nn.Module):
         return_chain=False,
         return_diffusion=None,
         verbose=True,
+        noise=None,
+        solver="euler",
         **sample_kwargs
     ):
-        """Generate trajectories with left-endpoint fixed-step forward Euler."""
+        """Generate trajectories with a fixed-step ODE solver (default: forward Euler).
+
+        noise: optional initial x0 [batch, horizon, transition_dim] (e.g. per-episode
+        deterministic noise); default draws torch.randn. solver: "euler" (1 call/step),
+        "midpoint" (2 calls/step) or "rk4" (4 calls/step)."""
         if sample_kwargs:
             raise TypeError("unsupported sampling arguments: {}".format(sorted(sample_kwargs)))
         if return_attention:
@@ -424,20 +430,45 @@ class ConditionalFlowMatching(nn.Module):
         self._validate_conditioning(cond, batch_size, active_horizon, device, dtype, True)
         steps = self._resolve_solver_steps(n_steps)
 
-        x = torch.randn(
-            (batch_size, active_horizon, self.transition_dim),
-            device=device,
-            dtype=dtype,
-        )
+        shape = (batch_size, active_horizon, self.transition_dim)
+        if noise is None:
+            x = torch.randn(shape, device=device, dtype=dtype)
+        else:
+            if tuple(noise.shape) != shape or noise.device != device or noise.dtype != dtype:
+                raise ValueError("noise must be {} on {} with dtype {}".format(shape, device, dtype))
+            x = noise.clone()
+        if solver not in ("euler", "midpoint", "rk4"):
+            raise ValueError("unknown solver {!r}".format(solver))
         self._apply_conditioning(x, cond)
         conditioning_mask = self._make_conditioning_mask(x, cond)
         chain = [x.clone()] if return_chain else None
         dt = 1.0 / float(steps)
+
+        def vel(xx, tt):
+            t_vec = xx.new_full((batch_size,), tt)
+            return self._call_model(xx, cond, t_vec * self.time_scale) * conditioning_mask.to(dtype)
+
+        def cond_(xx):
+            self._apply_conditioning(xx, cond)
+            return xx
+
         for step in range(steps):
-            time = x.new_full((batch_size,), float(step) / float(steps))
-            velocity = self._call_model(x, cond, time * self.time_scale)
-            velocity = velocity * conditioning_mask.to(dtype)
-            x = x + dt * velocity
+            t0 = float(step) / float(steps)
+            if solver == "euler":
+                time = x.new_full((batch_size,), t0)
+                velocity = self._call_model(x, cond, time * self.time_scale)
+                velocity = velocity * conditioning_mask.to(dtype)
+                x = x + dt * velocity
+            elif solver == "midpoint":
+                k1 = vel(x, t0)
+                k2 = vel(cond_(x + 0.5 * dt * k1), t0 + 0.5 * dt)
+                x = x + dt * k2
+            else:  # classical RK4
+                k1 = vel(x, t0)
+                k2 = vel(cond_(x + 0.5 * dt * k1), t0 + 0.5 * dt)
+                k3 = vel(cond_(x + 0.5 * dt * k2), t0 + 0.5 * dt)
+                k4 = vel(cond_(x + dt * k3), t0 + dt)
+                x = x + (dt / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
             self._apply_conditioning(x, cond)
             if return_chain:
                 chain.append(x.clone())

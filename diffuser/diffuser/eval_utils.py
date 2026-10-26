@@ -37,6 +37,10 @@ def setup_isaac_env(args):
             isaac_env_cfg['env']['numGoalObjects'] = args.num_entity
     if getattr(args, 'num_envs', None):
         isaac_env_cfg['env']['numEnvs'] = int(args.num_envs)
+    if getattr(args, 'env_spacing', None):
+        # wide spacing renders each env in isolation (no neighbour tables in the
+        # camera view), making observations independent of the env grid/batch size
+        isaac_env_cfg['env']['envSpacing'] = float(args.env_spacing)
     if not args.multiview:
         config['Model']['numViews'] = 1
 

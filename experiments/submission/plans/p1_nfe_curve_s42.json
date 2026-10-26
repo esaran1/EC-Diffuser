@@ -1,0 +1,26 @@
+[
+ {
+  "ckpt": "s42_400k",
+  "loadpath": "canon/seed42",
+  "epoch": "400000",
+  "train_seed": 42,
+  "num_envs": 16,
+  "R": "1,2",
+  "sets": "E0,E1s,E2s,E3s,E4s",
+  "tag": "nfe",
+  "num_entity": 3,
+  "configs": "4:euler:fp16,1:euler:fp16,2:euler:fp16,3:euler:fp16,8:euler:fp16"
+ },
+ {
+  "ckpt": "s42_400k",
+  "loadpath": "canon/seed42",
+  "epoch": "400000",
+  "train_seed": 42,
+  "num_envs": 16,
+  "R": "1,2",
+  "sets": "E0,E1s,E2s,E3s,E4s",
+  "tag": "nfe",
+  "num_entity": 4,
+  "configs": "4:euler:fp16,1:euler:fp16,2:euler:fp16,3:euler:fp16,8:euler:fp16"
+ }
+]
